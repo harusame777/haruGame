@@ -25,13 +25,13 @@ namespace nsK2EngineLow {
 		SpriteInitData luminnceSpriteInitData;
 
 		//輝度抽出用のシェーダーのファイルパスを指定する
-		luminnceSpriteInitData.m_fxFilePath = "";
+		luminnceSpriteInitData.m_fxFilePath = "Assets/shader/haruharuPostEffect.fx";
 
 		//頂点シェーダーのエントリーポイントを指定
-		luminnceSpriteInitData.m_vsEntryPointFunc = "";
+		luminnceSpriteInitData.m_vsEntryPointFunc = "VSMain";
 
 		//ピクセルシェーダーのエントリーポイントを指定
-		luminnceSpriteInitData.m_psEntryPoinFunc = "";
+		luminnceSpriteInitData.m_psEntryPoinFunc = "PSLuminance";
 
 		//スプライトの高さ幅と高さを設定
 		luminnceSpriteInitData.m_width = frameBuffer_w;
