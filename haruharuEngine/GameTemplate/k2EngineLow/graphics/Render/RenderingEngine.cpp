@@ -22,6 +22,7 @@ namespace nsK2EngineLow {
 		int frameBuffer_w = g_graphicsEngine->GetFrameBufferWidth();
 		int frameBuffer_h = g_graphicsEngine->GetFrameBufferHeight();
 
+		float clearColor[4] = { 0.7f, 0.7f, 1.0f, 1.0f };
 		//メインレンダリングターゲット
 		mainRenderTargert.Create(
 			frameBuffer_w,
@@ -29,7 +30,8 @@ namespace nsK2EngineLow {
 			1,
 			1,
 			DXGI_FORMAT_R32G32B32A32_FLOAT,
-			DXGI_FORMAT_D32_FLOAT
+			DXGI_FORMAT_D32_FLOAT,
+			clearColor
 		);
 
 		//フレームバッファーにテクスチャを張り付けるためのスプライトを初期化
