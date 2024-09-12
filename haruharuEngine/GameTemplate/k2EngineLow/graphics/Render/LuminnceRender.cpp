@@ -1,6 +1,5 @@
 #include "k2EngineLowPreCompile.h"
 #include "LuminnceRender.h"
-#include "graphics/GaussianBlur.h"
 
 namespace nsK2EngineLow {
 
@@ -44,8 +43,33 @@ namespace nsK2EngineLow {
 		//書き込むレンダリングターゲットのフォーマットを指定する
 		luminnceSpriteInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;
 
+		//作成した初期化情報をもとにスプライトを初期化する
+		m_luminnceSprite.Init(luminnceSpriteInitData);
+
 		//ガウシアンブラーを初期化
 		m_gaussianBlur.Init(&m_luminnceRenderTarget.GetRenderTargetTexture());
+
+		//ボケ画像を加算合成するスプライトを初期化
+		//初期化情報を設定する
+		SpriteInitData finalSpriteInitData;
+		finalSpriteInitData.m_textures[0] = &m_gaussianBlur.GetBokeTexture();
+
+		//解像度はmainRenderTarGetの幅と高さ
+		finalSpriteInitData.m_width = frameBuffer_w;
+		finalSpriteInitData.m_height = frameBuffer_h;
+
+		//ぼかした画像を、通常の2Dとしてメインレンダリングターゲットに描画するので
+		//2D用のシェーダーを使用する
+		finalSpriteInitData.m_fxFilePath = "Assets/shader/haruharuSprite.fx";
+
+		//加算合成で描画するので、アルファブレンディングモードを加算にする
+		finalSpriteInitData.m_alphaBlendMode = AlphaBlendMode_Add;
+
+		//カラーバッファーのフォーマットは32ビット浮動小数点バッファー
+		finalSpriteInitData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32B32A32_FLOAT;
+
+		//初期化情報をもとに加算合成用のスプライトを初期化する
+		m_AddSynthesisSprite.Init(finalSpriteInitData);
 	}
 
 	//輝度抽出
@@ -66,5 +90,7 @@ namespace nsK2EngineLow {
 		//レンダリングターゲットの書き込み終了待ち
 		rc.WaitUntilToPossibleSetRenderTarget(m_luminnceRenderTarget);
 
+		//ガウシアンブラーを実行
+		m_gaussianBlur.ExecuteOnGPU(rc, 20);
 	}
 }

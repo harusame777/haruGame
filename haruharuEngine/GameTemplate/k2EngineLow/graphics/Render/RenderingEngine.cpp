@@ -32,7 +32,7 @@ namespace nsK2EngineLow {
 			DXGI_FORMAT_D32_FLOAT
 		);
 
-		//テクスチャを張り付けるためのスプライトを初期化
+		//フレームバッファーにテクスチャを張り付けるためのスプライトを初期化
 		//初期化オブジェクトを作成
 		SpriteInitData spriteInitData;
 
@@ -57,8 +57,6 @@ namespace nsK2EngineLow {
 
 	void RenderingEngine::Execute(RenderContext& rc)
 	{
-		auto& renderContext = g_graphicsEngine->GetRenderContext();
-
 		//シャドウマップ描画処理
 		m_shadowMapRender.RenderShadowMap(
 			rc,
@@ -72,21 +70,43 @@ namespace nsK2EngineLow {
 		//);
 
 		//レンダリングターゲットをメインレンダリングターゲットに変更
-		renderContext.WaitUntilToPossibleSetRenderTarget(mainRenderTargert);
+		rc.WaitUntilToPossibleSetRenderTarget(mainRenderTargert);
 
 		//レンダリングターゲットを設定
-		renderContext.SetRenderTargetAndViewport(mainRenderTargert);
+		rc.SetRenderTargetAndViewport(mainRenderTargert);
 
 		//レンダリングターゲットをクリア
-		renderContext.ClearRenderTargetView(mainRenderTargert);
+		rc.ClearRenderTargetView(mainRenderTargert);
 
+		//モデルを描画
 		Render3DModel(rc);
 
 		//レンダリングターゲットへの書き込み終了待ち
-		renderContext.WaitUntilFinishDrawingToRenderTarget(mainRenderTargert);
+		rc.WaitUntilFinishDrawingToRenderTarget(mainRenderTargert);
 
-		//ココから輝度抽出
+		//ココから輝度抽出～ボケ画像を作成
 		m_luminnceRender.LuminnceExtraction(rc);
+
+		//LuminnceExtractionで作成したボケ画像をメインレンダリングターゲットに
+		//加算合成する
+		//レンダリングターゲットとして利用できるまで待つ
+		rc.WaitUntilFinishDrawingToRenderTarget(mainRenderTargert);
+
+		//レンダリングターゲットを設定
+		rc.SetRenderTargetAndViewport(mainRenderTargert);
+
+		//最終合成
+		m_luminnceRender.AddSynthesisSpriteDraw(rc);
+
+		//レンダリングターゲットの書き込み終了待ち
+		rc.WaitUntilFinishDrawingToRenderTarget(mainRenderTargert);
+
+		//メインレンダリングターゲットの絵をフレームバッファーにコピー
+		rc.SetRenderTarget(
+			g_graphicsEngine->GetCurrentFrameBuffuerRTV(),
+			g_graphicsEngine->GetCurrentFrameBuffuerDSV()
+		);
+		m_copyToFrameBufferSprite.Draw(rc);
 
 		Render2DSprite(rc);
 
