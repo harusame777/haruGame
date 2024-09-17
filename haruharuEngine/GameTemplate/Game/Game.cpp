@@ -42,11 +42,15 @@ void Game::Update()
 
 	m_testSpotLight.SetPosition(m_spotLightTestPos);
 
-	m_testSpotLight.SetColor(100.0f, 100.0f, 100.0f);
+	m_testSpotLight.SetColor(10.8f, 10.8f, 10.8f);
 
 	m_spotLightTestDirection.Normalize();
 
-	Vector3 diff = m_spotLightTestPos - m_modelTestPos;
+	Vector3 targetPos = m_modelTestPos;
+
+	targetPos.y += 50.0f;
+
+	Vector3 diff = targetPos - m_spotLightTestPos;
 
 	diff.Normalize();
 

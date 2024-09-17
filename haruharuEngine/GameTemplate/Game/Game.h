@@ -18,7 +18,7 @@ public:
 
 	Vector3 m_pointLightTestPos = { 0.0f,20.0f,0.0f };
 
-	Vector3 m_spotLightTestPos = { 0.0f,20.0f,0.0f };
+	Vector3 m_spotLightTestPos = { 0.0f,80.0f,150.0f };
 
 	Vector3 m_spotLightTestDirection = { 1.0f,-1.0f,1.0f };
 	

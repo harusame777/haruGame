@@ -19,6 +19,11 @@ namespace nsK2EngineLow {
 		}
 
 	private:
+		//定数
+		enum {
+			//ガウシアンブラー最大数
+			MAX_GAUSSIAN_BLUR = 4,
+		};
 		//輝度抽出用のレンダリングターゲット
 		RenderTarget m_luminnceRenderTarget;
 		//輝度抽出用のスプライト
@@ -26,7 +31,7 @@ namespace nsK2EngineLow {
 		//加算合成スプライト
 		Sprite m_AddSynthesisSprite;
 		//ガウシアンブラー
-		GaussianBlur m_gaussianBlur;
+		GaussianBlur m_gaussianBlur[MAX_GAUSSIAN_BLUR];
 	};
 }
 
