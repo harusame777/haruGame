@@ -47,20 +47,34 @@ namespace nsK2EngineLow {
 		m_luminnceSprite.Init(luminnceSpriteInitData);
 
 		//ガウシアンブラーを初期化
-		m_gaussianBlur.Init(&m_luminnceRenderTarget.GetRenderTargetTexture());
+		//m_gaussianBlur[0]は輝度テクスチャにブラーをかける
+		m_gaussianBlur[0].Init(&m_luminnceRenderTarget.GetRenderTargetTexture());
+
+		//m_gaussianBlur[1]はm_gaussianBlur[0]のテクスチャにブラーをかける
+		m_gaussianBlur[1].Init(&m_gaussianBlur[0].GetBokeTexture());
+
+		//m_gaussianBlur[2]はm_gaussianBlur[1]のテクスチャにブラーをかける
+		m_gaussianBlur[2].Init(&m_gaussianBlur[1].GetBokeTexture());
+
+		//m_gaussianBlur[3]はm_gaussianBlur[2]のテクスチャにブラーをかける
+		m_gaussianBlur[3].Init(&m_gaussianBlur[2].GetBokeTexture());
 
 		//ボケ画像を加算合成するスプライトを初期化
 		//初期化情報を設定する
 		SpriteInitData finalSpriteInitData;
-		finalSpriteInitData.m_textures[0] = &m_gaussianBlur.GetBokeTexture();
+
+		for (int i = 0; i < MAX_GAUSSIAN_BLUR; i++){
+			finalSpriteInitData.m_textures[i] = &m_gaussianBlur[i].GetBokeTexture();
+		}
 
 		//解像度はmainRenderTarGetの幅と高さ
 		finalSpriteInitData.m_width = frameBuffer_w;
 		finalSpriteInitData.m_height = frameBuffer_h;
 
-		//ぼかした画像を、通常の2Dとしてメインレンダリングターゲットに描画するので
-		//2D用のシェーダーを使用する
-		finalSpriteInitData.m_fxFilePath = "Assets/shader/haruharuSprite.fx";
+		//ボケ画像合成用のシェーダーを設定
+		finalSpriteInitData.m_fxFilePath = "Assets/shader/haruharuPostEffect.fx";
+		//合成時のエントリーポイントを設定
+		finalSpriteInitData.m_psEntryPoinFunc = "PSBloomFinal";
 
 		//加算合成で描画するので、アルファブレンディングモードを加算にする
 		finalSpriteInitData.m_alphaBlendMode = AlphaBlendMode_Add;
@@ -91,6 +105,8 @@ namespace nsK2EngineLow {
 		rc.WaitUntilToPossibleSetRenderTarget(m_luminnceRenderTarget);
 
 		//ガウシアンブラーを実行
-		m_gaussianBlur.ExecuteOnGPU(rc, 20);
+		for (int i = 0; i < MAX_GAUSSIAN_BLUR; i++) {
+			m_gaussianBlur[i].ExecuteOnGPU(rc, 10);
+		}
 	}
 }
