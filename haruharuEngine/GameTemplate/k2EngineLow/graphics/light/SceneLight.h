@@ -16,6 +16,7 @@ namespace nsK2EngineLow {
 		//カラー
 		Vector3 m_color;
 		float m_pad;
+		int m_isUse = false;
 	};
 
 	struct SPointLight 
@@ -211,6 +212,8 @@ namespace nsK2EngineLow {
 		Vector3 m_ambientLight;
 		//使用中のスポットライトの数
 		int m_numSpotLight;
+		//使用中のディレクションライトの数
+		int m_numDirectionLight;
 		//ディレクションライトのビュープロジェクション
 
 	};
@@ -255,6 +258,9 @@ namespace nsK2EngineLow {
 
 		//更新処理
 		void Update();
+
+		//ディレクションライト配列から未使用のライトのポインタを提供
+		SDirectionLight* NewDirectionLight();
 
 		//ポイントライト配列から未使用のライトのポインタを提供
 		SPointLight* NewPointLight();

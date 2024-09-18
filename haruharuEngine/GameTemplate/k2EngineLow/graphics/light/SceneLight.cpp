@@ -113,6 +113,22 @@ namespace nsK2EngineLow {
 		}
 	}
 
+	SDirectionLight* SceneLight::NewDirectionLight()
+	{
+		if (m_light.m_numDirectionLight)
+		{
+			return nullptr;
+		}
+
+		for (int i = 0; i < MAX_DIRECTIONAL_LIGHT; i++)
+		{
+			if ()
+			{
+
+			}
+		}
+	}
+
 	//新規スポットライトを作成
 	SSpotLight* SceneLight::NewSpotLight()
 	{

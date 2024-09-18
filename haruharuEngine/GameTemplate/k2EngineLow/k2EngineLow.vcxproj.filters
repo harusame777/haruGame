@@ -234,6 +234,7 @@
     <ClCompile Include="graphics\Render\ShadowMapRender.cpp" />
     <ClCompile Include="graphics\Render\GBufferRender.cpp" />
     <ClCompile Include="graphics\Render\LuminnceRender.cpp" />
+    <ClCompile Include="graphics\light\DirectionalLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="k2EngineLowPreCompile.h" />
@@ -518,6 +519,7 @@
     <ClInclude Include="graphics\Render\ShadowMapRender.h" />
     <ClInclude Include="graphics\Render\GBufferRender.h" />
     <ClInclude Include="graphics\Render\LuminnceRender.h" />
+    <ClInclude Include="graphics\light\DirectionalLight.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="graphics">
