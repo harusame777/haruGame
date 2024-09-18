@@ -254,7 +254,6 @@
     <ClCompile Include="AI\PathFinding\NaviMesh.cpp" />
     <ClCompile Include="AI\PathFinding\Path.cpp" />
     <ClCompile Include="AI\PathFinding\PathFinding.cpp" />
-    <ClCompile Include="graphics\light\DirectionalLight.cpp" />
     <ClCompile Include="gameObject\Gameobjectmanager.cpp" />
     <ClCompile Include="gameObject\IGameObject.cpp" />
     <ClCompile Include="graphics\Render\GBufferRender.cpp" />
@@ -348,7 +347,6 @@
     <ClInclude Include="AI\PathFinding\PathFinding.h" />
     <ClInclude Include="dbg\MyAssert.h" />
     <ClInclude Include="dbg\MyLog.h" />
-    <ClInclude Include="graphics\light\DirectionalLight.h" />
     <ClInclude Include="gameObject\GameObjectManager.h" />
     <ClInclude Include="gameObject\IGameobject.h" />
     <ClInclude Include="graphics\Render\GBufferRender.h" />
