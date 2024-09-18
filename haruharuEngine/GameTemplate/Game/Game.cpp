@@ -4,10 +4,11 @@
 
 bool Game::Start()
 {
-	m_modelPlayer.Init("Assets/modelData/unityChan.tkm");
+	m_modelPlayer.Init("Assets/modelData/unityChan.tkm",nullptr, 0, enModelUpAxisZ, true);
+	m_modelPlayer.SetShadowChasterFlag(true);
 
 	m_modelBackGround.Init("Assets/modelData/testMap/Map7.tkm",nullptr,0,enModelUpAxisZ,true);
-	m_modelFloor.SetShadowChasterFlag(false);
+	m_modelBackGround.SetShadowChasterFlag(true);
 
 	m_modelFloor.Init("Assets/modelData/testMap/Map_floor.tkm",nullptr,0,enModelUpAxisZ,true);
 	m_modelFloor.SetShadowChasterFlag(false);
@@ -40,25 +41,25 @@ void Game::Update()
 
 	m_modelFloor.Update();
 
-	m_testSpotLight.SetPosition(m_spotLightTestPos);
+	//m_testSpotLight.SetPosition(m_spotLightTestPos);
 
-	m_testSpotLight.SetColor(10.0f, 10.0f, 10.0f);
+	//m_testSpotLight.SetColor(10.0f, 10.0f, 10.0f);
 
-	m_spotLightTestDirection.Normalize();
+	//m_spotLightTestDirection.Normalize();
 
-	Vector3 targetPos = m_modelTestPos;
+	//Vector3 targetPos = m_modelTestPos;
 
-	targetPos.y += 50.0f;
+	//targetPos.y += 50.0f;
 
-	Vector3 diff = targetPos - m_spotLightTestPos;
+	//Vector3 diff = targetPos - m_spotLightTestPos;
 
-	diff.Normalize();
+	//diff.Normalize();
 
-	m_testSpotLight.SetDirection(diff);
+	//m_testSpotLight.SetDirection(diff);
 
-	m_testSpotLight.SetRange(300.0f);
+	//m_testSpotLight.SetRange(300.0f);
 
-	m_testSpotLight.SetAngle(25.0f);
+	//m_testSpotLight.SetAngle(25.0f);
 
 	m_testPointLight.SetAffectPowParam(0.5f);
 
