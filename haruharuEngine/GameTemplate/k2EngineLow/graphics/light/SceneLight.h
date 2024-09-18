@@ -211,6 +211,7 @@ namespace nsK2EngineLow {
 		Vector3 m_ambientLight;
 		//使用中のスポットライトの数
 		int m_numSpotLight;
+		//ディレクションライトのビュープロジェクション
 
 	};
 
