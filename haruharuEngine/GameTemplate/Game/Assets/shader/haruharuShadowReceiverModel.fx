@@ -134,6 +134,8 @@ float3 CalcPhongSpecular(float3 lightDirection, float3 lightColor, float3 worldP
 float3 CalcLigFromPointLight(SPSIn psIn, PointLight ptlig, float specPow);
 //スポットライトの計算
 float3 CalcLigFromSpotLight(SPSIn psIn, SpotLight spLig, float specPow);
+//リムライトの計算
+float3 CalcLigFromRimLight(SPSIn psIn, float3 lightDirection,float3 lightColor);
 ////////////////////////////////////////////////
 // 関数定義。
 ////////////////////////////////////////////////
@@ -255,6 +257,28 @@ float3 CalcLigFromSpotLight(SPSIn psIn, SpotLight spLig, float specPow)
     return diffLight + specLight;
 }
 
+float3 CalcLigFromRimLight(SPSIn psIn, float3 lightDirection, float3 lightColor)
+{    
+    //サーフェイスの法線と光の入射方法に依存するリムの強さを求める
+    float power1 = 1.0f - max(0.0f, dot(lightDirection, psIn.normal));
+    
+    //サーフェイスの法線と視線の方向に依存するリムの強さを求める
+    float power2 = 1.0f - max(0.0f, psIn.normalInView.z * -1.0f);
+    
+    //最終的なリムの強さを求める
+    float limPower = power1 * power2;
+    
+    //pow()を利用して、強さの変化を指数関数的にする
+    limPower = pow(limPower, 1.3f);
+    
+    //最終的な反射光にリムライトの反射光を合算する
+    //リムライトのカラーを計算する
+    float3 limColor = limPower * lightColor;
+    
+    //最終的な値を返す
+    return limColor;
+}
+
 // Lambert拡散反射光の計算
 float3 CalcLambertDiffuse(float3 lightDirection, float3 lightColor, float3 normal)
 {
@@ -264,7 +288,6 @@ float3 CalcLambertDiffuse(float3 lightDirection, float3 lightColor, float3 norma
     //内積の結果が0より小さい時は0にする
     t = max(0.0f, t);
     
-    //拡散反射光を計算する
     return lightColor * t;
 }
 
@@ -404,7 +427,10 @@ float4 PSMain( SPSIn psIn ) : SV_Target0
     
     for (int dirligNo = 0; dirligNo < NUM_DIRECTIONAL_LIGHT; dirligNo++)
     {
+        //ディレクションライトの計算
         finalLig += CalcLigFromDirectionLight(psIn, m_directionalLight[dirligNo], specPow);
+        //リムライトの計算
+        finalLig += CalcLigFromRimLight(psIn, m_directionalLight[dirligNo].direction, m_directionalLight[dirligNo].color);
     }
 
     //ココからポイントライトの計算
@@ -445,7 +471,9 @@ float4 PSMain( SPSIn psIn ) : SV_Target0
             if (m_spotLights[spLigNo].isUse)
             {
                 //ライトの計算処理
-                finalLig += CalcLigFromSpotLight(psIn, m_spotLights[spLigNo], specPow);
+                finalLig += CalcLigFromSpotLight(psIn, m_spotLights[spLigNo], specPow); 
+                //リムライトの計算
+                //finalLig += CalcLigFromRimLight(psIn, m_spotLights[spLigNo].direction, m_spotLights[spLigNo].color);
                 //処理したライトの数を加算
                 afpCountSp++;
                 //処理した数が使用中のライトの数以上になったらfor文を抜ける
@@ -457,15 +485,14 @@ float4 PSMain( SPSIn psIn ) : SV_Target0
         }
     }
     
-    //環境光の合成
+    //環境光合成
     finalLig += m_ambientLight;
     
     //最終合成
-    
     float4 finalColor = g_albedo.Sample(g_sampler, psIn.uv);
-    
+    //影
     finalColor.xyz *= shadowMap;
-    
+    //光
     finalColor.xyz *= finalLig ;
     
     return finalColor;
