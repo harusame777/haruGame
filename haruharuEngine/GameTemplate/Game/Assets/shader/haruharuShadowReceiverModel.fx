@@ -17,6 +17,8 @@ struct DirectionLight
     float3 direction;
 	//ライトのカラー
     float3 color;
+    //使用中かどうか
+    int isUse;
 };
 
 //ポイントライト
@@ -79,6 +81,8 @@ cbuffer LightCb : register(b1)
     float3 m_ambientLight;
     //使用中のスポットライトの数
     int m_numSpotLight;
+    //使用中のディレクションライトの数
+    int m_numDirectionLight;
     float4x4 mLVP;
 };
 
@@ -425,13 +429,36 @@ float4 PSMain( SPSIn psIn ) : SV_Target0
     
     //ココからディレクションライトの計算
     
-    for (int dirligNo = 0; dirligNo < NUM_DIRECTIONAL_LIGHT; dirligNo++)
+    if (m_numDirectionLight == 0)
     {
-        //ディレクションライトの計算
-        finalLig += CalcLigFromDirectionLight(psIn, m_directionalLight[dirligNo], specPow);
-        //リムライトの計算
-        finalLig += CalcLigFromRimLight(psIn, m_directionalLight[dirligNo].direction, m_directionalLight[dirligNo].color);
+        //処理したディレクションライトの数を確認する変数
+        int afpCountDi = 0;
+        
+        //ディレクションライトの配列を回して使用中のライトを探す
+        for (int diLigNo = 0; diLigNo < NUM_DIRECTIONAL_LIGHT; diLigNo++)
+        {
+            if (m_directionalLight[diLigNo].isUse)
+            {
+                //ライトの計算処理
+                finalLig += CalcLigFromDirectionLight(psIn, m_directionalLight[diLigNo], specPow);
+                //処理したライトの数を加算
+                afpCountDi++;
+                //処理した数が使用中のライトの数以上になったらfor文を抜ける
+                if (afpCountDi >= m_numDirectionLight)
+                {
+                    break;
+                }
+            }
+        }
     }
+    
+    //for (int dirligNo = 0; dirligNo < NUM_DIRECTIONAL_LIGHT; dirligNo++)
+    //{
+    //    //ディレクションライトの計算
+    //    finalLig += CalcLigFromDirectionLight(psIn, m_directionalLight[dirligNo], specPow);
+    //    //リムライトの計算
+    //    finalLig += CalcLigFromRimLight(psIn, m_directionalLight[dirligNo].direction, m_directionalLight[dirligNo].color);
+    //}
 
     //ココからポイントライトの計算
     

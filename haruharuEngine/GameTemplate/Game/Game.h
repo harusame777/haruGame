@@ -35,6 +35,9 @@ public:
 
 	PointLight m_testPointLight;
 
+	//‘¾—zŒõ‚Ìì¬
+	DirectionalLight sunDirectionalLight;
+
 	SpotLight m_testSpotLight;
 };
 
