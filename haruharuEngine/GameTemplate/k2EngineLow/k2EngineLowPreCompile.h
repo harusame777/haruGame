@@ -86,6 +86,7 @@ using namespace Microsoft::WRL;
 #include "graphics/Render/ShadowMapRender.h"
 #include "graphics/Render/GBufferRender.h"
 #include "graphics/Render/LuminnceRender.h"
+#include "graphics/light/DirectionalLight.h"
 
 #include "graphics/GaussianBlur.h"
 

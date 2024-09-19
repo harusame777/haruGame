@@ -15,7 +15,68 @@ namespace nsK2EngineLow {
 		int m_castShadow = true;
 		//カラー
 		Vector3 m_color;
-		float m_pad;
+		int m_isUse = false;
+	public:
+		//方向を設定
+		void SetDirection(const Vector3& direction)
+		{
+			m_direction = direction;
+		}
+		void SetDirection(float x, float y, float z)
+		{
+			SetDirection({ x,y,z });
+		}
+		//方向を取得
+		const Vector3& GetDirection()
+		{
+			return m_direction;
+		}
+		//方向を正規化
+		void LightDirectionNormalize()
+		{
+			m_direction.Normalize();
+		}
+		//カラーを設定
+		void SetColor(const Vector3& color)
+		{
+			this->m_color = color;
+		}
+		void SetColor(float r, float g, float b)
+		{
+			SetColor({ r,g,b });
+		}
+		//カラーを取得
+		const Vector3& GetColor() const
+		{
+			return this->m_color;
+		}
+		//影をキャストするようにする
+		void CastShadow()
+		{
+			m_castShadow = true;
+		}
+		//影をキャストしないようにする
+		void UnCastShadow()
+		{
+			m_castShadow = false;
+		}
+		//ディレクションライトを使用中にする
+		//エンジンで使用するための関数なのでゲーム側から呼び出さないよう注意
+		void Use()
+		{
+			m_isUse = true;
+		}
+		//ディレクションライトを未使用にする
+		//エンジンで使用するための関数なのでゲーム側から呼び出さないよう注意
+		void UnUse()
+		{
+			m_isUse = false;
+		}
+		//ディレクションライトが使用中か調べる
+		const int GetUse() const
+		{
+			return m_isUse;
+		}
 	};
 
 	struct SPointLight 
@@ -211,8 +272,10 @@ namespace nsK2EngineLow {
 		Vector3 m_ambientLight;
 		//使用中のスポットライトの数
 		int m_numSpotLight;
+		Vector3 pad;
+		//使用中のディレクションライトの数
+		int m_numDirectionLight;
 		//ディレクションライトのビュープロジェクション
-
 	};
 
 	//シーンライトクラス
@@ -233,14 +296,6 @@ namespace nsK2EngineLow {
 			return m_light;
 		}
 
-		//ディレクションライトのパラメーターを設定
-		void SetDirectionLight(int lightNo, Vector3 direction, Vector3 color)
-		{
-			direction.Normalize();
-			m_light.m_directionalLight[lightNo].m_direction = direction;
-			m_light.m_directionalLight[lightNo].m_color = color;
-		}
-
 		//影をキャストするか
 		bool IsCastShadow(int ligNo)
 		{
@@ -255,6 +310,12 @@ namespace nsK2EngineLow {
 
 		//更新処理
 		void Update();
+
+		//ディレクションライト配列から未使用のライトのポインタを提供
+		SDirectionLight* NewDirectionLight();
+
+		//使用中のディレクションライトを削除(アドレス照合)
+		void DeleteDirectionLight(SDirectionLight* directionlight);
 
 		//ポイントライト配列から未使用のライトのポインタを提供
 		SPointLight* NewPointLight();

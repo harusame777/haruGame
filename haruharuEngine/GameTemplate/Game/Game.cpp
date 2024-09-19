@@ -4,6 +4,11 @@
 
 bool Game::Start()
 {
+	sunDirectionalLight.SetColor(1.0f, 1.0f, 1.0f);
+	sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
+	sunDirectionalLight.LightDirectionNormalize();
+	sunDirectionalLight.CastShadow();
+
 	m_modelPlayer.Init("Assets/modelData/unityChan.tkm",nullptr, 0, enModelUpAxisZ, true);
 	m_modelPlayer.SetShadowChasterFlag(true);
 
