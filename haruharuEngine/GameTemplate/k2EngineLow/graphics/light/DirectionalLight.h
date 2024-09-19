@@ -9,6 +9,9 @@ namespace nsK2EngineLow {
 		//デストラクタ
 		~DirectionalLight();
 
+		//ライトビュープロジェクションの初期化
+		void InitLigVP(const Vector3& basepoint);
+
 		//方向を設定
 		void SetDirection(const Vector3& direction)
 		{

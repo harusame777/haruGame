@@ -9,6 +9,8 @@ namespace nsK2EngineLow {
 	//ディレクションライトの構造体
 	struct SDirectionLight
 	{
+		//ライトのビュープロジェクション
+		Matrix m_LVP;
 		//ライトの方向
 		Vector3 m_direction;
 		//影をキャストするかしないか
@@ -16,6 +18,7 @@ namespace nsK2EngineLow {
 		//カラー
 		Vector3 m_color;
 		int m_isUse = false;
+		
 	public:
 		//方向を設定
 		void SetDirection(const Vector3& direction)
@@ -59,6 +62,16 @@ namespace nsK2EngineLow {
 		void UnCastShadow()
 		{
 			m_castShadow = false;
+		}
+		//ライトビュープロジェクションを設定
+		void SetLVP(const Matrix& lvp)
+		{
+			m_LVP = lvp;
+		}
+		//ライトビュープロジェクションを取得
+		const Matrix& GetLVP()
+		{
+			return m_LVP;
 		}
 		//ディレクションライトを使用中にする
 		//エンジンで使用するための関数なのでゲーム側から呼び出さないよう注意
