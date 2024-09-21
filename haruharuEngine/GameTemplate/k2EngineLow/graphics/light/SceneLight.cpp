@@ -84,6 +84,21 @@ namespace nsK2EngineLow {
 		}
 	}
 
+	void SceneLight::SetShadowMapLVP(const Matrix& mat)
+	{
+		for (int i = 0; i < MAX_LIGHT; i++)
+		{
+			if (m_shadowMapLVP[i].IsUse() != true)
+			{
+				m_shadowMapLVP[i].Use();
+				m_shadowMapLVP[i].SetLVP(mat);
+				break;
+			}
+		}
+
+		return;
+	}
+
 	//新規ディレクションライトを作成
 	SDirectionLight* SceneLight::NewDirectionLight()
 	{

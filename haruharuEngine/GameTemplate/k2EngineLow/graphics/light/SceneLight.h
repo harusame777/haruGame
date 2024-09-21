@@ -5,10 +5,13 @@ namespace nsK2EngineLow {
 	static const int MAX_DIRECTIONAL_LIGHT = 4;
 	static const int MAX_POINT_LIGHT = 32;
 	static const int MAX_SPOT_LIGHT = 32;
+	static const int MAX_LIGHT = 68;
 
 	//ディレクションライトの構造体
 	struct SDirectionLight
 	{
+		int m_isLVP;
+		Vector3 pad;
 		//ライトのビュープロジェクション
 		Matrix m_LVP;
 		//ライトの方向
@@ -72,6 +75,16 @@ namespace nsK2EngineLow {
 		const Matrix& GetLVP()
 		{
 			return m_LVP;
+		}
+		//ライトのビュープロジェクションを作成するようにする
+		void MakeLVP()
+		{
+			m_isLVP = true;
+		}
+		//ライトのビュープロジェクションを作成しないようにする
+		void UnMakeLVP()
+		{
+			m_isLVP = false;
 		}
 		//ディレクションライトを使用中にする
 		//エンジンで使用するための関数なのでゲーム側から呼び出さないよう注意
@@ -291,6 +304,36 @@ namespace nsK2EngineLow {
 		//ディレクションライトのビュープロジェクション
 	};
 
+	struct ShadowMapLVP
+	{
+	private:
+		//ライトのビュープロジェクション
+		Matrix m_LVP;
+		//使用中かどうか
+		int m_isUse = false;
+	public:
+		const bool IsUse()
+		{
+			return m_isUse;
+		}
+		void Use()
+		{
+			m_isUse = true;
+		}
+		void UnUse()
+		{
+			m_isUse = false;
+		}
+		void SetLVP(const Matrix& mat)
+		{
+			m_LVP = mat;
+		}
+		const Matrix& GetLVP()
+		{
+			return m_LVP;
+		}
+	};
+
 	//シーンライトクラス
 	class SceneLight : public Noncopyable
 	{
@@ -341,6 +384,8 @@ namespace nsK2EngineLow {
 
 		//使用中のスポットライトを削除
 		void DeleteSpotLight(SSpotLight* spotlight);
+
+		void SetShadowMapLVP(const Matrix& mat);
 		
 		//ライトのデータを取得
 		Light* GetLightData()
@@ -351,6 +396,8 @@ namespace nsK2EngineLow {
 	private:
 		//シーンライト
 		Light m_light;
+		//シャドウマップ用のライトのビュープロジェクション
+		ShadowMapLVP m_shadowMapLVP[MAX_LIGHT];
 	};
 }
 

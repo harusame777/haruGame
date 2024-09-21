@@ -13,6 +13,9 @@ static const int MAX_SPOT_LIGHT = 32; // スポットライトの最大数
 ////////////////////////////////////////////////
 struct DirectionLight
 {
+    //ビュープロジェクションを使用するかどうか
+    int m_isLVP;
+    //ライトのビュープロジェクション
     float4x4 mLVP;
 	//ライトの方向
     float3 direction;

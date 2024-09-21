@@ -52,6 +52,8 @@ namespace nsK2EngineLow {
 		//ライトビュープロジェクション
 		lightCamera.Update();
 
+		//Matrix lightCameraVP[MAX_LIGHT];
+
 		for (auto& renderObj : renderObjects)
 		{
 			renderObj->OnRenderShadowMap(renderContext, lightCamera.GetViewProjectionMatrix());

@@ -14,7 +14,7 @@ namespace nsK2EngineLow {
 		void RenderShadowMap(
 			RenderContext& rc,
 			std::vector<IRenderer*>& renderObjects
-		);
+		); 
 
 		RenderTarget* GetShadowMapRenderTarget()
 		{

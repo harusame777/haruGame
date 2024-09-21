@@ -22,6 +22,8 @@ namespace nsK2EngineLow {
 	//ライトビュープロジェクションの初期化処理
 	void DirectionalLight::InitLigVP(const Vector3& basepoint)
 	{
+		m_directionLight->MakeLVP();
+
 		//このライトのビュープロジェクションを作成するためのカメラ
 		Camera m_lVPCam;
 

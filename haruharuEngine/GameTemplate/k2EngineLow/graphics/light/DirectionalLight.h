@@ -55,6 +55,16 @@ namespace nsK2EngineLow {
 		{
 			m_directionLight->UnCastShadow();
 		}
+		//ライトのビュープロジェクションを作成するようにする
+		void MakeLVP()
+		{
+			m_directionLight->MakeLVP();
+		}
+		//ライトのビュープロジェクションを作成しないようにする
+		void UnMakeLVP()
+		{
+			m_directionLight->UnMakeLVP();
+		}
 
 	private:
 		//ディレクションライトの構造体
