@@ -15,7 +15,7 @@ namespace nsK2EngineLow {
 		//最終合成のスプライトを描画
 		void AddSynthesisSpriteDraw(RenderContext& rc)
 		{
-			m_luminnceSprite.Draw(rc);
+			m_AddSynthesisSprite.Draw(rc);
 		}
 
 	private:

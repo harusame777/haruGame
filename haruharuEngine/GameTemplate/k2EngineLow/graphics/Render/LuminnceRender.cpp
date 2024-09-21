@@ -35,7 +35,7 @@ namespace nsK2EngineLow {
 
 		//スプライトの高さ幅と高さを設定
 		luminnceSpriteInitData.m_width = frameBuffer_w;
-		luminnceSpriteInitData.m_width = frameBuffer_h;
+		luminnceSpriteInitData.m_height = frameBuffer_h;
 
 		//テクスチャはメインレンダリングターゲットのバッファー
 		luminnceSpriteInitData.m_textures[0] = &mainRenderTarget->GetRenderTargetTexture();
@@ -102,7 +102,7 @@ namespace nsK2EngineLow {
 		m_luminnceSprite.Draw(rc);
 
 		//レンダリングターゲットの書き込み終了待ち
-		rc.WaitUntilToPossibleSetRenderTarget(m_luminnceRenderTarget);
+		rc.WaitUntilFinishDrawingToRenderTarget(m_luminnceRenderTarget);
 
 		//ガウシアンブラーを実行
 		for (int i = 0; i < MAX_GAUSSIAN_BLUR; i++) {

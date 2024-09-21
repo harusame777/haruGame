@@ -92,7 +92,7 @@ namespace nsK2EngineLow {
 		//LuminnceExtractionで作成したボケ画像をメインレンダリングターゲットに
 		//加算合成する
 		//レンダリングターゲットとして利用できるまで待つ
-		rc.WaitUntilFinishDrawingToRenderTarget(mainRenderTargert);
+		rc.WaitUntilToPossibleSetRenderTarget(mainRenderTargert);
 
 		//レンダリングターゲットを設定
 		rc.SetRenderTargetAndViewport(mainRenderTargert);

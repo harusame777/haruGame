@@ -42,6 +42,7 @@ sampler Sampler : register(s0);
  */
 float4 PSLuminance(PSInput In) : SV_Target0
 {
+    return float4(1, 0, 0, 1);
     //輝度を抽出するピクセルシェーダーを実装
     float4 color = mainRenderTargetTexture.Sample(Sampler, In.uv);
     
