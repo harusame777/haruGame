@@ -1,8 +1,16 @@
 #pragma once
 
-class BackGroundWalls : IGameObject
+class BackGroundWalls : public IGameObject
 {
-private:
+public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	BackGroundWalls();
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~BackGroundWalls();
 	/// <summary>
 	/// 壁の種類
 	/// </summary>
@@ -33,15 +41,6 @@ private:
 		/// </summary>
 		en_wallTypeNone,
 	};
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	BackGroundWalls();
-	/// <summary>
-	/// デストラクタ
-	/// </summary>
-	~BackGroundWalls();
-public:
 	/// <summary>
 	/// 位置設定
 	/// </summary>
@@ -110,33 +109,14 @@ public:
 	/// 壁の種類を設定
 	/// </summary>
 	/// <param name="walltype"></param>
-	void SetWallType(const WallType& walltype)
-	{
-		m_wallType = walltype;
-
-		switch (m_wallType)
-		{
-		case BackGroundWalls::en_wallType1_4:
-			m_mainModel = &m_wall1_4;
-			break;
-		case BackGroundWalls::en_wallType2_4:
-			m_mainModel = &m_wall2_4;
-			break;
-		case BackGroundWalls::en_wallType4_4:
-			m_mainModel = &m_wall4_4;
-			break;
-		case BackGroundWalls::en_wallType4_6:
-			m_mainModel = &m_wall4_6;
-			break;
-		}
-	}
+	void SetWallType(const WallType& walltype);
 	/// <summary>
 	/// 壁の種類が設定されているかどうか
 	/// </summary>
 	const bool& IsSetWallType()
 	{
 		bool isSetWallType;
-		isSetWallType = m_wallType != WallType::en_wallTypeNone;
+		isSetWallType = (m_wallType != WallType::en_wallTypeNone);
 		return isSetWallType;
 	}
 private:
@@ -170,6 +150,10 @@ private:
 	/// 現在正面ベクトル
 	/// </summary>
 	Vector3 m_forward = Vector3::AxisZ;
+	/// <summary>
+	/// 当たり判定
+	/// </summary>
+	PhysicsStaticObject m_physicsStaticObject;
 	/// <summary>
 	/// 壁の種類
 	/// </summary>

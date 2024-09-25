@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "GameCamera.h"
+#include "BackGroundWalls.h"
 
 bool Game::Start()
 {
@@ -12,8 +13,30 @@ bool Game::Start()
 	m_modelPlayer.Init("Assets/modelData/unityChan.tkm",nullptr, 0, enModelUpAxisZ, true);
 	m_modelPlayer.SetShadowChasterFlag(true);
 
-	m_modelBackGround.Init("Assets/modelData/testMap/Map7.tkm",nullptr,0,enModelUpAxisZ,true);
-	m_modelBackGround.SetShadowChasterFlag(true);
+	//m_modelBackGround.Init("Assets/modelData/testMap/Map7.tkm",nullptr,0,enModelUpAxisZ,true);
+	//m_modelBackGround.SetShadowChasterFlag(true);
+
+	//レベルレンダーのテスト
+	m_levelRender.Init("Assets/mapLevel/testLevel1.tkl", [&](LevelObjectData_Render& objData)
+	{
+		if (objData.ForwardMatchName(L"Wall_4-6") == true)
+		{
+			BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
+			walls->SetWallType(BackGroundWalls::en_wallType4_6);
+			walls->SetPosition(objData.m_position);
+			walls->SetRotation(objData.m_rotation);
+			walls->SetScale(objData.m_scalse);
+			return true;
+		}
+		else if(objData.ForwardMatchName(L"Wall_2-4") == true)
+		{
+			BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
+			walls->SetWallType(BackGroundWalls::en_wallType2_4);
+			walls->SetPosition(objData.m_position);
+			walls->SetRotation(objData.m_rotation);
+			walls->SetScale(objData.m_scalse);
+		}
+	});
 
 	m_modelFloor.Init("Assets/modelData/testMap/Map_floor.tkm",nullptr,0,enModelUpAxisZ,true);
 	m_modelFloor.SetShadowChasterFlag(false);
