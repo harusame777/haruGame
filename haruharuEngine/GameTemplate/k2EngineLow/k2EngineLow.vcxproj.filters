@@ -235,6 +235,7 @@
     <ClCompile Include="graphics\Render\GBufferRender.cpp" />
     <ClCompile Include="graphics\Render\LuminnceRender.cpp" />
     <ClCompile Include="graphics\light\DirectionalLight.cpp" />
+    <ClCompile Include="level3D\LevelRender.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="k2EngineLowPreCompile.h" />
@@ -520,6 +521,7 @@
     <ClInclude Include="graphics\Render\GBufferRender.h" />
     <ClInclude Include="graphics\Render\LuminnceRender.h" />
     <ClInclude Include="graphics\light\DirectionalLight.h" />
+    <ClInclude Include="level3D\LevelRender.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="graphics">
