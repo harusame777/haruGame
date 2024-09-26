@@ -19,6 +19,9 @@
     <ClCompile Include="BackGroundWalls.cpp">
       <Filter>BackGround</Filter>
     </ClCompile>
+    <ClCompile Include="BackGroundFloor.cpp">
+      <Filter>BackGround</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -28,6 +31,9 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="BackGroundWalls.h">
+      <Filter>BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGroundFloor.h">
       <Filter>BackGround</Filter>
     </ClInclude>
   </ItemGroup>
