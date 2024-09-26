@@ -20,7 +20,7 @@ namespace nsK2EngineLow {
 		MatrixTklToLevel();
 
 		//ルートボーンは要らない為、iを1から始めることで除外できる。
-		for (int i = 0; i < m_boneList.size(); i++){
+		for (int i = 1; i < m_boneList.size(); i++){
 			auto bone = m_boneList[i].get();
 			if (bone->GetParentBoneNo() == 0)
 			{
@@ -75,7 +75,13 @@ namespace nsK2EngineLow {
 				//マルチバイト文字列の連結
 				_mbscat_s((unsigned char*)cFilePath, newsize + strConSize, (unsigned char*)strCon);
 
-				//マップチップ作成機能は未実装
+				//Hookが登録済みならばマップチップは作成不要
+				//false のままなら作成する。
+				bool isHooked = false;
+				//hookFuncになにも入っていない＝Sobjectには何もない。
+				if (hookFunc != nullptr) {
+					isHooked = hookFunc(levelObjData);
+				}
 			}
 		}
 

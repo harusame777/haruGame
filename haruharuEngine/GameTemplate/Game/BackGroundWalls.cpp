@@ -10,7 +10,7 @@ BackGroundWalls::BackGroundWalls()
 //デストラクタ
 BackGroundWalls::~BackGroundWalls()
 {
-	delete m_mainModel;
+
 }
 
 //スタート関数
@@ -43,6 +43,9 @@ bool BackGroundWalls::Start()
 	//拡大率を設定
 	m_mainModel->SetScale(m_scale);
 
+	//当たり判定を作成
+	m_physicsStaticObject.CreateFromModel(m_mainModel->GetModel(), m_mainModel->GetModel().GetWorldMatrix());
+
 	return true;
 }
 
@@ -52,14 +55,13 @@ void BackGroundWalls::Update()
 	//エラー防止
 	if (IsSetWallType())
 	{
-		return;
+		//mainModelのアップデートを実行
+		m_mainModel->Update();
 	}
-	//mainModelのアップデートを実行
-	m_mainModel->Update();
 }
 
 //ドロー関数
-void BackGroundWalls::Draw(RenderContext& rc)
+void BackGroundWalls::Render(RenderContext& rc)
 {
 	//エラー防止
 	if (IsSetWallType())
@@ -96,7 +98,4 @@ void BackGroundWalls::SetWallType(const WallType& walltype)
 		m_mainModel = &m_wall4_6;
 		break;
 	}
-
-	//当たり判定を作成
-	m_physicsStaticObject.CreateFromModel(m_mainModel->GetModel(), m_mainModel->GetModel().GetWorldMatrix());
 }

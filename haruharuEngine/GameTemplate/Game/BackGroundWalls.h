@@ -133,7 +133,7 @@ private:
 	/// ƒhƒ[ŠÖ”
 	/// </summary>
 	/// <param name="rc"></param>
-	void Draw(RenderContext& rc);
+	void Render(RenderContext& rc);
 	/// <summary>
 	/// Œ»İÀ•W
 	/// </summary>
