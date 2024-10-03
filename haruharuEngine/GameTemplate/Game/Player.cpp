@@ -3,7 +3,10 @@
 
 //定数等
 namespace {
-	const static float playerSpeed = 250.0f;
+	//歩き時のプレイヤーのスピード
+	const static float playerSpeedWalk = 150.0f;
+	//走り時のプレイヤーのスピード
+	const static float playerSpeedRun = 300.0f;
 }
 
 //コンストラクタ
@@ -40,9 +43,13 @@ void Player::Update()
 //移動関数
 void Player::Move()
 {
+	//プレイヤーが歩き状態か走り状態化を調べて
+	//速度を選択する
+	IsWalkOrRun();
+
 	//移動速度を初期化
-	m_moveSpeed.x = 0.0f;
-	m_moveSpeed.z = 0.0f;
+	m_moveVector.x = 0.0f;
+	m_moveVector.z = 0.0f;
 
 	//このフレームの移動量を求める。
 	//左スティックの入力量を受け取る。
@@ -57,8 +64,21 @@ void Player::Move()
 	cameraRight.y = 0.0f;
 	cameraRight.Normalize();
 	//XZ成分の移動速度をクリア。
-	m_moveSpeed += cameraForward * lStick_y * playerSpeed;	//奥方向への移動速度を加算。
-	m_moveSpeed += cameraRight * lStick_x * playerSpeed;		//右方向への移動速度を加算。
+	m_moveVector += cameraForward * lStick_y * m_moveSpeed;	//奥方向への移動速度を加算。
+	m_moveVector += cameraRight * lStick_x * m_moveSpeed;		//右方向への移動速度を加算。
 	//キャラクターコントローラーを使用して、座標を更新。
-	m_position = m_CController.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
+	m_position = m_CController.Execute(m_moveVector, g_gameTime->GetFrameDeltaTime());
+}
+
+//プレイヤーが走り状態か歩き状態化を調べる関数
+void Player::IsWalkOrRun()
+{
+	if (g_pad[0]->IsPress(enButtonRB1))
+	{
+		m_moveSpeed = playerSpeedRun;
+	}
+	else
+	{
+		m_moveSpeed = playerSpeedWalk;
+	}
 }
