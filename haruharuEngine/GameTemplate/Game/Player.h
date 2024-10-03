@@ -90,6 +90,10 @@ private:
 	/// </summary>
 	void Move();
 	/// <summary>
+	/// プレイヤーが走り状態か歩き状態化を調べる関数
+	/// </summary>
+	void IsWalkOrRun();
+	/// <summary>
 	/// 現在座標
 	/// </summary>
 	Vector3 m_position = Vector3::Zero;
@@ -106,9 +110,13 @@ private:
 	/// </summary>
 	Vector3 m_forward = Vector3::AxisZ;
 	/// <summary>
-	/// 移動速度
+	/// 基本移動速度
 	/// </summary>
-	Vector3 m_moveSpeed;
+	float m_moveSpeed;
+	/// <summary>
+	/// 移動ベクトル
+	/// </summary>
+	Vector3 m_moveVector;
 	/// <summary>
 	/// キャラコン
 	/// </summary>

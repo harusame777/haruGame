@@ -29,10 +29,6 @@ public:
 	//テストカメラ
 	GameCamera* m_testCamera = nullptr;
 
-	ModelRender m_modelPlayer;
-
-	ModelRender m_modelBackGround;
-
 	ModelRender m_modelFloor;
 
 	SpriteRender m_spriteTest1;

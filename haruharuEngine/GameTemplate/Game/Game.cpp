@@ -11,12 +11,6 @@ bool Game::Start()
 	sunDirectionalLight.LightDirectionNormalize();
 	sunDirectionalLight.CastShadow();
 
-	m_modelPlayer.Init("Assets/modelData/unityChan.tkm",nullptr, 0, enModelUpAxisZ, true);
-	m_modelPlayer.SetShadowChasterFlag(true);
-
-	//m_modelBackGround.Init("Assets/modelData/testMap/Map7.tkm",nullptr,0,enModelUpAxisZ,true);
-	//m_modelBackGround.SetShadowChasterFlag(true);
-
 	//レベルレンダーのテスト
 	m_levelRender.Init("Assets/mapLevel/testLevel1.tkl", [&](LevelObjectData_Render& objData)
 	{
@@ -70,10 +64,6 @@ bool Game::Start()
 
 	m_spriteTest1.SetPosition(testpos);
 	
-	m_modelPlayer.SetPosition(m_modelTestPos);
-
-	m_modelBackGround.SetPosition(Vector3::Zero);
-
 	m_modelFloor.SetPosition(Vector3::Zero);
 
 	m_testCamera = NewGO<GameCamera>(0, "camera");
@@ -85,10 +75,6 @@ void Game::Update()
 {
 
 	m_modelTestPos = Vector3::Zero;
-
-	m_modelPlayer.Update();
-
-	m_modelBackGround.Update();
 
 	m_modelFloor.Update();
 
@@ -119,8 +105,6 @@ void Game::Update()
 
 void Game::Render(RenderContext& rc)
 {
-	m_modelBackGround.Draw(rc);
-
 	m_modelFloor.Draw(rc);
 
 	//m_spriteTest1.Draw(rc);
