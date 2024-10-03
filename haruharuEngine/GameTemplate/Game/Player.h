@@ -106,6 +106,10 @@ private:
 	/// </summary>
 	Vector3 m_forward = Vector3::AxisZ;
 	/// <summary>
+	/// ˆÚ“®‘¬“x
+	/// </summary>
+	Vector3 m_moveSpeed;
+	/// <summary>
 	/// ƒLƒƒƒ‰ƒRƒ“
 	/// </summary>
 	CharacterController m_CController;
