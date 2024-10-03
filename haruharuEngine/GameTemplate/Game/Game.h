@@ -2,6 +2,7 @@
 
 class GameCamera;
 class BackGroundWalls;
+class Player;
 
 class Game : public IGameObject
 {
@@ -42,5 +43,7 @@ public:
 	DirectionalLight sunDirectionalLight;
 
 	SpotLight m_testSpotLight;
+
+	Player* m_player = nullptr;
 };
 

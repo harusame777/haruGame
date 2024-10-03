@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "GameCamera.h"
 #include "BackGroundWalls.h"
+#include "Player.h"
 
 bool Game::Start()
 {
@@ -57,6 +58,8 @@ bool Game::Start()
 		}
 		return true;
 	});
+
+	m_player = NewGO<Player>(0, "player");
 
 	m_modelFloor.Init("Assets/modelData/testMap/Map_floor.tkm",nullptr,0,enModelUpAxisZ,true);
 	m_modelFloor.SetShadowChasterFlag(false);
@@ -116,9 +119,6 @@ void Game::Update()
 
 void Game::Render(RenderContext& rc)
 {
-
-	m_modelPlayer.Draw(rc);
-
 	m_modelBackGround.Draw(rc);
 
 	m_modelFloor.Draw(rc);
