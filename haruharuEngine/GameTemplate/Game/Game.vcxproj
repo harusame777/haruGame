@@ -225,6 +225,7 @@
   <ItemGroup>
     <ClCompile Include="BackGroundFloor.cpp" />
     <ClCompile Include="BackGroundWalls.cpp" />
+    <ClCompile Include="EnemyAIBase.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="Enemy_Warrior.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -241,6 +242,7 @@
   <ItemGroup>
     <ClInclude Include="BackGroundFloor.h" />
     <ClInclude Include="BackGroundWalls.h" />
+    <ClInclude Include="EnemyAIBase.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="Enemy_Warrior.h" />
     <ClInclude Include="Game.h" />

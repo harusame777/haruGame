@@ -35,6 +35,9 @@
     <ClCompile Include="EnemyBase.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyAIBase.cpp">
+      <Filter>Enemy\EnemyAI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -55,6 +58,9 @@
     </ClInclude>
     <ClInclude Include="EnemyBase.h">
       <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAIBase.h">
+      <Filter>Enemy\EnemyAI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
