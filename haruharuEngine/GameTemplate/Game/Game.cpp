@@ -68,6 +68,8 @@ bool Game::Start()
 
 	m_testCamera = NewGO<GameCamera>(0, "camera");
 
+	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+
 	return true;
 }
 
