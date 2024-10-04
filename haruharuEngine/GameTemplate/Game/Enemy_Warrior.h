@@ -28,5 +28,10 @@ private:
 	/// </summary>
 	/// <param name="rc"></param>
 	void Render(RenderContext& rc);
+private:
+	/// <summary>
+	/// ƒ‚ƒfƒ‹
+	/// </summary>
+	ModelRender m_modelRender;
 };
 

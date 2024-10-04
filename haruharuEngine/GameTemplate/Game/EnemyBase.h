@@ -81,7 +81,6 @@ public:
 	{
 		return m_forward;
 	}
-private:
 	/// <summary>
 	/// Œ»İÀ•W
 	/// </summary>

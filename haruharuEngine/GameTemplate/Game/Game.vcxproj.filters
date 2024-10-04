@@ -7,6 +7,12 @@
     <Filter Include="system">
       <UniqueIdentifier>{22dd8095-74f9-46df-81a1-36675a040b1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{f9b753a0-9fad-4d0c-a49e-bd08a033d501}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\EnemyAI">
+      <UniqueIdentifier>{de36f513-ef62-4332-9756-2af3da15b4b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -20,6 +26,15 @@
       <Filter>BackGround</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="BackGroundFloor.cpp">
+      <Filter>BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy_Warrior.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBase.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -32,5 +47,14 @@
       <Filter>BackGround</Filter>
     </ClInclude>
     <ClInclude Include="Player.h" />
+    <ClInclude Include="BackGroundFloor.h">
+      <Filter>BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy_Warrior.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBase.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
