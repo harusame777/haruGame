@@ -1,6 +1,11 @@
 #pragma once
+#include "EnemyBase.h"
+#include "tkFile/TknFile.h"
+#include "AI/PathFinding/NaviMesh.h"
+#include "AI/PathFinding/Path.h"
+#include "AI/PathFinding/PathFinding.h"
 
-class EnemyBase;
+class Player;
 
 class Enemy_Warrior : public EnemyBase
 {
@@ -33,5 +38,14 @@ private:
 	/// ƒ‚ƒfƒ‹
 	/// </summary>
 	ModelRender m_modelRender;
+
+	//test
+	TknFile m_tknFile;
+	nsAI::NaviMesh m_nvmMesh;
+	nsAI::Path m_path;
+	nsAI::PathFinding m_pathFiding;
+	Player* m_player = nullptr;
+
+
 };
 

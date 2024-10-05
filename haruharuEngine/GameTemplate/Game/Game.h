@@ -3,6 +3,7 @@
 class GameCamera;
 class BackGroundWalls;
 class Player;
+class Enemy_Warrior;
 
 class Game : public IGameObject
 {
@@ -41,5 +42,10 @@ public:
 	SpotLight m_testSpotLight;
 
 	Player* m_player = nullptr;
+
+	Enemy_Warrior* m_testEnemy = nullptr;
+
+	ModelRender m_bgModelRendedr;
+	PhysicsStaticObject m_bgObject;
 };
 

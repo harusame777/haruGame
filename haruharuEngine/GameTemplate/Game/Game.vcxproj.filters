@@ -38,6 +38,9 @@
     <ClCompile Include="EnemyAIBase.cpp">
       <Filter>Enemy\EnemyAI</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyAIMoveAstar.cpp">
+      <Filter>Enemy\EnemyAI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -60,6 +63,9 @@
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="EnemyAIBase.h">
+      <Filter>Enemy\EnemyAI</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAIMoveAstar.h">
       <Filter>Enemy\EnemyAI</Filter>
     </ClInclude>
   </ItemGroup>

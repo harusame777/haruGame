@@ -1,5 +1,5 @@
 #pragma once
-class EnemyAIBase
+class EnemyAIBase : public IGameObject
 {
 public:
 	/// <summary>
