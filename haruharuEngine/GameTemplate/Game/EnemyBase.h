@@ -1,4 +1,6 @@
 #pragma once
+#include "EnemyAIBase.h"
+
 class EnemyBase : public IGameObject
 {
 public:
@@ -16,6 +18,36 @@ public:
 	{
 
 	}
+public:
+	/// <summary>
+	/// 現在座標
+	/// </summary>
+	Vector3 m_position = Vector3::Zero;
+	/// <summary>
+	/// 現在回転値
+	/// </summary>
+	Quaternion m_rotation;
+	/// <summary>
+	/// 現在拡大値
+	/// </summary>
+	Vector3 m_scale = Vector3::One;
+	/// <summary>
+	/// 現在正面ベクトル
+	/// </summary>
+	Vector3 m_forward = Vector3::AxisZ;
+	/// <summary>
+	/// キャラコン
+	/// </summary>
+	CharacterController m_CController;
+	/// <summary>
+	/// 移動先の位置
+	/// </summary>
+	Vector3 m_moveTargetPosition = Vector3::Zero;
+protected:
+	/// <summary>
+	/// エネミーのAIプログラムのリスト
+	/// </summary>
+	std::vector<EnemyAIBase*> m_EnemyAIList;
 public:
 	/// <summary>
 	/// 位置設定
@@ -82,24 +114,20 @@ public:
 		return m_forward;
 	}
 	/// <summary>
-	/// 現在座標
+	/// 移動先位置を設定
 	/// </summary>
-	Vector3 m_position = Vector3::Zero;
+	/// <param name="movePosition = 移動先座標"></param>
+	void SetMoveTargetPosition(const Vector3& movePosition)
+	{
+		m_moveTargetPosition = movePosition;
+	}
 	/// <summary>
-	/// 現在回転値
+	/// 移動先位置を取得
 	/// </summary>
-	Quaternion m_rotation;
-	/// <summary>
-	/// 現在拡大値
-	/// </summary>
-	Vector3 m_scale = Vector3::One;
-	/// <summary>
-	/// 現在正面ベクトル
-	/// </summary>
-	Vector3 m_forward = Vector3::AxisZ;
-	/// <summary>
-	/// キャラコン
-	/// </summary>
-	CharacterController m_CController;
+	/// <returns></returns>
+	const Vector3& GetMoveTargetPosition()
+	{
+		return m_moveTargetPosition;
+	}
 };
 

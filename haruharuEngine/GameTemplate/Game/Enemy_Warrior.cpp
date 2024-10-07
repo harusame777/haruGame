@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Enemy_Warrior.h"
 #include "Player.h"
+#include "EnemyAIMoveAstar.h"
 
 //コンストラクタ
 Enemy_Warrior::Enemy_Warrior()
@@ -26,34 +27,21 @@ bool Enemy_Warrior::Start()
 
 	m_player = FindGO<Player>("player");
 
-	m_nvmMesh.Init("Assets/nvm/test.tkn");
+	m_EnemyAIList.push_back(new EnemyAIMoveAstar);
 
+	m_EnemyAIList[0]->BinedEnemy(this);
+	
 	return true;
 }
 
 //アップデート関数
 void Enemy_Warrior::Update()
 {
-	bool isEnd;
+	Vector3 plaPos = m_player->GetPosition();
 
-	Vector3 playerPos = m_player->GetPosition();
+	SetMoveTargetPosition(plaPos);
 
-	m_pathFiding.Execute(
-		m_path,
-		m_nvmMesh,
-		m_position,
-		playerPos,
-		PhysicsWorld::GetInstance(),
-		50.0f,
-		200.0f
-	);
-
-	//パス場を移動する
-	m_position = m_path.Move(
-		m_position,
-		10.0f,
-		isEnd
-	);
+	m_EnemyAIList[0]->Update();
 
 	m_modelRender.SetPosition(m_position);
 
