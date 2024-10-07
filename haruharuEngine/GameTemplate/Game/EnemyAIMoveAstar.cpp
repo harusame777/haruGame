@@ -2,10 +2,15 @@
 #include "EnemyAIMoveAstar.h"
 #include "EnemyBase.h"
 
+//スタート関数
+void EnemyAIMoveAstar::Start()
+{
+	m_nvmMesh.Init("Assets/nvm/test.tkn");
+}
+
 //アップデート関数
 void EnemyAIMoveAstar::Update()
 {
-	m_nvmMesh.Init("Assets/nvm/test.tkn");
 
 	bool isEnd;
 

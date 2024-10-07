@@ -27,9 +27,7 @@ bool Enemy_Warrior::Start()
 
 	m_player = FindGO<Player>("player");
 
-	m_EnemyAIList.push_back(new EnemyAIMoveAstar);
-
-	m_EnemyAIList[0]->BinedEnemy(this);
+	InitAIList();
 	
 	return true;
 }
@@ -41,7 +39,7 @@ void Enemy_Warrior::Update()
 
 	SetMoveTargetPosition(plaPos);
 
-	m_EnemyAIList[0]->Update();
+	AIListUpdate();
 
 	m_modelRender.SetPosition(m_position);
 
@@ -52,4 +50,31 @@ void Enemy_Warrior::Update()
 void Enemy_Warrior::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
+}
+
+//AIListの初期化
+void Enemy_Warrior::InitAIList()
+{
+	//AIのListをこのエネミーに必要な物で初期化する
+	m_EnemyAIList.push_back(new EnemyAIMoveAstar);
+
+	//このエネミーのインスタンスをAIListのプログラムに渡す
+	for (auto& listPtr : m_EnemyAIList)
+	{
+		listPtr->BinedEnemy(this);
+	}
+
+	//AIListの中のプログラムのスタート関数を起動する
+	for (auto& listPtr : m_EnemyAIList)
+	{
+		listPtr->Start();
+	}
+}
+
+void Enemy_Warrior::AIListUpdate()
+{
+	for (auto& listPtr : m_EnemyAIList)
+	{
+		listPtr->Update();
+	}
 }

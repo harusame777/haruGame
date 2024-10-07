@@ -18,6 +18,14 @@ public:
 	{
 
 	}
+	/// <summary>
+	/// AIListの初期化
+	/// </summary>
+	virtual void InitAIList() = 0;
+	/// <summary>
+	/// AIList内のプログラムのアップデート
+	/// </summary>
+	virtual void AIListUpdate() = 0;
 public:
 	/// <summary>
 	/// 現在座標

@@ -11,6 +11,10 @@ class EnemyAIMoveAstar : public EnemyAIBase
 {
 public:
 	/// <summary>
+	/// スタート関数
+	/// </summary>
+	void Start() override;
+	/// <summary>
 	/// アップデート関数
 	/// </summary>
 	void Update() override;

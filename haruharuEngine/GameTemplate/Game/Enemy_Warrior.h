@@ -33,6 +33,14 @@ private:
 	/// </summary>
 	/// <param name="rc"></param>
 	void Render(RenderContext& rc);
+	/// <summary>
+	/// AIListの初期化
+	/// </summary>
+	void InitAIList();
+	/// <summary>
+	/// AIList内のプログラムのアップデート
+	/// </summary>
+	void AIListUpdate();
 private:
 	/// <summary>
 	/// モデル
