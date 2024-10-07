@@ -3,6 +3,7 @@
 #include "GameCamera.h"
 #include "BackGroundWalls.h"
 #include "Player.h"
+#include "Enemy_Warrior.h"
 
 bool Game::Start()
 {
@@ -12,48 +13,53 @@ bool Game::Start()
 	sunDirectionalLight.CastShadow();
 
 	//レベルレンダーのテスト
-	m_levelRender.Init("Assets/mapLevel/testLevel1.tkl", [&](LevelObjectData_Render& objData)
-	{
-		if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
-		{
-			BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-			walls->SetWallType(BackGroundWalls::en_wallType1_4);
-			walls->SetPosition(objData.m_position);
-			walls->SetRotation(objData.m_rotation);
-			walls->SetScale(objData.m_scalse);
-			return true;
-		}
-		else if(objData.ForwardMatchName(L"laboWall_2-4Model") == true)
-		{
-			BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-			walls->SetWallType(BackGroundWalls::en_wallType2_4);
-			walls->SetPosition(objData.m_position);
-			walls->SetRotation(objData.m_rotation);
-			walls->SetScale(objData.m_scalse);
-			return true;
-		}
-		else if (objData.ForwardMatchName(L"laboWall_4-4Model") == true)
-		{
-			BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-			walls->SetWallType(BackGroundWalls::en_wallType4_4);
-			walls->SetPosition(objData.m_position);
-			walls->SetRotation(objData.m_rotation);
-			walls->SetScale(objData.m_scalse);
-			return true;
-		}
-		else if (objData.ForwardMatchName(L"laboWall_4-6Model") == true)
-		{
-			BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-			walls->SetWallType(BackGroundWalls::en_wallType4_6);
-			walls->SetPosition(objData.m_position);
-			walls->SetRotation(objData.m_rotation);
-			walls->SetScale(objData.m_scalse);
-			return true;
-		}
-		return true;
-	});
+	//m_levelRender.Init("Assets/mapLevel/testLevel1.tkl", [&](LevelObjectData_Render& objData)
+	//{
+	//	if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
+	//	{
+	//		BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
+	//		walls->SetWallType(BackGroundWalls::en_wallType1_4);
+	//		walls->SetPosition(objData.m_position);
+	//		walls->SetRotation(objData.m_rotation);
+	//		walls->SetScale(objData.m_scalse);
+	//		return true;
+	//	}
+	//	else if(objData.ForwardMatchName(L"laboWall_2-4Model") == true)
+	//	{
+	//		BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
+	//		walls->SetWallType(BackGroundWalls::en_wallType2_4);
+	//		walls->SetPosition(objData.m_position);
+	//		walls->SetRotation(objData.m_rotation);
+	//		walls->SetScale(objData.m_scalse);
+	//		return true;
+	//	}
+	//	else if (objData.ForwardMatchName(L"laboWall_4-4Model") == true)
+	//	{
+	//		BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
+	//		walls->SetWallType(BackGroundWalls::en_wallType4_4);
+	//		walls->SetPosition(objData.m_position);
+	//		walls->SetRotation(objData.m_rotation);
+	//		walls->SetScale(objData.m_scalse);
+	//		return true;
+	//	}
+	//	else if (objData.ForwardMatchName(L"laboWall_4-6Model") == true)
+	//	{
+	//		BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
+	//		walls->SetWallType(BackGroundWalls::en_wallType4_6);
+	//		walls->SetPosition(objData.m_position);
+	//		walls->SetRotation(objData.m_rotation);
+	//		walls->SetScale(objData.m_scalse);
+	//		return true;
+	//	}
+	//	return true;
+	//});
+
+	m_bgModelRendedr.Init("Assets/modelData/bg/bg.tkm");
+	m_bgObject.CreateFromModel(m_bgModelRendedr.GetModel(), m_bgModelRendedr.GetModel().GetWorldMatrix());
 
 	m_player = NewGO<Player>(0, "player");
+
+	m_testEnemy = NewGO<Enemy_Warrior>(0, "enemy");
 
 	m_modelFloor.Init("Assets/modelData/testMap/Map_floor.tkm",nullptr,0,enModelUpAxisZ,true);
 	m_modelFloor.SetShadowChasterFlag(false);
@@ -67,6 +73,8 @@ bool Game::Start()
 	m_modelFloor.SetPosition(Vector3::Zero);
 
 	m_testCamera = NewGO<GameCamera>(0, "camera");
+
+	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 
 	return true;
 }
@@ -105,7 +113,9 @@ void Game::Update()
 
 void Game::Render(RenderContext& rc)
 {
-	m_modelFloor.Draw(rc);
+	m_bgModelRendedr.Draw(rc);
+
+	//m_modelFloor.Draw(rc);
 
 	//m_spriteTest1.Draw(rc);
 }
