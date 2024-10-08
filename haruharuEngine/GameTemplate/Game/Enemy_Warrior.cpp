@@ -41,6 +41,8 @@ void Enemy_Warrior::Update()
 
 	AIListUpdate();
 
+	m_modelRender.SetRotation(m_rotation);
+
 	m_modelRender.SetPosition(m_position);
 
 	m_modelRender.Update();
@@ -56,6 +58,7 @@ void Enemy_Warrior::Render(RenderContext& rc)
 void Enemy_Warrior::InitAIList()
 {
 	//AIのListをこのエネミーに必要な物で初期化する
+	//経路探索
 	m_EnemyAIList.push_back(new EnemyAIMoveAstar);
 
 	//このエネミーのインスタンスをAIListのプログラムに渡す
