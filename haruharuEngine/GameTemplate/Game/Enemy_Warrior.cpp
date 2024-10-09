@@ -2,6 +2,7 @@
 #include "Enemy_Warrior.h"
 #include "Player.h"
 #include "EnemyAIMoveAstar.h"
+#include "EnemySM_Warrior.h"
 
 //コンストラクタ
 Enemy_Warrior::Enemy_Warrior()
@@ -58,6 +59,8 @@ void Enemy_Warrior::Render(RenderContext& rc)
 void Enemy_Warrior::InitAIList()
 {
 	//AIのListをこのエネミーに必要な物で初期化する
+	//ステートマシン
+	m_EnemyAIList.push_back(new EnemySM_Warrior);
 	//経路探索
 	m_EnemyAIList.push_back(new EnemyAIMoveAstar);
 

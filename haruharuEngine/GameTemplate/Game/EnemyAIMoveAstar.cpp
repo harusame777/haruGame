@@ -3,7 +3,7 @@
 #include "EnemyBase.h"
 
 //これを有効にするとデバッグモードになる
-//#define DEBUG_MODE
+#define DEBUG_MODE
 
 //スタート関数
 void EnemyAIMoveAstar::Start()
@@ -37,6 +37,9 @@ void EnemyAIMoveAstar::Update()
 			50.0f,							//AIエージョントの半径
 			200.0f							//AIエージェントの高さ
 		);
+#ifdef DEBUG_MODE
+	}
+#endif
 
 		//パス場を移動する
 		//移動先を計算
@@ -66,7 +69,4 @@ void EnemyAIMoveAstar::Update()
 
 		//回転値を送る
 		GetEnemyPtr().SetRotation(finalRot);
-#ifdef DEBUG_MODE
-	}
-#endif
 }

@@ -2,25 +2,26 @@
 
 class EnemyBase;
 
-class EnemyAIBase
+class EnemyAIConBase
 {
 public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	EnemyAIBase(){};
+	EnemyAIConBase() {};
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	virtual ~EnemyAIBase(){};
+	virtual ~EnemyAIConBase() {};
 	/// <summary>
 	/// スタート関数
 	/// </summary>
 	virtual void Start() {};
 	/// <summary>
-	/// アップデート関数
+	/// 条件実行
 	/// </summary>
-	virtual void Update() {};
+	/// <returns></returns>
+	virtual bool Execution() {};
 	/// <summary>
 	/// エネミーを紐づけ
 	/// </summary>

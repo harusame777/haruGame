@@ -13,6 +13,12 @@
     <Filter Include="Enemy\EnemyAI">
       <UniqueIdentifier>{de36f513-ef62-4332-9756-2af3da15b4b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy\EnemyAICon">
+      <UniqueIdentifier>{46bf68a7-20c4-42b8-a899-cf8494ddf95f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\BasePogram">
+      <UniqueIdentifier>{df4dca5d-5cd9-4bf2-850d-fd11c03b4bf4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -32,14 +38,26 @@
     <ClCompile Include="Enemy_Warrior.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyBase.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyAIBase.cpp">
-      <Filter>Enemy\EnemyAI</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyAIMoveAstar.cpp">
       <Filter>Enemy\EnemyAI</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAIConSearch.cpp">
+      <Filter>Enemy\EnemyAICon</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySM_Warrior.cpp">
+      <Filter>Enemy\EnemyAI</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBase.cpp">
+      <Filter>Enemy\BasePogram</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAIConBase.cpp">
+      <Filter>Enemy\BasePogram</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySMBase.cpp">
+      <Filter>Enemy\BasePogram</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAIBase.cpp">
+      <Filter>Enemy\BasePogram</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,14 +77,26 @@
     <ClInclude Include="Enemy_Warrior.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyBase.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyAIBase.h">
-      <Filter>Enemy\EnemyAI</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyAIMoveAstar.h">
       <Filter>Enemy\EnemyAI</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAIConSearch.h">
+      <Filter>Enemy\EnemyAICon</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySM_Warrior.h">
+      <Filter>Enemy\EnemyAI</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBase.h">
+      <Filter>Enemy\BasePogram</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAIConBase.h">
+      <Filter>Enemy\BasePogram</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySMBase.h">
+      <Filter>Enemy\BasePogram</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAIBase.h">
+      <Filter>Enemy\BasePogram</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
