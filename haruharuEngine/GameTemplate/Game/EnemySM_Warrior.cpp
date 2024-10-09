@@ -43,11 +43,30 @@ void EnemySM_Warrior::Start()
 //アップデート関数
 void EnemySM_Warrior::Update()
 {
-
+	switch (m_warriorState)
+	{
+	case EnemySM_Warrior::en_warrior_Idle:
+		ChangeState();
+		break;
+	case EnemySM_Warrior::en_warrior_tracking:
+		
+		break;
+	default:
+		break;
+	}
 }
 
 //共通ステート変更関数
 void EnemySM_Warrior::ChangeState()
 {
-	
+	//待機ステートにする
+	m_warriorState = WarriorState::en_warrior_Idle;
+
+	if (m_warriorState != WarriorState::en_warrior_tracking)
+	{
+		if (m_enemyConList[0]->Execution())
+		{
+			m_warriorState = WarriorState::en_warrior_tracking;
+		}
+	}
 }

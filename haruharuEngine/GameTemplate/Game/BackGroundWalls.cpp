@@ -52,6 +52,9 @@ bool BackGroundWalls::Start()
 	//“–‚½‚è”»’è‚ðì¬
 	m_physicsStaticObject.CreateFromModel(m_mainModel.GetModel(), m_mainModel.GetModel().GetWorldMatrix());
 
+	//‘®«‚ðÝ’è
+	m_physicsStaticObject.GetbtCollisionObject()->setUserIndex(enCollisionAttr_Wall);
+
 	return true;
 }
 

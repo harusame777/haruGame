@@ -23,6 +23,8 @@ private:
 	{
 		//‘Ò‹@ó‘Ô
 		en_warrior_Idle,
+		//’ÇÕó‘Ô
+		en_warrior_tracking,
 	};
 public:
 	/// <summary>

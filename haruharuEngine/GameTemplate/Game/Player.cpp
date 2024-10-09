@@ -38,6 +38,8 @@ void Player::Update()
 {
 	//ˆÚ“®ŠÖ”
 	Move();
+	//³–Ê’l‚ğİ’è
+	SetForward(g_camera3D->GetForward());
 }
 
 //ˆÚ“®ŠÖ”
