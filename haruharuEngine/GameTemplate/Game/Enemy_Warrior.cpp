@@ -58,29 +58,15 @@ void Enemy_Warrior::Render(RenderContext& rc)
 //AIListの初期化
 void Enemy_Warrior::InitAIList()
 {
-	//AIのListをこのエネミーに必要な物で初期化する
 	//ステートマシン
-	m_EnemyAIList.push_back(new EnemySM_Warrior);
-	//経路探索
-	m_EnemyAIList.push_back(new EnemyAIMoveAstar);
+	m_enemyWarriorSM = new EnemySM_Warrior;
 
-	//このエネミーのインスタンスをAIListのプログラムに渡す
-	for (auto& listPtr : m_EnemyAIList)
-	{
-		listPtr->BinedEnemy(this);
-	}
+	m_enemyWarriorSM->BinedEnemy(this);
 
-	//AIListの中のプログラムのスタート関数を起動する
-	for (auto& listPtr : m_EnemyAIList)
-	{
-		listPtr->Start();
-	}
+	m_enemyWarriorSM->Start();
 }
 
 void Enemy_Warrior::AIListUpdate()
 {
-	for (auto& listPtr : m_EnemyAIList)
-	{
-		listPtr->Update();
-	}
+	m_enemyWarriorSM->Update();
 }

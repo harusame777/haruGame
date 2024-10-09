@@ -19,6 +19,9 @@
     <Filter Include="Enemy\BasePogram">
       <UniqueIdentifier>{df4dca5d-5cd9-4bf2-850d-fd11c03b4bf4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy\EnemyAISM">
+      <UniqueIdentifier>{801c2171-b69d-4b2f-9e9a-b877cae65eb6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -44,9 +47,6 @@
     <ClCompile Include="EnemyAIConSearch.cpp">
       <Filter>Enemy\EnemyAICon</Filter>
     </ClCompile>
-    <ClCompile Include="EnemySM_Warrior.cpp">
-      <Filter>Enemy\EnemyAI</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyBase.cpp">
       <Filter>Enemy\BasePogram</Filter>
     </ClCompile>
@@ -58,6 +58,9 @@
     </ClCompile>
     <ClCompile Include="EnemyAIBase.cpp">
       <Filter>Enemy\BasePogram</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySM_Warrior.cpp">
+      <Filter>Enemy\EnemyAISM</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,9 +86,6 @@
     <ClInclude Include="EnemyAIConSearch.h">
       <Filter>Enemy\EnemyAICon</Filter>
     </ClInclude>
-    <ClInclude Include="EnemySM_Warrior.h">
-      <Filter>Enemy\EnemyAI</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyBase.h">
       <Filter>Enemy\BasePogram</Filter>
     </ClInclude>
@@ -97,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="EnemyAIBase.h">
       <Filter>Enemy\BasePogram</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySM_Warrior.h">
+      <Filter>Enemy\EnemyAISM</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

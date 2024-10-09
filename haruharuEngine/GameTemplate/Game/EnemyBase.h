@@ -52,9 +52,9 @@ protected:
 	/// </summary>
 	Vector3 m_moveTargetPosition = Vector3::Zero;
 	/// <summary>
-	/// エネミーのAIプログラムのリスト
+	/// エネミーウォリアーのステートマシン
 	/// </summary>
-	std::vector<EnemyAIBase*> m_EnemyAIList;
+	EnemyAIBase* m_enemyWarriorSM = nullptr;
 	/// <summary>
 	/// 現在のステートの数値
 	/// </summary>
@@ -139,6 +139,22 @@ public:
 	const Vector3& GetMoveTargetPosition()
 	{
 		return m_moveTargetPosition;
+	}
+	/// <summary>
+	/// ステートナンバーを設定
+	/// </summary>
+	/// <param name="stateNum = ステートナンバー"></param>
+	void SetStateNumber(const int stateNum)
+	{
+		m_stateNumber = stateNum;
+	}
+	/// <summary>
+	/// ステートナンバーを取得
+	/// </summary>
+	/// <returns></returns>
+	const int GetStateNumber()
+	{
+		return m_stateNumber;
 	}
 };
 

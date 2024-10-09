@@ -2,6 +2,7 @@
 #include "EnemyAIBase.h"
 
 class EnemyAIConBase;
+class EnemyBase;
 
 class EnemySMBase : public virtual EnemyAIBase
 {
@@ -23,5 +24,9 @@ protected:
 	/// 条件リスト
 	/// </summary>
 	std::vector<EnemyAIConBase*> m_enemyConList;
+	/// <summary>
+	/// エネミーのAIプログラムのリスト
+	/// </summary>
+	std::vector<EnemyAIBase*> m_EnemyAIList;
 };
 

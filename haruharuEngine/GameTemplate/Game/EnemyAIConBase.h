@@ -12,16 +12,25 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	virtual ~EnemyAIConBase() {};
+	virtual ~EnemyAIConBase() 
+	{
+
+	};
 	/// <summary>
 	/// スタート関数
 	/// </summary>
-	virtual void Start() {};
+	virtual void Start()
+	{
+
+	};
 	/// <summary>
 	/// 条件実行
 	/// </summary>
 	/// <returns></returns>
-	virtual bool Execution() {};
+	virtual bool Execution() 
+	{
+		return true;
+	};
 	/// <summary>
 	/// エネミーを紐づけ
 	/// </summary>
