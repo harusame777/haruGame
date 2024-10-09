@@ -358,7 +358,7 @@ public:
 
 
 	const btTransform&	getInterpolationWorldTransform() const
-	{
+	{ 
 		return m_interpolationWorldTransform;
 	}
 

@@ -18,6 +18,7 @@ public:
 	{
 
 	}
+protected:
 	/// <summary>
 	/// AIListの初期化
 	/// </summary>
@@ -26,7 +27,6 @@ public:
 	/// AIList内のプログラムのアップデート
 	/// </summary>
 	virtual void AIListUpdate() = 0;
-public:
 	/// <summary>
 	/// 現在座標
 	/// </summary>
@@ -51,11 +51,14 @@ public:
 	/// 移動先の位置
 	/// </summary>
 	Vector3 m_moveTargetPosition = Vector3::Zero;
-protected:
 	/// <summary>
-	/// エネミーのAIプログラムのリスト
+	/// エネミーウォリアーのステートマシン
 	/// </summary>
-	std::vector<EnemyAIBase*> m_EnemyAIList;
+	EnemyAIBase* m_enemyWarriorSM = nullptr;
+	/// <summary>
+	/// 現在のステートの数値
+	/// </summary>
+	int m_stateNumber = -1;
 public:
 	/// <summary>
 	/// 位置設定
@@ -136,6 +139,22 @@ public:
 	const Vector3& GetMoveTargetPosition()
 	{
 		return m_moveTargetPosition;
+	}
+	/// <summary>
+	/// ステートナンバーを設定
+	/// </summary>
+	/// <param name="stateNum = ステートナンバー"></param>
+	void SetStateNumber(const int stateNum)
+	{
+		m_stateNumber = stateNum;
+	}
+	/// <summary>
+	/// ステートナンバーを取得
+	/// </summary>
+	/// <returns></returns>
+	const int GetStateNumber()
+	{
+		return m_stateNumber;
 	}
 };
 
