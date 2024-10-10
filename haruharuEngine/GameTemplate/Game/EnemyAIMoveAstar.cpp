@@ -3,7 +3,7 @@
 #include "EnemyBase.h"
 
 //これを有効にするとデバッグモードになる
-#define DEBUG_MODE
+//#define DEBUG_MODE
 
 //スタート関数
 void EnemyAIMoveAstar::Start()

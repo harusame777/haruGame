@@ -228,6 +228,7 @@
     <ClCompile Include="EnemyAIBase.cpp" />
     <ClCompile Include="EnemyAIConBase.cpp" />
     <ClCompile Include="EnemyAIConSearch.cpp" />
+    <ClCompile Include="EnemyAIConWaitTime.cpp" />
     <ClCompile Include="EnemyAIMoveAstar.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="EnemySMBase.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="EnemyAIBase.h" />
     <ClInclude Include="EnemyAIConBase.h" />
     <ClInclude Include="EnemyAIConSearch.h" />
+    <ClInclude Include="EnemyAIConWaitTime.h" />
     <ClInclude Include="EnemyAIMoveAstar.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="EnemySMBase.h" />

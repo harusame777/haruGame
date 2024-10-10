@@ -22,7 +22,7 @@ private:
 	enum WarriorState
 	{
 		//‘Ò‹@ó‘Ô
-		en_warrior_Idle,
+		en_warrior_idle,
 		//’ÇÕó‘Ô
 		en_warrior_tracking,
 	};
