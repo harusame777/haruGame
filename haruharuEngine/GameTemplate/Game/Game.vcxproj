@@ -227,6 +227,7 @@
     <ClCompile Include="BackGroundWalls.cpp" />
     <ClCompile Include="EnemyAIBase.cpp" />
     <ClCompile Include="EnemyAIConBase.cpp" />
+    <ClCompile Include="EnemyAIConColPlayer.cpp" />
     <ClCompile Include="EnemyAIConSearch.cpp" />
     <ClCompile Include="EnemyAIConWaitTime.cpp" />
     <ClCompile Include="EnemyAIMoveAstar.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="BackGroundWalls.h" />
     <ClInclude Include="EnemyAIBase.h" />
     <ClInclude Include="EnemyAIConBase.h" />
+    <ClInclude Include="EnemyAIConColPlayer.h" />
     <ClInclude Include="EnemyAIConSearch.h" />
     <ClInclude Include="EnemyAIConWaitTime.h" />
     <ClInclude Include="EnemyAIMoveAstar.h" />

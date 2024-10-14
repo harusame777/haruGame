@@ -46,12 +46,11 @@ private:
 	/// モデル
 	/// </summary>
 	ModelRender m_modelRender;
-
+	/// <summary>
+	/// コリジョンオブジェクト
+	/// </summary>
+	CollisionObject* m_collisionObject;	
 	//test
-	TknFile m_tknFile;
-	nsAI::NaviMesh m_nvmMesh;
-	nsAI::Path m_path;
-	nsAI::PathFinding m_pathFiding;
 	Player* m_player = nullptr;
 
 
