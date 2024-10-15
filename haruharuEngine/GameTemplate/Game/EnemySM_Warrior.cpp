@@ -82,6 +82,13 @@ void EnemySM_Warrior::Update()
 //共通ステート変更関数
 void EnemySM_Warrior::ChangeState()
 {
+	//追跡時間を初期化
+	if (m_warriorState != WarriorState::en_warrior_tracking)
+	{
+		m_enemyConList[1]->Start();
+	}
+
+	//プレイヤーとの接触判定
 	if (m_enemyConList[2]->Execution())
 	{
 
