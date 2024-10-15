@@ -75,6 +75,14 @@ public:
 	{
 		return m_forward;
 	}
+	/// <summary>
+	/// キャラコンを取得
+	/// </summary>
+	/// <returns></returns>
+	CharacterController& GetCharacterController()
+	{
+		return m_CController;
+	}
 private:
 	/// <summary>
 	/// スタート関数

@@ -30,6 +30,10 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 	SceneLight m_sceneLight;
 	m_sceneLight.Init();
 	g_sceneLight = &m_sceneLight;
+
+	//コリジョンマネージャーの初期化
+	CollisionObjectManager m_collisionObjectManager;
+	g_collisionObjectManager = &m_collisionObjectManager;
 	
 	NewGO<Game>(0,"game");
 
