@@ -4,6 +4,7 @@
 #include "EnemyAIConSearch.h"
 #include "EnemyAIMoveAstar.h"
 #include "EnemyAIConWaitTime.h"
+#include "EnemyAIConColPlayer.h"
 
 //スタート関数
 void EnemySM_Warrior::Start()
@@ -30,6 +31,9 @@ void EnemySM_Warrior::Start()
 
 	//10秒タイマー
 	m_enemyConList.push_back(new EnemyAIConWaitTime(10.0f));
+
+	//プレイヤーとの衝突判定
+	m_enemyConList.push_back(new EnemyAIConColPlayer);
 
 	//紐づいているエネミーのインスタンスをConListのプログラムに渡す
 	for (auto& listPtr : m_enemyConList)
@@ -78,6 +82,11 @@ void EnemySM_Warrior::Update()
 //共通ステート変更関数
 void EnemySM_Warrior::ChangeState()
 {
+	if (m_enemyConList[2]->Execution())
+	{
+
+	}
+
 	//待機ステートにする
 	m_warriorState = WarriorState::en_warrior_idle;
 

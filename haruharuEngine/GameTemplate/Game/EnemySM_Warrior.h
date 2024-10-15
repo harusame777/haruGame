@@ -43,6 +43,6 @@ private:
 	/// <summary>
 	/// エネミーウォリアーのステート、待機状態で初期化
 	/// </summary>
-	WarriorState m_warriorState = WarriorState::en_warrior_Idle;
+	WarriorState m_warriorState = WarriorState::en_warrior_idle;
 };
 

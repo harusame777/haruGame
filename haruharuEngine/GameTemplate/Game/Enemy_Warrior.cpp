@@ -29,6 +29,15 @@ bool Enemy_Warrior::Start()
 	m_player = FindGO<Player>("player");
 
 	InitAIList();
+
+	//コリジョンオブジェクトを作成する。
+	m_collisionObject = NewGO<CollisionObject>(0);
+	//球状のコリジョンを作成する。
+	m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 30.0f * m_scale.z);
+	m_collisionObject->SetName("enemy_col");
+	m_collisionObject->SetPosition(m_position);
+	////コリジョンオブジェクトが自動で削除されないようにする。
+	m_collisionObject->SetIsEnableAutoDelete(false);
 	
 	return true;
 }
@@ -45,6 +54,8 @@ void Enemy_Warrior::Update()
 	m_modelRender.SetRotation(m_rotation);
 
 	m_modelRender.SetPosition(m_position);
+
+	m_collisionObject->SetPosition(m_position);
 
 	m_modelRender.Update();
 }
