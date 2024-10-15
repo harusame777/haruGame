@@ -89,6 +89,7 @@ using namespace Microsoft::WRL;
 #include "graphics/light/DirectionalLight.h"
 #include "level3D/LevelRender.h"
 
+
 #include "graphics/GaussianBlur.h"
 
 const UINT FRAME_BUFFER_W = 1600;	// フレームバッファの幅。
@@ -119,6 +120,7 @@ static const int MAX_BONE = 512;	// ボーンの最大数。
 #include <x3daudio.h>
 #include <xaudio2fx.h>
 
+#include "CollisionObject.h"
 
 #include "graphics/effect/EffectEngine.h"
 #include "sound/SoundSource.h"

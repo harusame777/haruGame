@@ -27,6 +27,6 @@ protected:
 	/// <summary>
 	/// エネミーのAIプログラムのリスト
 	/// </summary>
-	std::vector<EnemyAIBase*> m_EnemyAIList;
+	std::vector<EnemyAIBase*> m_enemyAIList;
 };
 

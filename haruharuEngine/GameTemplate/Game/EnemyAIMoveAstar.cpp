@@ -3,7 +3,7 @@
 #include "EnemyBase.h"
 
 //これを有効にするとデバッグモードになる
-#define DEBUG_MODE
+//#define DEBUG_MODE
 
 //スタート関数
 void EnemyAIMoveAstar::Start()
@@ -56,9 +56,6 @@ void EnemyAIMoveAstar::Update()
 		//Y値を0にする
 		atan2CalcVec.y = 0.0f;
 
-		//正面値を設定
-  		GetEnemyPtr().SetForward(atan2CalcVec);
-
 		float angle = atan2(atan2CalcVec.x, atan2CalcVec.z);
 
 		Quaternion finalRot;
@@ -69,4 +66,11 @@ void EnemyAIMoveAstar::Update()
 
 		//回転値を送る
 		GetEnemyPtr().SetRotation(finalRot);
+
+		//正面値
+		Vector3 newForward = Vector3::AxisZ;
+
+		GetEnemyPtr().GetRotation().Apply(newForward);
+
+		GetEnemyPtr().SetForward(newForward);
 }

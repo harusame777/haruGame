@@ -17,6 +17,7 @@ namespace nsK2EngineLow {
 	//追加コード
 	class RenderingEngine;
 	class SceneLight;
+	class CollisionObjectManager;
 
 	class K2EngineLow {
 	public:
@@ -229,5 +230,6 @@ namespace nsK2EngineLow {
 	//追加コード
 	extern SceneLight* g_sceneLight;
 	extern RenderingEngine* g_renderingEngine;
+	extern CollisionObjectManager* g_collisionObjectManager;
 }
 

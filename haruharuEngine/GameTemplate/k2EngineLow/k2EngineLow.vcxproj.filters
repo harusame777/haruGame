@@ -236,6 +236,9 @@
     <ClCompile Include="graphics\Render\LuminnceRender.cpp" />
     <ClCompile Include="graphics\light\DirectionalLight.cpp" />
     <ClCompile Include="level3D\LevelRender.cpp" />
+    <ClCompile Include="CollisionObject.cpp">
+      <Filter>physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="k2EngineLowPreCompile.h" />
@@ -522,6 +525,9 @@
     <ClInclude Include="graphics\Render\LuminnceRender.h" />
     <ClInclude Include="graphics\light\DirectionalLight.h" />
     <ClInclude Include="level3D\LevelRender.h" />
+    <ClInclude Include="CollisionObject.h">
+      <Filter>physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="graphics">

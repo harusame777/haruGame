@@ -3,11 +3,19 @@
 #include "EnemyBase.h"
 #include "Player.h"
 
+//定数等
+namespace {
+	//索敵範囲
+	static const float enemySearchRad = 500.0f;
+}
+
 //スタート関数
 void EnemyAIConSearch::Start()
 {
 	//プレイヤーのインスタンスを取得
 	m_player = FindGO<Player>("player");
+	//コライダーを初期化
+	m_sphereCollider.Create(1.0f);
 }
 
 //壁の判定を取る構造体
@@ -54,7 +62,7 @@ bool EnemyAIConSearch::RayTestWall()
 
 	//終点位置決定
 	Vector3 endPos = m_player->GetPosition();
-	endPos.y += 70.0f;
+	endPos.y += 75.0f;
 	end.setOrigin(btVector3(endPos.x, endPos.y, endPos.z));
 
 	SweepResultWall callback;
@@ -71,9 +79,51 @@ bool EnemyAIConSearch::RayTestWall()
 	return false;
 }
 
+//視野角
+bool EnemyAIConSearch::AngleCheck()
+{
+	//エネミーからプレイヤーに向かうベクトルを計算
+	Vector3 diff = m_player->GetPosition() - GetEnemyPtr().GetPosition();
+
+	//プレイヤーにある程度近かったら
+	//エネミーの索敵範囲、現在は500*500
+	if (diff.LengthSq() <= enemySearchRad * enemySearchRad)
+	{
+		 //エネミーからプレイヤーに向かうベクトルを正規化
+		diff.Normalize();
+		//エネミーの正面ベクトルと、敵からプレイヤーに向かうベクトルの
+		//内積(cosθ)を求める。
+		float cos = GetEnemyPtr().GetFoward().Dot(diff);
+		if (cos >= 1)
+		{
+			cos = 1.0f;
+		}
+		//内積(cosθ)から角度(θ)を求める
+		float angle = acosf(cos);
+		//角度(θ)が90°(視野角)より小さければ
+		if (angle <= (Math::PI / 180.0f) * 90.0f)
+		{
+			//壁が無いか判定
+			if (!RayTestWall())
+			{
+				//見つかった！
+				return true;
+			}
+		}
+	}
+
+	//見つからなかった…
+	return false;
+}
+
 //条件実行
 bool EnemyAIConSearch::Execution()
 {
-	return true;
+	if (AngleCheck())
+	{
+		return true;
+	}
+
+	return false;
 }
 

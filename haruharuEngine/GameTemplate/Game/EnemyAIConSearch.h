@@ -22,13 +22,17 @@ private:
 	/// </summary>
 	bool RayTestWall();
 	/// <summary>
+	/// 視野角
+	/// </summary>
+	/// <returns></returns>
+	bool AngleCheck();
+	/// <summary>
 	/// プレイヤーインスタンス
 	/// </summary>
 	Player* m_player = nullptr;
 	/// <summary>
 	/// コライダー
 	/// </summary>
-	SphereCollider m_sphereCollider;						
-
+	SphereCollider m_sphereCollider;
 };
 
