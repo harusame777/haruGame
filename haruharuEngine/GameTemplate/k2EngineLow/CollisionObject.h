@@ -191,6 +191,132 @@ namespace nsK2EngineLow {
 		{
 			m_collisionObjectVector.push_back(collisionObject);
 		}
+		/// <summary>
+		/// 名前が完全一致するコリジョンオブジェクトを検索する
+		/// 、こちらは1つだけ
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
+		CollisionObject* FindCollisionObject(const char* name)
+		{
+			for (auto collisionObject : m_collisionObjectVector)
+			{
+				//名前が一致したら
+				if (strcmp(collisionObject->GetName(),name) == 0)
+				{
+					//あたり判定が有効なら
+					if (collisionObject->IsEnable() == true)
+					{
+						return collisionObject;
+					}
+				}
+			}
+			//一致する名前が無い場合はNULLを返す
+			return nullptr;
+		}
+		/// <summary>
+		/// 名前が完全一致するコリジョンオブジェクトを検索する
+		/// 、こちらは複数
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
+		const std::vector<CollisionObject*>& FindCollisionObjects(const char* name)
+		{
+			m_findMatchForwardNameCollisionObjectVector.clear();
+			for (auto collisionObject : m_collisionObjectVector)
+			{
+				//名前が一致したら
+				if (strcmp(collisionObject->GetName(),name) == 0)
+				{
+					//あたり判定が有効なら
+					if (collisionObject->IsEnable() == true)
+					{
+						m_findMatchForwardNameCollisionObjectVector.push_back(collisionObject);
+					}
+				}
+			}
+			return m_findMatchForwardNameCollisionObjectVector;
+		}
+		/// <summary>
+		/// 名前が前方一致するコリジョンオブジェクトを検索する
+		/// 、こちらは1つだけ
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
+		const CollisionObject* FindMatchForwardNameCollisionObject(const char* name)
+		{
+			for (auto collisionObject : m_collisionObjectVector)
+			{
+				auto len = strlen(name);
+				auto namelen = strlen(collisionObject->GetName());
+				if (len > namelen)
+				{
+					//コリジョンの名前が検索名より長いので、不一致
+					continue;
+				}
+				//
+				if (strncmp(name,collisionObject->GetName(),len) == 0)
+				{
+					//あたり判定が有効なら
+					if (collisionObject->IsEnable() == 0)
+					{
+						return collisionObject;
+					}
+				}
+			}
+			return nullptr;
+		}
+		/// <summary>
+		/// 名前が前方一致するコリジョンオブジェクトを検索する
+		/// 、こちらは複数
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
+		const std::vector<CollisionObject*>& FindMatchForwardNameCollisionObjects(const char* name)
+		{
+			m_findsCollisionObjectVector.clear();
+			for (auto collisionObject : m_collisionObjectVector)
+			{
+				auto len = strlen(name);
+				auto namelen = strlen(collisionObject->GetName());
+				if (len > namelen)
+				{
+					//コリジョンの名前が検索名より長いので、不一致
+					continue;
+				}
+				//
+				if (strncmp(name, collisionObject->GetName(), len) == 0)
+				{
+					//あたり判定が有効なら
+					if (collisionObject->IsEnable() == 0)
+					{
+						m_findsCollisionObjectVector.push_back(collisionObject);
+					}
+				}
+			}
+			return m_findsCollisionObjectVector;
+		}
+		/// <summary>
+		/// 配列からコリジョンオブジェクトを削除
+		/// </summary>
+		/// <param name="deleteCollisionObject"></param>
+		void RemoveCollisionObject(CollisionObject* deleteCollisionObject)
+		{
+			for (auto it = m_collisionObjectVector.begin(); it != m_collisionObjectVector.end();)
+			{
+				//条件が一致した要素を削除する
+				if (*it == deleteCollisionObject)
+				{
+					//削除された要素の次を指すイテレータが返される
+					it = m_collisionObjectVector.erase(it);
+				}
+				//要素削除をしない場合に、イテレーターを進める
+				else
+				{
+					++it;
+				}
+			}
+		}
 	private:
 		std::vector<CollisionObject*> m_collisionObjectVector;
 		std::vector<CollisionObject*> m_findsCollisionObjectVector;
