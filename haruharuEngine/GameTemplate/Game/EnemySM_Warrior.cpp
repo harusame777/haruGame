@@ -51,6 +51,9 @@ void EnemySM_Warrior::Start()
 //アップデート関数
 void EnemySM_Warrior::Update()
 {
+	//時間更新
+	TimeUpdate();
+
 	switch (m_warriorState)
 	{
 		//待機ステート
@@ -60,9 +63,8 @@ void EnemySM_Warrior::Update()
 		break;
 		//追跡ステート
 	case EnemySM_Warrior::en_warrior_tracking:
-		//10秒待機
-		//10秒経っていたら
-		if (m_enemyConList[1]->Execution())
+		//追跡するかしないか
+		if (!m_isTrackingTimeOver)
 		{
 			//別のステートにする
 			ChangeState();
@@ -77,17 +79,12 @@ void EnemySM_Warrior::Update()
 	default:
 		break;
 	}
+
 }
 
 //共通ステート変更関数
 void EnemySM_Warrior::ChangeState()
 {
-	//追跡時間を初期化
-	if (m_warriorState != WarriorState::en_warrior_tracking)
-	{
-		m_enemyConList[1]->Start();
-	}
-
 	//プレイヤーとの接触判定
 	if (m_enemyConList[2]->Execution())
 	{
@@ -105,6 +102,27 @@ void EnemySM_Warrior::ChangeState()
 		{
 			//追跡ステートにする
 			m_warriorState = WarriorState::en_warrior_tracking;
+			//追跡するように
+			m_isTrackingTimeOver = true;
 		}
 	}
+}
+
+//時間処理
+void EnemySM_Warrior::TimeUpdate()
+{
+	//現在のステートが追跡状態だったら
+	if (m_warriorState == WarriorState::en_warrior_tracking)
+	{
+		//追跡タイマーを更新して
+		//残り秒数が0.0だったら
+		if (m_enemyConList[1]->Execution())
+		{
+			//追跡から別のステートにするようにして
+			m_isTrackingTimeOver = false;
+			//追跡時間を初期化
+			m_enemyConList[1]->Start();
+		}
+	}
+
 }
