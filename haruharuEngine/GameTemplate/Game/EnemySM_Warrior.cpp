@@ -104,6 +104,8 @@ void EnemySM_Warrior::ChangeState()
 			m_warriorState = WarriorState::en_warrior_tracking;
 			//’ÇÕ‚·‚é‚æ‚¤‚É
 			m_isTrackingTimeOver = true;
+			//’ÇÕŠÔ‚ğ‰Šú‰»
+			m_enemyConList[1]->Start();
 		}
 	}
 }
@@ -124,5 +126,4 @@ void EnemySM_Warrior::TimeUpdate()
 			m_enemyConList[1]->Start();
 		}
 	}
-
 }
