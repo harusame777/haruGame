@@ -36,6 +36,9 @@ bool EnemyAIConWaitTime::Execution()
 		//ƒtƒ‰ƒO‚ğfalse‚É
 		m_isTimerInit = false;
 
+		//‰Šú‰»‚·‚é
+		m_timer = m_timerMax;
+
 		//true‚ğ•Ô‚·
 		return true;
 	}

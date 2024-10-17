@@ -39,10 +39,18 @@ public:
 	/// 共通ステート変更関数
 	/// </summary>
 	void ChangeState() override;
+	/// <summary>
+	/// 時間処理
+	/// </summary>
+	void TimeUpdate();
 private:
 	/// <summary>
 	/// エネミーウォリアーのステート、待機状態で初期化
 	/// </summary>
 	WarriorState m_warriorState = WarriorState::en_warrior_idle;
+	/// <summary>
+	/// 時間によって追跡し続けるかどうか
+	/// </summary>
+	bool m_isTrackingTimeOver = false;
 };
 

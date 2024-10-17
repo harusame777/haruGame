@@ -3,7 +3,7 @@
 #include "EnemyBase.h"
 
 //これを有効にするとデバッグモードになる
-#define DEBUG_MODE
+//#define DEBUG_MODE
 
 //スタート関数
 void EnemyAIMoveAstar::Start()
@@ -45,7 +45,7 @@ void EnemyAIMoveAstar::Update()
 		//移動先を計算
 		Vector3 pathMovePos = m_path.Move(
 			myPos,
-			10.0f,
+			2.0f,
 			isEnd
 		);
 
