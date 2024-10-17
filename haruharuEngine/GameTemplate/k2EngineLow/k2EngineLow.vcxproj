@@ -255,6 +255,7 @@
     <ClCompile Include="AI\PathFinding\Path.cpp" />
     <ClCompile Include="AI\PathFinding\PathFinding.cpp" />
     <ClCompile Include="CollisionObject.cpp" />
+    <ClCompile Include="FontRender.cpp" />
     <ClCompile Include="graphics\light\DirectionalLight.cpp" />
     <ClCompile Include="gameObject\Gameobjectmanager.cpp" />
     <ClCompile Include="gameObject\IGameObject.cpp" />
@@ -351,6 +352,7 @@
     <ClInclude Include="CollisionObject.h" />
     <ClInclude Include="dbg\MyAssert.h" />
     <ClInclude Include="dbg\MyLog.h" />
+    <ClInclude Include="FontRender.h" />
     <ClInclude Include="graphics\light\DirectionalLight.h" />
     <ClInclude Include="gameObject\GameObjectManager.h" />
     <ClInclude Include="gameObject\IGameobject.h" />
