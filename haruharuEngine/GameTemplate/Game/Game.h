@@ -2,6 +2,7 @@
 
 class GameCamera;
 class BackGroundWalls;
+class BackGroundFloor;
 class Player;
 class Enemy_Warrior;
 
@@ -12,8 +13,6 @@ public:
 	bool Start();
 
 	void Update();
-
-	void Render(RenderContext& rc);
 
 	//テスト用座標
 

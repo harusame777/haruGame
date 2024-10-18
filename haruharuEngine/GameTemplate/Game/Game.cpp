@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "GameCamera.h"
 #include "BackGroundWalls.h"
+#include "BackGroundFloor.h"
 #include "Player.h"
 #include "Enemy_Warrior.h"
 
@@ -49,6 +50,14 @@ bool Game::Start()
 			walls->SetPosition(objData.m_position);
 			walls->SetRotation(objData.m_rotation);
 			walls->SetScale(objData.m_scalse);
+			return true;
+		}
+		else if(objData.ForwardMatchName(L"laboFloor_MainModel") == true)
+		{
+			BackGroundFloor* floor = NewGO<BackGroundFloor>(0, "background");
+			floor->SetPosition(objData.m_position);
+			floor->SetRotation(objData.m_rotation);
+			floor->SetScale(objData.m_scalse);
 			return true;
 		}
 		return true;
@@ -115,15 +124,4 @@ void Game::Update()
 	swprintf_s(wcsbuf, 256, L"test");
 
 	m_testFont.SetText(wcsbuf);
-}
-
-void Game::Render(RenderContext& rc)
-{
-	m_bgModelRendedr.Draw(rc);
-
-	//m_modelFloor.Draw(rc);
-
-	//m_spriteTest1.Draw(rc);
-
-	//m_testFont.Draw(rc);
 }
