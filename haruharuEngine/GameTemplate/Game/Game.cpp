@@ -13,46 +13,46 @@ bool Game::Start()
 	sunDirectionalLight.CastShadow();
 
 	//レベルレンダーのテスト
-	//m_levelRender.Init("Assets/mapLevel/testLevel1.tkl", [&](LevelObjectData_Render& objData)
-	//{
-	//	if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
-	//	{
-	//		BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-	//		walls->SetWallType(BackGroundWalls::en_wallType1_4);
-	//		walls->SetPosition(objData.m_position);
-	//		walls->SetRotation(objData.m_rotation);
-	//		walls->SetScale(objData.m_scalse);
-	//		return true;
-	//	}
-	//	else if(objData.ForwardMatchName(L"laboWall_2-4Model") == true)
-	//	{
-	//		BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-	//		walls->SetWallType(BackGroundWalls::en_wallType2_4);
-	//		walls->SetPosition(objData.m_position);
-	//		walls->SetRotation(objData.m_rotation);
-	//		walls->SetScale(objData.m_scalse);
-	//		return true;
-	//	}
-	//	else if (objData.ForwardMatchName(L"laboWall_4-4Model") == true)
-	//	{
-	//		BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-	//		walls->SetWallType(BackGroundWalls::en_wallType4_4);
-	//		walls->SetPosition(objData.m_position);
-	//		walls->SetRotation(objData.m_rotation);
-	//		walls->SetScale(objData.m_scalse);
-	//		return true;
-	//	}
-	//	else if (objData.ForwardMatchName(L"laboWall_4-6Model") == true)
-	//	{
-	//		BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-	//		walls->SetWallType(BackGroundWalls::en_wallType4_6);
-	//		walls->SetPosition(objData.m_position);
-	//		walls->SetRotation(objData.m_rotation);
-	//		walls->SetScale(objData.m_scalse);
-	//		return true;
-	//	}
-	//	return true;
-	//});
+	m_levelRender.Init("Assets/mapLevel/testLevel2.tkl", [&](LevelObjectData_Render& objData)
+	{
+		if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
+		{
+			BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
+			walls->SetWallType(BackGroundWalls::en_wallType1_4);
+			walls->SetPosition(objData.m_position);
+			walls->SetRotation(objData.m_rotation);
+			walls->SetScale(objData.m_scalse);
+			return true;
+		}
+		else if(objData.ForwardMatchName(L"laboWall_2-4Model") == true)
+		{
+			BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
+			walls->SetWallType(BackGroundWalls::en_wallType2_4);
+			walls->SetPosition(objData.m_position);
+			walls->SetRotation(objData.m_rotation);
+			walls->SetScale(objData.m_scalse);
+			return true;
+		}
+		else if (objData.ForwardMatchName(L"laboWall_4-4Model") == true)
+		{
+			BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
+			walls->SetWallType(BackGroundWalls::en_wallType4_4);
+			walls->SetPosition(objData.m_position);
+			walls->SetRotation(objData.m_rotation);
+			walls->SetScale(objData.m_scalse);
+			return true;
+		}
+		else if (objData.ForwardMatchName(L"laboWall_4-6Model") == true)
+		{
+			BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
+			walls->SetWallType(BackGroundWalls::en_wallType4_6);
+			walls->SetPosition(objData.m_position);
+			walls->SetRotation(objData.m_rotation);
+			walls->SetScale(objData.m_scalse);
+			return true;
+		}
+		return true;
+	});
 
 	m_bgModelRendedr.Init("Assets/modelData/bg/bg.tkm");
 	m_bgObject.CreateFromModel(m_bgModelRendedr.GetModel(), m_bgModelRendedr.GetModel().GetWorldMatrix());
