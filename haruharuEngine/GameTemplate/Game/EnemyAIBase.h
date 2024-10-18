@@ -16,11 +16,11 @@ public:
 	/// <summary>
 	/// スタート関数
 	/// </summary>
-	virtual void Start() {};
+	virtual void EnemyAIStart() {};
 	/// <summary>
 	/// アップデート関数
 	/// </summary>
-	virtual void Update() {};
+	virtual void EnemyAIUpdate() {};
 	/// <summary>
 	/// エネミーを紐づけ
 	/// </summary>

@@ -47,5 +47,7 @@ public:
 
 	ModelRender m_bgModelRendedr;
 	PhysicsStaticObject m_bgObject;
+
+	FontRender m_testFont;
 };
 

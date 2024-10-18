@@ -59,6 +59,10 @@ protected:
 	/// 現在のステートの数値
 	/// </summary>
 	int m_stateNumber = -1;
+	/// <summary>
+	/// デバック用フォントレンダー
+	/// </summary>
+	FontRender m_debugStateDisplayRender;
 public:
 	/// <summary>
 	/// 位置設定
@@ -155,6 +159,17 @@ public:
 	const int GetStateNumber()
 	{
 		return m_stateNumber;
+	}
+	/// <summary>
+	/// デバックディスプレイ文字設定
+	/// </summary>
+	void DebugStateDisplay()
+	{
+		wchar_t wcsbuf[256];
+
+		swprintf_s(wcsbuf, 256, L"NowState[%01d]", int(m_stateNumber));
+
+		m_debugStateDisplayRender.SetText(wcsbuf);
 	}
 };
 
