@@ -30,17 +30,17 @@ public:
 	/// <summary>
 	/// スタート関数
 	/// </summary>
-	void Start() override;
+	void EnemyAIStart() override;
 	/// <summary>
 	/// アップデート関数
 	/// </summary>
-	void Update() override;
+	void EnemyAIUpdate() override;
 	/// <summary>
 	/// 共通ステート変更関数
 	/// </summary>
 	void ChangeState() override;
 	/// <summary>
-	/// 時間処理
+	/// 時間処理関数
 	/// </summary>
 	void TimeUpdate();
 private:

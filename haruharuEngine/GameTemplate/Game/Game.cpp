@@ -109,6 +109,12 @@ void Game::Update()
 	m_testPointLight.SetAffectPowParam(0.5f);
 
 	m_spriteTest1.Update();
+
+	wchar_t wcsbuf[256];
+
+	swprintf_s(wcsbuf, 256, L"test");
+
+	m_testFont.SetText(wcsbuf);
 }
 
 void Game::Render(RenderContext& rc)
@@ -118,4 +124,6 @@ void Game::Render(RenderContext& rc)
 	//m_modelFloor.Draw(rc);
 
 	//m_spriteTest1.Draw(rc);
+
+	//m_testFont.Draw(rc);
 }

@@ -13,11 +13,11 @@ public:
 	/// <summary>
 	/// スタート関数
 	/// </summary>
-	void Start() override;
+	void EnemyAIStart() override;
 	/// <summary>
 	/// アップデート関数
 	/// </summary>
-	void Update() override;
+	void EnemyAIUpdate() override;
 private:
 	/// <summary>
 	/// ナビメッシュファイル

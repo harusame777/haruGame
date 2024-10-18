@@ -6,8 +6,11 @@
 #include "EnemyAIConWaitTime.h"
 #include "EnemyAIConColPlayer.h"
 
+//これを有効にするとデバッグモードになる
+#define DEBUG_MODE
+
 //スタート関数
-void EnemySM_Warrior::Start()
+void EnemySM_Warrior::EnemyAIStart()
 {
 	//AIのListをこのエネミーに必要な物で初期化する
 	//経路探索
@@ -22,7 +25,7 @@ void EnemySM_Warrior::Start()
 	//AIListの中のプログラムのスタート関数を起動する
 	for (auto& listPtr : m_enemyAIList)
 	{
-		listPtr->Start();
+		listPtr->EnemyAIStart();
 	}
 
 	//分岐のプログラムをリストに格納していく
@@ -49,7 +52,7 @@ void EnemySM_Warrior::Start()
 }
 
 //アップデート関数
-void EnemySM_Warrior::Update()
+void EnemySM_Warrior::EnemyAIUpdate()
 {
 	//時間更新
 	TimeUpdate();
@@ -73,12 +76,17 @@ void EnemySM_Warrior::Update()
 		else
 		{
 			//追跡処理を更新
-			m_enemyAIList[0]->Update();
+			m_enemyAIList[0]->EnemyAIUpdate();
 		}
 		break;
 	default:
 		break;
 	}
+
+#ifdef DEBUG_MODE
+	//ステートナンバーを送る
+	GetEnemyPtr().SetStateNumber(m_warriorState);
+#endif
 
 }
 
@@ -127,3 +135,5 @@ void EnemySM_Warrior::TimeUpdate()
 		}
 	}
 }
+
+

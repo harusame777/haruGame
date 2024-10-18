@@ -88,7 +88,7 @@ using namespace Microsoft::WRL;
 #include "graphics/Render/LuminnceRender.h"
 #include "graphics/light/DirectionalLight.h"
 #include "level3D/LevelRender.h"
-
+#include "graphics/Render/FontRender.h"
 
 #include "graphics/GaussianBlur.h"
 

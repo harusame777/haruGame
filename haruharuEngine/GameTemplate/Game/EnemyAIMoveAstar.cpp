@@ -6,13 +6,13 @@
 //#define DEBUG_MODE
 
 //スタート関数
-void EnemyAIMoveAstar::Start()
+void EnemyAIMoveAstar::EnemyAIStart()
 {
 	m_nvmMesh.Init("Assets/nvm/test.tkn");
 }
 
 //アップデート関数
-void EnemyAIMoveAstar::Update()
+void EnemyAIMoveAstar::EnemyAIUpdate()
 {
 
 	bool isEnd;

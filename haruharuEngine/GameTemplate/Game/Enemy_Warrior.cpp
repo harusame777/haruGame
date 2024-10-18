@@ -4,6 +4,9 @@
 #include "EnemyAIMoveAstar.h"
 #include "EnemySM_Warrior.h"
 
+//これを有効にするとデバッグモードになる
+#define DEBUG_MODE
+
 //コンストラクタ
 Enemy_Warrior::Enemy_Warrior()
 {
@@ -57,6 +60,10 @@ void Enemy_Warrior::Update()
 
 	m_collisionObject->SetPosition(m_position);
 
+#ifdef DEBUG_MODE
+	DebugStateDisplay();
+#endif
+
 	m_modelRender.Update();
 }
 
@@ -64,6 +71,10 @@ void Enemy_Warrior::Update()
 void Enemy_Warrior::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
+
+#ifdef DEBUG_MODE
+	m_debugStateDisplayRender.Draw(rc);
+#endif
 }
 
 //AIListの初期化
@@ -74,10 +85,10 @@ void Enemy_Warrior::InitAIList()
 
 	m_enemyWarriorSM->BinedEnemy(this);
 
-	m_enemyWarriorSM->Start();
+	m_enemyWarriorSM->EnemyAIStart();
 }
 
 void Enemy_Warrior::AIListUpdate()
 {
-	m_enemyWarriorSM->Update();
+	m_enemyWarriorSM->EnemyAIUpdate();
 }
