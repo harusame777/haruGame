@@ -25,7 +25,7 @@ Player::~Player()
 bool Player::Start()
 {
 	//キャラクターコントローラーを初期化
-	m_CController.Init(25.0f, 75.0f, m_position);
+	m_CController.Init(10.0f, 20.0f, m_position);
 
 	//位置の初期設定
 	m_CController.SetPosition(m_position);

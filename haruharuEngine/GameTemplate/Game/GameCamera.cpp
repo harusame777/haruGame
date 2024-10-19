@@ -66,7 +66,7 @@ void GameCamera::FPSCam()
 	//’Ž‹“_‚ðŒvŽZ
 	Vector3 target = m_player->GetPosition();
 
-	target.y += 90.0f;
+	target.y += 55.0f;
 	target.z -= 0.01f;
 
 	Vector3 toCameraPosOld = m_toCameraPos;

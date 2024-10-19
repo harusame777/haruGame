@@ -33,6 +33,10 @@ public:
 		/// </summary>
 		en_wallType4_6,
 		/// <summary>
+		/// •ÇƒhƒA•t‚«4_4
+		/// </summary>
+		en_wallTypeDoorWay4_4,
+		/// <summary>
 		/// •Ç‚Ì”
 		/// </summary>
 		en_wallNum,
