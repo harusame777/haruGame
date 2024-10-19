@@ -52,6 +52,15 @@ bool Game::Start()
 			walls->SetScale(objData.m_scalse);
 			return true;
 		}
+		else if (objData.ForwardMatchName(L"laboDoorWay_4-4Model") == true)
+		{
+			BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
+			walls->SetWallType(BackGroundWalls::en_wallTypeDoorWay4_4);
+			walls->SetPosition(objData.m_position);
+			walls->SetRotation(objData.m_rotation);
+			walls->SetScale(objData.m_scalse);
+			return true;
+		}
 		else if(objData.ForwardMatchName(L"laboFloor_MainModel") == true)
 		{
 			BackGroundFloor* floor = NewGO<BackGroundFloor>(0, "background");
@@ -64,7 +73,7 @@ bool Game::Start()
 	});
 
 	m_bgModelRendedr.Init("Assets/modelData/bg/bg.tkm");
-	m_bgObject.CreateFromModel(m_bgModelRendedr.GetModel(), m_bgModelRendedr.GetModel().GetWorldMatrix());
+	//m_bgObject.CreateFromModel(m_bgModelRendedr.GetModel(), m_bgModelRendedr.GetModel().GetWorldMatrix());
 
 	m_player = NewGO<Player>(0, "player");
 
@@ -83,7 +92,7 @@ bool Game::Start()
 
 	m_testCamera = NewGO<GameCamera>(0, "camera");
 
-	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 
 	return true;
 }
