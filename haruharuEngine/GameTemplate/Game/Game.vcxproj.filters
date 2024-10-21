@@ -22,6 +22,9 @@
     <Filter Include="Enemy\EnemyAISM">
       <UniqueIdentifier>{801c2171-b69d-4b2f-9e9a-b877cae65eb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="object">
+      <UniqueIdentifier>{0b53cf91-35d4-45b3-8da7-a57e6cff3ce9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -68,6 +71,12 @@
     <ClCompile Include="EnemyAIConColPlayer.cpp">
       <Filter>Enemy\EnemyAICon</Filter>
     </ClCompile>
+    <ClCompile Include="Crystal.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectBase.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -112,6 +121,12 @@
     </ClInclude>
     <ClInclude Include="EnemyAIConColPlayer.h">
       <Filter>Enemy\EnemyAICon</Filter>
+    </ClInclude>
+    <ClInclude Include="Crystal.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectBase.h">
+      <Filter>object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

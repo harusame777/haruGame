@@ -225,6 +225,7 @@
   <ItemGroup>
     <ClCompile Include="BackGroundFloor.cpp" />
     <ClCompile Include="BackGroundWalls.cpp" />
+    <ClCompile Include="Crystal.cpp" />
     <ClCompile Include="EnemyAIBase.cpp" />
     <ClCompile Include="EnemyAIConBase.cpp" />
     <ClCompile Include="EnemyAIConColPlayer.cpp" />
@@ -238,6 +239,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ObjectBase.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -249,6 +251,7 @@
   <ItemGroup>
     <ClInclude Include="BackGroundFloor.h" />
     <ClInclude Include="BackGroundWalls.h" />
+    <ClInclude Include="Crystal.h" />
     <ClInclude Include="EnemyAIBase.h" />
     <ClInclude Include="EnemyAIConBase.h" />
     <ClInclude Include="EnemyAIConColPlayer.h" />
@@ -261,6 +264,7 @@
     <ClInclude Include="Enemy_Warrior.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="ObjectBase.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />

@@ -3,6 +3,7 @@
 #include "GameCamera.h"
 #include "BackGroundWalls.h"
 #include "BackGroundFloor.h"
+#include "Crystal.h"
 #include "Player.h"
 #include "Enemy_Warrior.h"
 
@@ -14,7 +15,7 @@ bool Game::Start()
 	sunDirectionalLight.CastShadow();
 
 	//レベルレンダーのテスト
-	m_levelRender.Init("Assets/mapLevel/testLevel2.tkl", [&](LevelObjectData_Render& objData)
+	m_levelRender.Init("Assets/mapLevel/testLevel3.tkl", [&](LevelObjectData_Render& objData)
 	{
 		if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
 		{
@@ -67,6 +68,14 @@ bool Game::Start()
 			floor->SetPosition(objData.m_position);
 			floor->SetRotation(objData.m_rotation);
 			floor->SetScale(objData.m_scalse);
+			return true;
+		}
+		else if (objData.ForwardMatchName(L"crystal01_Model") == true)
+		{
+			Crystal* crystal = NewGO<Crystal>(0, "object");
+			crystal->SetPosition(objData.m_position);
+			crystal->SetRotation(objData.m_rotation);
+			crystal->SetScale(objData.m_scalse);
 			return true;
 		}
 		return true;
