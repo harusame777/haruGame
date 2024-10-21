@@ -22,8 +22,16 @@ private:
 	/// </summary>
 	void Update();
 	/// <summary>
+	/// オブジェクト取得関数
+	/// </summary>
+	void GetObject();
+	/// <summary>
 	/// レンダー関数
 	/// </summary>
 	void Render(RenderContext& rc);
+	/// <summary>
+	/// このオブジェクトが取得されているかどうか
+	/// </summary>
+	bool m_isGetObject = false;
 };
 
