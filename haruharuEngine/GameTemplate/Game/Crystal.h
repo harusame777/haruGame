@@ -1,6 +1,8 @@
 #pragma once
 #include "ObjectBase.h"
 
+class Player;
+
 class Crystal : public ObjectBase
 {
 public:
@@ -22,9 +24,14 @@ private:
 	/// </summary>
 	void Update();
 	/// <summary>
-	/// オブジェクト取得関数
+	/// クリスタル取得関数
 	/// </summary>
-	void GetObject();
+	void GetCrystal();
+	/// <summary>
+	/// レイテストを行って壁がないかどうかを調べる関数
+	/// </summary>
+	/// <returns></returns>
+	bool RayTestWall();
 	/// <summary>
 	/// レンダー関数
 	/// </summary>
@@ -33,5 +40,13 @@ private:
 	/// このオブジェクトが取得されているかどうか
 	/// </summary>
 	bool m_isGetObject = false;
+	/// <summary>
+	/// コライダー
+	/// </summary>
+	SphereCollider m_sphereCollider;
+	/// <summary>
+	/// プレイヤーのインスタンス
+	/// </summary>
+	Player* m_player = nullptr;
 };
 
