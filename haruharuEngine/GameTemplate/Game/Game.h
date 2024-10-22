@@ -5,6 +5,7 @@ class BackGroundWalls;
 class BackGroundFloor;
 class Player;
 class Enemy_Warrior;
+class EnemyAIMetaWarrior;
 
 class Game : public IGameObject
 {
@@ -25,6 +26,9 @@ public:
 	Vector3 m_spotLightTestDirection = { 1.0f,-1.0f,1.0f };
 
 	LevelRender m_levelRender;
+
+	//エネミーウォリアーのメタAI
+	EnemyAIMetaWarrior* m_warriorMetaAI;
 	
 	//テストカメラ
 	GameCamera* m_testCamera = nullptr;

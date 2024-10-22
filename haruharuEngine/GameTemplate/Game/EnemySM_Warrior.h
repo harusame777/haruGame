@@ -3,6 +3,7 @@
 #include "EnemySMBase.h"
 
 class EnemyBase;
+class EnemyAIMetaWarrior;
 
 class EnemySM_Warrior : public EnemySMBase, public virtual EnemyAIBase
 {
@@ -26,6 +27,18 @@ private:
 		//追跡状態
 		en_warrior_tracking,
 	};
+	/// <summary>
+	/// エネミーの追跡ステート
+	/// </summary>
+	enum WarriorTrackingState 
+	{
+		//非追跡状態
+		en_nonTracking,
+		//後ろから普通に追う
+		en_chaseFromBehind,
+		//回り込む
+		en_wrapAround,
+	};
 public:
 	/// <summary>
 	/// スタート関数
@@ -43,14 +56,34 @@ public:
 	/// 時間処理関数
 	/// </summary>
 	void TimeUpdate();
+	/// <summary>
+	/// 追跡状態か？
+	/// </summary>
+	/// <returns></returns>
+	const bool IsTracking() const
+	{
+		return m_isTracking;
+	}
 private:
 	/// <summary>
 	/// エネミーウォリアーのステート、待機状態で初期化
 	/// </summary>
 	WarriorState m_warriorState = WarriorState::en_warrior_idle;
 	/// <summary>
+	/// エネミーウォリアーの追跡ステート、待機状態で非追跡状態
+	/// </summary>
+	WarriorTrackingState m_warriorTrackingState = WarriorTrackingState::en_nonTracking;
+	/// <summary>
 	/// 時間によって追跡し続けるかどうか
 	/// </summary>
 	bool m_isTrackingTimeOver = false;
+	/// <summary>
+	/// 追跡状態かどうか
+	/// </summary>
+	bool m_isTracking = false;
+	/// <summary>
+	/// ウォリアーのメタAI
+	/// </summary>
+	EnemyAIMetaWarrior* m_warriorMetaAI;
 };
 

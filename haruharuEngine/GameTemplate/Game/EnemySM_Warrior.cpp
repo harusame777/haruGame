@@ -5,6 +5,7 @@
 #include "EnemyAIMoveAstar.h"
 #include "EnemyAIConWaitTime.h"
 #include "EnemyAIConColPlayer.h"
+#include "EnemyAIMetaWarrior.h"
 
 //これを有効にするとデバッグモードになる
 #define DEBUG_MODE
@@ -49,6 +50,11 @@ void EnemySM_Warrior::EnemyAIStart()
 	{
 		listPtr->Start();
 	}
+
+	//メタAIのインスタンスを格納
+	m_warriorMetaAI = FindGO<EnemyAIMetaWarrior>("MetaAI");
+	//メタAIにエネミーのインスタンスを送る
+	m_warriorMetaAI->ListInitEnemy(this);
 }
 
 //アップデート関数
@@ -111,6 +117,7 @@ void EnemySM_Warrior::ChangeState()
 			//追跡ステートにする
 			m_warriorState = WarriorState::en_warrior_tracking;
 			//追跡するように
+			m_isTracking = true;
 			m_isTrackingTimeOver = true;
 			//追跡時間を初期化
 			m_enemyConList[1]->Start();
@@ -129,6 +136,7 @@ void EnemySM_Warrior::TimeUpdate()
 		if (m_enemyConList[1]->Execution())
 		{
 			//追跡から別のステートにするようにして
+			m_isTracking = false;
 			m_isTrackingTimeOver = false;
 			//追跡時間を初期化
 			m_enemyConList[1]->Start();

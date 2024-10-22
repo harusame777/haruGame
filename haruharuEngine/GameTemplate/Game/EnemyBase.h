@@ -60,6 +60,10 @@ protected:
 	/// </summary>
 	int m_stateNumber = -1;
 	/// <summary>
+	/// 現在の追跡ステートの数値
+	/// </summary>
+	int m_trackingStateNumber = -1;
+	/// <summary>
 	/// デバック用フォントレンダー
 	/// </summary>
 	FontRender m_debugStateDisplayRender;
@@ -159,6 +163,22 @@ public:
 	const int GetStateNumber()
 	{
 		return m_stateNumber;
+	}
+	/// <summary>
+	/// 追跡ステートナンバーを設定
+	/// </summary>
+	/// <param name="stateNum = ステートナンバー"></param>
+	void SetTrackingStateNumber(const int stateNum)
+	{
+		m_trackingStateNumber = stateNum;
+	}
+	/// <summary>
+	/// 追跡ステートナンバーを取得
+	/// </summary>
+	/// <returns></returns>
+	const int GetTrackingStateNumber()
+	{
+		return m_trackingStateNumber;
 	}
 	/// <summary>
 	/// デバックディスプレイ文字設定

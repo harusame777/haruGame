@@ -22,6 +22,9 @@
     <Filter Include="Enemy\EnemyAI">
       <UniqueIdentifier>{de36f513-ef62-4332-9756-2af3da15b4b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy\EnemyAIMeta">
+      <UniqueIdentifier>{caf883ef-2716-4647-81fa-9a994bac3f78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -71,6 +74,9 @@
     <ClCompile Include="EnemyAIMovePatrol.cpp">
       <Filter>Enemy\EnemyAI</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyAIMetaWarrior.cpp">
+      <Filter>Enemy\EnemyAIMeta</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -118,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="EnemyAIMovePatrol.h">
       <Filter>Enemy\EnemyAI</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAIMetaWarrior.h">
+      <Filter>Enemy\EnemyAIMeta</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

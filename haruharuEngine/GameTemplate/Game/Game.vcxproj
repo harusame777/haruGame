@@ -230,6 +230,7 @@
     <ClCompile Include="EnemyAIConColPlayer.cpp" />
     <ClCompile Include="EnemyAIConSearch.cpp" />
     <ClCompile Include="EnemyAIConWaitTime.cpp" />
+    <ClCompile Include="EnemyAIMetaWarrior.cpp" />
     <ClCompile Include="EnemyAIMoveAstar.cpp" />
     <ClCompile Include="EnemyAIMovePatrol.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
@@ -255,6 +256,7 @@
     <ClInclude Include="EnemyAIConColPlayer.h" />
     <ClInclude Include="EnemyAIConSearch.h" />
     <ClInclude Include="EnemyAIConWaitTime.h" />
+    <ClInclude Include="EnemyAIMetaWarrior.h" />
     <ClInclude Include="EnemyAIMoveAstar.h" />
     <ClInclude Include="EnemyAIMovePatrol.h" />
     <ClInclude Include="EnemyBase.h" />
