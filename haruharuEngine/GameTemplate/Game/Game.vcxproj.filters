@@ -128,5 +128,8 @@
     <ClInclude Include="EnemyAIMetaWarrior.h">
       <Filter>Enemy\EnemyAIMeta</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyWarriorTrackingState.h">
+      <Filter>Enemy\EnemyAIMeta</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

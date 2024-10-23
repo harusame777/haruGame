@@ -24,26 +24,48 @@ public:
 	/// <param name="enemyPtr"></param>
 	void ListInitEnemy(EnemySM_Warrior* enemyPtr);
 	/// <summary>
-	/// エネミー全体の追跡ステートを変更する関数
+	/// メタAIを実行する関数
 	/// </summary>
 	void MetaAIExecution(EnemySM_Warrior* enemyPtr);
 	/// <summary>
 	/// ウォリアーに呼びかけを行う
 	/// </summary>
-	void CallWarrior(EnemySM_Warrior* enemyPtr);
+	void CallWarrior();
 	/// <summary>
-	/// リスト内のエネミーが追跡状態か調べる変数
+	/// エネミー全体の追跡ステートを変更する関数
 	/// </summary>
-	/// <returns></returns>
-	const bool SearchEnemyTracking() const;
+	void ChangeTrackingState();
+	/// <summary>
+	/// 
+	/// </summary>
+	const bool SearchCallCompliedWarrior();
 private:
+	struct MetaAIWarriorData
+	{
+		/// <summary>
+		/// trueであれば呼びかけに応じたエネミー
+		/// </summary>
+		bool m_isCallCompliedWarrior = false;
+		/// <summary>
+		/// エネミーのポインタ
+		/// </summary>
+		EnemySM_Warrior* m_warriorPtr = nullptr;
+	};
+	/// <summary>
+	/// 呼びかけたエネミー
+	/// </summary>
+	EnemySM_Warrior* m_MainCallWarrior = nullptr;
+	/// <summary>
+	/// 呼ばれたエネミー１
+	/// </summary>
+	EnemySM_Warrior* m_subCalledWarriorFirst = nullptr;
+	/// <summary>
+	/// 呼ばれたエネミー２
+	/// </summary>
+	EnemySM_Warrior* m_subCalledWarriorSecond = nullptr;
 	/// <summary>
 	/// エネミーウォリアーのリスト
 	/// </summary>
-	std::vector<EnemySM_Warrior*> m_enemyWarriorList;
-	/// <summary>
-	/// 呼びかけに応じたエネミーのリスト
-	/// </summary>
-	std::list<EnemySM_Warrior*> m_CallRespondWarriorList;
+	std::vector<MetaAIWarriorData*> m_enemyWarriorList;
 };
 

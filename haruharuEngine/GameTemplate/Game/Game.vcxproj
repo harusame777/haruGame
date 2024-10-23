@@ -262,6 +262,7 @@
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="EnemySMBase.h" />
     <ClInclude Include="EnemySM_Warrior.h" />
+    <ClInclude Include="EnemyWarriorTrackingState.h" />
     <ClInclude Include="Enemy_Warrior.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />

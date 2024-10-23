@@ -1,6 +1,7 @@
 #pragma once
 #include "EnemyAIBase.h"
 #include "EnemySMBase.h"
+#include "EnemyWarriorTrackingState.h"
 
 class EnemyBase;
 class EnemyAIMetaWarrior;
@@ -26,18 +27,6 @@ private:
 		en_warrior_idle,
 		//追跡状態
 		en_warrior_tracking,
-	};
-	/// <summary>
-	/// エネミーの追跡ステート
-	/// </summary>
-	enum WarriorTrackingState 
-	{
-		//非追跡状態
-		en_nonTracking,
-		//後ろから普通に追う
-		en_chaseFromBehind,
-		//回り込む
-		en_wrapAround,
 	};
 public:
 	/// <summary>

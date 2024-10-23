@@ -2,6 +2,7 @@
 #include "EnemyAIMetaWarrior.h"
 #include "EnemySM_Warrior.h"
 #include "EnemyBase.h"
+#include "EnemyWarriorTrackingState.h"
 
 //処理順
 //
@@ -42,41 +43,50 @@ bool EnemyAIMetaWarrior::Start()
 //ウォリアー全体の追跡ステートを変更する関数
 void EnemyAIMetaWarrior::MetaAIExecution(EnemySM_Warrior* enemyPtr)
 {
+	//まず呼びかけたエネミーのポインタを格納
+	//念のため初期化
+	m_MainCallWarrior = nullptr;
+	m_MainCallWarrior = enemyPtr;
 	//周囲に呼びかけを行う
-	CallWarrior(enemyPtr);
+	CallWarrior();
 }
 
 //リストにウォリアーを代入
 void EnemyAIMetaWarrior::ListInitEnemy(EnemySM_Warrior* enemyPtr)
 {
+	//データを作成
+	MetaAIWarriorData* initData = new MetaAIWarriorData;
+	//エネミーのポインタを格納
+	initData->m_warriorPtr = enemyPtr;
 	//リストにウォリアーを代入する
-	m_enemyWarriorList.push_back(enemyPtr);
+	m_enemyWarriorList.push_back(initData);
 }
 
-void EnemyAIMetaWarrior::CallWarrior(EnemySM_Warrior* enemyPtr)
+void EnemyAIMetaWarrior::CallWarrior()
 {
-	//クリアする
-	m_CallRespondWarriorList.clear();
-
 	//まず呼びかけを行ったウォリアーの周囲にウォリアーが存在するか
 	//を調べる
-	Vector3 callEnemyPos = enemyPtr->GetEnemyPtr().GetPosition();
+	Vector3 callEnemyPos = m_MainCallWarrior->GetEnemyPtr().GetPosition();
 	Vector3 enemyPos;
 	Vector3 faceVector;
 	float len;
+
+	//呼ばれたエネミーのポインタを初期化
+	m_subCalledWarriorFirst = nullptr;
+	m_subCalledWarriorSecond = nullptr;
 	
 	//範囲for文で回す
 	for (auto& ptr : m_enemyWarriorList)
 	{
-		//もし今のポインタが自分だったら
-		if (enemyPtr == ptr)
+		//自分のアドレスと同じだったら
+		if (m_MainCallWarrior == ptr->m_warriorPtr)
 		{
 			//処理を飛ばす
 			continue;
 		}
 
 		//ウォリアーの位置を取得
-		enemyPos = ptr->GetEnemyPtr().GetPosition();
+		enemyPos = ptr->m_warriorPtr->GetEnemyPtr().GetPosition();
 
 		//呼びかけをしたウォリアーの位置と減算を行って
 		//呼びかけをしたウォリアーから周囲のウォリアーの座標に向かって伸びる
@@ -88,22 +98,73 @@ void EnemyAIMetaWarrior::CallWarrior(EnemySM_Warrior* enemyPtr)
 		//もし250.0f圏内にウォリアーがいたら
 		if (len < CALL_RANGE_CALC * CALL_RANGE_CALC)
 		{			
-			//呼びかける、専用の配列にポインタを格納
-			m_CallRespondWarriorList.push_back(ptr);
+			//配列の呼びかけに応じたエネミーのポインタを変数に格納
+			if (m_subCalledWarriorFirst == nullptr)
+			{
+				m_subCalledWarriorFirst = ptr->m_warriorPtr;
+			}
+			else
+			{
+				m_subCalledWarriorSecond = ptr->m_warriorPtr;
+			}
 		}
 	}
 
+	//エネミー全体の追跡ステートを変更する
+	ChangeTrackingState();
 }
 
-const bool EnemyAIMetaWarrior::SearchEnemyTracking() const
+void EnemyAIMetaWarrior::ChangeTrackingState()
 {
-	for (auto& ptr: m_enemyWarriorList)
+
+	//セコンドがnullだったら
+	if (m_subCalledWarriorSecond == nullptr)
 	{
-		if (ptr->IsTracking())
+		//単体処理を行う
+		if (m_subCalledWarriorFirst->GetEnemyPtr().GetTrackingStateNumber()
+			== WarriorTrackingState::en_nonTracking)
 		{
-			return true;
+			//自身のウォリアーを通常追跡ステートに
+			m_MainCallWarrior->GetEnemyPtr().SetTrackingStateNumber(WarriorTrackingState::en_chaseFromBehind);
+			//ファーストを回り込みステートに
+			m_subCalledWarriorFirst->GetEnemyPtr().SetTrackingStateNumber(WarriorTrackingState::en_wrapAround);
+		}
+		else if(m_subCalledWarriorFirst->GetEnemyPtr().GetTrackingStateNumber()
+			== WarriorTrackingState::en_chaseFromBehind)
+		{
+			
 		}
 	}
+	//nullじゃなかったら
+	else
+	{
+		//複数処理を行う
 
-	return false;
+	}
+
+	//まず呼びかけに応じたリストのサイズを取得する
+	
+	////呼びかけに応じたエネミーが2体以上だったら
+	//if (callWarriorNum >= 2)
+	//{
+	//	//2体の時の判定を行う
+	//	if (m_CallRespondWarriorList[0]->GetEnemyPtr().GetTrackingStateNumber() ==
+	//		WarriorTrackingState::en_nonTracking && 
+	//		m_CallRespondWarriorList[1]->GetEnemyPtr().GetTrackingStateNumber() ==
+	//		WarriorTrackingState::en_nonTracking)
+	//	{
+
+	//	}
+	//}
+	////違ったら
+	//else
+	//{
+	//	//1体の時の判定を行う
+	//	if (m_CallRespondWarriorList[0]->GetEnemyPtr().GetTrackingStateNumber() ==
+	//		WarriorTrackingState::en_nonTracking)
+	//	{
+	//		m_MainCallWarrior->GetEnemyPtr().SetTrackingStateNumber(WarriorTrackingState::en_chaseFromBehind);
+	//	}
+	//}
+
 }
