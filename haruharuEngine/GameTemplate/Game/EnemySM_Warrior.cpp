@@ -114,6 +114,8 @@ void EnemySM_Warrior::ChangeState()
 		//視界内にプレイヤーがいて尚且つプレイヤーとの間に壁が無かったら
 		if (m_enemyConList[0]->Execution())
 		{
+			//[テスト]メタAIから指示をもらう
+			
 			//追跡ステートにする
 			m_warriorState = WarriorState::en_warrior_tracking;
 			//追跡するように

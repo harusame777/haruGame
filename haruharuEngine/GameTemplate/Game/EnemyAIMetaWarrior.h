@@ -1,6 +1,7 @@
 #pragma once
 
 class EnemySM_Warrior;
+class EnemyBase;
 
 class EnemyAIMetaWarrior : public IGameObject
 {
@@ -16,12 +17,7 @@ public:
 	/// <summary>
 	/// スタート関数
 	/// </summary>
-	/// <returns></returns>
 	bool Start();
-	/// <summary>
-	/// アップデート関数
-	/// </summary>
-	void Update();
 	/// <summary>
 	/// リストにエネミーを格納する
 	/// </summary>
@@ -30,7 +26,11 @@ public:
 	/// <summary>
 	/// エネミー全体の追跡ステートを変更する関数
 	/// </summary>
-	void ChangeTrackingState();
+	void MetaAIExecution(EnemySM_Warrior* enemyPtr);
+	/// <summary>
+	/// ウォリアーに呼びかけを行う
+	/// </summary>
+	void CallWarrior(EnemySM_Warrior* enemyPtr);
 	/// <summary>
 	/// リスト内のエネミーが追跡状態か調べる変数
 	/// </summary>
@@ -41,5 +41,9 @@ private:
 	/// エネミーウォリアーのリスト
 	/// </summary>
 	std::vector<EnemySM_Warrior*> m_enemyWarriorList;
+	/// <summary>
+	/// 呼びかけに応じたエネミーのリスト
+	/// </summary>
+	std::list<EnemySM_Warrior*> m_CallRespondWarriorList;
 };
 
