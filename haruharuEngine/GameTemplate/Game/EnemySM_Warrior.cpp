@@ -1,14 +1,10 @@
 #include "stdafx.h"
 #include "EnemySM_Warrior.h"
-#include "EnemyBase.h"
 #include "EnemyAIConSearch.h"
 #include "EnemyAIMoveAstar.h"
 #include "EnemyAIConWaitTime.h"
 #include "EnemyAIConColPlayer.h"
 #include "EnemyAIMetaWarrior.h"
-
-//これを有効にするとデバッグモードになる
-#define DEBUG_MODE
 
 //スタート関数
 void EnemySM_Warrior::EnemyAIStart()
@@ -89,11 +85,6 @@ void EnemySM_Warrior::EnemyAIUpdate()
 		break;
 	}
 
-#ifdef DEBUG_MODE
-	//ステートナンバーを送る
-	GetEnemyPtr().SetStateNumber(m_warriorState);
-#endif
-
 }
 
 //共通ステート変更関数
@@ -106,7 +97,7 @@ void EnemySM_Warrior::ChangeState()
 	}
 
 	//待機ステートにする
-	m_warriorState = WarriorState::en_warrior_idle;
+	SetState(WarriorState::en_warrior_idle);
 
 	//もし追跡ステートじゃなくて
 	if (m_warriorState != WarriorState::en_warrior_tracking)
@@ -115,9 +106,9 @@ void EnemySM_Warrior::ChangeState()
 		if (m_enemyConList[0]->Execution())
 		{
 			//[テスト]メタAIから指示をもらう
-			
+			m_warriorMetaAI->MetaAIExecution(this);
 			//追跡ステートにする
-			m_warriorState = WarriorState::en_warrior_tracking;
+			SetState(WarriorState::en_warrior_tracking);
 			//追跡するように
 			m_isTracking = true;
 			m_isTrackingTimeOver = true;

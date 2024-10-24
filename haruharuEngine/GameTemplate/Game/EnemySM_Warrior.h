@@ -2,8 +2,8 @@
 #include "EnemyAIBase.h"
 #include "EnemySMBase.h"
 #include "EnemyWarriorTrackingState.h"
+#include "EnemyBase.h"
 
-class EnemyBase;
 class EnemyAIMetaWarrior;
 
 class EnemySM_Warrior : public EnemySMBase, public virtual EnemyAIBase
@@ -52,6 +52,40 @@ public:
 	const bool IsTracking() const
 	{
 		return m_isTracking;
+	}
+	/// <summary>
+	/// 追跡ステートナンバーを設定
+	/// </summary>
+	/// <param name="stateNum = ステートナンバー"></param>
+	void SetTrackingState(const WarriorTrackingState setState)
+	{
+		GetEnemyPtr().SetTrackingStateNumber(setState);
+		m_warriorTrackingState = setState;
+	}
+	/// <summary>
+	/// 追跡ステートナンバーを取得
+	/// </summary>
+	/// <returns></returns>
+	const WarriorTrackingState GetTrackingState()
+	{
+		return m_warriorTrackingState;
+	}
+	/// <summary>
+	/// ステートナンバーを設定
+	/// </summary>
+	/// <param name="stateNum = ステートナンバー"></param>
+	void SetState(const WarriorState setState)
+	{
+		GetEnemyPtr().SetStateNumber(setState);
+		m_warriorState = setState;
+	}
+	/// <summary>
+	/// ステートナンバーを取得
+	/// </summary>
+	/// <returns></returns>
+	const WarriorState GetState()
+	{
+		return m_warriorState;
 	}
 private:
 	/// <summary>

@@ -35,10 +35,6 @@ public:
 	/// エネミー全体の追跡ステートを変更する関数
 	/// </summary>
 	void ChangeTrackingState();
-	/// <summary>
-	/// 
-	/// </summary>
-	const bool SearchCallCompliedWarrior();
 private:
 	struct MetaAIWarriorData
 	{
@@ -55,14 +51,6 @@ private:
 	/// 呼びかけたエネミー
 	/// </summary>
 	EnemySM_Warrior* m_MainCallWarrior = nullptr;
-	/// <summary>
-	/// 呼ばれたエネミー１
-	/// </summary>
-	EnemySM_Warrior* m_subCalledWarriorFirst = nullptr;
-	/// <summary>
-	/// 呼ばれたエネミー２
-	/// </summary>
-	EnemySM_Warrior* m_subCalledWarriorSecond = nullptr;
 	/// <summary>
 	/// エネミーウォリアーのリスト
 	/// </summary>

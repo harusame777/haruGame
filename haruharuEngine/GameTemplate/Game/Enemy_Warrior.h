@@ -41,6 +41,17 @@ private:
 	/// AIList内のプログラムのアップデート
 	/// </summary>
 	void AIListUpdate();
+	/// <summary>
+	/// デバックディスプレイ文字設定
+	/// </summary>
+	void DebugStateDisplay(int setnum)
+	{
+		wchar_t wcsbuf[256];
+
+		swprintf_s(wcsbuf, 256, L"NowState[%01d]", int(setnum));
+
+		m_debugStateDisplayRender.SetText(wcsbuf);
+	}
 private:
 	/// <summary>
 	/// モデル
@@ -52,7 +63,5 @@ private:
 	CollisionObject* m_collisionObject;	
 	//test
 	Player* m_player = nullptr;
-
-
 };
 
