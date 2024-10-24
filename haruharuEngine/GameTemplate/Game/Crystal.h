@@ -31,11 +31,16 @@ private:
 	/// レイテストを行って壁がないかどうかを調べる関数
 	/// </summary>
 	/// <returns></returns>
-	bool RayTestWall();
+	const bool IsLookCrystal();
+	/// <summary>
+	/// 取得範囲内にプレイヤーがいるかどうか調べる関数
+	/// </summary>
+	/// <returns></returns>
+	const bool IsInGetRange();
 	/// <summary>
 	/// レンダー関数
 	/// </summary>
-	void Render(RenderContext& rc);
+	void Render(RenderContext& rc); 
 	/// <summary>
 	/// このオブジェクトが取得されているかどうか
 	/// </summary>
@@ -48,5 +53,9 @@ private:
 	/// プレイヤーのインスタンス
 	/// </summary>
 	Player* m_player = nullptr;
+	/// <summary>
+	/// デバック用のfontrender
+	/// </summary>
+	FontRender m_debugFontRender;
 };
 
