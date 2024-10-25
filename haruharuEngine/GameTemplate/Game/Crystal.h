@@ -2,6 +2,7 @@
 #include "ObjectBase.h"
 
 class Player;
+class CrystalGetCommandSprite;
 
 class Crystal : public ObjectBase
 {
@@ -53,6 +54,10 @@ private:
 	/// プレイヤーのインスタンス
 	/// </summary>
 	Player* m_player = nullptr;
+	/// <summary>
+	/// クリスタルの取得コマンド表示プログラムのインスタンス
+	/// </summary>
+	CrystalGetCommandSprite* m_GetCOMSprite = nullptr;
 	/// <summary>
 	/// デバック用のfontrender
 	/// </summary>

@@ -5,6 +5,7 @@ class BackGroundWalls;
 class BackGroundFloor;
 class Player;
 class Enemy_Warrior;
+class CrystalGetCommandSprite;
 
 class Game : public IGameObject
 {
@@ -43,6 +44,8 @@ public:
 	Player* m_player = nullptr;
 
 	Enemy_Warrior* m_testEnemy = nullptr;
+
+	CrystalGetCommandSprite* m_GetCOMSprite = nullptr;
 
 	ModelRender m_bgModelRendedr;
 	PhysicsStaticObject m_bgObject;

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Crystal.h"
 #include "Player.h"
+#include "CrystalGetCommandSprite.h"
 
 //これを有効にするとデバッグモードになる
 #define DEBUG_MODE
@@ -64,6 +65,9 @@ bool Crystal::Start()
 	//プレイヤーのインスタンスを取得する
 	m_player = FindGO<Player>("player");
 
+	//クリスタルの取得コマンド表示プログラムのインスタンスを取得する
+	m_GetCOMSprite = FindGO<CrystalGetCommandSprite>("object");
+
 	//コライダーを初期化する
 	m_sphereCollider.Create(1.0f);
 
@@ -113,8 +117,10 @@ const bool Crystal::IsLookCrystal()
 	//内積を計算し、相似性を測る
 	float similarity = Dot(camForward, diff);
 
+	//もし-0.95よりも相似性が小さかったら
 	if (similarity <= -0.95)
 	{
+		//trueを返す
 		return true;
 	}
 

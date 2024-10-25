@@ -4,6 +4,7 @@
 #include "BackGroundWalls.h"
 #include "BackGroundFloor.h"
 #include "Crystal.h"
+#include "CrystalGetCommandSprite.h"
 #include "Player.h"
 #include "Enemy_Warrior.h"
 
@@ -13,6 +14,8 @@ bool Game::Start()
 	sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
 	sunDirectionalLight.LightDirectionNormalize();
 	sunDirectionalLight.CastShadow();
+
+	m_GetCOMSprite = NewGO<CrystalGetCommandSprite>(0, "object");
 
 	//レベルレンダーのテスト
 	m_levelRender.Init("Assets/mapLevel/testLevel3.tkl", [&](LevelObjectData_Render& objData)
