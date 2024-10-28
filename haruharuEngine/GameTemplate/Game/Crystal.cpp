@@ -4,7 +4,7 @@
 #include "CrystalGetCommandSprite.h"
 
 //これを有効にするとデバッグモードになる
-#define DEBUG_MODE
+//#define DEBUG_MODE
 
 //クリスタルを採取するときにクリスタルにカメラを向けないと採取できないようにしたい
 //
@@ -160,6 +160,13 @@ void Crystal::GetCrystal()
 
 		m_debugFontRender.SetText(wcsbuf);
 #endif
+
+		//もしBボタンが押されたら
+		if (g_pad[0]->IsTrigger(enButtonB))
+		{
+			//採取を開始する
+			m_GetCOMSprite->CrystalCollectStart(this);
+		}
 	}
 #ifdef DEBUG_MODE
 	else
