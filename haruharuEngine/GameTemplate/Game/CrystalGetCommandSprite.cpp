@@ -16,6 +16,14 @@ namespace {
 	/// 文字震えの速さ
 	/// </summary>
 	static const float SHAKE_SPEED = 20.0f;
+	/// <summary>
+	/// コマンドリストの最大値
+	/// </summary>
+	static const int COMMAND_MAX = 5;
+	/// <summary>
+	/// ボタンの最大値
+	/// </summary>
+	static const int BUTTON_MAX = 4;
 }
 
 //コンストラクタ
@@ -33,7 +41,36 @@ CrystalGetCommandSprite::~CrystalGetCommandSprite()
 //スタート関数
 bool CrystalGetCommandSprite::Start()
 {
+	//ファイルパスのリストを初期化する
+	m_FilePaths[CommandTriggerState::en_isTriggerY] = "Assets/modelData/objects/crystal/testCommandSprite_Y.DDS";
+
+	m_FilePaths[CommandTriggerState::en_isTriggerB] = "Assets/modelData/objects/crystal/testCommandSprite_B.DDS";
+
+	m_FilePaths[CommandTriggerState::en_isTriggerA] = "Assets/modelData/objects/crystal/testCommandSprite_A.DDS";
+
+	m_FilePaths[CommandTriggerState::en_isTriggerX] = "Assets/modelData/objects/crystal/testCommandSprite_X.DDS";
+
 	return true;
+}
+
+//スプライトの初期化
+void CrystalGetCommandSprite::InitSprite()
+{
+
+	int nowCommandListNum;
+	
+	//コマンドリスト分for文を回す
+	for (int i = 0; i < COMMAND_MAX; i++)
+	{
+		//コマンドリストのナンバーを格納する
+		nowCommandListNum = m_commandList[i];
+
+		SpriteRender* newSprite = new SpriteRender;
+
+		newSprite->Init(m_FilePaths[nowCommandListNum], 500.0f, 500.0f);
+
+		m_buttonSprites[i]->m_bottonSprite = newSprite;
+	}
 }
 
 //アップデート関数
@@ -113,11 +150,14 @@ void CrystalGetCommandSprite::CommandMix()
 	std::uniform_int_distribution<> dist(0, 3);
 
 	//コマンドをランダムに決定する
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < COMMAND_MAX; i++)
 	{
 		//ランダムな数を入力
 		m_commandList[i] = dist(gen);
 	}
+
+	//スプライトを初期化する
+	InitSprite();
 }
 
 //XYABボタンが押されたかどうかを判定して、正しいボタンが押された、

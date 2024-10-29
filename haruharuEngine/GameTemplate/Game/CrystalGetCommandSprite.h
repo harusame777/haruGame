@@ -57,6 +57,10 @@ private:
 	/// </summary>
 	void CommandMix();
 	/// <summary>
+	/// スプライトを設定
+	/// </summary>
+	void InitSprite();
+	/// <summary>
 	/// 何ボタンが押されたかを判定するステート
 	/// </summary>
 	enum CommandTriggerState
@@ -75,7 +79,7 @@ private:
 	/// <summary>
 	/// コマンドリスト
 	/// </summary>
-	int m_commandList[5];
+	int m_commandList[COMMAND_MAX];
 	/// <summary>
 	/// 現在のコマンドナンバー
 	/// </summary>
@@ -92,6 +96,24 @@ private:
 	/// タイムリミット
 	/// </summary>
 	float m_timeLimit = 0.0f;
+	/// <summary>
+	/// ボタンのスプライトの構造体
+	/// </summary>
+	struct ButtonSprites
+	{
+		/// <summary>
+		/// ボタンのスプライト
+		/// </summary>
+		SpriteRender* m_bottonSprite;
+	};
+	/// <summary>
+	/// ファイルパスを格納する
+	/// </summary>
+	const char* m_FilePaths[4];
+	/// <summary>
+	/// ボタンのスプライトの配列
+	/// </summary>
+	ButtonSprites* m_buttonSprites[5];
 	/// <summary>
 	/// クリスタルのインスタンス
 	/// </summary>
