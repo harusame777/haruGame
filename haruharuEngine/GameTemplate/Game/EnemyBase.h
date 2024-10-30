@@ -60,6 +60,10 @@ protected:
 	/// </summary>
 	int m_stateNumber = -1;
 	/// <summary>
+	/// 現在のステートの数値
+	/// </summary>
+	int m_trackingStateNumber = -1;
+	/// <summary>
 	/// デバック用フォントレンダー
 	/// </summary>
 	FontRender m_debugStateDisplayRender;
@@ -145,12 +149,28 @@ public:
 		return m_moveTargetPosition;
 	}
 	/// <summary>
+	/// 追跡ステートナンバーを設定
+	/// </summary>
+	/// <param name="stateNum = ステートナンバー"></param>
+	void SetTrackingStateNumber(const int setNum)
+	{
+		m_trackingStateNumber = setNum;
+	}
+	/// <summary>
+	/// 追跡ステートナンバーを取得
+	/// </summary>
+	/// <returns></returns>
+	const int GetTrackingStateNumber()
+	{
+		return m_trackingStateNumber;
+	}
+	/// <summary>
 	/// ステートナンバーを設定
 	/// </summary>
 	/// <param name="stateNum = ステートナンバー"></param>
-	void SetStateNumber(const int stateNum)
+	void SetStateNumber(const int setNum)
 	{
-		m_stateNumber = stateNum;
+		m_stateNumber = setNum;
 	}
 	/// <summary>
 	/// ステートナンバーを取得
@@ -159,17 +179,6 @@ public:
 	const int GetStateNumber()
 	{
 		return m_stateNumber;
-	}
-	/// <summary>
-	/// デバックディスプレイ文字設定
-	/// </summary>
-	void DebugStateDisplay()
-	{
-		wchar_t wcsbuf[256];
-
-		swprintf_s(wcsbuf, 256, L"NowState[%01d]", int(m_stateNumber));
-
-		m_debugStateDisplayRender.SetText(wcsbuf);
 	}
 };
 

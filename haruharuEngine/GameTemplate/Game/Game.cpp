@@ -4,6 +4,7 @@
 #include "BackGroundWalls.h"
 #include "BackGroundFloor.h"
 #include "Player.h"
+#include "EnemyAIMetaWarrior.h"
 #include "Enemy_Warrior.h"
 
 bool Game::Start()
@@ -76,6 +77,9 @@ bool Game::Start()
 	//m_bgObject.CreateFromModel(m_bgModelRendedr.GetModel(), m_bgModelRendedr.GetModel().GetWorldMatrix());
 
 	m_player = NewGO<Player>(0, "player");
+
+	//エネミーウォリアーのメタAI
+	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");
 
 	m_testEnemy = NewGO<Enemy_Warrior>(0, "enemy");
 

@@ -8,7 +8,7 @@
 //スタート関数
 void EnemyAIMoveAstar::EnemyAIStart()
 {
-	m_nvmMesh.Init("Assets/nvm/test.tkn");
+	m_nvmMesh.Init("Assets/nvm/testnvm3.tkn");
 }
 
 //アップデート関数
@@ -34,8 +34,8 @@ void EnemyAIMoveAstar::EnemyAIUpdate()
 			myPos,							//開始座標
 			tarPos,							//移動先座標
 			PhysicsWorld::GetInstance(),	//物理エンジン
-			50.0f,							//AIエージョントの半径
-			200.0f							//AIエージェントの高さ
+			1.0f,							//AIエージョントの半径50.0
+			1.0f							//AIエージェントの高さ200
 		);
 #ifdef DEBUG_MODE
 	}
@@ -45,7 +45,7 @@ void EnemyAIMoveAstar::EnemyAIUpdate()
 		//移動先を計算
 		Vector3 pathMovePos = m_path.Move(
 			myPos,
-			2.0f,
+			5.0f,
 			isEnd
 		);
 
