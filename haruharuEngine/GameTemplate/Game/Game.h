@@ -6,6 +6,7 @@ class BackGroundFloor;
 class Player;
 class Enemy_Warrior;
 class CrystalGetCommandSprite;
+class EnemyAIMetaWarrior;
 
 class Game : public IGameObject
 {
@@ -15,7 +16,7 @@ public:
 
 	void Update();
 
-	//ƒeƒXƒg—pÀ•W
+	//ãƒ†ã‚¹ãƒˆç”¨åº§æ¨™
 
 	Vector3 m_modelTestPos = Vector3::Zero;
 
@@ -26,8 +27,11 @@ public:
 	Vector3 m_spotLightTestDirection = { 1.0f,-1.0f,1.0f };
 
 	LevelRender m_levelRender;
+
+	//ã‚¨ãƒãƒŸãƒ¼ã‚¦ã‚©ãƒªã‚¢ãƒ¼ã®ãƒ¡ã‚¿AI
+	EnemyAIMetaWarrior* m_warriorMetaAI;
 	
-	//ƒeƒXƒgƒJƒƒ‰
+	//ãƒ†ã‚¹ãƒˆã‚«ãƒ¡ãƒ©
 	GameCamera* m_testCamera = nullptr;
 
 	ModelRender m_modelFloor;
@@ -36,7 +40,7 @@ public:
 
 	PointLight m_testPointLight;
 
-	//‘¾—zŒõ‚Ìì¬
+	//å¤ªé™½å…‰ã®ä½œæˆ
 	DirectionalLight sunDirectionalLight;
 
 	SpotLight m_testSpotLight;

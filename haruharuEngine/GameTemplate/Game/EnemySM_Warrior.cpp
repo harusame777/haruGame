@@ -1,13 +1,10 @@
 #include "stdafx.h"
 #include "EnemySM_Warrior.h"
-#include "EnemyBase.h"
 #include "EnemyAIConSearch.h"
 #include "EnemyAIMoveAstar.h"
 #include "EnemyAIConWaitTime.h"
 #include "EnemyAIConColPlayer.h"
-
-//これを有効にするとデバッグモードになる
-#define DEBUG_MODE
+#include "EnemyAIMetaWarrior.h"
 
 //スタート関数
 void EnemySM_Warrior::EnemyAIStart()
@@ -49,6 +46,11 @@ void EnemySM_Warrior::EnemyAIStart()
 	{
 		listPtr->Start();
 	}
+
+	//メタAIのインスタンスを格納
+	m_warriorMetaAI = FindGO<EnemyAIMetaWarrior>("MetaAI");
+	//メタAIにエネミーのインスタンスを送る
+	m_warriorMetaAI->ListInitEnemy(this);
 }
 
 //アップデート関数
@@ -83,11 +85,6 @@ void EnemySM_Warrior::EnemyAIUpdate()
 		break;
 	}
 
-#ifdef DEBUG_MODE
-	//ステートナンバーを送る
-	GetEnemyPtr().SetStateNumber(m_warriorState);
-#endif
-
 }
 
 //共通ステート変更関数
@@ -100,7 +97,7 @@ void EnemySM_Warrior::ChangeState()
 	}
 
 	//待機ステートにする
-	m_warriorState = WarriorState::en_warrior_idle;
+	SetState(WarriorState::en_warrior_idle);
 
 	//もし追跡ステートじゃなくて
 	if (m_warriorState != WarriorState::en_warrior_tracking)
@@ -108,9 +105,12 @@ void EnemySM_Warrior::ChangeState()
 		//視界内にプレイヤーがいて尚且つプレイヤーとの間に壁が無かったら
 		if (m_enemyConList[0]->Execution())
 		{
+			//[テスト]メタAIから指示をもらう
+			m_warriorMetaAI->MetaAIExecution(this);
 			//追跡ステートにする
-			m_warriorState = WarriorState::en_warrior_tracking;
+			SetState(WarriorState::en_warrior_tracking);
 			//追跡するように
+			m_isTracking = true;
 			m_isTrackingTimeOver = true;
 			//追跡時間を初期化
 			m_enemyConList[1]->Start();
@@ -129,6 +129,7 @@ void EnemySM_Warrior::TimeUpdate()
 		if (m_enemyConList[1]->Execution())
 		{
 			//追跡から別のステートにするようにして
+			m_isTracking = false;
 			m_isTrackingTimeOver = false;
 			//追跡時間を初期化
 			m_enemyConList[1]->Start();

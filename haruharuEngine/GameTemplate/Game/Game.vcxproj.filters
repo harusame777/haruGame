@@ -10,9 +10,6 @@
     <Filter Include="Enemy">
       <UniqueIdentifier>{f9b753a0-9fad-4d0c-a49e-bd08a033d501}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Enemy\EnemyAI">
-      <UniqueIdentifier>{de36f513-ef62-4332-9756-2af3da15b4b4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Enemy\EnemyAICon">
       <UniqueIdentifier>{46bf68a7-20c4-42b8-a899-cf8494ddf95f}</UniqueIdentifier>
     </Filter>
@@ -24,10 +21,14 @@
     </Filter>
     <Filter Include="object">
       <UniqueIdentifier>{0b53cf91-35d4-45b3-8da7-a57e6cff3ce9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="object\Crustal">
       <UniqueIdentifier>{b843d2f6-fb0e-4353-9129-3e9165bdece0}</UniqueIdentifier>
+    <Filter Include="Enemy\EnemyAI">
+      <UniqueIdentifier>{de36f513-ef62-4332-9756-2af3da15b4b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy\EnemyAIMeta">
+      <UniqueIdentifier>{caf883ef-2716-4647-81fa-9a994bac3f78}</UniqueIdentifier>
+    </Filtern>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -82,6 +83,12 @@
     </ClCompile>
     <ClCompile Include="CrystalGetCommandSprite.cpp">
       <Filter>object\Crustal</Filter>
+
+    <ClCompile Include="EnemyAIMovePatrol.cpp">
+      <Filter>Enemy\EnemyAI</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAIMetaWarrior.cpp">
+      <Filter>Enemy\EnemyAIMeta</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +143,14 @@
     </ClInclude>
     <ClInclude Include="CrystalGetCommandSprite.h">
       <Filter>object\Crustal</Filter>
+    <ClInclude Include="EnemyAIMovePatrol.h">
+      <Filter>Enemy\EnemyAI</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAIMetaWarrior.h">
+      <Filter>Enemy\EnemyAIMeta</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyWarriorTrackingState.h">
+      <Filter>Enemy\EnemyAIMeta</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

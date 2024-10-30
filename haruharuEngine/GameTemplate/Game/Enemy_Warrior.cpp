@@ -61,7 +61,7 @@ void Enemy_Warrior::Update()
 	m_collisionObject->SetPosition(m_position);
 
 #ifdef DEBUG_MODE
-	DebugStateDisplay();
+	DebugStateDisplay(GetStateNumber());
 #endif
 
 	m_modelRender.Update();
@@ -86,6 +86,7 @@ void Enemy_Warrior::InitAIList()
 	m_enemyWarriorSM->BinedEnemy(this);
 
 	m_enemyWarriorSM->EnemyAIStart();
+
 }
 
 void Enemy_Warrior::AIListUpdate()
