@@ -15,6 +15,22 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~Crystal();
+	/// <summary>
+	/// このクリスタルは採取されました
+	/// </summary>
+	void CrystalCollected()
+	{
+		//取得フラグをtrueに
+		m_isGetObject = true;
+	}
+	/// <summary>
+	/// このクリスタルの採取に失敗しました
+	/// </summary>
+	void CollectedFailure()
+	{
+		//採取クールタイムを初期化
+		m_collectCoolTime = 2.0f;
+	}
 private:
 	/// <summary>
 	/// スタート関数
@@ -46,6 +62,10 @@ private:
 	/// このオブジェクトが取得されているかどうか
 	/// </summary>
 	bool m_isGetObject = false;
+	/// <summary>
+	/// 採取クールタイム
+	/// </summary>
+	float m_collectCoolTime = 0.0f;
 	/// <summary>
 	/// コライダー
 	/// </summary>

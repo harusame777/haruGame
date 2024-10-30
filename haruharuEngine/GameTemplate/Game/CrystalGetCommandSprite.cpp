@@ -17,13 +17,14 @@ namespace {
 	/// </summary>
 	static const float SHAKE_SPEED = 20.0f;
 	/// <summary>
-	/// コマンドリストの最大値
+	/// 文字サイズ
 	/// </summary>
-	static const int COMMAND_MAX = 5;
+	static const float SPRITE_W_SIZE = 150.0f;
+	static const float SPRITE_H_SIZE = 150.0f;
 	/// <summary>
-	/// ボタンの最大値
+	/// 文字の位置
 	/// </summary>
-	static const int BUTTON_MAX = 4;
+	static const Vector3 SPRITE_POSITION = { 0.0f,-200.0f,0.0f };
 }
 
 //コンストラクタ
@@ -41,14 +42,18 @@ CrystalGetCommandSprite::~CrystalGetCommandSprite()
 //スタート関数
 bool CrystalGetCommandSprite::Start()
 {
-	//ファイルパスのリストを初期化する
-	m_FilePaths[CommandTriggerState::en_isTriggerY] = "Assets/modelData/objects/crystal/testCommandSprite_Y.DDS";
+	//ボタンのスプライトの初期化
+	m_buttonSpriteY.Init("Assets/modelData/objects/crystal/testCommandSprite_Y.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
+	m_buttonSpriteY.SetPosition(SPRITE_POSITION);
 
-	m_FilePaths[CommandTriggerState::en_isTriggerB] = "Assets/modelData/objects/crystal/testCommandSprite_B.DDS";
+	m_buttonSpriteB.Init("Assets/modelData/objects/crystal/testCommandSprite_B.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
+	m_buttonSpriteB.SetPosition(SPRITE_POSITION);
 
-	m_FilePaths[CommandTriggerState::en_isTriggerA] = "Assets/modelData/objects/crystal/testCommandSprite_A.DDS";
+	m_buttonSpriteA.Init("Assets/modelData/objects/crystal/testCommandSprite_A.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
+	m_buttonSpriteA.SetPosition(SPRITE_POSITION);
 
-	m_FilePaths[CommandTriggerState::en_isTriggerX] = "Assets/modelData/objects/crystal/testCommandSprite_X.DDS";
+	m_buttonSpriteX.Init("Assets/modelData/objects/crystal/testCommandSprite_X.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
+	m_buttonSpriteX.SetPosition(SPRITE_POSITION);
 
 	return true;
 }
@@ -65,11 +70,22 @@ void CrystalGetCommandSprite::InitSprite()
 		//コマンドリストのナンバーを格納する
 		nowCommandListNum = m_commandList[i];
 
-		SpriteRender* newSprite = new SpriteRender;
-
-		newSprite->Init(m_FilePaths[nowCommandListNum], 500.0f, 500.0f);
-
-		m_buttonSprites[i]->m_bottonSprite = newSprite;
+		//スプライトレンダーを設定
+		switch (nowCommandListNum)
+		{
+		case en_isTriggerY:
+			m_sprites[i] = &m_buttonSpriteY;
+			break;
+		case en_isTriggerB:
+			m_sprites[i] = &m_buttonSpriteB;
+			break;
+		case en_isTriggerA:
+			m_sprites[i] = &m_buttonSpriteA;
+			break;
+		case en_isTriggerX:
+			m_sprites[i] = &m_buttonSpriteX;
+			break;
+		}
 	}
 }
 
@@ -85,12 +101,24 @@ void CrystalGetCommandSprite::Update()
 
 	m_debugFontRender.SetText(wcsbuf);
 #endif
-
+	//コレクトフラグがtrueで現在のコマンドが5以下だったら
+	if (m_isCollectFlag == true && 
+		m_nowCommandNum < COMMAND_MAX)
+	{
+		//ドローコール
+		m_sprites[m_nowCommandNum]->Update();
+	}
 }
 
 //レンダー関数
 void CrystalGetCommandSprite::Render(RenderContext& rc)
 {
+	//コレクトフラグがtrueで現在のコマンドが5以下だったら
+	if (m_isCollectFlag == true && 
+		m_nowCommandNum < COMMAND_MAX)
+	{
+		m_sprites[m_nowCommandNum]->Draw(rc);
+	}
 #ifdef DEBUG_MODE
 	m_debugFontRender.Draw(rc);
 #endif
@@ -109,7 +137,12 @@ void CrystalGetCommandSprite::CommandUpdate()
 	if (m_nowCommandNum > CommandTriggerState::ButtonNum)
 	{
 		//取得成功時の処理を行う
-		m_timeLimit = 0.0f;
+
+		//取得フラグをfalseに
+		m_isCollectFlag = false;
+
+		//クリスタル本体にこのクリスタルは採取されたと伝える
+		m_crystal->CrystalCollected();
 	}
 
 	//ボタンが正しく押されたかどうかのフラグを初期化
@@ -135,7 +168,12 @@ void CrystalGetCommandSprite::CommandUpdate()
 		m_timeLimit <= 0.0f)
 	{
 		//間違っていた時の処理
-		m_timeLimit = 0.0f;
+		 
+		//採取フラグをオフにする
+		m_isCollectFlag = false;
+
+		//クリスタル本体にこのクリスタルの採取に失敗したと伝える
+		m_crystal->CollectedFailure();
 	}
 
 }

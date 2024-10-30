@@ -30,6 +30,8 @@ public:
 		CommandMix();
 		//制限時間を初期化
 		m_timeLimit = 2.0f;
+		//現在のコマンドリストの場所を初期化
+		m_nowCommandNum = 0;
 		//採取フラグをオンにする
 		m_isCollectFlag = true;
 	}
@@ -77,6 +79,10 @@ private:
 		ButtonNum
 	};
 	/// <summary>
+	/// コマンドリストの最大値
+	/// </summary>
+	static const int COMMAND_MAX = 5;
+	/// <summary>
 	/// コマンドリスト
 	/// </summary>
 	int m_commandList[COMMAND_MAX];
@@ -97,23 +103,25 @@ private:
 	/// </summary>
 	float m_timeLimit = 0.0f;
 	/// <summary>
-	/// ボタンのスプライトの構造体
-	/// </summary>
-	struct ButtonSprites
-	{
-		/// <summary>
-		/// ボタンのスプライト
-		/// </summary>
-		SpriteRender* m_bottonSprite;
-	};
-	/// <summary>
-	/// ファイルパスを格納する
-	/// </summary>
-	const char* m_FilePaths[4];
-	/// <summary>
 	/// ボタンのスプライトの配列
 	/// </summary>
-	ButtonSprites* m_buttonSprites[5];
+	SpriteRender* m_sprites[COMMAND_MAX];
+	/// <summary>
+	/// ボタンのスプライトY
+	/// </summary>
+	SpriteRender m_buttonSpriteY;
+	/// <summary>
+	/// ボタンのスプライトB
+	/// </summary>
+	SpriteRender m_buttonSpriteB;
+	/// <summary>
+	/// ボタンのスプライトA
+	/// </summary>
+	SpriteRender m_buttonSpriteA;
+	/// <summary>
+	/// ボタンのスプライトX
+	/// </summary>
+	SpriteRender m_buttonSpriteX;
 	/// <summary>
 	/// クリスタルのインスタンス
 	/// </summary>

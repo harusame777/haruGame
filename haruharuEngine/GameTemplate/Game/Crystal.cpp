@@ -151,6 +151,16 @@ const bool Crystal::IsInGetRange()
 
 void Crystal::GetCrystal()
 {
+	if (m_collectCoolTime <= 0.0f)
+	{
+		m_collectCoolTime = 0.0f;
+	}
+	else
+	{
+		m_collectCoolTime -= g_gameTime->GetFrameDeltaTime();
+		return;
+	}
+
 	if (IsInGetRange() && IsLookCrystal())
 	{
 #ifdef DEBUG_MODE
