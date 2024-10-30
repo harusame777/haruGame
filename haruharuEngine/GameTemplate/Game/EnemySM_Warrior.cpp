@@ -81,6 +81,10 @@ void EnemySM_Warrior::EnemyAIUpdate()
 			m_enemyAIList[0]->EnemyAIUpdate();
 		}
 		break;
+	case EnemySM_Warrior::en_warrior_trackingMetaAI:
+		//追跡を開始する
+		StateTransition_Tracking();
+		break;
 	default:
 		break;
 	}
@@ -105,17 +109,22 @@ void EnemySM_Warrior::ChangeState()
 		//視界内にプレイヤーがいて尚且つプレイヤーとの間に壁が無かったら
 		if (m_enemyConList[0]->Execution())
 		{
-			//[テスト]メタAIから指示をもらう
-			m_warriorMetaAI->MetaAIExecution(this);
-			//追跡ステートにする
-			SetState(WarriorState::en_warrior_tracking);
-			//追跡するように
-			m_isTracking = true;
-			m_isTrackingTimeOver = true;
-			//追跡時間を初期化
-			m_enemyConList[1]->Start();
+			StateTransition_Tracking();
 		}
 	}
+}
+
+void EnemySM_Warrior::StateTransition_Tracking()
+{
+	//[テスト]メタAIから指示をもらう
+	m_warriorMetaAI->MetaAIExecution(this);
+	//追跡ステートにする
+	SetState(WarriorState::en_warrior_tracking);
+	//追跡するように
+	m_isTracking = true;
+	m_isTrackingTimeOver = true;
+	//追跡時間を初期化
+	m_enemyConList[1]->Start();
 }
 
 //時間処理
@@ -133,6 +142,8 @@ void EnemySM_Warrior::TimeUpdate()
 			m_isTrackingTimeOver = false;
 			//追跡時間を初期化
 			m_enemyConList[1]->Start();
+			//メタAIのプロセスを終了する
+			m_warriorMetaAI->ProcessEnd();
 		}
 	}
 }

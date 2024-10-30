@@ -28,14 +28,14 @@ namespace {
 	/// <summary>
 	/// 半径計算用のやつ
 	/// </summary>
-	static const float CALL_RANGE_CALC = 250.0f;
+	static const float CALL_RANGE_CALC = 100000.0f;
 }
 
 //スタート関数
 bool EnemyAIMetaWarrior::Start()
 {
 	//リストのサイズをウォリアーの数でリサイズ
-	m_enemyWarriorList.resize(WARRIOR_NUM);
+	//m_enemyWarriorList.resize(WARRIOR_NUM);
 
 	return true;
 }
@@ -43,10 +43,15 @@ bool EnemyAIMetaWarrior::Start()
 //ウォリアー全体の追跡ステートを変更する関数
 void EnemyAIMetaWarrior::MetaAIExecution(EnemySM_Warrior* enemyPtr)
 {
-	//まず呼びかけたエネミーのポインタを格納
-	//念のため初期化
-	m_MainCallWarrior = nullptr;
+	//この関数を呼び出したエネミーのポインタを格納する
 	m_MainCallWarrior = enemyPtr;
+
+	//現在何かしらの処理中だったら
+	if (m_isCurrentlyProcessed == true)
+	{
+		return;
+	}
+
 	//周囲に呼びかけを行う
 	CallWarrior();
 }
@@ -64,6 +69,9 @@ void EnemyAIMetaWarrior::ListInitEnemy(EnemySM_Warrior* enemyPtr)
 
 void EnemyAIMetaWarrior::CallWarrior()
 {
+	//処理中にする
+	m_isCurrentlyProcessed = true;
+
 	if (m_enemyWarriorList[0] == nullptr)
 	{
 		return;
@@ -135,13 +143,14 @@ void EnemyAIMetaWarrior::ChangeTrackingState()
 			{
 				//後ろから追わせる
 				ptr->m_warriorPtr->SetTrackingState(WarriorTrackingState::en_wrapAround);
-
+				ptr->m_warriorPtr->SetState(EnemySM_Warrior::en_warrior_trackingMetaAI);
 				continue;
 			}
 			//回り込みステートのウォリアーがまだ存在しなかったら
 
 			//回り込ませる
 			ptr->m_warriorPtr->SetTrackingState(WarriorTrackingState::en_wrapAround);
+			ptr->m_warriorPtr->SetState(EnemySM_Warrior::en_warrior_trackingMetaAI);
 
 			//フラグをtrueに
 			existsWrapAroundWarrior = true;
@@ -149,4 +158,16 @@ void EnemyAIMetaWarrior::ChangeTrackingState()
 
 	}
 
+}
+
+void EnemyAIMetaWarrior::ProcessEnd()
+{
+	//処理フラグを終了にして
+	m_isCurrentlyProcessed = false;
+
+	//全員の追跡ステートを非追跡状態にする
+	for (auto& ptr : m_enemyWarriorList)
+	{
+		ptr->m_warriorPtr->SetTrackingState(WarriorTrackingState::en_nonTracking);
+	}
 }

@@ -17,7 +17,6 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~EnemySM_Warrior(){};
-private:
 	/// <summary>
 	/// エネミーウォリアーのステート
 	/// </summary>
@@ -27,6 +26,8 @@ private:
 		en_warrior_idle,
 		//追跡状態
 		en_warrior_tracking,
+		//メタAI指令追跡状態
+		en_warrior_trackingMetaAI,
 	};
 public:
 	/// <summary>
@@ -45,6 +46,10 @@ public:
 	/// 時間処理関数
 	/// </summary>
 	void TimeUpdate();
+	/// <summary>
+	/// ステート遷移：追跡
+	/// </summary>
+	void StateTransition_Tracking();
 	/// <summary>
 	/// 追跡状態か？
 	/// </summary>

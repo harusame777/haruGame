@@ -18,6 +18,9 @@ bool Game::Start()
 
 	m_GetCOMSprite = NewGO<CrystalGetCommandSprite>(0, "object");
 
+	//エネミーウォリアーのメタAI
+	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");
+
 	//レベルレンダーのテスト
 	m_levelRender.Init("Assets/mapLevel/testLevel3.tkl", [&](LevelObjectData_Render& objData)
 	{
@@ -82,6 +85,13 @@ bool Game::Start()
 			crystal->SetScale(objData.m_scalse);
 			return true;
 		}
+		else if (objData.ForwardMatchName(L"youtai") == true)
+		{
+			Enemy_Warrior* enemy_warrior = NewGO<Enemy_Warrior>(0, "enemy");
+			enemy_warrior->SetPosition(objData.m_position);
+			enemy_warrior->SetRotation(objData.m_rotation);
+			enemy_warrior->SetScale(objData.m_scalse);
+		}
 		return true;
 	});
 
@@ -90,10 +100,7 @@ bool Game::Start()
 
 	m_player = NewGO<Player>(0, "player");
 
-	//エネミーウォリアーのメタAI
-	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");
 
-	m_testEnemy = NewGO<Enemy_Warrior>(0, "enemy");
 
 	m_modelFloor.Init("Assets/modelData/testMap/Map_floor.tkm",nullptr,0,enModelUpAxisZ,true);
 	m_modelFloor.SetShadowChasterFlag(false);

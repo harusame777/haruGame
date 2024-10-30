@@ -35,6 +35,10 @@ public:
 	/// エネミー全体の追跡ステートを変更する関数
 	/// </summary>
 	void ChangeTrackingState();
+	/// <summary>
+	/// 処理を終了する
+	/// </summary>
+	void ProcessEnd();
 private:
 	struct MetaAIWarriorData
 	{
@@ -55,5 +59,9 @@ private:
 	/// エネミーウォリアーのリスト
 	/// </summary>
 	std::vector<MetaAIWarriorData*> m_enemyWarriorList;
+	/// <summary>
+	/// 現在処理中かどうか
+	/// </summary>
+	bool m_isCurrentlyProcessed = false;
 };
 
