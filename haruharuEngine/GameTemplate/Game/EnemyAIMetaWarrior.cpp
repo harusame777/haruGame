@@ -135,6 +135,8 @@ void EnemyAIMetaWarrior::ChangeTrackingState()
 			{
 				//後ろから追わせる
 				ptr->m_warriorPtr->SetTrackingState(WarriorTrackingState::en_wrapAround);
+
+				continue;
 			}
 			//回り込みステートのウォリアーがまだ存在しなかったら
 

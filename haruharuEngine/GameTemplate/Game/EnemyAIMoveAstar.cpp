@@ -34,8 +34,8 @@ void EnemyAIMoveAstar::EnemyAIUpdate()
 			myPos,							//開始座標
 			tarPos,							//移動先座標
 			PhysicsWorld::GetInstance(),	//物理エンジン
-			10.0f,							//AIエージョントの半径50.0
-			10.0f							//AIエージェントの高さ200
+			1.0f,							//AIエージョントの半径50.0
+			1.0f							//AIエージェントの高さ200
 		);
 #ifdef DEBUG_MODE
 	}
@@ -45,7 +45,7 @@ void EnemyAIMoveAstar::EnemyAIUpdate()
 		//移動先を計算
 		Vector3 pathMovePos = m_path.Move(
 			myPos,
-			2.0f,
+			5.0f,
 			isEnd
 		);
 
