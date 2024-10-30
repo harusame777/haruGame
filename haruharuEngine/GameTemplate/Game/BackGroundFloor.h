@@ -114,6 +114,5 @@ private:
 	/// ƒƒCƒ“ƒ‚ƒfƒ‹
 	/// </summary>
 	ModelRender m_mainModel;
-
 };
 

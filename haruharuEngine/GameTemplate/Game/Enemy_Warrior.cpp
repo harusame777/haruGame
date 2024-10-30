@@ -5,7 +5,7 @@
 #include "EnemySM_Warrior.h"
 
 //これを有効にするとデバッグモードになる
-#define DEBUG_MODE
+//#define DEBUG_MODE
 
 //コンストラクタ
 Enemy_Warrior::Enemy_Warrior()
