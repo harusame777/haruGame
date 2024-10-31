@@ -6,6 +6,20 @@
 #include "EnemyAIConColPlayer.h"
 #include "EnemyAIMetaWarrior.h"
 
+//エネミー全体を管理するメタAIを作成して、追跡を管理したい
+//
+//1.エネミーが追跡を開始する際に、メタAIにエネミー全体を見て、共に追跡させる
+//エネミーを選抜する関数を実行させる
+//
+//2.メタAIに選抜したエネミーから、普通に追うエネミーと、回り込みをかけるエネミーを
+//分別させる。
+//
+//3.エネミーが追跡を開始する
+//
+//なおメタAIの処理は追跡開始の1回のみの処理とする
+//
+//おそらく追跡続行の処理がよくないので改良の必要アリ
+
 //スタート関数
 void EnemySM_Warrior::EnemyAIStart()
 {
@@ -27,13 +41,19 @@ void EnemySM_Warrior::EnemyAIStart()
 
 	//分岐のプログラムをリストに格納していく
 	//視界探索
-	m_enemyConList.push_back(new EnemyAIConSearch);
+	m_enemyConList.push_back(new EnemyAIConSearch(45.0f,500.0f));
 
 	//10秒タイマー
 	m_enemyConList.push_back(new EnemyAIConWaitTime(10.0f));
 
 	//プレイヤーとの衝突判定
 	m_enemyConList.push_back(new EnemyAIConColPlayer);
+
+	//追跡時視界探索
+	m_enemyConList.push_back(new EnemyAIConSearch(75.0f, 700.0f));
+
+	//5秒タイマー
+	m_enemyConList.push_back(new EnemyAIConWaitTime(5.0f));
 
 	//紐づいているエネミーのインスタンスをConListのプログラムに渡す
 	for (auto& listPtr : m_enemyConList)
@@ -78,8 +98,12 @@ void EnemySM_Warrior::EnemyAIUpdate()
 		else
 		{
 			//追跡処理を更新
-			m_enemyAIList[0]->EnemyAIUpdate();
+			m_enemyAIList[en_enemyAIMoveAstar]->EnemyAIUpdate();
 		}
+		break;
+	case EnemySM_Warrior::en_warrior_patrol:
+		//巡回処理を更新して
+		//別のステートにする
 		break;
 	case EnemySM_Warrior::en_warrior_trackingMetaAI:
 		//追跡を開始する
@@ -95,19 +119,31 @@ void EnemySM_Warrior::EnemyAIUpdate()
 void EnemySM_Warrior::ChangeState()
 {
 	//プレイヤーとの接触判定
-	if (m_enemyConList[2]->Execution())
+	if (m_enemyConList[en_enemyAIConColPlayer]->Execution())
 	{
 
 	}
 
 	//待機ステートにする
 	SetState(WarriorState::en_warrior_idle);
+	
+	//もし巡回ステートじゃなくて
+	if (m_warriorState != WarriorState::en_warrior_patrol)
+	{
+		//待機状態から5秒立っていたら
+		if (m_isWaitIdle == true)
+		{
+			//巡回ステートにする
+			SetState(WarriorState::en_warrior_patrol);
+		}
+	}
+
 
 	//もし追跡ステートじゃなくて
 	if (m_warriorState != WarriorState::en_warrior_tracking)
 	{
 		//視界内にプレイヤーがいて尚且つプレイヤーとの間に壁が無かったら
-		if (m_enemyConList[0]->Execution())
+		if (m_enemyConList[en_enemyAIConSearch]->Execution())
 		{
 			StateTransition_Tracking();
 		}
@@ -121,29 +157,48 @@ void EnemySM_Warrior::StateTransition_Tracking()
 	//追跡ステートにする
 	SetState(WarriorState::en_warrior_tracking);
 	//追跡するように
-	m_isTracking = true;
 	m_isTrackingTimeOver = true;
 	//追跡時間を初期化
-	m_enemyConList[1]->Start();
+	m_enemyConList[en_enemyAIConWaitTime10f]->Start();
 }
 
 //時間処理
 void EnemySM_Warrior::TimeUpdate()
 {
+	//現在のステートが待機状態だったら
+	if (m_warriorState == WarriorState::en_warrior_idle)
+	{
+		//待機タイマーを更新して
+		//残り秒数が0.0だったら
+		if (m_enemyConList[4]->Execution())
+		{
+			//巡回にする
+			m_isWaitIdle = true;
+		}
+	}
+
 	//現在のステートが追跡状態だったら
 	if (m_warriorState == WarriorState::en_warrior_tracking)
 	{
-		//追跡タイマーを更新して
-		//残り秒数が0.0だったら
-		if (m_enemyConList[1]->Execution())
+		//プレイヤーが視角外にいて
+		if (!m_enemyConList[3]->Execution())
 		{
-			//追跡から別のステートにするようにして
-			m_isTracking = false;
-			m_isTrackingTimeOver = false;
+			//追跡タイマーを更新して
+			//残り秒数が0.0だったら
+			if (m_enemyConList[en_enemyAIConWaitTime10f]->Execution())
+			{
+				//追跡から別のステートにするようにして
+				m_isTrackingTimeOver = false;
+				//追跡時間を初期化
+				m_enemyConList[en_enemyAIConWaitTime10f]->Start();
+				//メタAIのプロセスを終了する
+				m_warriorMetaAI->ProcessEnd();
+			}
+		}
+		else
+		{
 			//追跡時間を初期化
-			m_enemyConList[1]->Start();
-			//メタAIのプロセスを終了する
-			m_warriorMetaAI->ProcessEnd();
+			m_enemyConList[en_enemyAIConWaitTime10f]->Start();
 		}
 	}
 }

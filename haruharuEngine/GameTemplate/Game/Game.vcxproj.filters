@@ -1,156 +1,149 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="BackGround">
-      <UniqueIdentifier>{5644ff12-78cc-4987-a77d-768b3674afd5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="system">
-      <UniqueIdentifier>{22dd8095-74f9-46df-81a1-36675a040b1f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Enemy">
-      <UniqueIdentifier>{f9b753a0-9fad-4d0c-a49e-bd08a033d501}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Enemy\EnemyAICon">
-      <UniqueIdentifier>{46bf68a7-20c4-42b8-a899-cf8494ddf95f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Enemy\BasePogram">
-      <UniqueIdentifier>{df4dca5d-5cd9-4bf2-850d-fd11c03b4bf4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Enemy\EnemyAISM">
-      <UniqueIdentifier>{801c2171-b69d-4b2f-9e9a-b877cae65eb6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="object">
-      <UniqueIdentifier>{0b53cf91-35d4-45b3-8da7-a57e6cff3ce9}</UniqueIdentifier>
-    <Filter Include="object\Crustal">
-      <UniqueIdentifier>{b843d2f6-fb0e-4353-9129-3e9165bdece0}</UniqueIdentifier>
-    <Filter Include="Enemy\EnemyAI">
-      <UniqueIdentifier>{de36f513-ef62-4332-9756-2af3da15b4b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Enemy\EnemyAIMeta">
-      <UniqueIdentifier>{caf883ef-2716-4647-81fa-9a994bac3f78}</UniqueIdentifier>
-    </Filtern>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="system\system.cpp">
-      <Filter>system</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
-    <ClCompile Include="BackGroundWalls.cpp">
-      <Filter>BackGround</Filter>
-    </ClCompile>
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="system\system.cpp" />
     <ClCompile Include="BackGroundFloor.cpp">
-      <Filter>BackGround</Filter>
+      <Filter>bg</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGroundWalls.cpp">
+      <Filter>bg</Filter>
+    </ClCompile>
+    <ClCompile Include="Crystal.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="CrystalGetCommandSprite.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectBase.cpp">
+      <Filter>obj</Filter>
     </ClCompile>
     <ClCompile Include="Enemy_Warrior.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyAIMoveAstar.cpp">
-      <Filter>Enemy\EnemyAI</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyAIConSearch.cpp">
-      <Filter>Enemy\EnemyAICon</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyBase.cpp">
-      <Filter>Enemy\BasePogram</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyAIConBase.cpp">
-      <Filter>Enemy\BasePogram</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemySMBase.cpp">
-      <Filter>Enemy\BasePogram</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyAIBase.cpp">
-      <Filter>Enemy\BasePogram</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemySM_Warrior.cpp">
-      <Filter>Enemy\EnemyAISM</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyAIConWaitTime.cpp">
-      <Filter>Enemy\EnemyAICon</Filter>
+      <Filter>Enemy\AICon</Filter>
     </ClCompile>
     <ClCompile Include="EnemyAIConColPlayer.cpp">
-      <Filter>Enemy\EnemyAICon</Filter>
+      <Filter>Enemy\AICon</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectBase.cpp">
-      <Filter>object</Filter>
+    <ClCompile Include="EnemyAIConSearch.cpp">
+      <Filter>Enemy\AICon</Filter>
     </ClCompile>
-    <ClCompile Include="Crystal.cpp">
-      <Filter>object\Crustal</Filter>
+    <ClCompile Include="EnemyAIConWaitTime.cpp">
+      <Filter>Enemy\AICon</Filter>
     </ClCompile>
-    <ClCompile Include="CrystalGetCommandSprite.cpp">
-      <Filter>object\Crustal</Filter>
-
+    <ClCompile Include="EnemyBase.cpp">
+      <Filter>Enemy\AIBase</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySMBase.cpp">
+      <Filter>Enemy\AIBase</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAIBase.cpp">
+      <Filter>Enemy\AIBase</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAIMoveAstar.cpp">
+      <Filter>Enemy\AI</Filter>
+    </ClCompile>
     <ClCompile Include="EnemyAIMovePatrol.cpp">
-      <Filter>Enemy\EnemyAI</Filter>
+      <Filter>Enemy\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySM_Warrior.cpp">
+      <Filter>Enemy\AISM</Filter>
     </ClCompile>
     <ClCompile Include="EnemyAIMetaWarrior.cpp">
-      <Filter>Enemy\EnemyAIMeta</Filter>
+      <Filter>Enemy\AIMeta</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="system\system.h">
-      <Filter>system</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
-    <ClInclude Include="BackGroundWalls.h">
-      <Filter>BackGround</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="system\system.h" />
     <ClInclude Include="BackGroundFloor.h">
-      <Filter>BackGround</Filter>
+      <Filter>bg</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGroundWalls.h">
+      <Filter>bg</Filter>
+    </ClInclude>
+    <ClInclude Include="Crystal.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="CrystalGetCommandSprite.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectBase.h">
+      <Filter>obj</Filter>
     </ClInclude>
     <ClInclude Include="Enemy_Warrior.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyAIMoveAstar.h">
-      <Filter>Enemy\EnemyAI</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyAIConSearch.h">
-      <Filter>Enemy\EnemyAICon</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyBase.h">
-      <Filter>Enemy\BasePogram</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyAIConBase.h">
-      <Filter>Enemy\BasePogram</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemySMBase.h">
-      <Filter>Enemy\BasePogram</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyAIBase.h">
-      <Filter>Enemy\BasePogram</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemySM_Warrior.h">
-      <Filter>Enemy\EnemyAISM</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyAIConWaitTime.h">
-      <Filter>Enemy\EnemyAICon</Filter>
+      <Filter>Enemy\AICon</Filter>
     </ClInclude>
     <ClInclude Include="EnemyAIConColPlayer.h">
-      <Filter>Enemy\EnemyAICon</Filter>
+      <Filter>Enemy\AICon</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectBase.h">
-      <Filter>object</Filter>
+    <ClInclude Include="EnemyAIConSearch.h">
+      <Filter>Enemy\AICon</Filter>
     </ClInclude>
-    <ClInclude Include="Crystal.h">
-      <Filter>object\Crustal</Filter>
+    <ClInclude Include="EnemyAIConWaitTime.h">
+      <Filter>Enemy\AICon</Filter>
     </ClInclude>
-    <ClInclude Include="CrystalGetCommandSprite.h">
-      <Filter>object\Crustal</Filter>
+    <ClInclude Include="EnemyBase.h">
+      <Filter>Enemy\AIBase</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemySMBase.h">
+      <Filter>Enemy\AIBase</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAIBase.h">
+      <Filter>Enemy\AIBase</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAIMoveAstar.h">
+      <Filter>Enemy\AI</Filter>
+    </ClInclude>
     <ClInclude Include="EnemyAIMovePatrol.h">
-      <Filter>Enemy\EnemyAI</Filter>
+      <Filter>Enemy\AI</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyAIMetaWarrior.h">
-      <Filter>Enemy\EnemyAIMeta</Filter>
+    <ClInclude Include="EnemySM_Warrior.h">
+      <Filter>Enemy\AISM</Filter>
     </ClInclude>
     <ClInclude Include="EnemyWarriorTrackingState.h">
-      <Filter>Enemy\EnemyAIMeta</Filter>
+      <Filter>Enemy\AIMeta</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyAIMetaWarrior.h">
+      <Filter>Enemy\AIMeta</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="bg">
+      <UniqueIdentifier>{32b1c1bb-ed58-4cde-9d5f-c8dfacf2ec43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="obj">
+      <UniqueIdentifier>{cd86d974-5c58-4912-9117-63f12b4ef8d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{f94d7c99-895b-47b3-952c-a122690baa8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\AICon">
+      <UniqueIdentifier>{2baafafc-b393-4006-9e62-ae2e70137f37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\AIBase">
+      <UniqueIdentifier>{549770e2-aff7-4d3e-bbe0-77e3f13da482}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\AI">
+      <UniqueIdentifier>{493ace7a-91cc-4b97-8cff-2eebb0d4e545}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\AISM">
+      <UniqueIdentifier>{1df267a4-4d41-4b42-8c6c-40cd88ed2a73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\AIMeta">
+      <UniqueIdentifier>{726cc6db-87e7-475b-96df-e3940aaad6e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

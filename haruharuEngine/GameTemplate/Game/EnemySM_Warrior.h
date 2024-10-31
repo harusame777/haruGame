@@ -26,10 +26,22 @@ public:
 		en_warrior_idle,
 		//追跡状態
 		en_warrior_tracking,
+		//巡回状態
+		en_warrior_patrol,
 		//メタAI指令追跡状態
 		en_warrior_trackingMetaAI,
 	};
 public:
+	enum EnemyAINum
+	{
+		en_enemyAIMoveAstar
+	};
+	enum EnemyAIConNum
+	{
+		en_enemyAIConSearch,
+		en_enemyAIConWaitTime10f,
+		en_enemyAIConColPlayer
+	};
 	/// <summary>
 	/// スタート関数
 	/// </summary>
@@ -50,14 +62,6 @@ public:
 	/// ステート遷移：追跡
 	/// </summary>
 	void StateTransition_Tracking();
-	/// <summary>
-	/// 追跡状態か？
-	/// </summary>
-	/// <returns></returns>
-	const bool IsTracking() const
-	{
-		return m_isTracking;
-	}
 	/// <summary>
 	/// 追跡ステートナンバーを設定
 	/// </summary>
@@ -105,10 +109,7 @@ private:
 	/// 時間によって追跡し続けるかどうか
 	/// </summary>
 	bool m_isTrackingTimeOver = false;
-	/// <summary>
-	/// 追跡状態かどうか
-	/// </summary>
-	bool m_isTracking = false;
+	bool m_isWaitIdle = false;
 	/// <summary>
 	/// ウォリアーのメタAI
 	/// </summary>

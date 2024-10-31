@@ -3,12 +3,6 @@
 #include "EnemyBase.h"
 #include "Player.h"
 
-//定数等
-namespace {
-	//索敵範囲
-	static const float enemySearchRad = 500.0f;
-}
-
 //スタート関数
 void EnemyAIConSearch::Start()
 {
@@ -87,7 +81,7 @@ bool EnemyAIConSearch::AngleCheck()
 
 	//プレイヤーにある程度近かったら
 	//エネミーの索敵範囲、現在は500*500
-	if (diff.LengthSq() <= enemySearchRad * enemySearchRad)
+	if (diff.LengthSq() <= m_enemySearchRad * m_enemySearchRad)
 	{
 		 //エネミーからプレイヤーに向かうベクトルを正規化
 		diff.Normalize();
@@ -101,7 +95,7 @@ bool EnemyAIConSearch::AngleCheck()
 		//内積(cosθ)から角度(θ)を求める
 		float angle = acosf(cos);
 		//角度(θ)が90°(視野角)より小さければ
-		if (angle <= (Math::PI / 180.0f) * 90.0f)
+		if (angle <= (Math::PI / 180.0f) * m_viewingAngle)
 		{
 			//壁が無いか判定
 			if (!RayTestWall())

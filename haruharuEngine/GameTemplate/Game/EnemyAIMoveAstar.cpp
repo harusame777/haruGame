@@ -8,7 +8,7 @@
 //スタート関数
 void EnemyAIMoveAstar::EnemyAIStart()
 {
-	m_nvmMesh.Init("Assets/nvm/testnvm3.tkn");
+	m_nvmMesh.Init("Assets/nvm/testnvm4.tkn");
 }
 
 //アップデート関数
