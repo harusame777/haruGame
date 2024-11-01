@@ -3,6 +3,7 @@
 #include "EnemySM_Warrior.h"
 #include "EnemyWarriorTrackingState.h"
 #include "EnemyBase.h"
+#include "Player.h"
 
 //処理順
 //
@@ -34,26 +35,59 @@ namespace {
 //スタート関数
 bool EnemyAIMetaWarrior::Start()
 {
-	//リストのサイズをウォリアーの数でリサイズ
-	//m_enemyWarriorList.resize(WARRIOR_NUM);
+	//レベルレンダーを使用して巡回地点を取得する
+	m_levelRender.Init("Assets/mapLevel/testLevel3.tkl", [&](LevelObjectData_Render& objData)
+	{
+		if (objData.ForwardMatchName(L"patrolroute") == true)
+		{
+			MetaAIPatrolRuteData* newData = new MetaAIPatrolRuteData;
+
+			//レベルから位置を取得する
+			newData->m_patrolPos = objData.m_position;
+
+			//配列に格納する
+			m_patrolRuteList.push_back(newData);
+
+			return true;
+		}
+		return true;
+	});
+
+	//プレイヤーのインスタンスを取得する
+	m_player = FindGO<Player>("player");
 
 	return true;
 }
 
 //ウォリアー全体の追跡ステートを変更する関数
-void EnemyAIMetaWarrior::MetaAIExecution(EnemySM_Warrior* enemyPtr)
+void EnemyAIMetaWarrior::MetaAIExecution(EnemySM_Warrior* enemyPtr, const MetaAIMode setMode)
 {
-	//この関数を呼び出したエネミーのポインタを格納する
-	m_MainCallWarrior = enemyPtr;
-
 	//現在何かしらの処理中だったら
 	if (m_isCurrentlyProcessed == true)
 	{
 		return;
 	}
+	else
+	{
+		//処理中にする
+		m_isCurrentlyProcessed = true;
+	}
 
-	//周囲に呼びかけを行う
-	CallWarrior();
+	//この関数を呼び出したエネミーのポインタを格納する
+	m_MainCallWarrior = enemyPtr;
+
+	switch (m_nowMetaAIMode)
+	{
+	case EnemyAIMetaWarrior::mode_trackingStateChange:
+		//周囲に呼びかけを行う
+		CallWarrior();
+		break;
+	case EnemyAIMetaWarrior::mode_patrolRouteSet:
+		break;
+	default:
+		break;
+	}
+
 }
 
 //リストにウォリアーを代入
@@ -67,10 +101,10 @@ void EnemyAIMetaWarrior::ListInitEnemy(EnemySM_Warrior* enemyPtr)
 	m_enemyWarriorList.push_back(initData);
 }
 
+////////////////////////////////////////mode_trackingStateChange処理
+
 void EnemyAIMetaWarrior::CallWarrior()
 {
-	//処理中にする
-	m_isCurrentlyProcessed = true;
 
 	if (m_enemyWarriorList[0] == nullptr)
 	{
@@ -157,6 +191,51 @@ void EnemyAIMetaWarrior::ChangeTrackingState()
 		}
 
 	}
+
+}
+
+////////////////////////////////////////
+
+void EnemyAIMetaWarrior::WarriorRangeCalc()
+{
+
+	//プレイヤーの位置を取得
+	Vector3 playerPos = m_player->GetPosition();
+	//ウォリアーの位置を取得する変数を宣言
+	Vector3 warriorPos;
+	//ウォリアーからプレイヤーに伸びるベクトル
+	Vector3 warriorToPlayerVec;
+	//ウォリアーとプレイヤーの距離
+	float warriorToPlayerDis;
+	//距離比較用変数
+	float distanceComparisonMax = 0.0f;
+
+	//ウォリアーの全体の距離を測り配列に格納する
+	for (int i = 0; i < WARRIOR_NUM; i++)
+	{
+		
+		//ウォリアーの位置を取得
+		warriorPos = m_enemyWarriorList[i]->m_warriorPtr->GetEnemyPtr().GetPosition();
+
+		//まずウォリアーからプレイヤーに伸びるベクトルを計算
+		warriorToPlayerVec = playerPos - warriorPos;
+
+		//ウォリアーからプレイヤーに伸びるベクトルから距離を計算
+		warriorToPlayerDis = warriorToPlayerVec.Length();
+
+		m_warriorDistanceList[i] = warriorToPlayerDis;
+
+	}
+
+	//距離リストの中身を降順に並べ替える
+	//配列のサイズを取得する
+	int listSize = sizeof(m_warriorDistanceList) / sizeof(m_warriorDistanceList[0]);
+	
+	//降順に並べ替える
+	std::sort(m_warriorDistanceList,
+		m_warriorDistanceList + listSize,std::greater<float>());
+
+
 
 }
 

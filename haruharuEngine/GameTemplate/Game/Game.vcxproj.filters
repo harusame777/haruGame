@@ -49,9 +49,6 @@
     <ClCompile Include="EnemyAIMoveAstar.cpp">
       <Filter>Enemy\AI</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyAIMovePatrol.cpp">
-      <Filter>Enemy\AI</Filter>
-    </ClCompile>
     <ClCompile Include="EnemySM_Warrior.cpp">
       <Filter>Enemy\AISM</Filter>
     </ClCompile>
@@ -107,9 +104,6 @@
     <ClInclude Include="EnemyAIMoveAstar.h">
       <Filter>Enemy\AI</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyAIMovePatrol.h">
-      <Filter>Enemy\AI</Filter>
-    </ClInclude>
     <ClInclude Include="EnemySM_Warrior.h">
       <Filter>Enemy\AISM</Filter>
     </ClInclude>
@@ -144,6 +138,9 @@
     </Filter>
     <Filter Include="Enemy\AIMeta">
       <UniqueIdentifier>{726cc6db-87e7-475b-96df-e3940aaad6e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\AIMeta\AIMetaWarrior">
+      <UniqueIdentifier>{c4c0b427-df3c-435e-a608-f33d7feb1205}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

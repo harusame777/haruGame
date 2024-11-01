@@ -153,7 +153,7 @@ void EnemySM_Warrior::ChangeState()
 void EnemySM_Warrior::StateTransition_Tracking()
 {
 	//[テスト]メタAIから指示をもらう
-	m_warriorMetaAI->MetaAIExecution(this);
+	m_warriorMetaAI->MetaAIExecution(this,EnemyAIMetaWarrior::mode_trackingStateChange);
 	//追跡ステートにする
 	SetState(WarriorState::en_warrior_tracking);
 	//追跡するように
