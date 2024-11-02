@@ -62,6 +62,7 @@ bool EnemyAIMetaWarrior::Start()
 //ウォリアー全体の追跡ステートを変更する関数
 void EnemyAIMetaWarrior::MetaAIExecution(EnemySM_Warrior* enemyPtr, const MetaAIMode setMode)
 {
+
 	//現在何かしらの処理中だったら
 	if (m_isCurrentlyProcessed == true)
 	{
@@ -98,7 +99,7 @@ void EnemyAIMetaWarrior::ListInitEnemy(EnemySM_Warrior* enemyPtr)
 	//エネミーのポインタを格納
 	initData->m_warriorPtr = enemyPtr;
 	//リストにウォリアーを代入する
-	m_enemyWarriorList.push_back(initData);
+	m_sharedWarriorDatas->m_warriorDatas.push_back(initData);
 }
 
 ////////////////////////////////////////mode_trackingStateChange処理

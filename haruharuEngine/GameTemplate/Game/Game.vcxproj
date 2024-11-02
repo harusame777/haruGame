@@ -232,6 +232,7 @@
     <ClCompile Include="EnemyAIConColPlayer.cpp" />
     <ClCompile Include="EnemyAIConSearch.cpp" />
     <ClCompile Include="EnemyAIConWaitTime.cpp" />
+    <ClCompile Include="EnemyAIMetaBase.cpp" />
     <ClCompile Include="EnemyAIMetaWarrior.cpp" />
     <ClCompile Include="EnemyAIMoveAstar.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
@@ -249,6 +250,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="system\system.cpp" />
+    <ClCompile Include="WarriorAIMetaTracking.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BackGroundFloor.h" />
@@ -260,6 +262,7 @@
     <ClInclude Include="EnemyAIConColPlayer.h" />
     <ClInclude Include="EnemyAIConSearch.h" />
     <ClInclude Include="EnemyAIConWaitTime.h" />
+    <ClInclude Include="EnemyAIMetaBase.h" />
     <ClInclude Include="EnemyAIMetaWarrior.h" />
     <ClInclude Include="EnemyAIMoveAstar.h" />
     <ClInclude Include="EnemyBase.h" />
@@ -271,8 +274,14 @@
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="ObjectBase.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
+    <ClInclude Include="WarriorAIMetaTracking.h" />
+    <ClInclude Include="WarriorDataHolder.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

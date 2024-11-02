@@ -1,4 +1,5 @@
 #pragma once
+#include "WarriorDataHolder.h"
 
 class EnemySM_Warrior;
 class EnemyBase;
@@ -15,6 +16,9 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~EnemyAIMetaWarrior() {};
+	/// <summary>
+	///	メタAIのどのプログラムを起動するか
+	/// </summary>
 	enum MetaAIMode
 	{
 		/// <summary>
@@ -25,6 +29,20 @@ public:
 		/// 巡回ルート設定
 		/// </summary>
 		mode_patrolRouteSet,
+	};
+	/// <summary>
+	/// パトロールルートの種類
+	/// </summary>
+	enum PatrolRuteState
+	{
+		/// <summary>
+		/// プレイヤーの近く
+		/// </summary>
+		en_playerToNear,
+		/// <summary>
+		/// マップの端の方
+		/// </summary>
+		en_goToEdge,
 	};
 	/// <summary>
 	/// スタート関数
@@ -98,6 +116,10 @@ private:
 		/// 距離
 		/// </summary>
 		float Distance;
+		/// <summary>
+		/// ウォリアーのデータ
+		/// </summary>
+		EnemySM_Warrior* m_warriorData;
 
 	};
 	/// <summary>
@@ -112,6 +134,7 @@ private:
 	/// エネミーウォリアーのリスト
 	/// </summary>
 	std::vector<MetaAIWarriorData*> m_enemyWarriorList;
+	std::shared_ptr<WarriorDataHolder> m_sharedWarriorDatas;
 	/// <summary>
 	/// パトロールルートのリスト
 	/// </summary>

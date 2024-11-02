@@ -8,6 +8,6 @@ public:
 	/// <summary>
 	/// ウォリアーのデータ
 	/// </summary>
-	std::vector<EnemySMBase*> m_warriorDatas;
+	std::vector<EnemySM_Warrior*> m_warriorDatas;
 };
 

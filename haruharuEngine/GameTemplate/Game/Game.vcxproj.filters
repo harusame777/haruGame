@@ -25,9 +25,6 @@
     <ClCompile Include="Enemy_Warrior.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyAIConBase.cpp">
-      <Filter>Enemy\AICon</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyAIConColPlayer.cpp">
       <Filter>Enemy\AICon</Filter>
     </ClCompile>
@@ -55,6 +52,15 @@
     <ClCompile Include="EnemyAIMetaWarrior.cpp">
       <Filter>Enemy\AIMeta</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyAIConBase.cpp">
+      <Filter>Enemy\AIBase</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAIMetaBase.cpp">
+      <Filter>Enemy\AIBase</Filter>
+    </ClCompile>
+    <ClCompile Include="WarriorAIMetaTracking.cpp">
+      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -80,9 +86,6 @@
     <ClInclude Include="Enemy_Warrior.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyAIConBase.h">
-      <Filter>Enemy\AICon</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyAIConColPlayer.h">
       <Filter>Enemy\AICon</Filter>
     </ClInclude>
@@ -107,11 +110,24 @@
     <ClInclude Include="EnemySM_Warrior.h">
       <Filter>Enemy\AISM</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyWarriorTrackingState.h">
-      <Filter>Enemy\AIMeta</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyAIMetaWarrior.h">
       <Filter>Enemy\AIMeta</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="EnemyAIConBase.h">
+      <Filter>Enemy\AIBase</Filter>
+    </ClInclude>
+    <ClInclude Include="WarriorDataHolder.h">
+      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAIMetaBase.h">
+      <Filter>Enemy\AIBase</Filter>
+    </ClInclude>
+    <ClInclude Include="WarriorAIMetaTracking.h">
+      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyWarriorTrackingState.h">
+      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -142,5 +158,8 @@
     <Filter Include="Enemy\AIMeta\AIMetaWarrior">
       <UniqueIdentifier>{c4c0b427-df3c-435e-a608-f33d7feb1205}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
   </ItemGroup>
 </Project>
