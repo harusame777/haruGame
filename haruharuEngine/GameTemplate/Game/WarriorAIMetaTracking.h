@@ -2,7 +2,6 @@
 #include "EnemyAIMetaBase.h"
 
 class EnemyBase;
-class EnemySMBase;
 
 class WarriorAIMetaTracking : public EnemyAIMetaBase 
 {
@@ -39,7 +38,7 @@ private:
 	/// <summary>
 	/// 呼び出したエネミー
 	/// </summary>
-	EnemySM_Warrior* m_MainCallWarrior = nullptr;
+	EnemySMBase* m_MainCallWarrior = nullptr;
 
 };
 

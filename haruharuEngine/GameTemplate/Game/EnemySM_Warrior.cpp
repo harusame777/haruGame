@@ -23,9 +23,12 @@
 //スタート関数
 void EnemySM_Warrior::EnemyAIStart()
 {
+	//共通のデータホルダーを初期化
+	m_warriorDataHolder = std::make_shared<WarriorDataHolder>();
+
 	//AIのListをこのエネミーに必要な物で初期化する
 	//経路探索
-	m_enemyAIList.push_back(new EnemyAIMoveAstar);
+	m_enemyAIList.push_back(new EnemyAIMoveAstar(m_warriorDataHolder));
 
 	//紐づいているエネミーのインスタンスをAIListのプログラムに渡す
 	for (auto& listPtr : m_enemyAIList)
@@ -127,16 +130,16 @@ void EnemySM_Warrior::ChangeState()
 	//待機ステートにする
 	SetState(WarriorState::en_warrior_idle);
 	
-	//もし巡回ステートじゃなくて
-	if (m_warriorState != WarriorState::en_warrior_patrol)
-	{
-		//待機状態から5秒立っていたら
-		if (m_isWaitIdle == true)
-		{
-			//巡回ステートにする
-			SetState(WarriorState::en_warrior_patrol);
-		}
-	}
+	////もし巡回ステートじゃなくて
+	//if (m_warriorState != WarriorState::en_warrior_patrol)
+	//{
+	//	//待機状態から5秒立っていたら
+	//	if (m_isWaitIdle == true)
+	//	{
+	//		//巡回ステートにする
+	//		SetState(WarriorState::en_warrior_patrol);
+	//	}
+	//}
 
 
 	//もし追跡ステートじゃなくて

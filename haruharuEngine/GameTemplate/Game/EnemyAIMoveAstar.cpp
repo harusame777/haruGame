@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "EnemyAIMoveAstar.h"
 #include "EnemyBase.h"
+#include "WarriorDataHolder.h"
 
 //これを有効にするとデバッグモードになる
 //#define DEBUG_MODE
@@ -35,7 +36,31 @@ void EnemyAIMoveAstar::EnemyAIUpdate()
 			tarPos,							//移動先座標
 			PhysicsWorld::GetInstance(),	//物理エンジン
 			1.0f,							//AIエージョントの半径50.0
-			1.0f							//AIエージェントの高さ200
+			1.0f,							//AIエージェントの高さ200
+			[&](const nsAI::PathFinding::CellWork* nextCell
+				)-> float {							//カスタムヒューリスティックコストの計算
+
+					//このエネミーが回り込みステートのエネミーでなければ
+					if (GetEnemyPtr().GetTrackingStateNumber() != WarriorTrackingState::en_wrapAround)
+					{
+						//戻す
+						return 0.0f;
+					}
+
+					Vector3 behindWarriorPos;
+
+					for (auto& ptr : m_sharedWarriorDatas->m_warriorDatas)
+					{
+						if (ptr->GetTrackingState() == WarriorTrackingState::en_chaseFromBehind)
+						{
+							behindWarriorPos = ptr->GetEnemyPtr().GetPosition();
+						}
+					}
+					
+					float t = (nextCell->cell->GetCenterPosition() - behindWarriorPos) .Length();
+
+					return t;
+			}
 		);
 #ifdef DEBUG_MODE
 	}

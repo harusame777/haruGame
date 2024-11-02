@@ -23,7 +23,9 @@ void WarriorAIMetaTracking::MetaAIInit()
 //メタAI実行
 void WarriorAIMetaTracking::MetaAIExecution(EnemySMBase* initEnemy)
 {
+	m_MainCallWarrior = initEnemy;
 
+	CallWarrior();
 }
 
 //周辺ウォリアーに呼び掛け
@@ -65,7 +67,7 @@ void WarriorAIMetaTracking::CallWarrior()
 		//もし250.0f圏内にウォリアーがいたら
 		if (len < CALL_RANGE_CALC * CALL_RANGE_CALC)
 		{
-			ptr->m_isCallCompliedWarrior = true;
+			ptr->SetCallMetaAI(true);
 		}
 	}
 
@@ -79,9 +81,6 @@ void WarriorAIMetaTracking::ChangeTrackingState()
 	//もう回り込みステートのエネミーが存在しているか
 	bool existsWrapAroundWarrior = false;
 
-	//第一発見エネミーはとりあえず後ろから追わせる
-	m_MainCallWarrior->SetTrackingState(WarriorTrackingState::en_chaseFromBehind);
-
 	//範囲for文で回す
 	for (auto& ptr : m_sharedWarriorDatas->m_warriorDatas)
 	{
@@ -89,18 +88,19 @@ void WarriorAIMetaTracking::ChangeTrackingState()
 		//自分のアドレスと同じだったら
 		if (m_MainCallWarrior == ptr)
 		{
+			ptr->SetTrackingState(WarriorTrackingState::en_chaseFromBehind);
 			//処理を飛ばす
 			continue;
 		}
 
 		//イテレーターのウォリアーが呼びかけられたウォリアーだったら
-		if (ptr->m_isCallCompliedWarrior == true)
+		if (ptr->GetCallMetaAI() == true)
 		{
 			//回り込みステートのウォリアーが存在していたら
 			if (existsWrapAroundWarrior == true)
 			{
 				//後ろから追わせる
-				ptr->SetTrackingState(WarriorTrackingState::en_chaseFromBehind);
+				ptr->SetTrackingState(WarriorTrackingState::en_usually);
 				ptr->SetState(EnemySM_Warrior::en_warrior_trackingMetaAI);
 				continue;
 			}

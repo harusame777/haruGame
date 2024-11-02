@@ -6,10 +6,18 @@
 #include "AI/PathFinding/PathFinding.h"
 
 class EnemyBase;
+class WarriorDataHolder;
 
-class EnemyAIMoveAstar : public EnemyAIBase
+class EnemyAIMoveAstar : public EnemyAIBase 
 {
 public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	EnemyAIMoveAstar(std::shared_ptr<WarriorDataHolder> data) 
+	{
+		m_sharedWarriorDatas = data;
+	}
 	/// <summary>
 	/// スタート関数
 	/// </summary>
@@ -35,5 +43,9 @@ private:
 	/// ナビメッシュの探索プロ
 	/// </summary>
 	nsAI::PathFinding m_pathFiding;
+	/// <summary>
+	/// 共通しているウォリアーのデータ
+	/// </summary>
+	std::shared_ptr<WarriorDataHolder> m_sharedWarriorDatas;
 };
 
