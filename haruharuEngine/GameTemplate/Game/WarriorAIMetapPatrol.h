@@ -83,6 +83,10 @@ private:
 	/// パトロールルートのリスト
 	/// </summary>
 	std::vector<MetaAIPatrolRuteData*> m_patrolRuteList;
+	/// <summary>
+	/// 呼び出したエネミー
+	/// </summary>
+	EnemySMBase* m_MainCallWarrior = nullptr;
 
 	float m_warriorDistanceList[3];
 };

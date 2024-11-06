@@ -29,6 +29,10 @@ public:
 	void EnemyAIUpdate() override;
 private:
 	/// <summary>
+	/// 回転地計算
+	/// </summary>
+	void RotationValueCalc(const Vector3& direction);
+	/// <summary>
 	/// ナビメッシュファイル
 	/// </summary>
 	TknFile m_tknFile;

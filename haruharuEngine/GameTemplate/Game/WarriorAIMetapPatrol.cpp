@@ -38,7 +38,7 @@ void WarriorAIMetapPatrol::MetaAIInit()
 //メタAIの実行
 void WarriorAIMetapPatrol::MetaAIExecution(EnemySMBase* initEnemy)
 {
-
+	m_MainCallWarrior = initEnemy;
 }
 
 void WarriorAIMetapPatrol::WarriorRangeCalc()
@@ -57,6 +57,8 @@ void WarriorAIMetapPatrol::WarriorRangeCalc()
 	//ウォリアーの全体の距離を測り配列に格納する
 	for (int i = 0; i < WARRIOR_NUM; i++)
 	{
+
+
 
 		//ウォリアーの位置を取得
 		warriorPos = m_sharedWarriorDatas->m_warriorDatas[i]->GetEnemyPtr().GetPosition();
@@ -78,5 +80,7 @@ void WarriorAIMetapPatrol::WarriorRangeCalc()
 	//降順に並べ替える
 	std::sort(m_warriorDistanceList,
 		m_warriorDistanceList + listSize, std::greater<float>());
+
+	
 
 }

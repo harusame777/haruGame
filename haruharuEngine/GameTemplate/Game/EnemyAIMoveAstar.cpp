@@ -71,9 +71,9 @@ void EnemyAIMoveAstar::EnemyAIUpdate()
 
 						float behindWarriorToPlayerPosDiff = (playerPos - behindWarriorPos).Length();
 
-						if (behindWarriorToCellPosDiff <= 1000.0f/*behindWarriorToPlayerPosDiff*/)
+						if (behindWarriorToCellPosDiff <= 500.0f/*behindWarriorToPlayerPosDiff*/)
 						{
-							t += 1000.0f;
+							t += 10000.0f;
 						}
 
 					}
@@ -100,16 +100,11 @@ void EnemyAIMoveAstar::EnemyAIUpdate()
 		//Y値を0にする
 		atan2CalcVec.y = 0.0f;
 
-		float angle = atan2(atan2CalcVec.x, atan2CalcVec.z);
-
-		Quaternion finalRot;
-		finalRot.SetRotation(Vector3::AxisY, angle);
+		RotationValueCalc(atan2CalcVec);
 
 		//移動した座標を送る
 		GetEnemyPtr().SetPosition(pathMovePos);
 
-		//回転値を送る
-		GetEnemyPtr().SetRotation(finalRot);
 
 		//正面値
 		Vector3 newForward = Vector3::AxisZ;
@@ -117,4 +112,15 @@ void EnemyAIMoveAstar::EnemyAIUpdate()
 		GetEnemyPtr().GetRotation().Apply(newForward);
 
 		GetEnemyPtr().SetForward(newForward);
+}
+
+void EnemyAIMoveAstar::RotationValueCalc(const Vector3& direction)
+{
+	float angle = atan2(direction.x, direction.z);
+
+	Quaternion finalRot;
+	finalRot.SetRotation(Vector3::AxisY, angle);
+
+	//回転値を送る
+	GetEnemyPtr().SetRotation(finalRot);
 }
