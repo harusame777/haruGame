@@ -2,6 +2,7 @@
 #include "EnemyAIMoveAstar.h"
 #include "EnemyBase.h"
 #include "WarriorDataHolder.h"
+#include "Player.h"
 
 //これを有効にするとデバッグモードになる
 //#define DEBUG_MODE
@@ -9,7 +10,9 @@
 //スタート関数
 void EnemyAIMoveAstar::EnemyAIStart()
 {
-	m_nvmMesh.Init("Assets/nvm/testnvm4.tkn");
+	m_nvmMesh.Init("Assets/nvm/testnvm6.tkn");
+
+	m_player = FindGO<Player>("player");
 }
 
 //アップデート関数
@@ -40,25 +43,41 @@ void EnemyAIMoveAstar::EnemyAIUpdate()
 			[&](const nsAI::PathFinding::CellWork* nextCell
 				)-> float {							//カスタムヒューリスティックコストの計算
 
+					float t = 0.0f;
+
 					//このエネミーが回り込みステートのエネミーでなければ
 					if (GetEnemyPtr().GetTrackingStateNumber() != WarriorTrackingState::en_wrapAround)
 					{
 						//戻す
-						return 0.0f;
+						return t;
 					}
 
 					Vector3 behindWarriorPos;
 
 					for (auto& ptr : m_sharedWarriorDatas->m_warriorDatas)
 					{
-						if (ptr->GetTrackingState() == WarriorTrackingState::en_chaseFromBehind)
+						if (ptr->GetTrackingState() != WarriorTrackingState::en_chaseFromBehind)
 						{
-							behindWarriorPos = ptr->GetEnemyPtr().GetPosition();
+							return t;
 						}
+
+						behindWarriorPos = ptr->GetEnemyPtr().GetPosition();
+
+						Vector3 cellPos = nextCell->cell->GetCenterPosition();
+
+						float behindWarriorToCellPosDiff = (cellPos - behindWarriorPos).Length();
+
+						Vector3 playerPos = m_player->GetPosition();
+
+						float behindWarriorToPlayerPosDiff = (playerPos - behindWarriorPos).Length();
+
+						if (behindWarriorToCellPosDiff <= 1000.0f/*behindWarriorToPlayerPosDiff*/)
+						{
+							t += 1000.0f;
+						}
+
 					}
 					
-					float t = (nextCell->cell->GetCenterPosition() - behindWarriorPos) .Length();
-
 					return t;
 			}
 		);

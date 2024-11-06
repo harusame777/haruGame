@@ -7,6 +7,7 @@ class Player;
 class Enemy_Warrior;
 class CrystalGetCommandSprite;
 class EnemyAIMetaWarrior;
+class DebugEnemyTrackingState;
 
 class Game : public IGameObject
 {
@@ -53,6 +54,7 @@ public:
 
 	ModelRender m_bgModelRendedr;
 	PhysicsStaticObject m_bgObject;
+
 
 	FontRender m_testFont;
 };

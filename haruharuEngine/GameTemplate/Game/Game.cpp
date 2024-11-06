@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "EnemyAIMetaWarrior.h"
 #include "Enemy_Warrior.h"
+#include "DebugEnemyTrackingState.h"
 
 bool Game::Start()
 {
@@ -115,6 +116,7 @@ bool Game::Start()
 
 	m_testCamera = NewGO<GameCamera>(0, "camera");
 
+	
 	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 
 	return true;

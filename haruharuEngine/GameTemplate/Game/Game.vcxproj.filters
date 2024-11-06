@@ -64,6 +64,9 @@
     <ClCompile Include="WarriorAIMetapPatrol.cpp">
       <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
     </ClCompile>
+    <ClCompile Include="DebugEnemyTrackingState.cpp">
+      <Filter>debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -135,6 +138,9 @@
     <ClInclude Include="WarriorAIMetapPatrol.h">
       <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
     </ClInclude>
+    <ClInclude Include="DebugEnemyTrackingState.h">
+      <Filter>debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bg">
@@ -163,6 +169,9 @@
     </Filter>
     <Filter Include="Enemy\AIMeta\AIMetaWarrior">
       <UniqueIdentifier>{c4c0b427-df3c-435e-a608-f33d7feb1205}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="debug">
+      <UniqueIdentifier>{20737fca-1e2b-4c54-b3c3-f114d8fe0d13}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

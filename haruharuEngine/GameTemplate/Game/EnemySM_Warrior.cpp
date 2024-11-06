@@ -47,7 +47,7 @@ void EnemySM_Warrior::EnemyAIStart()
 	m_enemyConList.push_back(new EnemyAIConSearch(45.0f,500.0f));
 
 	//10秒タイマー
-	m_enemyConList.push_back(new EnemyAIConWaitTime(10.0f));
+	m_enemyConList.push_back(new EnemyAIConWaitTime(30.0f));
 
 	//プレイヤーとの衝突判定
 	m_enemyConList.push_back(new EnemyAIConColPlayer);

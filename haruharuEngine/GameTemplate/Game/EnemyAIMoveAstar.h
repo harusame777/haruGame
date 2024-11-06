@@ -7,6 +7,7 @@
 
 class EnemyBase;
 class WarriorDataHolder;
+class Player;
 
 class EnemyAIMoveAstar : public EnemyAIBase 
 {
@@ -47,5 +48,9 @@ private:
 	/// 共通しているウォリアーのデータ
 	/// </summary>
 	std::shared_ptr<WarriorDataHolder> m_sharedWarriorDatas;
+	/// <summary>
+	/// プレイヤー
+	/// </summary>
+	Player* m_player = nullptr;
 };
 

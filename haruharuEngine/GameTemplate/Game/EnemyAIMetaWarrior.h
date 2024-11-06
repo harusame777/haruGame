@@ -7,6 +7,8 @@ class WarriorDataHolder;
 class Player;
 class EnemyAIMetaBase;
 
+class DebugEnemyTrackingState;
+
 class EnemyAIMetaWarrior : public IGameObject
 {
 public:
@@ -70,6 +72,11 @@ private:
 	/// ウォリアーの共通データホルダ～
 	/// </summary>
 	std::shared_ptr<WarriorDataHolder> m_warriorDataHolder;
+	/// <summary>
+	/// ステートデバック
+	/// </summary>
+	DebugEnemyTrackingState* m_debugWarriorTrackingState = nullptr;
+
 	/// <summary>
 	/// 現在処理中かどうか
 	/// </summary>

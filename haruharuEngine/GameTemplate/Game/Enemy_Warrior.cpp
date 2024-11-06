@@ -33,6 +33,12 @@ bool Enemy_Warrior::Start()
 
 	InitAIList();
 
+	//キャラクターコントローラーを初期化
+	m_CController.Init(10.0f, 20.0f, m_position);
+
+	//位置の初期設定
+	m_CController.SetPosition(m_position);
+
 	//コリジョンオブジェクトを作成する。
 	m_collisionObject = NewGO<CollisionObject>(0);
 	//球状のコリジョンを作成する。
@@ -59,6 +65,8 @@ void Enemy_Warrior::Update()
 	m_modelRender.SetPosition(m_position);
 
 	m_collisionObject->SetPosition(m_position);
+
+	m_CController.SetPosition(m_position);
 
 #ifdef DEBUG_MODE
 	DebugStateDisplay(GetStateNumber());
