@@ -29,7 +29,6 @@ bool Enemy_Warrior::Start()
 	//シャドウマップに描画するようにする
 	m_modelRender.SetShadowChasterFlag(false);
 
-	m_player = FindGO<Player>("player");
 
 	InitAIList();
 
@@ -54,10 +53,6 @@ bool Enemy_Warrior::Start()
 //アップデート関数
 void Enemy_Warrior::Update()
 {
-	Vector3 plaPos = m_player->GetPosition();
-
-	SetMoveTargetPosition(plaPos);
-
 	AIListUpdate();
 
 	m_modelRender.SetRotation(m_rotation);
@@ -73,6 +68,7 @@ void Enemy_Warrior::Update()
 #endif
 
 	m_modelRender.Update();
+
 }
 
 //ドロー関数

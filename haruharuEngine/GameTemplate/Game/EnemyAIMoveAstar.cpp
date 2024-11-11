@@ -102,7 +102,19 @@ void EnemyAIMoveAstar::EnemyAIUpdate()
 
 		RotationValueCalc(atan2CalcVec);
 
-		//ˆÚ“®‚µ‚½À•W‚ğ‘—‚é
+		//Vector3 moveVec = { 0.0f,0.0f,0.0f };
+
+		//moveVec = pathMovePos;
+
+		//moveVec.Normalize();
+
+		//moveVec += GetEnemyPtr().GetFoward() * 150.0f;
+
+		//Vector3 newPos = GetEnemyPtr().GetCController()->Execute(moveVec, g_gameTime->GetFrameDeltaTime());
+
+		////ˆÚ“®‚µ‚½À•W‚ğ‘—‚é
+		//GetEnemyPtr().SetPosition(newPos);
+
 		GetEnemyPtr().SetPosition(pathMovePos);
 
 

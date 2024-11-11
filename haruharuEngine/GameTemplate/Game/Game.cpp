@@ -20,7 +20,7 @@ bool Game::Start()
 	m_GetCOMSprite = NewGO<CrystalGetCommandSprite>(0, "object");
 
 	//エネミーウォリアーのメタAI
-	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");
+	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");	
 
 	//レベルレンダーのテスト
 	m_levelRender.Init("Assets/mapLevel/testLevel3.tkl", [&](LevelObjectData_Render& objData)

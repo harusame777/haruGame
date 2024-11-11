@@ -1,17 +1,24 @@
 #pragma once
 #include "EnemyAIMetaBase.h"
+#include "WarriorDataHolder.h"
+#include "PatrolRuteDataHolder.h"
 
 class EnemyBase;
 class Player;
 
 class WarriorAIMetapPatrol : public EnemyAIMetaBase
 {
+public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	WarriorAIMetapPatrol(std::shared_ptr<WarriorDataHolder> data) : EnemyAIMetaBase(data)
+	WarriorAIMetapPatrol(std::shared_ptr<WarriorDataHolder> enemyData,
+		std::shared_ptr<PatrolRuteDataHolder> patrolData)
 	{
-		m_sharedWarriorDatas = data;
+		m_sharedWarriorDatas = enemyData;
+
+		m_sharedPatrolRuteDatas = patrolData;
+
 	};
 	/// <summary>
 	/// デストラクタ
@@ -27,50 +34,25 @@ class WarriorAIMetapPatrol : public EnemyAIMetaBase
 	/// <param name="initEnemy"></param>
 	void MetaAIExecution(EnemySMBase* initEnemy);
 	/// <summary>
+	/// 処理終了
+	/// </summary>
+	void ProcessEnd();
+private:
+	enum SearchMode {
+
+		en_Near,
+
+		en_Far,
+	};
+	/// <summary>
 	/// ウォリアーの距離を計算する関数
 	/// </summary>
 	void WarriorRangeCalc();
-private:
 	/// <summary>
-	/// メタAIの巡回ルートのデータ
+	/// 巡回ルートを探す
 	/// </summary>
-	struct MetaAIPatrolRuteData
-	{
-		/// <summary>
-		/// このルートを使用しているウォリアーが存在するか
-		/// </summary>
-		bool m_isUse = false;
-		/// <summary>
-		/// 終了地点
-		/// </summary>
-		Vector3 m_patrolPos;
-	};
-	struct DistanceListData
-	{
-		/// <summary>
-		/// 距離
-		/// </summary>
-		float Distance;
-		/// <summary>
-		/// ウォリアーのデータ
-		/// </summary>
-		EnemySM_Warrior* m_warriorData;
-
-	};
-	/// <summary>
-	/// パトロールルートの種類
-	/// </summary>
-	enum PatrolRuteState
-	{
-		/// <summary>
-		/// プレイヤーの近く
-		/// </summary>
-		en_playerToNear,
-		/// <summary>
-		/// マップの端の方
-		/// </summary>
-		en_goToEdge,
-	};
+	/// <param name="mode"></param>
+	void SearchRute(const SearchMode mode);
 	/// <summary>
 	/// レベルレンダー
 	/// </summary>
@@ -80,13 +62,18 @@ private:
 	/// </summary>
 	Player* m_player = nullptr;
 	/// <summary>
-	/// パトロールルートのリスト
-	/// </summary>
-	std::vector<MetaAIPatrolRuteData*> m_patrolRuteList;
-	/// <summary>
 	/// 呼び出したエネミー
 	/// </summary>
 	EnemySMBase* m_MainCallWarrior = nullptr;
+protected:
+	/// <summary>
+	/// 共通しているウォリアーのデータ
+	/// </summary>
+	std::shared_ptr<WarriorDataHolder> m_sharedWarriorDatas;
+	/// <summary>
+	/// 共通している巡回ルートのデータ
+	/// </summary>
+	std::shared_ptr<PatrolRuteDataHolder> m_sharedPatrolRuteDatas;
 
 	float m_warriorDistanceList[3];
 };

@@ -117,3 +117,12 @@ void WarriorAIMetaTracking::ChangeTrackingState()
 	}
 
 }
+
+//処理終了処理
+void WarriorAIMetaTracking::ProcessEnd()
+{
+	
+	//自分の追跡ステートを初期化
+	GetEnemyPtr().SetTrackingStateNumber(WarriorTrackingState::en_nonTracking);
+
+}

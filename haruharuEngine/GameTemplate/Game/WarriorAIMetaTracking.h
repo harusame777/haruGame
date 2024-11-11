@@ -1,5 +1,6 @@
 #pragma once
 #include "EnemyAIMetaBase.h"
+#include "WarriorDataHolder.h"
 
 class EnemyBase;
 
@@ -9,7 +10,7 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	WarriorAIMetaTracking(std::shared_ptr<WarriorDataHolder> data) : EnemyAIMetaBase(data) 
+	WarriorAIMetaTracking(std::shared_ptr<WarriorDataHolder> data)
 	{
 		m_sharedWarriorDatas = data;
 	};
@@ -26,6 +27,10 @@ public:
 	/// </summary>
 	/// <param name="initEnemy"></param>
 	void MetaAIExecution(EnemySMBase* initEnemy);
+	/// <summary>
+	/// 処理終了
+	/// </summary>
+	void ProcessEnd();
 private:
 	/// <summary>
 	/// ウォリアーに呼びかけを行う
@@ -39,6 +44,10 @@ private:
 	/// 呼び出したエネミー
 	/// </summary>
 	EnemySMBase* m_MainCallWarrior = nullptr;
-
+protected:
+	/// <summary>
+	/// 共通しているウォリアーのデータ
+	/// </summary>
+	std::shared_ptr<WarriorDataHolder> m_sharedWarriorDatas;
 };
 

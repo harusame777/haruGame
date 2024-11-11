@@ -67,9 +67,6 @@
     <ClCompile Include="DebugEnemyTrackingState.cpp">
       <Filter>debug</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyAIMovePatrol.cpp">
-      <Filter>Enemy\AI</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -144,8 +141,8 @@
     <ClInclude Include="DebugEnemyTrackingState.h">
       <Filter>debug</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyAIMovePatrol.h">
-      <Filter>Enemy\AI</Filter>
+    <ClInclude Include="PatrolRuteDataHolder.h">
+      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

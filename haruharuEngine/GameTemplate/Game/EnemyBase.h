@@ -180,5 +180,10 @@ public:
 	{
 		return m_stateNumber;
 	}
+
+	CharacterController* GetCController()
+	{
+		return &m_CController;
+	}
 };
 

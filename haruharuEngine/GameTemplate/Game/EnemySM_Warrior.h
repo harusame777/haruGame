@@ -6,6 +6,7 @@
 
 class EnemyAIMetaWarrior;
 class WarriorDataHolder;
+class Player;
 
 class EnemySM_Warrior : public EnemySMBase, public virtual EnemyAIBase
 {
@@ -143,5 +144,6 @@ private:
 	/// ウォリアーの共通データホルダ～
 	/// </summary>
 	std::shared_ptr<WarriorDataHolder> m_warriorDataHolder;
+	Player* m_player = nullptr;
 };
 

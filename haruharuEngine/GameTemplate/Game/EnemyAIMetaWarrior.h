@@ -1,9 +1,9 @@
 #pragma once
 #include "WarriorDataHolder.h"
+#include "PatrolRuteDataHolder.h"
 
 class EnemySM_Warrior;
 class EnemyBase;
-class WarriorDataHolder;
 class Player;
 class EnemyAIMetaBase;
 
@@ -48,14 +48,68 @@ public:
 	/// <param name="enemyPtr"></param>
 	void ListInitEnemy(EnemySM_Warrior* enemyPtr);
 	/// <summary>
+	/// リストにメタAIのプログラムを格納する
+	/// </summary>
+	/// <param name="programData"></param>
+	/// <param name="isOneTime"></param>
+	void ListInitAIMeta(EnemyAIMetaBase* programData, const bool isOneTime);
+	/// <summary>
 	/// メタAIを実行する関数
 	/// </summary>
 	void MetaAIExecution(EnemySM_Warrior* enemyPtr,const MetaAIMode setMode);
 	/// <summary>
 	/// 処理を終了する
 	/// </summary>
-	void ProcessEnd();
+	void ProcessEnd(const MetaAIMode setMode);
 private:
+	/// <summary>
+	/// メタAIプログラムのデータ
+	/// </summary>
+	struct MetaAIData
+	{
+	private:
+		/// <summary>
+		/// 一回きりの起動かどうか
+		/// </summary>
+		bool m_isOneTimeOnlyUpdate = false;
+		/// <summary>
+		/// メタAIのプログラムデータ
+		/// </summary>
+		EnemyAIMetaBase* m_metaAIProgramData;
+	public:
+		/// <summary>
+		/// 一回きりか
+		/// </summary>
+		/// <param name="is"></param>
+		void SetOneTimeOnlyUpdate(const bool is)
+		{
+			m_isOneTimeOnlyUpdate = is;
+		}
+		/// <summary>
+		/// 一回きりかどうか
+		/// </summary>
+		/// <returns></returns>
+		const bool GetOneTimeOnlyUpdate() const
+		{
+			return m_isOneTimeOnlyUpdate;
+		}
+		/// <summary>
+		/// メタAIプログラムを設定
+		/// </summary>
+		/// <param name="initData"></param>
+		void SetAIMetaProgram(EnemyAIMetaBase* initData)
+		{
+			m_metaAIProgramData = initData;
+		}
+		/// <summary>
+		/// メタAIのプログラムを取得
+		/// </summary>
+		/// <returns></returns>
+		EnemyAIMetaBase* GetAIMetaProgram()
+		{
+			return m_metaAIProgramData;
+		}
+	};
 	/// <summary>
 	/// メタAIのモード
 	/// </summary>
@@ -67,7 +121,7 @@ private:
 	/// <summary>
 	/// メタAIのリスト
 	/// </summary>
-	std::vector<EnemyAIMetaBase*> m_AIMetaList;
+	std::vector<MetaAIData*> m_AIMetaList;
 	/// <summary>
 	/// ウォリアーの共通データホルダ～
 	/// </summary>
@@ -76,10 +130,13 @@ private:
 	/// ステートデバック
 	/// </summary>
 	DebugEnemyTrackingState* m_debugWarriorTrackingState = nullptr;
-
 	/// <summary>
-	/// 現在処理中かどうか
+	/// レベルレンダー
 	/// </summary>
-	bool m_isCurrentlyProcessed = false;
+	LevelRender m_patrolRuteLevelRender;
+	/// <summary>
+	/// 巡回ルートの共通データホルダー
+	/// </summary>
+	std::shared_ptr<PatrolRuteDataHolder> m_patrolRuteDataHolder;
 };
 

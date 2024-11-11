@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "PatrolRuteDataHolder.h"
 
 class GameCamera;
 class BackGroundWalls;
@@ -54,6 +55,7 @@ public:
 
 	ModelRender m_bgModelRendedr;
 	PhysicsStaticObject m_bgObject;
+
 
 
 	FontRender m_testFont;

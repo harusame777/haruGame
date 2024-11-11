@@ -8,29 +8,12 @@ namespace {
 	/// ウォリアーの最大数
 	/// </summary>
 	static const int WARRIOR_NUM = 3;
+	float LEAVE_OR_CLOSER_DIFF = 1500.0f;
 }
 
 //メタAIの初期化
 void WarriorAIMetapPatrol::MetaAIInit()
 {
-	//レベルレンダーを使用して巡回地点を取得する
-	m_levelRender.Init("Assets/mapLevel/testLevel3.tkl", [&](LevelObjectData_Render& objData)
-		{
-			if (objData.ForwardMatchName(L"patrolroute") == true)
-			{
-				MetaAIPatrolRuteData* newData = new MetaAIPatrolRuteData;
-
-				//レベルから位置を取得する
-				newData->m_patrolPos = objData.m_position;
-
-				//配列に格納する
-				m_patrolRuteList.push_back(newData);
-
-				return true;
-			}
-			return true;
-		});
-
 	//プレイヤーのインスタンスを取得する
 	m_player = FindGO<Player>("player");
 }
@@ -39,48 +22,116 @@ void WarriorAIMetapPatrol::MetaAIInit()
 void WarriorAIMetapPatrol::MetaAIExecution(EnemySMBase* initEnemy)
 {
 	m_MainCallWarrior = initEnemy;
+
+	WarriorRangeCalc();
 }
 
 void WarriorAIMetapPatrol::WarriorRangeCalc()
 {
-	//プレイヤーの位置を取得
+	//プレイヤーの座標
 	Vector3 playerPos = m_player->GetPosition();
 	//ウォリアーの位置を取得する変数を宣言
-	Vector3 warriorPos;
-	//ウォリアーからプレイヤーに伸びるベクトル
-	Vector3 warriorToPlayerVec;
+	Vector3 warriorPos = m_MainCallWarrior->GetEnemyPtr().GetPosition();
 	//ウォリアーとプレイヤーの距離
 	float warriorToPlayerDis;
-	//距離比較用変数
-	float distanceComparisonMax = 0.0f;
 
-	//ウォリアーの全体の距離を測り配列に格納する
-	for (int i = 0; i < WARRIOR_NUM; i++)
+	//距離を計算
+	warriorToPlayerDis = (playerPos - warriorPos).Length();
+
+	if (warriorToPlayerDis < LEAVE_OR_CLOSER_DIFF)
+	{
+		//プレイヤーから遠い巡回ルートを探す
+		SearchRute(SearchMode::en_Far);
+	}
+	else
+	{
+		//プレイヤーから近い巡回ルートを探す
+		SearchRute(SearchMode::en_Near);
+	}
+
+}
+
+void WarriorAIMetapPatrol::SearchRute(const SearchMode mode)
+{
+
+	//プレイヤーの座標
+	Vector3 playerPos = m_player->GetPosition();
+	//ゴール地点からプレイヤーまでの距離
+	float ruteToPlayerDiff;
+	//確定したパトロールルートのデータ
+	PatrolRuteDataHolder::PatrolRuteData* confirmedRute = nullptr;
+	//確定した距離
+	float confirmedDiff;
+
+	//ルートの数ぶん回す
+	for (auto& ptr : m_sharedPatrolRuteDatas->m_patrolRuteList)
 	{
 
+		//そのパトロールルートが使用中だったら
+		if (ptr->GetIsUse() == true)
+		{
+			//処理を飛ばす
+			continue;
+		}
 
+		//ゴール地点からプレイヤーまでの距離を計算する
+		ruteToPlayerDiff = (playerPos - ptr->GetPosition()).Length();
 
-		//ウォリアーの位置を取得
-		warriorPos = m_sharedWarriorDatas->m_warriorDatas[i]->GetEnemyPtr().GetPosition();
+		//モードが近距離モードだったら
+		if (mode == SearchMode::en_Near)
+		{
+			//データが未入力状態であるまたは、
+			//既に入力された距離より近かったら
+			if (confirmedRute == nullptr
+				|| ruteToPlayerDiff < confirmedDiff)
+			{
+				//現在のポインタのデータを入力して
+				confirmedRute = ptr;
 
-		//まずウォリアーからプレイヤーに伸びるベクトルを計算
-		warriorToPlayerVec = playerPos - warriorPos;
+				//距離を代入する
+				confirmedDiff = ruteToPlayerDiff;
+			}
+		}
+		//モードが遠距離モードだったら
+		else if (mode == SearchMode::en_Far)
+		{
+			//データが未入力状態であるまたは、
+			//既に入力された距離より遠かったら
+			if (confirmedRute == nullptr
+				|| ruteToPlayerDiff > confirmedDiff)
+			{
+				//現在のポインタのデータを入力して
+				confirmedRute = ptr;
 
-		//ウォリアーからプレイヤーに伸びるベクトルから距離を計算
-		warriorToPlayerDis = warriorToPlayerVec.Length();
-
-		m_warriorDistanceList[i] = warriorToPlayerDis;
+				//距離を代入する
+				confirmedDiff = ruteToPlayerDiff;
+			}
+		}
 
 	}
 
-	//距離リストの中身を降順に並べ替える
-	//配列のサイズを取得する
-	int listSize = sizeof(m_warriorDistanceList) / sizeof(m_warriorDistanceList[0]);
+	//もしデータが未入力状態じゃなかったら
+	if (confirmedRute != nullptr)
+	{
+		//そのルートを使用中にして
+		confirmedRute->SetIsUse(true);
 
-	//降順に並べ替える
-	std::sort(m_warriorDistanceList,
-		m_warriorDistanceList + listSize, std::greater<float>());
+		//追跡地点をエネミーに送る
+		m_MainCallWarrior->GetEnemyPtr().SetMoveTargetPosition(confirmedRute->GetPosition());
+	}
+}
 
-	
+void WarriorAIMetapPatrol::ProcessEnd()
+{
+
+	for (auto& ptr : m_sharedPatrolRuteDatas->m_patrolRuteList)
+	{
+
+		if (m_MainCallWarrior == ptr->GetUseEnemyPtr())
+		{
+			ptr->SetIsUse(false);
+		}
+
+	}
 
 }

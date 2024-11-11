@@ -2,7 +2,9 @@
 #include "EnemyAIMetaWarrior.h"
 #include "EnemyAIMetaBase.h"
 #include "WarriorDataHolder.h"
+#include "PatrolRuteDataHolder.h"
 #include "WarriorAIMetaTracking.h"
+#include "WarriorAIMetapPatrol.h"
 #include "EnemySM_Warrior.h"
 #include "EnemyWarriorTrackingState.h"
 #include "EnemyBase.h"
@@ -36,14 +38,38 @@ bool EnemyAIMetaWarrior::Start()
 
 	m_debugWarriorTrackingState->InitWarriorListData(m_warriorDataHolder);
 
+	//共通のデータホルダーを初期化
+	m_patrolRuteDataHolder = std::make_shared<PatrolRuteDataHolder>();
+
+	//レベルレンダーを使用して巡回地点を取得する
+	m_patrolRuteLevelRender.Init("Assets/mapLevel/testLevel3.tkl", [&](LevelObjectData_Render& objData)
+		{
+			if (objData.ForwardMatchName(L"patrolroute") == true)
+			{
+				PatrolRuteDataHolder::PatrolRuteData* newData = new PatrolRuteDataHolder::PatrolRuteData;
+
+				//レベルから位置を取得する
+				newData->SetPosition(objData.m_position);
+
+				//配列に格納する
+				m_patrolRuteDataHolder->m_patrolRuteList.push_back(newData);
+
+				return true;
+			}
+			return true;
+		});
 
 	//メタAIの処理プログラムを初期化
-	m_AIMetaList.push_back(new WarriorAIMetaTracking(m_warriorDataHolder));
+	ListInitAIMeta(new WarriorAIMetaTracking(m_warriorDataHolder), true);
+
+	//メタAIの処理プログラムを初期化
+	ListInitAIMeta(new WarriorAIMetapPatrol(m_warriorDataHolder, m_patrolRuteDataHolder), false);
 
 	for (auto& metaAIs : m_AIMetaList)
 	{
 		//初期化
-		metaAIs->MetaAIInit();
+		//metaAIs->MetaAIInit();
+		metaAIs->GetAIMetaProgram()->MetaAIInit();
 	}
 
 	return true;
@@ -53,22 +79,27 @@ bool EnemyAIMetaWarrior::Start()
 void EnemyAIMetaWarrior::MetaAIExecution(EnemySM_Warrior* enemyPtr, const MetaAIMode setMode)
 {
 
-	//現在何かしらの処理中だったら
-	if (m_isCurrentlyProcessed == true)
+	////現在何かしらの処理中だったら
+	//if (m_isCurrentlyProcessed == true)
+	//{
+	//	return;
+	//}
+	//else
+	//{
+	//	//処理中にする
+	//	m_isCurrentlyProcessed = true;
+	//}
+
+	if (m_AIMetaList[setMode]->GetOneTimeOnlyUpdate() == true)
 	{
 		return;
-	}
-	else
-	{
-		//処理中にする
-		m_isCurrentlyProcessed = true;
 	}
 
 	//この関数を呼び出したエネミーのポインタを格納する
 	m_MainCallWarrior = enemyPtr;
 
 	//処理を実行する
-	m_AIMetaList[setMode]->MetaAIExecution(enemyPtr);
+	m_AIMetaList[setMode]->GetAIMetaProgram()->MetaAIExecution(enemyPtr);
 }
 
 //リストにウォリアーを代入
@@ -78,14 +109,20 @@ void EnemyAIMetaWarrior::ListInitEnemy(EnemySM_Warrior* enemyPtr)
 	m_warriorDataHolder->m_warriorDatas.push_back(enemyPtr);
 }
 
-void EnemyAIMetaWarrior::ProcessEnd()
+void EnemyAIMetaWarrior::ListInitAIMeta(EnemyAIMetaBase* programData, const bool isOneTime)
 {
-	//処理フラグを終了にして
-	m_isCurrentlyProcessed = false;
+	MetaAIData* newProgramData = new MetaAIData;
 
-	//全員の追跡ステートを非追跡状態にする
-	for (auto& ptr : m_warriorDataHolder->m_warriorDatas)
-	{
-		ptr->SetTrackingState(WarriorTrackingState::en_nonTracking);
-	}
+	newProgramData->SetAIMetaProgram(programData);
+
+	newProgramData->SetOneTimeOnlyUpdate(isOneTime);
+
+	m_AIMetaList.push_back(newProgramData);
+}
+
+void EnemyAIMetaWarrior::ProcessEnd(const MetaAIMode setMode)
+{
+
+	m_AIMetaList[setMode]->GetAIMetaProgram()->ProcessEnd();
+
 }

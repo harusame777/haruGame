@@ -236,7 +236,6 @@
     <ClCompile Include="EnemyAIMetaBase.cpp" />
     <ClCompile Include="EnemyAIMetaWarrior.cpp" />
     <ClCompile Include="EnemyAIMoveAstar.cpp" />
-    <ClCompile Include="EnemyAIMovePatrol.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="EnemySMBase.cpp" />
     <ClCompile Include="EnemySM_Warrior.cpp" />
@@ -269,7 +268,6 @@
     <ClInclude Include="EnemyAIMetaBase.h" />
     <ClInclude Include="EnemyAIMetaWarrior.h" />
     <ClInclude Include="EnemyAIMoveAstar.h" />
-    <ClInclude Include="EnemyAIMovePatrol.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="EnemySMBase.h" />
     <ClInclude Include="EnemySM_Warrior.h" />
@@ -278,6 +276,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="ObjectBase.h" />
+    <ClInclude Include="PatrolRuteDataHolder.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />

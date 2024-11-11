@@ -57,7 +57,7 @@ bool BackGroundWalls::Start()
 	m_physicsStaticObject.CreateFromModel(m_mainModel.GetModel(), m_mainModel.GetModel().GetWorldMatrix());
 
 	//“–‚½‚è”»’è‚ð‰ÂŽ‹‰»‚·‚éB
-	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 
 	//‘®«‚ðÝ’è
 	m_physicsStaticObject.GetbtCollisionObject()->setUserIndex(enCollisionAttr_Wall);
