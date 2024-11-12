@@ -22,9 +22,27 @@ namespace {
 	static const float SPRITE_W_SIZE = 150.0f;
 	static const float SPRITE_H_SIZE = 150.0f;
 	/// <summary>
+	/// ツルハシスプライトサイズ
+	/// </summary>
+	static const float PICKAXE_SPRITE_W_SIZE = 200.0f;
+	static const float PICKAXE_SPRITE_H_SIZE = 200.0f;
+	/// <summary>
+	/// 岩スプライトサイズ
+	/// </summary>
+	static const float ROCK_SPRITE_W_SIZE = 600.0f;
+	static const float ROCK_SPRITE_H_SIZE = 600.0f;
+	/// <summary>
 	/// 文字の位置
 	/// </summary>
 	static const Vector3 SPRITE_POSITION = { 0.0f,-200.0f,0.0f };
+	/// <summary>
+	/// ツルハシ位置
+	/// </summary>
+	static const Vector3 PICKAXE_POSITION = { -140.0f,-150.0f,0.0f };
+	/// <summary>
+	/// 岩位置
+	/// </summary>
+	static const Vector3 ROCK_POSITION = { 0.0f,-250.0f,0.0f };
 }
 
 //コンストラクタ
@@ -42,6 +60,15 @@ CrystalGetCommandSprite::~CrystalGetCommandSprite()
 //スタート関数
 bool CrystalGetCommandSprite::Start()
 {
+	//演出のスプライトの初期化
+	//ツルハシ
+	m_pickaxeSprite.Init("Assets/modelData/objects/crystal/digital_pickaxe_sprite.DDS", PICKAXE_SPRITE_W_SIZE, PICKAXE_SPRITE_H_SIZE);
+	m_pickaxeSprite.SetPivot({ 0.5f,0.0f });
+	m_pickaxeSprite.SetPosition(PICKAXE_POSITION);
+	//岩
+	m_rockSprite.Init("Assets/modelData/objects/crystal/digital_rock_sprite.DDS", ROCK_SPRITE_W_SIZE, ROCK_SPRITE_H_SIZE);
+	m_rockSprite.SetPosition(ROCK_POSITION);
+
 	//ボタンのスプライトの初期化
 	m_buttonSpriteY.Init("Assets/modelData/objects/crystal/testCommandSprite_Y.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
 	m_buttonSpriteY.SetPosition(SPRITE_POSITION);
@@ -54,6 +81,8 @@ bool CrystalGetCommandSprite::Start()
 
 	m_buttonSpriteX.Init("Assets/modelData/objects/crystal/testCommandSprite_X.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
 	m_buttonSpriteX.SetPosition(SPRITE_POSITION);
+
+	PickaxeEasingInit(PickaxeMoveState::en_standby);
 
 	return true;
 }
@@ -100,6 +129,15 @@ void CrystalGetCommandSprite::Update()
 	swprintf_s(wcsbuf, 256, L"Command[%01d]",int(m_commandList[m_nowCommandNum]));
 
 	m_debugFontRender.SetText(wcsbuf);
+
+	//Quaternion test;
+
+	//m_pixkaxeRotValue += 5.0f;
+
+	//test.AddRotationDegZ(m_pixkaxeRotValue);
+
+	//m_pickaxeSprite.SetRotation(test);
+
 #endif
 	//コレクトフラグがtrueで現在のコマンドが5以下だったら
 	if (m_isCollectFlag == true && 
@@ -107,6 +145,8 @@ void CrystalGetCommandSprite::Update()
 	{
 		//ドローコール
 		m_sprites[m_nowCommandNum]->Update();
+		m_pickaxeSprite.Update();
+		m_rockSprite.Update();
 	}
 }
 
@@ -117,6 +157,8 @@ void CrystalGetCommandSprite::Render(RenderContext& rc)
 	if (m_isCollectFlag == true && 
 		m_nowCommandNum < COMMAND_MAX)
 	{
+		m_pickaxeSprite.Draw(rc);
+		m_rockSprite.Draw(rc);
 		m_sprites[m_nowCommandNum]->Draw(rc);
 	}
 #ifdef DEBUG_MODE
@@ -134,6 +176,7 @@ void CrystalGetCommandSprite::CommandUpdate()
 		return;
 	}
 
+
 	if (m_nowCommandNum > CommandTriggerState::ButtonNum)
 	{
 		//取得成功時の処理を行う
@@ -143,7 +186,12 @@ void CrystalGetCommandSprite::CommandUpdate()
 
 		//クリスタル本体にこのクリスタルは採取されたと伝える
 		m_crystal->CrystalCollected();
+
+		return;
 	}
+
+	//ツルハシのスプライト更新処理をする
+	PickaxeSpriteUpdate();
 
 	//ボタンが正しく押されたかどうかのフラグを初期化
 	m_isCorrectButton = false;
@@ -162,6 +210,7 @@ void CrystalGetCommandSprite::CommandUpdate()
 		//commandListを次に進める
 		m_nowCommandNum++;
 	}
+
 	//もしボタンが押されていて、コマンドが間違っていたら、または
 	//タイムリミットが0秒以下だったら
 	else if(IsTriggerButton() && m_isCorrectButton == false ||
@@ -232,6 +281,8 @@ bool CrystalGetCommandSprite::IsTriggerButton()
 		return true;
 	}
 
+	PickaxeEasingInit(PickaxeMoveState::en_impact);
+
 	return false;
 }
 
@@ -257,4 +308,64 @@ void CrystalGetCommandSprite::IsJudgeingTriggerButton(const CommandTriggerState&
 		m_isCorrectButton = false;
 	}
 
+}
+
+//ツルハシのスプライトのアップデート関数
+void CrystalGetCommandSprite::PickaxeSpriteUpdate()
+{
+	//回転値を作成
+	Quaternion picRot;
+
+	//イージングの値を取得
+	m_pixkaxeRotValue = PickaxeRotEasing(m_pickaxeMoveState);
+
+	//回転値を加減
+	picRot.SetRotationDegZ(m_pixkaxeRotValue);
+
+	//描画変更
+	m_pickaxeSprite.SetRotation(picRot);
+}
+
+//ツルハシの回転イージング関数
+const float CrystalGetCommandSprite::PickaxeRotEasing(const PickaxeMoveState picMoveState)
+{
+	//割合を減らす
+
+	if (picMoveState == PickaxeMoveState::en_standby)
+	{
+		m_pickaxeEasingRatio -= g_gameTime->GetFrameDeltaTime();
+
+		//もし割合が0以下だったら
+		if (m_pickaxeEasingRatio <= 0.0f)
+		{
+			//初期化して…
+			m_pickaxeEasingRatio = 1.0f;
+			//入れ替えて処理する
+			float swap = m_pickaxeRotStartValue;
+
+			m_pickaxeRotStartValue = m_pickaxeRotEndValue;
+
+			m_pickaxeRotEndValue = swap;
+		}
+
+	}
+	else
+	{
+		m_pickaxeEasingRatio -= g_gameTime->GetFrameDeltaTime() * 10.0f;
+
+		//もし割合が0以下だったら
+		if (m_pickaxeEasingRatio <= 0.0f)
+		{
+			//初期化して…
+			m_pickaxeEasingRatio = 0.0f;
+			//ステートを待機状態に戻す
+			PickaxeEasingInit(PickaxeMoveState::en_standby);
+		}
+
+	}
+
+	float finalFloat;
+
+	//線形補間した値を返す	
+	return finalFloat = Leap(m_pickaxeRotStartValue, m_pickaxeRotEndValue, m_pickaxeEasingRatio);
 }
