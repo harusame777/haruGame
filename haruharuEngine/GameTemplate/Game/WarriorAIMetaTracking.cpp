@@ -123,6 +123,21 @@ void WarriorAIMetaTracking::ProcessEnd()
 {
 	
 	//自分の追跡ステートを初期化
-	GetEnemyPtr().SetTrackingStateNumber(WarriorTrackingState::en_nonTracking);
+	m_MainCallWarrior->GetEnemyPtr().SetTrackingStateNumber(WarriorTrackingState::en_nonTracking);
+
+	int num = 0;
+
+	for (auto & ptr : m_sharedWarriorDatas->m_warriorDatas)
+	{
+		if (ptr->GetEnemyPtr().GetTrackingStateNumber() == WarriorTrackingState::en_nonTracking)
+		{
+			num++;
+		}
+	}
+
+	if (num >= 3)
+	{
+		SetProcessEndFlag(true);
+	}
 
 }

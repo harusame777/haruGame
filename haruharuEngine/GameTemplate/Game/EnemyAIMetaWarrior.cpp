@@ -90,9 +90,15 @@ void EnemyAIMetaWarrior::MetaAIExecution(EnemySM_Warrior* enemyPtr, const MetaAI
 	//	m_isCurrentlyProcessed = true;
 	//}
 
-	if (m_AIMetaList[setMode]->GetOneTimeOnlyUpdate() == true)
+	if (m_AIMetaList[setMode]->GetAIMetaProgram()->GetOneTimeUpdateFlag() == true &&
+		m_AIMetaList[setMode]->GetOneTimeOnlyUpdate() == true)
 	{
 		return;
+	}
+
+	if (m_AIMetaList[setMode]->GetOneTimeOnlyUpdate() == true)
+	{
+		m_AIMetaList[setMode]->GetAIMetaProgram()->SetOneTimeUpdateFlag(true);
 	}
 
 	//この関数を呼び出したエネミーのポインタを格納する
@@ -100,6 +106,7 @@ void EnemyAIMetaWarrior::MetaAIExecution(EnemySM_Warrior* enemyPtr, const MetaAI
 
 	//処理を実行する
 	m_AIMetaList[setMode]->GetAIMetaProgram()->MetaAIExecution(enemyPtr);
+
 }
 
 //リストにウォリアーを代入
@@ -124,5 +131,11 @@ void EnemyAIMetaWarrior::ProcessEnd(const MetaAIMode setMode)
 {
 
 	m_AIMetaList[setMode]->GetAIMetaProgram()->ProcessEnd();
+	
+	if (m_AIMetaList[setMode]->GetAIMetaProgram()->GetProcessEndFlag() == true)
+	{
+		m_AIMetaList[setMode]->GetAIMetaProgram()->SetOneTimeUpdateFlag(false);
+		m_AIMetaList[setMode]->GetAIMetaProgram()->SetProcessEndFlag(false);
+	}
 
 }

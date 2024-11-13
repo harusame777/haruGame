@@ -130,6 +130,7 @@ void WarriorAIMetapPatrol::ProcessEnd()
 		if (m_MainCallWarrior == ptr->GetUseEnemyPtr())
 		{
 			ptr->SetIsUse(false);
+			SetProcessEndFlag(true);
 		}
 
 	}

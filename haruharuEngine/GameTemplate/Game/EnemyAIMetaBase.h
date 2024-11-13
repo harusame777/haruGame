@@ -28,5 +28,45 @@ public:
 	///	処理終了
 	/// </summary>
 	virtual void ProcessEnd() = 0;
+	/// <summary>
+	/// 一回起動したかどうかのフラグ
+	/// </summary>
+	bool m_isOneTimeUpdateFlag = false;
+	/// <summary>
+	/// 一回プログラムが起動したかどうかを設定
+	/// </summary>
+	/// <param name="is"></param>
+	void SetOneTimeUpdateFlag(const bool is)
+	{
+		m_isOneTimeUpdateFlag = isalnum;
+	}
+	/// <summary>
+	/// 一回プログラムが起動したかどうかを取得
+	/// </summary>
+	/// <returns></returns>
+	const bool GetOneTimeUpdateFlag() const
+	{
+		return m_isOneTimeUpdateFlag;
+	}
+	/// <summary>
+	/// 処理が終了したかどうかのフラグ
+	/// </summary>
+	bool m_isProcessEndFlag = false;
+	/// <summary>
+	/// 処理が終了したかどうかを設定
+	/// </summary>
+	/// <param name="is"></param>
+	void SetProcessEndFlag(const bool is)
+	{
+		m_isProcessEndFlag = false;
+	}
+	/// <summary>
+	/// 処理が終了したかどうかを取得
+	/// </summary>
+	/// <returns></returns>
+	const bool GetProcessEndFlag() const
+	{
+		return m_isProcessEndFlag;
+	}
 };
 
