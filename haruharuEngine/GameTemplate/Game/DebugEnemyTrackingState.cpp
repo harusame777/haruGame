@@ -2,15 +2,8 @@
 #include "DebugEnemyTrackingState.h"
 #include "EnemyWarriorTrackingState.h"
 #include "WarriorDataHolder.h"
+#include "EnemySM_Warrior.h"
 
-//定数等
-namespace {
-	/// <summary>
-	/// 文字サイズ
-	/// </summary>
-	static const float SPRITE_W_SIZE = 150.0f;
-	static const float SPRITE_H_SIZE = 150.0f;
-}
 
 //コンストラクタ
 DebugEnemyTrackingState::DebugEnemyTrackingState()
@@ -27,23 +20,21 @@ DebugEnemyTrackingState::~DebugEnemyTrackingState()
 //スタート関数
 bool DebugEnemyTrackingState::Start()
 {
-	//灰色マーカーを設定
-	m_grayMarker.Init("Assets/modelData/debug/testWarriorTrackingStateGray.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
-	//赤色マーカーを設定
-	m_redMarker.Init("Assets/modelData/debug/testWarriorTrackingStateRed.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
-	//黄色マーカーを設定
-	m_yellowMarker.Init("Assets/modelData/debug/testWarriorTrackingStateYellow.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
-	//緑色マーカーを設定
-	m_greenMarker.Init("Assets/modelData/debug/testWarriorTrackingStateGreen.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
 
+	
 
 	//warriorの数は3体
-	for (int i = 0; i < 3; i++)
+	for (auto& ptr : m_warriorDataHolder->m_warriorDatas)
 	{
-		m_stateMarkers[i].m_makerColor[WarriorTrackingState::en_nonTracking] = &m_grayMarker;
-		m_stateMarkers[i].m_makerColor[WarriorTrackingState::en_chaseFromBehind] = &m_redMarker;
-		m_stateMarkers[i].m_makerColor[WarriorTrackingState::en_wrapAround] = &m_yellowMarker;
-		m_stateMarkers[i].m_makerColor[WarriorTrackingState::en_usually] = &m_greenMarker;
+
+		EnemyDebugStruct* newList = new EnemyDebugStruct;
+
+		newList->InitColor();
+
+		newList->m_enemySM = ptr;
+
+		m_enemyDebugSpriteList.push_back(newList);
+
 	}
 
 	return true;
@@ -65,41 +56,62 @@ void DebugEnemyTrackingState::Update()
 
 void DebugEnemyTrackingState::MarkerPositionUpdate()
 {
-	int dataNum = 0;
+	//int dataNum = 0;
 
-	//ウォリアーの数ぶん回す
-	for (const auto& ptr: m_warriorDataHolder->m_warriorDatas)
+	////ウォリアーの数ぶん回す
+	//for (const auto& ptr: m_warriorDataHolder->m_warriorDatas)
+	//{
+	//	//ウォリアーの位置を取得
+	//	m_stateMarkers[dataNum].m_warriorPosition = ptr->GetEnemyPtr().GetPosition();
+	//	//オブジェクトの上の方に画像を表示したいので。
+	//	//y座標を少し大きくする。
+	//	m_stateMarkers[dataNum].m_warriorPosition.y += 80.0f;
+	//	//ワールド座標からスクリーン座標を計算。
+	//	//計算結果をm_spritePositionに格納する
+	//	g_camera3D->CalcScreenPositionFromWorldPosition(m_stateMarkers[dataNum].m_spritePosition
+	//		, m_stateMarkers[dataNum].m_warriorPosition);
+	//	//配列を進める
+	//	dataNum++;
+	//}
+
+	for (auto& ptr : m_enemyDebugSpriteList)
 	{
 		//ウォリアーの位置を取得
-		m_stateMarkers[dataNum].m_warriorPosition = ptr->GetEnemyPtr().GetPosition();
+		ptr->m_warriorPosition = ptr->m_enemySM->GetEnemyPtr().GetPosition();
 		//オブジェクトの上の方に画像を表示したいので。
 		//y座標を少し大きくする。
-		m_stateMarkers[dataNum].m_warriorPosition.y += 80.0f;
+		ptr->m_warriorPosition.y += 80.0f;
 		//ワールド座標からスクリーン座標を計算。
 		//計算結果をm_spritePositionに格納する
-		g_camera3D->CalcScreenPositionFromWorldPosition(m_stateMarkers[dataNum].m_spritePosition
-			, m_stateMarkers[dataNum].m_warriorPosition);
-		//配列を進める
-		dataNum++;
+		g_camera3D->CalcScreenPositionFromWorldPosition(ptr->m_spritePosition, ptr->m_warriorPosition);
 	}
 
 }
 
 void DebugEnemyTrackingState::SpriteUpdate()
 {
-	int dataNum = 0;
+	//int dataNum = 0;
 
-	//ウォリアーの数ぶん回す
-	for (const auto& ptr : m_warriorDataHolder->m_warriorDatas)
+	////ウォリアーの数ぶん回す
+	//for (const auto& ptr : m_warriorDataHolder->m_warriorDatas)
+	//{
+	//	m_stateMarkers[dataNum].m_warriorTrackingStateNum = ptr->GetEnemyPtr().GetTrackingStateNumber();
+
+	//	m_stateMarkers[dataNum].m_makerColor[m_stateMarkers[dataNum].m_warriorTrackingStateNum]
+	//		->SetPosition(Vector3(m_stateMarkers[dataNum].m_spritePosition.x, m_stateMarkers[dataNum].m_spritePosition.y, 0.0f));
+
+	//	m_stateMarkers[dataNum].m_makerColor[m_stateMarkers[dataNum].m_warriorTrackingStateNum]->Update();
+
+	//	dataNum++;
+	//}
+
+	for (auto& ptr : m_enemyDebugSpriteList)
 	{
-		m_stateMarkers[dataNum].m_warriorTrackingStateNum = ptr->GetEnemyPtr().GetTrackingStateNumber();
+		ptr->m_warriorTrackingStateNum = ptr->m_enemySM->GetEnemyPtr().GetTrackingStateNumber();
 
-		m_stateMarkers[dataNum].m_makerColor[m_stateMarkers[dataNum].m_warriorTrackingStateNum]
-			->SetPosition(Vector3(m_stateMarkers[dataNum].m_spritePosition.x, m_stateMarkers[dataNum].m_spritePosition.y, 0.0f));
+		ptr->m_colorList[ptr->m_warriorTrackingStateNum]->m_makerColor.SetPosition(Vector3(ptr->m_spritePosition.x , ptr->m_spritePosition.y , 0.0f));
 
-		m_stateMarkers[dataNum].m_makerColor[m_stateMarkers[dataNum].m_warriorTrackingStateNum]->Update();
-
-		dataNum++;
+		ptr->m_colorList[ptr->m_warriorTrackingStateNum]->m_makerColor.Update();
 	}
 
 }
@@ -107,12 +119,47 @@ void DebugEnemyTrackingState::SpriteUpdate()
 //ドロー関数
 void DebugEnemyTrackingState::Render(RenderContext& rc)
 {
-	int dataNum = 0;
+	//int dataNum = 0;
 
-	for (const auto& ptr : m_warriorDataHolder->m_warriorDatas)
+	//for (const auto& ptr : m_warriorDataHolder->m_warriorDatas)
+	//{
+	//	m_stateMarkers[dataNum].m_makerColor[m_stateMarkers[dataNum].m_warriorTrackingStateNum]->Draw(rc);
+
+	//	dataNum++;
+	//}
+
+	for (auto& ptr : m_enemyDebugSpriteList)
 	{
-		m_stateMarkers[dataNum].m_makerColor[m_stateMarkers[dataNum].m_warriorTrackingStateNum]->Draw(rc);
-
-		dataNum++;
+		if (IsInCamera(ptr))
+		{
+			ptr->m_colorList[ptr->m_warriorTrackingStateNum]->m_makerColor.Draw(rc);
+		}
 	}
+}
+
+const bool DebugEnemyTrackingState::IsInCamera(EnemyDebugStruct* ptr)
+{
+
+	Vector3 diff = ptr->m_enemySM->GetEnemyPtr().GetPosition() - g_camera3D->GetPosition();
+
+	//エネミーからプレイヤーに向かうベクトルを正規化
+	diff.Normalize();
+	//エネミーの正面ベクトルと、敵からプレイヤーに向かうベクトルの
+	//内積(cosθ)を求める。
+	float cos = g_camera3D->GetForward().Dot(diff);
+	if (cos >= 1)
+	{
+		cos = 1.0f;
+	}
+	//内積(cosθ)から角度(θ)を求める
+	float angle = acosf(cos);
+	//角度(θ)が90°(視野角)より小さければ
+	if (angle <= (Math::PI / 180.0f) * 90.0f)
+	{
+
+		return true;
+
+	}
+
+	return false;
 }
