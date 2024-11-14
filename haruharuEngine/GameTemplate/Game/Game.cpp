@@ -23,7 +23,7 @@ bool Game::Start()
 	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");	
 
 	//レベルレンダーのテスト
-	m_levelRender.Init("Assets/mapLevel/testLevel3.tkl", [&](LevelObjectData_Render& objData)
+	m_levelRender.Init("Assets/mapLevel/testLevel4.tkl", [&](LevelObjectData_Render& objData)
 	{
 		if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
 		{
