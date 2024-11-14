@@ -14,8 +14,8 @@ namespace {
 	/// ツルハシイージング
 	/// </summary>
 	/// 採掘状態
-	static const float PICKAXE_IMPACT_RATIO_MIN = 20.0f;
-	static const float PICKAXE_IMPACT_RATIO_MAX = 180.0f;
+	static const float PICKAXE_IMPACT_RATIO_MIN = -80.0f;
+	static const float PICKAXE_IMPACT_RATIO_MAX = 40.0f;
 }
 
 class CrystalGetCommandSprite : public IGameObject
@@ -182,7 +182,7 @@ private:
 		{
 			m_pickaxeRotStartValue = PICKAXE_IMPACT_RATIO_MIN;
 
-			m_pickaxeRotEndValue = PICKAXE_STANDBY_RATIO_MAX;
+			m_pickaxeRotEndValue = PICKAXE_IMPACT_RATIO_MAX;
 		}
 
 		m_pickaxeEasingRatio = 1.0f;

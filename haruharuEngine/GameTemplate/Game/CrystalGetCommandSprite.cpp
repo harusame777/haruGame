@@ -205,6 +205,8 @@ void CrystalGetCommandSprite::CommandUpdate()
 	if (IsTriggerButton() &&
 		m_isCorrectButton == true)
 	{
+		PickaxeEasingInit(PickaxeMoveState::en_impact);
+
 		//タイムリミットを初期化
 		m_timeLimit = 2.0f;
 		//commandListを次に進める
@@ -217,6 +219,7 @@ void CrystalGetCommandSprite::CommandUpdate()
 		m_timeLimit <= 0.0f)
 	{
 		//間違っていた時の処理
+		PickaxeEasingInit(PickaxeMoveState::en_impact);
 		 
 		//採取フラグをオフにする
 		m_isCollectFlag = false;
@@ -280,8 +283,6 @@ bool CrystalGetCommandSprite::IsTriggerButton()
 		IsJudgeingTriggerButton(CommandTriggerState::en_isTriggerX);
 		return true;
 	}
-
-	PickaxeEasingInit(PickaxeMoveState::en_impact);
 
 	return false;
 }
@@ -351,7 +352,7 @@ const float CrystalGetCommandSprite::PickaxeRotEasing(const PickaxeMoveState pic
 	}
 	else
 	{
-		m_pickaxeEasingRatio -= g_gameTime->GetFrameDeltaTime() * 10.0f;
+		m_pickaxeEasingRatio -= g_gameTime->GetFrameDeltaTime() * 2;
 
 		//もし割合が0以下だったら
 		if (m_pickaxeEasingRatio <= 0.0f)
