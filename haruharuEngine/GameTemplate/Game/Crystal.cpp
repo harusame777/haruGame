@@ -172,7 +172,7 @@ void Crystal::GetCrystal()
 #endif
 
 		//もしBボタンが押されたら
-		if (g_pad[0]->IsTrigger(enButtonB))
+		if (g_pad[0]->IsTrigger(enButtonRB2))
 		{
 			//採取を開始する
 			m_GetCOMSprite->CrystalCollectStart(this);

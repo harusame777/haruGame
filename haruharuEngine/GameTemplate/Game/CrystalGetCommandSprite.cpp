@@ -205,7 +205,6 @@ void CrystalGetCommandSprite::CommandUpdate()
 	if (IsTriggerButton() &&
 		m_isCorrectButton == true)
 	{
-		PickaxeEasingInit(PickaxeMoveState::en_impact);
 
 		//タイムリミットを初期化
 		m_timeLimit = 2.0f;
@@ -219,7 +218,6 @@ void CrystalGetCommandSprite::CommandUpdate()
 		m_timeLimit <= 0.0f)
 	{
 		//間違っていた時の処理
-		PickaxeEasingInit(PickaxeMoveState::en_impact);
 		 
 		//採取フラグをオフにする
 		m_isCollectFlag = false;
@@ -301,11 +299,15 @@ void CrystalGetCommandSprite::IsJudgeingTriggerButton(const CommandTriggerState&
 	if (JudgeNum == initNumber)
 	{
 		//正しくコマンドが入力された
+		PickaxeEasingInit(PickaxeMoveState::en_impact);
+
 		m_isCorrectButton = true;
 	}
 	else
 	{
 		//間違ったコマンドが入力された
+		PickaxeEasingInit(PickaxeMoveState::en_impact);
+
 		m_isCorrectButton = false;
 	}
 
@@ -332,6 +334,11 @@ const float CrystalGetCommandSprite::PickaxeRotEasing(const PickaxeMoveState pic
 {
 	//割合を減らす
 
+	//最終的な回転値
+	float finalFloat;
+	//入れ替えに使う変数
+	float swap = 0.0f;
+
 	if (picMoveState == PickaxeMoveState::en_standby)
 	{
 		m_pickaxeEasingRatio -= g_gameTime->GetFrameDeltaTime();
@@ -342,10 +349,8 @@ const float CrystalGetCommandSprite::PickaxeRotEasing(const PickaxeMoveState pic
 			//初期化して…
 			m_pickaxeEasingRatio = 1.0f;
 			//入れ替えて処理する
-			float swap = m_pickaxeRotStartValue;
-
+			swap = m_pickaxeRotStartValue;
 			m_pickaxeRotStartValue = m_pickaxeRotEndValue;
-
 			m_pickaxeRotEndValue = swap;
 		}
 
@@ -357,15 +362,30 @@ const float CrystalGetCommandSprite::PickaxeRotEasing(const PickaxeMoveState pic
 		//もし割合が0以下だったら
 		if (m_pickaxeEasingRatio <= 0.0f)
 		{
+			//もしツルハシのスプライトが帰ってきていなかったら
+			if (m_isPickaxeImpactBackFlag == true)
+			{
+				//0で初期化して…
+				m_pickaxeEasingRatio = 0.0f;
+				//フラグをfalseに
+				m_isPickaxeImpactBackFlag = false;
+				//ツルハシのスプライトを待機状態にして
+				PickaxeEasingInit(PickaxeMoveState::en_standby);
+				//線形補間した値を返す	
+				return finalFloat = Leap(m_pickaxeRotStartValue, m_pickaxeRotEndValue, m_pickaxeEasingRatio);
+			}
 			//初期化して…
-			m_pickaxeEasingRatio = 0.0f;
-			//ステートを待機状態に戻す
-			PickaxeEasingInit(PickaxeMoveState::en_standby);
+			m_pickaxeEasingRatio = 1.0f;
+
+			//入れ替えて処理する
+			swap = m_pickaxeRotStartValue;
+			m_pickaxeRotStartValue = m_pickaxeRotEndValue;
+			m_pickaxeRotEndValue = swap;
+			//ツルハシを返すようにする
+			m_isPickaxeImpactBackFlag = true;
 		}
 
 	}
-
-	float finalFloat;
 
 	//線形補間した値を返す	
 	return finalFloat = Leap(m_pickaxeRotStartValue, m_pickaxeRotEndValue, m_pickaxeEasingRatio);

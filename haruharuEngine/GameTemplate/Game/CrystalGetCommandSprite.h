@@ -48,6 +48,12 @@ public:
 		m_timeLimit = 2.0f;
 		//現在のコマンドリストの場所を初期化
 		m_nowCommandNum = 0;
+		//ツルハシのイージングを初期化する
+		PickaxeEasingInit(PickaxeMoveState::en_standby);
+		//回転も初期化
+		Quaternion startRot;
+		startRot.SetRotationDegZ(PICKAXE_STANDBY_RATIO_MIN);
+		m_pickaxeSprite.SetRotation(startRot);
 		//採取フラグをオンにする
 		m_isCollectFlag = true;
 	}
@@ -136,6 +142,11 @@ private:
 	/// 採取フラグ
 	/// </summary>
 	bool m_isCollectFlag = false;
+	/// <summary>
+	/// コマンド入力できるか
+	/// </summary>
+	bool m_isCommandInput = false;
+	bool m_isPickaxeImpactBackFlag = false;
 	/// <summary>
 	/// タイムリミット
 	/// </summary>
