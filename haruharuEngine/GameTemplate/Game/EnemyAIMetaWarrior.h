@@ -60,7 +60,7 @@ public:
 	/// <summary>
 	/// 処理を終了する
 	/// </summary>
-	void ProcessEnd(const MetaAIMode setMode);
+	void ProcessEnd(const MetaAIMode setMode, EnemySMBase* initEnemy);
 private:
 	/// <summary>
 	/// メタAIプログラムのデータ

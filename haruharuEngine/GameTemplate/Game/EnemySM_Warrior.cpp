@@ -82,6 +82,7 @@ void EnemySM_Warrior::EnemyAIStart()
 //アップデート関数
 void EnemySM_Warrior::EnemyAIUpdate()
 {
+
 	//時間更新
 	TimeUpdate();
 
@@ -145,7 +146,7 @@ void EnemySM_Warrior::ChangeState()
 			//待機ステートにする
 			SetState(WarriorState::en_warrior_idle);
 
-			m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_patrolRouteSet);
+			m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_patrolRouteSet,this);
 
 			m_isWaitIdle = false;
 		}
@@ -173,16 +174,16 @@ void EnemySM_Warrior::ChangeState()
 		//視界内にプレイヤーがいて尚且つプレイヤーとの間に壁が無かったら
 		if (m_enemyConList[en_enemyAIConSearch]->Execution())
 		{
-			StateTransition_Tracking();
+			m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_patrolRouteSet, this);
 
-			m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_patrolRouteSet);
+			StateTransition_Tracking();
 		}
 	}
 }
 
 void EnemySM_Warrior::StateTransition_Tracking()
 {
-
+	//今の状態だと、一度待機状態になった後にもう一度追跡状態になると、役割を何も持てないので、対策を検討する。
 	//[テスト]メタAIから指示をもらう
 	m_warriorMetaAI->MetaAIExecution(this,EnemyAIMetaWarrior::mode_trackingStateChange);
 	//追跡ステートにする
@@ -227,8 +228,11 @@ void EnemySM_Warrior::TimeUpdate()
 				m_isTrackingTimeOver = false;
 				//追跡時間を初期化
 				m_enemyConList[en_enemyAIConWaitTime10f]->Start();
+
+				SetState(WarriorState::en_warrior_idle);
+
 				//メタAIのプロセスを終了する
-				m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_trackingStateChange);
+				m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_trackingStateChange,this);
 			}
 		}
 		else

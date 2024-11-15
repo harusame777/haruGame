@@ -79,17 +79,6 @@ bool EnemyAIMetaWarrior::Start()
 void EnemyAIMetaWarrior::MetaAIExecution(EnemySM_Warrior* enemyPtr, const MetaAIMode setMode)
 {
 
-	////現在何かしらの処理中だったら
-	//if (m_isCurrentlyProcessed == true)
-	//{
-	//	return;
-	//}
-	//else
-	//{
-	//	//処理中にする
-	//	m_isCurrentlyProcessed = true;
-	//}
-
 	if (m_AIMetaList[setMode]->GetAIMetaProgram()->GetOneTimeUpdateFlag() == true &&
 		m_AIMetaList[setMode]->GetOneTimeOnlyUpdate() == true)
 	{
@@ -118,24 +107,24 @@ void EnemyAIMetaWarrior::ListInitEnemy(EnemySM_Warrior* enemyPtr)
 
 void EnemyAIMetaWarrior::ListInitAIMeta(EnemyAIMetaBase* programData, const bool isOneTime)
 {
+	//新しくメタAIのデータを作成する
 	MetaAIData* newProgramData = new MetaAIData;
-
+	//メタAIのプログラムデータを設定する
 	newProgramData->SetAIMetaProgram(programData);
-
+	//このメタAIが終了まで一回しか起動しないのかを設定する
 	newProgramData->SetOneTimeOnlyUpdate(isOneTime);
-
+	//データを格納する
 	m_AIMetaList.push_back(newProgramData);
 }
 
-void EnemyAIMetaWarrior::ProcessEnd(const MetaAIMode setMode)
+void EnemyAIMetaWarrior::ProcessEnd(const MetaAIMode setMode, EnemySMBase* initEnemy)
 {
 
-	m_AIMetaList[setMode]->GetAIMetaProgram()->ProcessEnd();
-	
-	if (m_AIMetaList[setMode]->GetAIMetaProgram()->GetProcessEndFlag() == true)
+	//すべての処理が終了していたら
+	if (m_AIMetaList[setMode]->GetAIMetaProgram()->ProcessEnd(initEnemy) == true)
 	{
+		//もう一度起動できるようにする
 		m_AIMetaList[setMode]->GetAIMetaProgram()->SetOneTimeUpdateFlag(false);
-		m_AIMetaList[setMode]->GetAIMetaProgram()->SetProcessEndFlag(false);
 	}
 
 }

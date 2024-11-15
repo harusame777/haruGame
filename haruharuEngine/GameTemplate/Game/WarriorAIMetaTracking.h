@@ -30,7 +30,7 @@ public:
 	/// <summary>
 	/// 処理終了
 	/// </summary>
-	void ProcessEnd();
+	const bool ProcessEnd(EnemySMBase* initEnemy);
 private:
 	/// <summary>
 	/// ウォリアーに呼びかけを行う

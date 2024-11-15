@@ -10,7 +10,7 @@
 //スタート関数
 void EnemyAIMoveAstar::EnemyAIStart()
 {
-	m_nvmMesh.Init("Assets/nvm/testnvm6.tkn");
+	m_nvmMesh.Init("Assets/nvm/testnvm4.tkn");
 
 	m_player = FindGO<Player>("player");
 }

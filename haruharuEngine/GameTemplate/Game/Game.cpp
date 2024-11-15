@@ -23,7 +23,7 @@ bool Game::Start()
 	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");	
 
 	//レベルレンダーのテスト
-	m_levelRender.Init("Assets/mapLevel/testLevel4.tkl", [&](LevelObjectData_Render& objData)
+	m_levelRender.Init("Assets/mapLevel/testLevel3.tkl", [&](LevelObjectData_Render& objData)
 	{
 		if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
 		{
@@ -129,12 +129,6 @@ void Game::Update()
 
 	m_modelFloor.Update();
 
-	m_testSpotLight.SetPosition(m_spotLightTestPos);
-
-	m_testSpotLight.SetColor(10.0f, 10.0f, 10.0f);
-
-	m_spotLightTestDirection.Normalize();
-
 	Vector3 targetPos = m_modelTestPos;
 
 	targetPos.y += 50.0f;
@@ -142,14 +136,6 @@ void Game::Update()
 	Vector3 diff = targetPos - m_spotLightTestPos;
 
 	diff.Normalize();
-
-	m_testSpotLight.SetDirection(diff);
-
-	m_testSpotLight.SetRange(300.0f);
-
-	m_testSpotLight.SetAngle(25.0f);
-
-	m_testPointLight.SetAffectPowParam(0.5f);
 
 	m_spriteTest1.Update();
 

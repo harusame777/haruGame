@@ -116,12 +116,15 @@ void WarriorAIMetapPatrol::SearchRute(const SearchMode mode)
 		//そのルートを使用中にして
 		confirmedRute->SetIsUse(true);
 
+		//そのルートを使用しているエネミーを登録して
+		confirmedRute->SetUseEnemyPtr(m_MainCallWarrior);
+
 		//追跡地点をエネミーに送る
 		m_MainCallWarrior->GetEnemyPtr().SetMoveTargetPosition(confirmedRute->GetPosition());
 	}
 }
 
-void WarriorAIMetapPatrol::ProcessEnd()
+const bool WarriorAIMetapPatrol::ProcessEnd(EnemySMBase* initEnemy)
 {
 
 	for (auto& ptr : m_sharedPatrolRuteDatas->m_patrolRuteList)
@@ -130,9 +133,12 @@ void WarriorAIMetapPatrol::ProcessEnd()
 		if (m_MainCallWarrior == ptr->GetUseEnemyPtr())
 		{
 			ptr->SetIsUse(false);
-			SetProcessEndFlag(true);
+			ptr->SetUseEnemyPtr(nullptr);
+			return true;
 		}
 
 	}
+
+	return false;
 
 }

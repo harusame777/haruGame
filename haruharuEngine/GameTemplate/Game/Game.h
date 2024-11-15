@@ -40,12 +40,9 @@ public:
 
 	SpriteRender m_spriteTest1;
 
-	PointLight m_testPointLight;
-
 	//太陽光の作成
 	DirectionalLight sunDirectionalLight;
 
-	SpotLight m_testSpotLight;
 
 	Player* m_player = nullptr;
 
@@ -55,7 +52,6 @@ public:
 
 	ModelRender m_bgModelRendedr;
 	PhysicsStaticObject m_bgObject;
-
 
 
 	FontRender m_testFont;

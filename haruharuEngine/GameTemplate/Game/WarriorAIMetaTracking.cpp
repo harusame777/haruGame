@@ -119,16 +119,21 @@ void WarriorAIMetaTracking::ChangeTrackingState()
 }
 
 //処理終了処理
-void WarriorAIMetaTracking::ProcessEnd()
+const bool WarriorAIMetaTracking::ProcessEnd(EnemySMBase* initEnemy)
 {
 	
 	//自分の追跡ステートを初期化
-	m_MainCallWarrior->GetEnemyPtr().SetTrackingStateNumber(WarriorTrackingState::en_nonTracking);
+	m_MainCallWarrior = initEnemy;
 
 	int num = 0;
 
 	for (auto & ptr : m_sharedWarriorDatas->m_warriorDatas)
 	{
+		if (&m_MainCallWarrior->GetEnemyPtr() == &ptr->GetEnemyPtr())
+		{
+			ptr->SetTrackingState(WarriorTrackingState::en_nonTracking);
+		}
+
 		if (ptr->GetEnemyPtr().GetTrackingStateNumber() == WarriorTrackingState::en_nonTracking)
 		{
 			num++;
@@ -137,7 +142,10 @@ void WarriorAIMetaTracking::ProcessEnd()
 
 	if (num >= 3)
 	{
-		SetProcessEndFlag(true);
+		//すべての処理が終了したと返す
+		return true;
 	}
+
+	return false;
 
 }

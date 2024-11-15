@@ -36,7 +36,7 @@ public:
 	/// <summary>
 	/// ˆ—I—¹
 	/// </summary>
-	void ProcessEnd();
+	const bool ProcessEnd(EnemySMBase* initEnemy);
 private:
 	enum SearchMode {
 
