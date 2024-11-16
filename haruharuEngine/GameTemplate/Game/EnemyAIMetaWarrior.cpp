@@ -34,9 +34,9 @@ bool EnemyAIMetaWarrior::Start()
 	//共通のデータホルダーを初期化
 	m_warriorDataHolder = std::make_shared<WarriorDataHolder>();
 
-	m_debugWarriorTrackingState = NewGO<DebugEnemyTrackingState>(0, "debug");
+	//m_debugWarriorTrackingState = NewGO<DebugEnemyTrackingState>(0, "debug");
 
-	m_debugWarriorTrackingState->InitWarriorListData(m_warriorDataHolder);
+	//m_debugWarriorTrackingState->InitWarriorListData(m_warriorDataHolder);
 
 	//共通のデータホルダーを初期化
 	m_patrolRuteDataHolder = std::make_shared<PatrolRuteDataHolder>();

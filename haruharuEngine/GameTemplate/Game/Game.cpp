@@ -9,6 +9,8 @@
 #include "EnemyAIMetaWarrior.h"
 #include "Enemy_Warrior.h"
 #include "DebugEnemyTrackingState.h"
+#include "Locker.h"
+#include "Accessories.h"
 
 bool Game::Start()
 {
@@ -23,7 +25,7 @@ bool Game::Start()
 	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");	
 
 	//レベルレンダーのテスト
-	m_levelRender.Init("Assets/mapLevel/testLevel3.tkl", [&](LevelObjectData_Render& objData)
+	m_levelRender.Init("Assets/mapLevel/testLevel4.tkl", [&](LevelObjectData_Render& objData)
 	{
 		if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
 		{
@@ -92,6 +94,20 @@ bool Game::Start()
 			enemy_warrior->SetPosition(objData.m_position);
 			enemy_warrior->SetRotation(objData.m_rotation);
 			enemy_warrior->SetScale(objData.m_scalse);
+			return true;
+		}
+		else if (objData.ForwardMatchName(L"locker") == true)
+		{
+			Locker* locker = NewGO<Locker>(0, "object");
+			locker->SetPosition(objData.m_position);
+			return true;
+		}
+		else if (objData.ForwardMatchName(L"desk") == true)
+		{
+			Accessories* desk = NewGO<Accessories>(0, "object");
+			desk->SetPosition(objData.m_position);
+			desk->SetRotation(objData.m_rotation);
+			return true;
 		}
 		return true;
 	});
