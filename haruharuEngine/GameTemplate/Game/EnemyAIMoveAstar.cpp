@@ -54,6 +54,26 @@ void EnemyAIMoveAstar::EnemyAIUpdate()
 
 					Vector3 behindWarriorPos;
 
+					if (GetEnemyPtr().GetTrackingStateNumber() == WarriorTrackingState::en_wrapAround) {
+						EnemySM_Warrior* chaseEnemyPtr = nullptr;
+						for (auto& ptr : m_sharedWarriorDatas->m_warriorDatas)
+						{
+							if (ptr->GetTrackingState() == WarriorTrackingState::en_chaseFromBehind)
+							{
+								chaseEnemyPtr = ptr;
+							}
+						}
+						if (chaseEnemyPtr) {
+							// 追跡中の敵との距離を計算して、近いほどコストが高くなるようにする
+							auto diff = chaseEnemyPtr->GetEnemyPtr().GetPosition() - GetEnemyPtr().GetPosition();
+
+							t = pow(diff.Length(), 10);
+							return t;
+						}
+
+					}
+
+#if 0
 					for (auto& ptr : m_sharedWarriorDatas->m_warriorDatas)
 					{
 						if (ptr->GetTrackingState() != WarriorTrackingState::en_chaseFromBehind)
@@ -77,6 +97,7 @@ void EnemyAIMoveAstar::EnemyAIUpdate()
 						}
 
 					}
+#endif
 					
 					return t;
 			}

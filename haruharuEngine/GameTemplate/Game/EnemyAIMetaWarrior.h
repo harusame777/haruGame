@@ -61,6 +61,11 @@ public:
 	/// 処理を終了する
 	/// </summary>
 	void ProcessEnd(const MetaAIMode setMode, EnemySMBase* initEnemy);
+	
+	std::shared_ptr<WarriorDataHolder> GetEnemyDatas()
+	{
+		return m_warriorDataHolder;
+	}
 private:
 	/// <summary>
 	/// メタAIプログラムのデータ

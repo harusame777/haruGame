@@ -24,8 +24,13 @@
 //スタート関数
 void EnemySM_Warrior::EnemyAIStart()
 {
+	//メタAIのインスタンスを格納
+	m_warriorMetaAI = FindGO<EnemyAIMetaWarrior>("MetaAI");
+	//メタAIにエネミーのインスタンスを送る
+	m_warriorMetaAI->ListInitEnemy(this);
+
 	//共通のデータホルダーを初期化
-	m_warriorDataHolder = std::make_shared<WarriorDataHolder>();
+	m_warriorDataHolder = m_warriorMetaAI->GetEnemyDatas();
 
 	//AIのListをこのエネミーに必要な物で初期化する
 	//経路探索
@@ -70,11 +75,6 @@ void EnemySM_Warrior::EnemyAIStart()
 	{
 		listPtr->Start();
 	}
-
-	//メタAIのインスタンスを格納
-	m_warriorMetaAI = FindGO<EnemyAIMetaWarrior>("MetaAI");
-	//メタAIにエネミーのインスタンスを送る
-	m_warriorMetaAI->ListInitEnemy(this);
 
 	m_player = FindGO<Player>("player");
 }

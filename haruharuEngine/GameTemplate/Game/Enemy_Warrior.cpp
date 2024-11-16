@@ -53,7 +53,7 @@ bool Enemy_Warrior::Start()
 //アップデート関数
 void Enemy_Warrior::Update()
 {
-	//AIListUpdate();
+	AIListUpdate();
 
 	m_modelRender.SetRotation(m_rotation);
 

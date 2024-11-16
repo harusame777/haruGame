@@ -60,6 +60,17 @@ private:
 		/// </summary>
 		int m_warriorTrackingStateNum = 0;
 	public:
+		//enum WarriorTrackingState
+		//{
+		//	//非追跡状態
+		//	en_nonTracking,
+		//	//後ろから追う
+		//	en_chaseFromBehind,
+		//	//回り込む
+		//	en_wrapAround,
+		//	//普通に追う
+		//	en_usually,
+		//}
 		void InitColor()
 		{	
 			//灰色マーカーを設定
