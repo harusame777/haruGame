@@ -56,6 +56,8 @@ public:
 		m_pickaxeSprite.SetRotation(startRot);
 		//採取フラグをオンにする
 		m_isCollectFlag = true;
+		//コマンドを入力できるように
+		m_isCommandInput = true;
 	}
 private:
 	/// <summary>
@@ -145,7 +147,10 @@ private:
 	/// <summary>
 	/// コマンド入力できるか
 	/// </summary>
-	bool m_isCommandInput = false;
+	bool m_isCommandInput = true;
+	/// <summary>
+	/// ツルハシのスプライトが戻っているか
+	/// </summary>
 	bool m_isPickaxeImpactBackFlag = false;
 	/// <summary>
 	/// タイムリミット

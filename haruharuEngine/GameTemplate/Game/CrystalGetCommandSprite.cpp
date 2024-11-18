@@ -34,7 +34,7 @@ namespace {
 	/// <summary>
 	/// 文字の位置
 	/// </summary>
-	static const Vector3 SPRITE_POSITION = { 0.0f,-200.0f,0.0f };
+	static const Vector3 SPRITE_POSITION = { 0.0f,-250.0f,0.0f };
 	/// <summary>
 	/// ツルハシ位置
 	/// </summary>
@@ -70,21 +70,30 @@ bool CrystalGetCommandSprite::Start()
 	m_rockSprite.SetPosition(ROCK_POSITION);
 
 	//ボタンのスプライトの初期化
-	m_buttonSpriteY.Init("Assets/modelData/objects/crystal/testCommandSprite_Y.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
+	m_buttonSpriteY.Init("Assets/modelData/objects/crystal/CommandSprite_Y.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
 	m_buttonSpriteY.SetPosition(SPRITE_POSITION);
 
-	m_buttonSpriteB.Init("Assets/modelData/objects/crystal/testCommandSprite_B.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
+	m_buttonSpriteB.Init("Assets/modelData/objects/crystal/CommandSprite_B.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
 	m_buttonSpriteB.SetPosition(SPRITE_POSITION);
 
-	m_buttonSpriteA.Init("Assets/modelData/objects/crystal/testCommandSprite_A.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
+	m_buttonSpriteA.Init("Assets/modelData/objects/crystal/CommandSprite_A.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
 	m_buttonSpriteA.SetPosition(SPRITE_POSITION);
 
-	m_buttonSpriteX.Init("Assets/modelData/objects/crystal/testCommandSprite_X.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
+	m_buttonSpriteX.Init("Assets/modelData/objects/crystal/CommandSprite_X.DDS", SPRITE_W_SIZE, SPRITE_H_SIZE);
 	m_buttonSpriteX.SetPosition(SPRITE_POSITION);
 
 	PickaxeEasingInit(PickaxeMoveState::en_standby);
 
 	return true;
+}
+
+void CrystalGetCommandSprite::TimerSpriteInit()
+{
+
+	SpriteInitData timerSpriteData;
+
+
+
 }
 
 //スプライトの初期化
@@ -140,13 +149,17 @@ void CrystalGetCommandSprite::Update()
 
 #endif
 	//コレクトフラグがtrueで現在のコマンドが5以下だったら
-	if (m_isCollectFlag == true && 
-		m_nowCommandNum < COMMAND_MAX)
+	if (m_isCollectFlag == true /*&& 
+		m_nowCommandNum < COMMAND_MAX*/)
 	{
 		//ドローコール
-		m_sprites[m_nowCommandNum]->Update();
 		m_pickaxeSprite.Update();
 		m_rockSprite.Update();
+
+		if (m_nowCommandNum >= COMMAND_MAX)
+			return;
+		m_sprites[m_nowCommandNum]->Update();
+
 	}
 }
 
@@ -154,11 +167,14 @@ void CrystalGetCommandSprite::Update()
 void CrystalGetCommandSprite::Render(RenderContext& rc)
 {
 	//コレクトフラグがtrueで現在のコマンドが5以下だったら
-	if (m_isCollectFlag == true && 
-		m_nowCommandNum < COMMAND_MAX)
+	if (m_isCollectFlag == true /*&& 
+		m_nowCommandNum < COMMAND_MAX*/)
 	{
 		m_pickaxeSprite.Draw(rc);
 		m_rockSprite.Draw(rc);
+
+		if (m_nowCommandNum >= COMMAND_MAX)
+			return;
 		m_sprites[m_nowCommandNum]->Draw(rc);
 	}
 #ifdef DEBUG_MODE
@@ -176,6 +192,18 @@ void CrystalGetCommandSprite::CommandUpdate()
 		return;
 	}
 
+	//ツルハシのスプライト更新処理をする
+	PickaxeSpriteUpdate();
+
+	//ボタンが正しく押されたかどうかのフラグを初期化
+	m_isCorrectButton = false;
+
+	//ボタン入力ができなかったら
+	if (m_isCommandInput == false)
+	{
+		//戻す
+		return;
+	}
 
 	if (m_nowCommandNum > CommandTriggerState::ButtonNum)
 	{
@@ -190,13 +218,7 @@ void CrystalGetCommandSprite::CommandUpdate()
 		return;
 	}
 
-	//ツルハシのスプライト更新処理をする
-	PickaxeSpriteUpdate();
-
-	//ボタンが正しく押されたかどうかのフラグを初期化
-	m_isCorrectButton = false;
-
-	//タイムリミットを現象
+	//タイムリミットを減少
 	m_timeLimit -= g_gameTime->GetFrameDeltaTime();
 
 	//ボタンが押されたかどうかを判定して、押されたら
@@ -301,12 +323,16 @@ void CrystalGetCommandSprite::IsJudgeingTriggerButton(const CommandTriggerState&
 		//正しくコマンドが入力された
 		PickaxeEasingInit(PickaxeMoveState::en_impact);
 
+		m_isCommandInput = false;
+
 		m_isCorrectButton = true;
 	}
 	else
 	{
 		//間違ったコマンドが入力された
 		PickaxeEasingInit(PickaxeMoveState::en_impact);
+
+		m_isCommandInput = false;
 
 		m_isCorrectButton = false;
 	}
@@ -362,13 +388,15 @@ const float CrystalGetCommandSprite::PickaxeRotEasing(const PickaxeMoveState pic
 		//もし割合が0以下だったら
 		if (m_pickaxeEasingRatio <= 0.0f)
 		{
-			//もしツルハシのスプライトが帰ってきていなかったら
+			//もしツルハシのスプライトが帰ってきていたら
 			if (m_isPickaxeImpactBackFlag == true)
 			{
 				//0で初期化して…
 				m_pickaxeEasingRatio = 0.0f;
 				//フラグをfalseに
 				m_isPickaxeImpactBackFlag = false;
+				//コマンドを入力できるように
+				m_isCommandInput = true;
 				//ツルハシのスプライトを待機状態にして
 				PickaxeEasingInit(PickaxeMoveState::en_standby);
 				//線形補間した値を返す	
