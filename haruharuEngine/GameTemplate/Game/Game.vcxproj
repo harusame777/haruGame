@@ -142,6 +142,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderOutputFile>$(Platform)\$(Configuration)\$(TargetName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -193,6 +194,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderOutputFile>$(Platform)\$(Configuration)\$(TargetName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -213,6 +215,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderOutputFile>$(Platform)\$(Configuration)\$(TargetName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -223,24 +226,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Accessories.cpp" />
     <ClCompile Include="BackGroundFloor.cpp" />
     <ClCompile Include="BackGroundWalls.cpp" />
     <ClCompile Include="Crystal.cpp" />
     <ClCompile Include="CrystalGetCommandSprite.cpp" />
+    <ClCompile Include="DebugEnemyTrackingState.cpp" />
     <ClCompile Include="EnemyAIBase.cpp" />
     <ClCompile Include="EnemyAIConBase.cpp" />
     <ClCompile Include="EnemyAIConColPlayer.cpp" />
     <ClCompile Include="EnemyAIConSearch.cpp" />
     <ClCompile Include="EnemyAIConWaitTime.cpp" />
+    <ClCompile Include="EnemyAIMetaBase.cpp" />
     <ClCompile Include="EnemyAIMetaWarrior.cpp" />
     <ClCompile Include="EnemyAIMoveAstar.cpp" />
-    <ClCompile Include="EnemyAIMovePatrol.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="EnemySMBase.cpp" />
     <ClCompile Include="EnemySM_Warrior.cpp" />
     <ClCompile Include="Enemy_Warrior.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Locker.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ObjectBase.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -250,20 +256,25 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="system\system.cpp" />
+    <ClCompile Include="WarriorAIMetapPatrol.cpp" />
+    <ClCompile Include="WarriorAIMetaRetreat.cpp" />
+    <ClCompile Include="WarriorAIMetaTracking.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Accessories.h" />
     <ClInclude Include="BackGroundFloor.h" />
     <ClInclude Include="BackGroundWalls.h" />
     <ClInclude Include="Crystal.h" />
     <ClInclude Include="CrystalGetCommandSprite.h" />
+    <ClInclude Include="DebugEnemyTrackingState.h" />
     <ClInclude Include="EnemyAIBase.h" />
     <ClInclude Include="EnemyAIConBase.h" />
     <ClInclude Include="EnemyAIConColPlayer.h" />
     <ClInclude Include="EnemyAIConSearch.h" />
     <ClInclude Include="EnemyAIConWaitTime.h" />
+    <ClInclude Include="EnemyAIMetaBase.h" />
     <ClInclude Include="EnemyAIMetaWarrior.h" />
     <ClInclude Include="EnemyAIMoveAstar.h" />
-    <ClInclude Include="EnemyAIMovePatrol.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="EnemySMBase.h" />
     <ClInclude Include="EnemySM_Warrior.h" />
@@ -271,10 +282,20 @@
     <ClInclude Include="Enemy_Warrior.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Locker.h" />
     <ClInclude Include="ObjectBase.h" />
+    <ClInclude Include="PatrolRuteDataHolder.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
+    <ClInclude Include="WarriorAIMetapPatrol.h" />
+    <ClInclude Include="WarriorAIMetaRetreat.h" />
+    <ClInclude Include="WarriorAIMetaTracking.h" />
+    <ClInclude Include="WarriorDataHolder.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

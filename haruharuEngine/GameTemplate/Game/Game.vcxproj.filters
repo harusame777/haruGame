@@ -25,9 +25,6 @@
     <ClCompile Include="Enemy_Warrior.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyAIConBase.cpp">
-      <Filter>Enemy\AICon</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyAIConColPlayer.cpp">
       <Filter>Enemy\AICon</Filter>
     </ClCompile>
@@ -49,14 +46,35 @@
     <ClCompile Include="EnemyAIMoveAstar.cpp">
       <Filter>Enemy\AI</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyAIMovePatrol.cpp">
-      <Filter>Enemy\AI</Filter>
-    </ClCompile>
     <ClCompile Include="EnemySM_Warrior.cpp">
       <Filter>Enemy\AISM</Filter>
     </ClCompile>
     <ClCompile Include="EnemyAIMetaWarrior.cpp">
       <Filter>Enemy\AIMeta</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAIConBase.cpp">
+      <Filter>Enemy\AIBase</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAIMetaBase.cpp">
+      <Filter>Enemy\AIBase</Filter>
+    </ClCompile>
+    <ClCompile Include="WarriorAIMetaTracking.cpp">
+      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
+    </ClCompile>
+    <ClCompile Include="WarriorAIMetapPatrol.cpp">
+      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugEnemyTrackingState.cpp">
+      <Filter>debug</Filter>
+    </ClCompile>
+    <ClCompile Include="Locker.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="Accessories.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="WarriorAIMetaRetreat.cpp">
+      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,9 +101,6 @@
     <ClInclude Include="Enemy_Warrior.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyAIConBase.h">
-      <Filter>Enemy\AICon</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyAIConColPlayer.h">
       <Filter>Enemy\AICon</Filter>
     </ClInclude>
@@ -107,17 +122,45 @@
     <ClInclude Include="EnemyAIMoveAstar.h">
       <Filter>Enemy\AI</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyAIMovePatrol.h">
-      <Filter>Enemy\AI</Filter>
-    </ClInclude>
     <ClInclude Include="EnemySM_Warrior.h">
       <Filter>Enemy\AISM</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyWarriorTrackingState.h">
-      <Filter>Enemy\AIMeta</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyAIMetaWarrior.h">
       <Filter>Enemy\AIMeta</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="EnemyAIConBase.h">
+      <Filter>Enemy\AIBase</Filter>
+    </ClInclude>
+    <ClInclude Include="WarriorDataHolder.h">
+      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAIMetaBase.h">
+      <Filter>Enemy\AIBase</Filter>
+    </ClInclude>
+    <ClInclude Include="WarriorAIMetaTracking.h">
+      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyWarriorTrackingState.h">
+      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
+    </ClInclude>
+    <ClInclude Include="WarriorAIMetapPatrol.h">
+      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugEnemyTrackingState.h">
+      <Filter>debug</Filter>
+    </ClInclude>
+    <ClInclude Include="PatrolRuteDataHolder.h">
+      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
+    </ClInclude>
+    <ClInclude Include="Locker.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="Accessories.h">
+      <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="WarriorAIMetaRetreat.h">
+      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -145,5 +188,14 @@
     <Filter Include="Enemy\AIMeta">
       <UniqueIdentifier>{726cc6db-87e7-475b-96df-e3940aaad6e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy\AIMeta\AIMetaWarrior">
+      <UniqueIdentifier>{c4c0b427-df3c-435e-a608-f33d7feb1205}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="debug">
+      <UniqueIdentifier>{20737fca-1e2b-4c54-b3c3-f114d8fe0d13}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
   </ItemGroup>
 </Project>

@@ -29,9 +29,14 @@ bool Enemy_Warrior::Start()
 	//シャドウマップに描画するようにする
 	m_modelRender.SetShadowChasterFlag(false);
 
-	m_player = FindGO<Player>("player");
 
 	InitAIList();
+
+	//キャラクターコントローラーを初期化
+	m_CController.Init(10.0f, 20.0f, m_position);
+
+	//位置の初期設定
+	m_CController.SetPosition(m_position);
 
 	//コリジョンオブジェクトを作成する。
 	m_collisionObject = NewGO<CollisionObject>(0);
@@ -48,10 +53,6 @@ bool Enemy_Warrior::Start()
 //アップデート関数
 void Enemy_Warrior::Update()
 {
-	Vector3 plaPos = m_player->GetPosition();
-
-	SetMoveTargetPosition(plaPos);
-
 	AIListUpdate();
 
 	m_modelRender.SetRotation(m_rotation);
@@ -60,11 +61,14 @@ void Enemy_Warrior::Update()
 
 	m_collisionObject->SetPosition(m_position);
 
+	m_CController.SetPosition(m_position);
+
 #ifdef DEBUG_MODE
 	DebugStateDisplay(GetStateNumber());
 #endif
 
 	m_modelRender.Update();
+
 }
 
 //ドロー関数

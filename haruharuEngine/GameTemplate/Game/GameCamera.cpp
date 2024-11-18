@@ -11,6 +11,8 @@ namespace {
 	static const float FPSInitToCameraPos_Z = -250.0f;
 	static const float TPSInitToCameraPos_Y = 125.0f;
 	static const float TPSInitToCameraPos_Z = -450.0f;
+
+	static const float CameraRotSpeed = 3.0f;
 }
 
 //コンストラクタ
@@ -79,7 +81,7 @@ void GameCamera::FPSCam()
 	//Y軸回りの回転
 	Quaternion qRot;
 	//横方向の回転軸を作成
-	qRot.SetRotationDeg(Vector3::AxisY, 1.6f * PadX);
+	qRot.SetRotationDeg(Vector3::AxisY, CameraRotSpeed * PadX);
 	//横方向の回転軸に注視点から視点までのベクトルを加算
 	qRot.Apply(m_toCameraPos);
 
@@ -93,7 +95,7 @@ void GameCamera::FPSCam()
 		//正規化
 		axisX.Normalize();
 		//縦方向の回転軸を作成
-		qRot.SetRotationDeg(axisX, -1.6 * PadY);
+		qRot.SetRotationDeg(axisX, -CameraRotSpeed * PadY);
 	}
 	//縦方向の回転軸に注視点から視点までのベクトルを加算
 	qRot.Apply(m_toCameraPos);

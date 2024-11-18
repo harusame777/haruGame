@@ -7,8 +7,10 @@ enum WarriorTrackingState
 {
 	//”ñ’ÇÕó‘Ô
 	en_nonTracking,
-	//Œã‚ë‚©‚ç•’Ê‚É’Ç‚¤
+	//Œã‚ë‚©‚ç’Ç‚¤
 	en_chaseFromBehind,
 	//‰ñ‚è‚Ş
 	en_wrapAround,
+	//•’Ê‚É’Ç‚¤
+	en_usually,
 };

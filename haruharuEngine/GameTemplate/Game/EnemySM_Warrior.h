@@ -5,6 +5,8 @@
 #include "EnemyBase.h"
 
 class EnemyAIMetaWarrior;
+class WarriorDataHolder;
+class Player;
 
 class EnemySM_Warrior : public EnemySMBase, public virtual EnemyAIBase
 {
@@ -96,6 +98,39 @@ public:
 	{
 		return m_warriorState;
 	}
+	/// <summary>
+	/// メタAIに呼ばれたかどうか
+	/// </summary>
+	/// <param name="setBool"></param>
+	void SetCallMetaAI(const bool setBool)
+	{
+		m_isCallMetaAI = setBool;
+	}
+	/// <summary>
+	/// メタAIに呼ばれたかどうか
+	/// </summary>
+	/// <returns></returns>
+	const bool GetCallMetaAI()
+	{
+		
+		return m_isCallMetaAI;
+	}
+	/// <summary>
+	/// 退却するかしないか
+	/// </summary>
+	/// <param name="setBool"></param>
+	void SetRetreat(const bool setBool)
+	{
+		m_isRetreat = setBool;
+	}
+	/// <summary>
+	/// 退却するかしないか
+	/// </summary>
+	/// <returns></returns>
+	const bool GetRetreat()
+	{
+		return m_isRetreat;
+	}
 private:
 	/// <summary>
 	/// エネミーウォリアーのステート、待機状態で初期化
@@ -109,10 +144,26 @@ private:
 	/// 時間によって追跡し続けるかどうか
 	/// </summary>
 	bool m_isTrackingTimeOver = false;
+	/// <summary>
+	/// 待機状態か
+	/// </summary>
 	bool m_isWaitIdle = false;
+	/// <summary>
+	/// 
+	/// </summary>
+	bool m_isCallMetaAI = false;
+	/// <summary>
+	/// 退却するかしないか
+	/// </summary>
+	bool m_isRetreat = false;
 	/// <summary>
 	/// ウォリアーのメタAI
 	/// </summary>
 	EnemyAIMetaWarrior* m_warriorMetaAI;
+	/// <summary>
+	/// ウォリアーの共通データホルダ～
+	/// </summary>
+	std::shared_ptr<WarriorDataHolder> m_warriorDataHolder;
+	Player* m_player = nullptr;
 };
 

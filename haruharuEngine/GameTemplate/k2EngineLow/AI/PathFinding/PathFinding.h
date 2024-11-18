@@ -11,6 +11,26 @@ namespace nsK2EngineLow {
 		class PathFinding
 		{
 		public:
+			enum CalcMode
+			{
+				Calc_Mode1,
+				Calc_Mode2
+			};
+
+			struct CellWork {
+
+				void Init(const Cell* cell);
+
+				const Cell* cell;
+				CellWork* parentCell;	// 親のセル。
+				float costFromStartCell;
+				Vector3 pathPoint;
+				float cost;				// 移動コスト
+				bool isOpend;			// 開かれた？
+				bool isClosed;			// 閉じられた？
+				bool isSmooth;			// スムースされる？
+			};
+
 			/// <summary>
 			/// パスの検索処理を実行。
 			/// </summary>
@@ -37,22 +57,10 @@ namespace nsK2EngineLow {
 				const Vector3& endPos,
 				PhysicsWorld* physicsWorld = nullptr,
 				float agentRadius = 50.0f,
-				float agentHeight = 200.0f
+				float agentHeight = 200.0f,
+				std::function<float(const CellWork*)> calcCustomHiristicCostFunction = nullptr
 			);
-		private:
-			struct CellWork {
-
-				void Init(const Cell* cell);
-				
-				const Cell* cell;
-				CellWork* parentCell;	// 親のセル。
-				float costFromStartCell;
-				Vector3 pathPoint;
-				float cost;				// 移動コスト
-				bool isOpend;			// 開かれた？
-				bool isClosed;			// 閉じられた？
-				bool isSmooth;			// スムースされる？
-			};
+		
 		private:
 		
 			/// <summary>
@@ -64,7 +72,8 @@ namespace nsK2EngineLow {
 				float& costFromStartCell, 
 				const CellWork* nextCell, 
 				const CellWork* prevCell, 
-				const Cell* endCell);
+				const Cell* endCell,
+				std::function<float(const CellWork*)> calcCustomHiristicCostFunction);
 			/// <summary>
 			/// スムージング
 			/// </summary>
@@ -83,6 +92,7 @@ namespace nsK2EngineLow {
 			
 
 			std::vector< CellWork > m_cellWork;
+
 		};
 	}
 }

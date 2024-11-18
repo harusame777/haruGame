@@ -8,6 +8,9 @@
 #include "Player.h"
 #include "EnemyAIMetaWarrior.h"
 #include "Enemy_Warrior.h"
+#include "DebugEnemyTrackingState.h"
+#include "Locker.h"
+#include "Accessories.h"
 
 bool Game::Start()
 {
@@ -19,7 +22,7 @@ bool Game::Start()
 	m_GetCOMSprite = NewGO<CrystalGetCommandSprite>(0, "object");
 
 	//エネミーウォリアーのメタAI
-	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");
+	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");	
 
 	//レベルレンダーのテスト
 	m_levelRender.Init("Assets/mapLevel/testLevel3.tkl", [&](LevelObjectData_Render& objData)
@@ -91,6 +94,20 @@ bool Game::Start()
 			enemy_warrior->SetPosition(objData.m_position);
 			enemy_warrior->SetRotation(objData.m_rotation);
 			enemy_warrior->SetScale(objData.m_scalse);
+			return true;
+		}
+		else if (objData.ForwardMatchName(L"locker") == true)
+		{
+			Locker* locker = NewGO<Locker>(0, "object");
+			locker->SetPosition(objData.m_position);
+			return true;
+		}
+		else if (objData.ForwardMatchName(L"desk") == true)
+		{
+			Accessories* desk = NewGO<Accessories>(0, "object");
+			desk->SetPosition(objData.m_position);
+			desk->SetRotation(objData.m_rotation);
+			return true;
 		}
 		return true;
 	});
@@ -115,6 +132,7 @@ bool Game::Start()
 
 	m_testCamera = NewGO<GameCamera>(0, "camera");
 
+	
 	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
 
 	return true;
@@ -127,12 +145,6 @@ void Game::Update()
 
 	m_modelFloor.Update();
 
-	m_testSpotLight.SetPosition(m_spotLightTestPos);
-
-	m_testSpotLight.SetColor(10.0f, 10.0f, 10.0f);
-
-	m_spotLightTestDirection.Normalize();
-
 	Vector3 targetPos = m_modelTestPos;
 
 	targetPos.y += 50.0f;
@@ -140,14 +152,6 @@ void Game::Update()
 	Vector3 diff = targetPos - m_spotLightTestPos;
 
 	diff.Normalize();
-
-	m_testSpotLight.SetDirection(diff);
-
-	m_testSpotLight.SetRange(300.0f);
-
-	m_testSpotLight.SetAngle(25.0f);
-
-	m_testPointLight.SetAffectPowParam(0.5f);
 
 	m_spriteTest1.Update();
 
