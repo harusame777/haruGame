@@ -58,11 +58,11 @@ protected:
 	/// <summary>
 	/// 現在のステートの数値
 	/// </summary>
-	int m_stateNumber = -1;
+	int m_stateNumber = 0;
 	/// <summary>
 	/// 現在のステートの数値
 	/// </summary>
-	int m_trackingStateNumber = -1;
+	int m_trackingStateNumber = 0;
 	/// <summary>
 	/// デバック用フォントレンダー
 	/// </summary>
@@ -179,6 +179,11 @@ public:
 	const int GetStateNumber()
 	{
 		return m_stateNumber;
+	}
+
+	CharacterController* GetCController()
+	{
+		return &m_CController;
 	}
 };
 

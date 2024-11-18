@@ -186,7 +186,8 @@ namespace nsAI {
 		float& costFromStartCell, 
 		const CellWork* nextCell, 
 		const CellWork* prevCell, 
-		const Cell* endCell
+		const Cell* endCell,
+		std::function<float(const CellWork*)> calcCustomHiristicCostFunction
 	)
 	{
 		if (prevCell == nullptr) {
@@ -200,6 +201,9 @@ namespace nsAI {
 		}
 		float distToEndPos = (nextCell->cell->GetCenterPosition() - endCell->GetCenterPosition()).Length();
 		totalCost = costFromStartCell + distToEndPos;
+		if (calcCustomHiristicCostFunction != nullptr) {
+			totalCost += calcCustomHiristicCostFunction(nextCell);
+		}
 	}
 	void PathFinding::Execute(
 		Path& path,
@@ -208,7 +212,9 @@ namespace nsAI {
 		const Vector3& endPos,
 		PhysicsWorld* physicsWorld ,
 		float agentRadius,
-		float agentHeight)
+		float agentHeight,
+		std::function<float(const CellWork*)> calcCustomHiristicCostFunction
+	)
 	{
 		// パスをクリア。
 		path.Clear();
@@ -234,7 +240,7 @@ namespace nsAI {
 		// 開始セルの作業領域を取得。
 		CellWork* crtCell = &m_cellWork.at( startCell.GetCellNo() );
 		// 開始セルの移動コストを計算する。
-		CalcCost(crtCell->cost, crtCell->costFromStartCell, crtCell, nullptr, &endCell);
+		CalcCost(crtCell->cost, crtCell->costFromStartCell, crtCell, nullptr, &endCell, calcCustomHiristicCostFunction);
 		// 開始セルをオープンリストに積む。
 		openList.emplace_back(crtCell);
 		// セルをオープンリストに積んだ印をつける。
@@ -275,8 +281,7 @@ namespace nsAI {
 					//隣接セルに移動するコストを計算
 					float newCost;
 					float newCostFromStartCell;
-					CalcCost(newCost, newCostFromStartCell, linkCellWork, crtCell, &endCell);
-					
+					CalcCost(newCost, newCostFromStartCell, linkCellWork, crtCell, &endCell, calcCustomHiristicCostFunction);
 					if (linkCellWork->isClosed == false	) { //隣接セルの調査は終わっていない。
 						if (linkCellWork->cost > newCost) {
 							// こちらのコストの方が安いので改善する。

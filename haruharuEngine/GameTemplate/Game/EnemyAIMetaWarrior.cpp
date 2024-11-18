@@ -1,8 +1,16 @@
 #include "stdafx.h"
 #include "EnemyAIMetaWarrior.h"
+#include "EnemyAIMetaBase.h"
+#include "WarriorDataHolder.h"
+#include "PatrolRuteDataHolder.h"
+#include "WarriorAIMetaTracking.h"
+#include "WarriorAIMetapPatrol.h"
 #include "EnemySM_Warrior.h"
 #include "EnemyWarriorTrackingState.h"
 #include "EnemyBase.h"
+#include "Player.h"
+#include "DebugEnemyTrackingState.h"
+#include "WarriorAIMetaRetreat.h"
 
 //処理順
 //
@@ -20,154 +28,107 @@
 //エネミーがプレイヤーに気づいて周囲に呼びかけを行ったタイミングで実行したい
 //追跡中にほかのエネミーが気づいたりしたら、強制的に後ろを追うようにする。
 
-namespace {
-	/// <summary>
-	/// ウォリアーの最大数
-	/// </summary>
-	static const int WARRIOR_NUM = 3;
-	/// <summary>
-	/// 半径計算用のやつ
-	/// </summary>
-	static const float CALL_RANGE_CALC = 100000.0f;
-}
-
 //スタート関数
 bool EnemyAIMetaWarrior::Start()
 {
-	//リストのサイズをウォリアーの数でリサイズ
-	//m_enemyWarriorList.resize(WARRIOR_NUM);
+
+	//共通のデータホルダーを初期化
+	m_warriorDataHolder = std::make_shared<WarriorDataHolder>();
+
+	m_debugWarriorTrackingState = NewGO<DebugEnemyTrackingState>(0, "debug");
+
+	m_debugWarriorTrackingState->InitWarriorListData(m_warriorDataHolder);
+
+	//共通のデータホルダーを初期化
+	m_patrolRuteDataHolder = std::make_shared<PatrolRuteDataHolder>();
+
+	//レベルレンダーを使用して巡回地点を取得する
+	m_patrolRuteLevelRender.Init("Assets/mapLevel/testLevel3.tkl", [&](LevelObjectData_Render& objData)
+		{
+			if (objData.ForwardMatchName(L"patrolroute") == true)
+			{
+				PatrolRuteDataHolder::PatrolRuteData* newData = new PatrolRuteDataHolder::PatrolRuteData;
+
+				//レベルから位置を取得する
+				newData->SetPosition(objData.m_position);
+
+				//配列に格納する
+				m_patrolRuteDataHolder->m_patrolRuteList.push_back(newData);
+
+				return true;
+			}
+			return true;
+		});
+
+	//メタAIの処理プログラムを初期化
+	ListInitAIMeta(new WarriorAIMetaTracking(m_warriorDataHolder), true);
+
+	//メタAIの処理プログラムを初期化
+	ListInitAIMeta(new WarriorAIMetapPatrol(m_warriorDataHolder, m_patrolRuteDataHolder), false);
+
+	//メタAIの処理プログラムを初期化
+	ListInitAIMeta(new WarriorAIMetaRetreat(m_patrolRuteDataHolder), true);
+
+	for (auto& metaAIs : m_AIMetaList)
+	{
+		//初期化
+		//metaAIs->MetaAIInit();
+		metaAIs->GetAIMetaProgram()->MetaAIInit();
+	}
 
 	return true;
 }
 
 //ウォリアー全体の追跡ステートを変更する関数
-void EnemyAIMetaWarrior::MetaAIExecution(EnemySM_Warrior* enemyPtr)
+void EnemyAIMetaWarrior::MetaAIExecution(EnemySM_Warrior* enemyPtr, const MetaAIMode setMode)
 {
-	//この関数を呼び出したエネミーのポインタを格納する
-	m_MainCallWarrior = enemyPtr;
 
-	//現在何かしらの処理中だったら
-	if (m_isCurrentlyProcessed == true)
+	if (m_AIMetaList[setMode]->GetAIMetaProgram()->GetOneTimeUpdateFlag() == true &&
+		m_AIMetaList[setMode]->GetOneTimeOnlyUpdate() == true)
 	{
 		return;
 	}
 
-	//周囲に呼びかけを行う
-	CallWarrior();
+	if (m_AIMetaList[setMode]->GetOneTimeOnlyUpdate() == true)
+	{
+		m_AIMetaList[setMode]->GetAIMetaProgram()->SetOneTimeUpdateFlag(true);
+	}
+
+	//この関数を呼び出したエネミーのポインタを格納する
+	m_MainCallWarrior = enemyPtr;
+
+	//処理を実行する
+	m_AIMetaList[setMode]->GetAIMetaProgram()->MetaAIExecution(enemyPtr);
+
 }
 
 //リストにウォリアーを代入
 void EnemyAIMetaWarrior::ListInitEnemy(EnemySM_Warrior* enemyPtr)
 {
-	//データを作成
-	MetaAIWarriorData* initData = new MetaAIWarriorData;
-	//エネミーのポインタを格納
-	initData->m_warriorPtr = enemyPtr;
 	//リストにウォリアーを代入する
-	m_enemyWarriorList.push_back(initData);
+	m_warriorDataHolder->m_warriorDatas.push_back(enemyPtr);
 }
 
-void EnemyAIMetaWarrior::CallWarrior()
+void EnemyAIMetaWarrior::ListInitAIMeta(EnemyAIMetaBase* programData, const bool isOneTime)
 {
-	//処理中にする
-	m_isCurrentlyProcessed = true;
-
-	if (m_enemyWarriorList[0] == nullptr)
-	{
-		return;
-	}
-
-	//まず呼びかけを行ったウォリアーの周囲にウォリアーが存在するか
-	//を調べる
-	Vector3 callEnemyPos = m_MainCallWarrior->GetEnemyPtr().GetPosition();
-	Vector3 enemyPos;
-	Vector3 faceVector;
-	float len;
-	
-	//範囲for文で回す
-	for (auto& ptr : m_enemyWarriorList)
-	{
-		//自分のアドレスと同じだったら
-		if (m_MainCallWarrior == ptr->m_warriorPtr)
-		{
-			//処理を飛ばす
-			continue;
-		}
-
-		//ウォリアーの位置を取得
-		enemyPos = ptr->m_warriorPtr->GetEnemyPtr().GetPosition();
-
-		//呼びかけをしたウォリアーの位置と減算を行って
-		//呼びかけをしたウォリアーから周囲のウォリアーの座標に向かって伸びる
-		//ベクトルを作る
-		faceVector = enemyPos - callEnemyPos;
-		//長さの2乗に変換
-		len = faceVector.LengthSq();
-
-		//もし250.0f圏内にウォリアーがいたら
-		if (len < CALL_RANGE_CALC * CALL_RANGE_CALC)
-		{		
-			ptr->m_isCallCompliedWarrior = true;
-		}
-	}
-
-	//エネミー全体の追跡ステートを変更する
-	ChangeTrackingState();
+	//新しくメタAIのデータを作成する
+	MetaAIData* newProgramData = new MetaAIData;
+	//メタAIのプログラムデータを設定する
+	newProgramData->SetAIMetaProgram(programData);
+	//このメタAIが終了まで一回しか起動しないのかを設定する
+	newProgramData->SetOneTimeOnlyUpdate(isOneTime);
+	//データを格納する
+	m_AIMetaList.push_back(newProgramData);
 }
 
-void EnemyAIMetaWarrior::ChangeTrackingState()
+void EnemyAIMetaWarrior::ProcessEnd(const MetaAIMode setMode, EnemySMBase* initEnemy)
 {
 
-	//もう回り込みステートのエネミーが存在しているか
-	bool existsWrapAroundWarrior = false;
-
-	//第一発見エネミーはとりあえず後ろから追わせる
-	m_MainCallWarrior->SetTrackingState(WarriorTrackingState::en_chaseFromBehind);
-
-	//範囲for文で回す
-	for (auto& ptr : m_enemyWarriorList)
+	//すべての処理が終了していたら
+	if (m_AIMetaList[setMode]->GetAIMetaProgram()->ProcessEnd(initEnemy) == true)
 	{
-
-		//自分のアドレスと同じだったら
-		if (m_MainCallWarrior == ptr->m_warriorPtr)
-		{
-			//処理を飛ばす
-			continue;
-		}
-		
-		//イテレーターのウォリアーが呼びかけられたウォリアーだったら
-		if (ptr->m_isCallCompliedWarrior == true)
-		{
-			//回り込みステートのウォリアーが存在していたら
-			if (existsWrapAroundWarrior == true)
-			{
-				//後ろから追わせる
-				ptr->m_warriorPtr->SetTrackingState(WarriorTrackingState::en_wrapAround);
-				ptr->m_warriorPtr->SetState(EnemySM_Warrior::en_warrior_trackingMetaAI);
-				continue;
-			}
-			//回り込みステートのウォリアーがまだ存在しなかったら
-
-			//回り込ませる
-			ptr->m_warriorPtr->SetTrackingState(WarriorTrackingState::en_wrapAround);
-			ptr->m_warriorPtr->SetState(EnemySM_Warrior::en_warrior_trackingMetaAI);
-
-			//フラグをtrueに
-			existsWrapAroundWarrior = true;
-		}
-
+		//もう一度起動できるようにする
+		m_AIMetaList[setMode]->GetAIMetaProgram()->SetOneTimeUpdateFlag(false);
 	}
 
-}
-
-void EnemyAIMetaWarrior::ProcessEnd()
-{
-	//処理フラグを終了にして
-	m_isCurrentlyProcessed = false;
-
-	//全員の追跡ステートを非追跡状態にする
-	for (auto& ptr : m_enemyWarriorList)
-	{
-		ptr->m_warriorPtr->SetTrackingState(WarriorTrackingState::en_nonTracking);
-	}
 }
