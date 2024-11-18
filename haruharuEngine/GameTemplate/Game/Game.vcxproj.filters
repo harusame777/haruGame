@@ -73,6 +73,9 @@
     <ClCompile Include="Accessories.cpp">
       <Filter>obj</Filter>
     </ClCompile>
+    <ClCompile Include="WarriorAIMetaRetreat.cpp">
+      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -155,6 +158,9 @@
     </ClInclude>
     <ClInclude Include="Accessories.h">
       <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="WarriorAIMetaRetreat.h">
+      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

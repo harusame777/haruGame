@@ -34,6 +34,10 @@ public:
 		/// </summary>
 		mode_patrolRouteSet,
 		/// <summary>
+		/// ‘Ş‹p
+		/// </summary>
+		mode_retreat,
+		/// <summary>
 		/// ‰Šú‰»—p
 		/// </summary>
 		mode_init,

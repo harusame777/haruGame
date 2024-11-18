@@ -53,7 +53,7 @@ void EnemySM_Warrior::EnemyAIStart()
 	m_enemyConList.push_back(new EnemyAIConSearch(45.0f,500.0f));
 
 	//10秒タイマー
-	m_enemyConList.push_back(new EnemyAIConWaitTime(10.0f));
+	m_enemyConList.push_back(new EnemyAIConWaitTime(30.0f));
 
 	//プレイヤーとの衝突判定
 	m_enemyConList.push_back(new EnemyAIConColPlayer);
@@ -63,6 +63,9 @@ void EnemySM_Warrior::EnemyAIStart()
 
 	//5秒タイマー
 	m_enemyConList.push_back(new EnemyAIConWaitTime(5.0f));
+
+	//15秒タイマー
+	m_enemyConList.push_back(new EnemyAIConWaitTime(15.0f));
 
 	//紐づいているエネミーのインスタンスをConListのプログラムに渡す
 	for (auto& listPtr : m_enemyConList)
@@ -104,9 +107,18 @@ void EnemySM_Warrior::EnemyAIUpdate()
 		//10秒経っていなかったら
 		else
 		{
-			Vector3 plaPos = m_player->GetPosition();
+			//もし退却状態じゃなかったら
+			if (m_isRetreat == false)
+			{
+				Vector3 plaPos = m_player->GetPosition();
 
-			GetEnemyPtr().SetMoveTargetPosition(plaPos);
+				GetEnemyPtr().SetMoveTargetPosition(plaPos);
+			}
+			else
+			{
+				//[テスト]メタAIから指示をもらう
+				m_warriorMetaAI->MetaAIExecution(this, EnemyAIMetaWarrior::mode_retreat);
+			}
 			//追跡処理を更新
 			m_enemyAIList[en_enemyAIMoveAstar]->EnemyAIUpdate();
 		}
@@ -197,6 +209,22 @@ void EnemySM_Warrior::StateTransition_Tracking()
 //時間処理
 void EnemySM_Warrior::TimeUpdate()
 {
+
+	if (m_isRetreat == true)
+	{
+		if (m_enemyConList[5]->Execution())
+		{
+			//[テスト]メタAIから指示をもらう
+			m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_retreat, this);
+			m_isRetreat = false;
+		}
+	}
+	else
+	{
+		//追跡時間を初期化
+		m_enemyConList[5]->Start();
+	}
+
 	//現在のステートが待機状態だったら
 	if (m_warriorState == WarriorState::en_warrior_idle)
 	{

@@ -8,6 +8,7 @@
 class EnemyBase;
 class WarriorDataHolder;
 class Player;
+class EnemyAIConBase;
 
 class EnemyAIMoveAstar : public EnemyAIBase 
 {
@@ -56,5 +57,9 @@ private:
 	/// ÉvÉåÉCÉÑÅ[
 	/// </summary>
 	Player* m_player = nullptr;
+	/// <summary>
+	/// 
+	/// </summary>
+	EnemyAIConBase* m_timer;
 };
 

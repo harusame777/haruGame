@@ -115,6 +115,22 @@ public:
 		
 		return m_isCallMetaAI;
 	}
+	/// <summary>
+	/// 退却するかしないか
+	/// </summary>
+	/// <param name="setBool"></param>
+	void SetRetreat(const bool setBool)
+	{
+		m_isRetreat = setBool;
+	}
+	/// <summary>
+	/// 退却するかしないか
+	/// </summary>
+	/// <returns></returns>
+	const bool GetRetreat()
+	{
+		return m_isRetreat;
+	}
 private:
 	/// <summary>
 	/// エネミーウォリアーのステート、待機状態で初期化
@@ -136,6 +152,10 @@ private:
 	/// 
 	/// </summary>
 	bool m_isCallMetaAI = false;
+	/// <summary>
+	/// 退却するかしないか
+	/// </summary>
+	bool m_isRetreat = false;
 	/// <summary>
 	/// ウォリアーのメタAI
 	/// </summary>

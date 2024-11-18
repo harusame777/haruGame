@@ -3,6 +3,9 @@
 #include "EnemyBase.h"
 #include "WarriorDataHolder.h"
 #include "Player.h"
+#include <cmath>
+#include "EnemyAIConBase.h"
+#include "EnemyAIConWaitTime.h"
 
 //これを有効にするとデバッグモードになる
 //#define DEBUG_MODE
@@ -10,15 +13,17 @@
 //スタート関数
 void EnemyAIMoveAstar::EnemyAIStart()
 {
-	m_nvmMesh.Init("Assets/nvm/testnvm4.tkn");
+	m_nvmMesh.Init("Assets/nvm/testnvm7.tkn");
 
 	m_player = FindGO<Player>("player");
+
+	m_timer = (new EnemyAIConWaitTime(1.0f));
+ 
 }
 
 //アップデート関数
 void EnemyAIMoveAstar::EnemyAIUpdate()
 {
-
 	bool isEnd;
 
 	//自分自身の位置を取得
@@ -31,77 +36,109 @@ void EnemyAIMoveAstar::EnemyAIUpdate()
 	if (g_pad[0]->IsPress(enButtonA))
 	{
 #endif
-		//パスを検索する
-		m_pathFiding.Execute(
-			m_path,							//構築されたパスの格納先
-			m_nvmMesh,						//ナビメッシュ
-			myPos,							//開始座標
-			tarPos,							//移動先座標
-			PhysicsWorld::GetInstance(),	//物理エンジン
-			1.0f,							//AIエージョントの半径50.0
-			1.0f,							//AIエージェントの高さ200
-			[&](const nsAI::PathFinding::CellWork* nextCell
-				)-> float {							//カスタムヒューリスティックコストの計算
+		if (m_timer->Execution()) {
+			m_timer->Start();
+			//パスを検索する
+			m_pathFiding.Execute(
+				m_path,							//構築されたパスの格納先
+				m_nvmMesh,						//ナビメッシュ
+				myPos,							//開始座標
+				tarPos,							//移動先座標
+				PhysicsWorld::GetInstance(),	//物理エンジン
+				1.0f,							//AIエージョントの半径50.0
+				1.0f,							//AIエージェントの高さ200
+				[&](const nsAI::PathFinding::CellWork* nextCell
+					)-> float {							//カスタムヒューリスティックコストの計算
 
-					float t = 0.0f;
+						float t = 0.0f;
 
-					//このエネミーが回り込みステートのエネミーでなければ
-					if (GetEnemyPtr().GetTrackingStateNumber() != WarriorTrackingState::en_wrapAround)
-					{
-						//戻す
-						return t;
-					}
+						EnemySM_Warrior* aroundEnemyPtr = nullptr;
 
-					Vector3 behindWarriorPos;
-
-					if (GetEnemyPtr().GetTrackingStateNumber() == WarriorTrackingState::en_wrapAround) {
-						EnemySM_Warrior* chaseEnemyPtr = nullptr;
-						for (auto& ptr : m_sharedWarriorDatas->m_warriorDatas)
+						//このエネミーが回り込みステートのエネミーでなければ
+						if (GetEnemyPtr().GetTrackingStateNumber() != WarriorTrackingState::en_wrapAround)
 						{
-							if (ptr->GetTrackingState() == WarriorTrackingState::en_chaseFromBehind)
-							{
-								chaseEnemyPtr = ptr;
-							}
-						}
-						if (chaseEnemyPtr) {
-							// 追跡中の敵との距離を計算して、近いほどコストが高くなるようにする
-							auto diff = chaseEnemyPtr->GetEnemyPtr().GetPosition() - GetEnemyPtr().GetPosition();
-
-							t = pow(diff.Length(), 10);
+							//戻す
 							return t;
 						}
 
-					}
+						Vector3 behindWarriorPos;
+
+						if (GetEnemyPtr().GetTrackingStateNumber() == WarriorTrackingState::en_wrapAround) {
+							EnemySM_Warrior* chaseEnemyPtr = nullptr;
+							for (auto& ptr : m_sharedWarriorDatas->m_warriorDatas)
+							{
+								if (ptr->GetTrackingState() == WarriorTrackingState::en_chaseFromBehind)
+								{
+									chaseEnemyPtr = ptr;
+								}
+								if (ptr->GetTrackingState() == WarriorTrackingState::en_wrapAround)
+								{
+									aroundEnemyPtr = ptr;
+								}
+							}
+
+							if (chaseEnemyPtr) {
+								//追跡中の敵と自分との距離を計算して近ければ退却させる
+								auto toAroundEnemyFromChaseEnemy = (chaseEnemyPtr->GetEnemyPtr().GetPosition() - GetEnemyPtr().GetPosition()).Length();
+								if (toAroundEnemyFromChaseEnemy < 100.0f)
+								{
+									aroundEnemyPtr->SetRetreat(true);
+
+									return 0.0f;
+								}
+								// 追跡中の敵との距離を計算して、近いほどコストが高くなるようにする
+								auto toPlayerFromChaseEnemy = m_player->GetPosition() - chaseEnemyPtr->GetEnemyPtr().GetPosition();
+								auto toPlayerFromNextCell = m_player->GetPosition() - nextCell->cell->GetCenterPosition();
+								toPlayerFromChaseEnemy.Normalize();
+								toPlayerFromNextCell.Normalize();
+								if (toPlayerFromChaseEnemy.Dot(toPlayerFromNextCell) > 0.0f) {
+									return 1000000.0f;
+								}
+								return 0.0f;
+								/*auto diff = chaseEnemyPtr->GetEnemyPtr().GetPosition() - nextCell->cell->GetCenterPosition();
+								float t =pow( min(1.0f, diff.Length() / 10000.0f), 0.1f);
+								auto toPlayerFromChaseEnemy = m_player->GetPosition() - chaseEnemyPtr->GetEnemyPtr().GetPosition();
+								auto toPlayerFromNextCell = m_player->GetPosition() - nextCell->cell->GetCenterPosition();
+								toPlayerFromChaseEnemy.Normalize();
+								toPlayerFromNextCell.Normalize();
+								t *= max(0.0f, toPlayerFromChaseEnemy.Dot(toPlayerFromNextCell));
+								t = std::lerp(100000, 0, t);
+								*/
+								return t;
+							}
+
+						}
 
 #if 0
-					for (auto& ptr : m_sharedWarriorDatas->m_warriorDatas)
-					{
-						if (ptr->GetTrackingState() != WarriorTrackingState::en_chaseFromBehind)
+						for (auto& ptr : m_sharedWarriorDatas->m_warriorDatas)
 						{
-							return t;
+							if (ptr->GetTrackingState() != WarriorTrackingState::en_chaseFromBehind)
+							{
+								return t;
+							}
+
+							behindWarriorPos = ptr->GetEnemyPtr().GetPosition();
+
+							Vector3 cellPos = nextCell->cell->GetCenterPosition();
+
+							float behindWarriorToCellPosDiff = (cellPos - behindWarriorPos).Length();
+
+							Vector3 playerPos = m_player->GetPosition();
+
+							float behindWarriorToPlayerPosDiff = (playerPos - behindWarriorPos).Length();
+
+							if (behindWarriorToCellPosDiff <= 500.0f/*behindWarriorToPlayerPosDiff*/)
+							{
+								t += 10000.0f;
+							}
+
 						}
-
-						behindWarriorPos = ptr->GetEnemyPtr().GetPosition();
-
-						Vector3 cellPos = nextCell->cell->GetCenterPosition();
-
-						float behindWarriorToCellPosDiff = (cellPos - behindWarriorPos).Length();
-
-						Vector3 playerPos = m_player->GetPosition();
-
-						float behindWarriorToPlayerPosDiff = (playerPos - behindWarriorPos).Length();
-
-						if (behindWarriorToCellPosDiff <= 500.0f/*behindWarriorToPlayerPosDiff*/)
-						{
-							t += 10000.0f;
-						}
-
-					}
 #endif
-					
-					return t;
-			}
-		);
+
+						return t;
+				}
+			);
+		}
 #ifdef DEBUG_MODE
 	}
 #endif

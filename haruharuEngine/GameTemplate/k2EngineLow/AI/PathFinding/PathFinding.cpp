@@ -282,7 +282,6 @@ namespace nsAI {
 					float newCost;
 					float newCostFromStartCell;
 					CalcCost(newCost, newCostFromStartCell, linkCellWork, crtCell, &endCell, calcCustomHiristicCostFunction);
-					
 					if (linkCellWork->isClosed == false	) { //隣接セルの調査は終わっていない。
 						if (linkCellWork->cost > newCost) {
 							// こちらのコストの方が安いので改善する。
