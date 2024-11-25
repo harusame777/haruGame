@@ -209,6 +209,18 @@ private:
 	/// </summary>
 	SpriteRender m_rockSprite;
 	/// <summary>
+	/// タイマーのスプライト
+	/// </summary>
+	SpriteRender m_timerSprite;
+	/// <summary>
+	/// タイマーのスプライトの初期化処理
+	/// </summary>
+	void TimerSpriteInit();
+	/// <summary>
+	/// タイマーのスプライトの角度
+	/// </summary>
+	float m_degree = 9.45f;
+	/// <summary>
 	/// ボタンのスプライトの配列
 	/// </summary>
 	SpriteRender* m_sprites[COMMAND_MAX];

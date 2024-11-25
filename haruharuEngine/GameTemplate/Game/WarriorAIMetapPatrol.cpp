@@ -130,7 +130,7 @@ const bool WarriorAIMetapPatrol::ProcessEnd(EnemySMBase* initEnemy)
 	for (auto& ptr : m_sharedPatrolRuteDatas->m_patrolRuteList)
 	{
 
-		if (m_MainCallWarrior == ptr->GetUseEnemyPtr())
+		if (initEnemy == ptr->GetUseEnemyPtr())
 		{
 			ptr->SetIsUse(false);
 			ptr->SetUseEnemyPtr(nullptr);

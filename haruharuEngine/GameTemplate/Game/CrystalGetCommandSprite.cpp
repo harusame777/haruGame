@@ -2,6 +2,7 @@
 #include "CrystalGetCommandSprite.h"
 #include "Crystal.h"
 #include <random>
+#include <algorithm>
 
 //これを有効にするとデバッグモードになる
 //#define DEBUG_MODE
@@ -60,6 +61,9 @@ CrystalGetCommandSprite::~CrystalGetCommandSprite()
 //スタート関数
 bool CrystalGetCommandSprite::Start()
 {
+	//タイマーのスプライトの初期化
+	TimerSpriteInit();
+
 	//演出のスプライトの初期化
 	//ツルハシ
 	m_pickaxeSprite.Init("Assets/modelData/objects/crystal/digital_pickaxe_sprite.DDS", PICKAXE_SPRITE_W_SIZE, PICKAXE_SPRITE_H_SIZE);
@@ -89,11 +93,25 @@ bool CrystalGetCommandSprite::Start()
 
 void CrystalGetCommandSprite::TimerSpriteInit()
 {
-
+	//タイマー用のスプライト初期化データを作成
 	SpriteInitData timerSpriteData;
+	//画像を設定
+	timerSpriteData.m_ddsFilePath[0] = "Assets/modelData/objects/crystal/CommandSprite_Timer.DDS";
+	//シェーダーファイルを設定
+	timerSpriteData.m_fxFilePath = "Assets/shader/haruharuCircularGaugeSprite.fx";
+	//ユーザー拡張データを設定
+	timerSpriteData.m_expandConstantBuffer = &m_degree;
+	timerSpriteData.m_expandConstantBufferSize = sizeof(m_degree);
+	//比率を設定
+	timerSpriteData.m_width = static_cast<UINT>(SPRITE_W_SIZE);
+	timerSpriteData.m_height = static_cast<UINT>(SPRITE_H_SIZE);
+	//ブレンドモードを設定
+	timerSpriteData.m_alphaBlendMode = AlphaBlendMode_Trans;
+	//設定したデータをスプライトに設定
+	m_timerSprite.Init(timerSpriteData);
 
-
-
+	//位置を設定
+	m_timerSprite.SetPosition(SPRITE_POSITION);
 }
 
 //スプライトの初期化
@@ -149,12 +167,12 @@ void CrystalGetCommandSprite::Update()
 
 #endif
 	//コレクトフラグがtrueで現在のコマンドが5以下だったら
-	if (m_isCollectFlag == true /*&& 
-		m_nowCommandNum < COMMAND_MAX*/)
+	if (m_isCollectFlag == true)
 	{
 		//ドローコール
 		m_pickaxeSprite.Update();
 		m_rockSprite.Update();
+		m_timerSprite.Update();
 
 		if (m_nowCommandNum >= COMMAND_MAX)
 			return;
@@ -167,11 +185,11 @@ void CrystalGetCommandSprite::Update()
 void CrystalGetCommandSprite::Render(RenderContext& rc)
 {
 	//コレクトフラグがtrueで現在のコマンドが5以下だったら
-	if (m_isCollectFlag == true /*&& 
-		m_nowCommandNum < COMMAND_MAX*/)
+	if (m_isCollectFlag == true)
 	{
 		m_pickaxeSprite.Draw(rc);
 		m_rockSprite.Draw(rc);
+		m_timerSprite.Draw(rc);
 
 		if (m_nowCommandNum >= COMMAND_MAX)
 			return;
@@ -220,6 +238,13 @@ void CrystalGetCommandSprite::CommandUpdate()
 
 	//タイムリミットを減少
 	m_timeLimit -= g_gameTime->GetFrameDeltaTime();
+	
+	float t = std::clamp(m_timeLimit / 2.0f, 0.0f, 1.0f);
+
+	m_degree = Leap(0, 9.5, t);
+
+
+	/*m_degree -= g_gameTime->GetFrameDeltaTime();*/
 
 	//ボタンが押されたかどうかを判定して、押されたら
 	//コマンドが正しいかを判定する
