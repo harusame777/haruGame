@@ -1,4 +1,7 @@
 #pragma once
+
+class PlayerScanCrystalUi;
+
 class Player : public IGameObject
 {
 public:
@@ -129,5 +132,9 @@ private:
 	/// キャラコン
 	/// </summary>
 	CharacterController m_CController;
+	/// <summary>
+	/// プレイヤーのスキャンUI
+	/// </summary>
+	PlayerScanCrystalUi* m_scanUi = nullptr;
 };
 

@@ -4,7 +4,6 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="system\system.cpp" />
     <ClCompile Include="BackGroundFloor.cpp">
@@ -76,11 +75,16 @@
     <ClCompile Include="WarriorAIMetaRetreat.cpp">
       <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerScanCrystalUi.cpp">
+      <Filter>Player\PlayerUi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
     <ClInclude Include="BackGroundFloor.h">
@@ -162,6 +166,15 @@
     <ClInclude Include="WarriorAIMetaRetreat.h">
       <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerUIBase.h">
+      <Filter>Player\PlayerUi</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerScanCrystalUi.h">
+      <Filter>Player\PlayerUi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bg">
@@ -193,6 +206,12 @@
     </Filter>
     <Filter Include="debug">
       <UniqueIdentifier>{20737fca-1e2b-4c54-b3c3-f114d8fe0d13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{547e3f8f-f280-4a02-88d4-a5ed875b8a53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player\PlayerUi">
+      <UniqueIdentifier>{88aaebbd-2021-4cb6-90b9-47f7f1ab68bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
