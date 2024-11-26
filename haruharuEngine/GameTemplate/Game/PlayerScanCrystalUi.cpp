@@ -12,6 +12,9 @@ namespace {
 	static const float SCANLINE_SPRITE_W_SIZE = 1600.0f;
 	static const float SCANLINE_SPRITE_H_SIZE = 900.0f;
 
+	static const float INFOMATION_SPRITE_W_SIZE = 400.0f;
+	static const float INFOMATION_SPRITE_H_SIZE = 225.0f;
+
 	static const float SCANLINE_ALPHA_EASING_START = 0.3f;
 	static const float SCANLINE_ALPHA_EASING_END = 0.5f;
 
@@ -43,11 +46,49 @@ bool PlayerScanCrystalUi::Start()
 	
 	m_scanLineData.m_wipeDir.Set(0.0f,-1.0f);
 
-	m_waitTime = new EnemyAIConWaitTime(2.0f);
+	InitInfomationDatas();
 
-	m_waitTime->InitData();
+	m_waitTime2s = new EnemyAIConWaitTime(2.0f);
+
+	m_waitTime2s->InitData();
+
+	m_waitTime5s = new EnemyAIConWaitTime(5.0f);
+
+	m_waitTime5s->InitData();
 
 	return true;
+}
+
+//インフォメーションのデータの初期化関数
+void PlayerScanCrystalUi::InitInfomationDatas()
+{
+	//配列ぶん回す
+	for (auto& ptr : m_infoDatas)
+	{
+		//スプライトのデータを作成
+		
+		SpriteInitData infoSpriteInitData;
+
+		//画像を設定
+		infoSpriteInitData.m_ddsFilePath[0] = "Assets/modelData/playerUI/PlayerScanCrystalUi/digital_infomation_sprite_1.DDS";
+		//シェーダーファイルを設定
+		infoSpriteInitData.m_fxFilePath = "Assets/shader/haruharuWipeSprite.fx";
+		//ユーザー拡張データを設定
+		infoSpriteInitData.m_expandConstantBuffer = &ptr.m_easingData;
+		infoSpriteInitData.m_expandConstantBufferSize = sizeof(ptr.m_easingData);
+		//比率を設定
+		infoSpriteInitData.m_width = static_cast<UINT>(INFOMATION_SPRITE_W_SIZE);
+		infoSpriteInitData.m_height = static_cast<UINT>(INFOMATION_SPRITE_H_SIZE);
+		//ブレンドモードを設定
+		infoSpriteInitData.m_alphaBlendMode = AlphaBlendMode_Trans;
+
+		ptr.m_infoPtr.Init(infoSpriteInitData);
+
+		//描画しない設定に
+		ptr.SetIsDraw(false);
+
+	}
+
 }
 
 //アップデート関数
@@ -61,6 +102,13 @@ void PlayerScanCrystalUi::Update()
 
 		//スプライト更新
 		m_scanlineSprite.Update();
+
+		for (auto& ptr : m_infoDatas)
+		{
+			if (ptr.GetIsDraw() == true)
+				ptr.m_infoPtr.Update();
+		}
+	
 	}
 
 	//もしRTボタンが押されていて
@@ -84,15 +132,20 @@ void PlayerScanCrystalUi::SpriteUpdate()
 		break;
 		//走査線をイージングする
 	case PlayerScanCrystalUi::en_scanLineEasing:
+
 		m_scanLineData.m_wipeSize = WipeEasing();
+
 		break;
 		//走査線を透明にする
 	case PlayerScanCrystalUi::en_scanAEasing:
-		m_scanLineData.m_paramA = AlphaEasing();
 
-		if (m_waitTime->Execution())
+		m_scanLineData.m_paramA = AlphaEasingWeakBlinking();
+
+		if (m_waitTime2s->Execution())
 		{
-			m_scanLineData.m_paramA = 0.3f;
+			m_scanLineData.m_paramA = 0.3;
+
+			m_waitTime5s->InitData();
 
 			m_scanState = ScanState::en_scanMarkerDraw;
 		}
@@ -101,6 +154,18 @@ void PlayerScanCrystalUi::SpriteUpdate()
 		//マーカーを描画する
 	case PlayerScanCrystalUi::en_scanMarkerDraw:
 
+		for (auto& ptr : m_infoDatas)
+		{
+			if (AngleCheck)
+			{
+
+			}	
+		}
+
+		if (m_waitTime5s->Execution())
+		{
+
+		}
 
 		break;
 	default:
@@ -110,7 +175,7 @@ void PlayerScanCrystalUi::SpriteUpdate()
 }
 
 //アルファ値イージング関数
-const float PlayerScanCrystalUi::AlphaEasing()
+const float PlayerScanCrystalUi::AlphaEasingWeakBlinking()
 {
 	float finalEasing;
 
@@ -128,7 +193,7 @@ const float PlayerScanCrystalUi::AlphaEasing()
 		//初期化して
 		m_alphaRatio = 0.0f;
 
-		m_waitTime->InitData();
+		m_waitTime2s->InitData();
 		
 		m_swapEasing = !m_swapEasing;
 	}
@@ -164,6 +229,12 @@ const float PlayerScanCrystalUi::WipeEasing()
 		, SCANLINE_WIPE_END, m_wipeRatio);
 }
 
+//プレイヤーのカメラ内にあるかどうかを調べる関数
+const bool PlayerScanCrystalUi::AngleCheck()
+{
+
+}
+
 //ドロー関数
 void PlayerScanCrystalUi::Render(RenderContext& rc)
 {
@@ -171,4 +242,5 @@ void PlayerScanCrystalUi::Render(RenderContext& rc)
 	{
 		m_scanlineSprite.Draw(rc);
 	}
+
 }

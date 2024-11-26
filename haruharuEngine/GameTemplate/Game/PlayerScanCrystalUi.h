@@ -1,9 +1,18 @@
 #pragma once
 #include "PlayerUIBase.h"
+#include "Crystal.h"
 //一時的なモノ↓後で時間処理を実装する
 #include "EnemyAIConBase.h"
 
 class Player;
+
+//定数等
+namespace {
+	/// <summary>
+	/// クリスタル最大数
+	/// </summary>
+	static const int MAX_CRYSTAL_NUM = 3;
+}
 
 class PlayerScanCrystalUi : public PlayerUIBase
 {
@@ -42,6 +51,10 @@ private:
 	/// <returns></returns>
 	bool Start();
 	/// <summary>
+	/// インフォメーションのデータの初期化
+	/// </summary>
+	void InitInfomationDatas();
+	/// <summary>
 	/// アップデート関数
 	/// </summary>
 	void Update();
@@ -53,12 +66,17 @@ private:
 	/// アルファ値のイージング
 	/// </summary>
 	/// <returns></returns>
-	const float AlphaEasing();
+	const float AlphaEasingWeakBlinking();
 	/// <summary>
 	/// ワイプのイージング関数
 	/// </summary>
 	/// <returns></returns>
 	const float WipeEasing();
+	/// <summary>
+	/// プレイヤーのカメラ内にあるかを調べる
+	/// </summary>
+	/// <returns></returns>
+	const bool AngleCheck();
 	/// <summary>
 	/// ドロー関数
 	/// </summary>
@@ -107,6 +125,86 @@ private:
 	/// </summary>
 	float m_wipeRatio = 1.0f;
 	/// <summary>
+	/// インフォメーションのイージングのデータ
+	/// </summary>
+	struct InfomationEasingData
+	{
+		/// <summary>
+		/// ワイプ方向
+		/// </summary>
+		Vector2 m_wipeDir;
+		/// <summary>
+		/// ワイプサイズ
+		/// </summary>
+		float m_wipeSize;
+		/// <summary>
+		/// アルファ値
+		/// </summary>
+		float m_paramA = 1.0f;
+	};
+	/// <summary>
+	/// インフォメーションのデータ
+	/// </summary>
+	struct InfomationData
+	{
+	public:
+		/// <summary>
+		/// スプライトのポインタ
+		/// </summary>
+		SpriteRender m_infoPtr;
+		/// <summary>
+		/// インフォメーションのイージングのデータ
+		/// </summary>
+		InfomationEasingData m_easingData;
+	private:
+		/// <summary>
+		/// クリスタルのデータ
+		/// </summary>
+		Crystal* m_crystalDataPtr = nullptr;
+		/// <summary>
+		/// 描画するかどうか
+		/// </summary>
+		bool m_isDraw = false;
+	public:
+		/// <summary>
+		/// クリスタルのデータを設定
+		/// </summary>
+		/// <param name="crystalData"></param>
+		void SetCrystalData(Crystal crystalData)
+		{
+			//クリスタルのアドレスを代入
+			//m_crystalDataPtr = &crystalData;
+		}
+		/// <summary>
+		/// クリスタルのデータを取得
+		/// </summary>
+		/// <returns></returns>
+		Crystal* GetCrystalData()
+		{
+			return m_crystalDataPtr;
+		}
+		/// <summary>
+		/// 描画するかどうか
+		/// </summary>
+		/// <param name="is"></param>
+		void SetIsDraw(const bool is)
+		{
+			m_isDraw = is;
+		}
+		/// <summary>
+		/// 描画するかどうかを取得
+		/// </summary>
+		/// <returns></returns>
+		const bool GetIsDraw() const
+		{
+			return m_isDraw;
+		}
+	};
+	/// <summary>
+	/// インフォメーションのデータの数
+	/// </summary>
+	InfomationData m_infoDatas[MAX_CRYSTAL_NUM];
+	/// <summary>
 	/// スキャンフラグ
 	/// </summary>
 	bool m_scanFlag = false;
@@ -148,6 +246,8 @@ private:
 	}
 
 	//仮時間処理
-	EnemyAIConBase* m_waitTime = nullptr;
+	EnemyAIConBase* m_waitTime2s = nullptr;
+
+	EnemyAIConBase* m_waitTime5s = nullptr;
 };
 
