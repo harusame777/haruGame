@@ -37,7 +37,7 @@ void EnemyAIMoveAstar::EnemyAIUpdate()
 	{
 #endif
 		if (m_timer->Execution()) {
-			m_timer->Start();
+			m_timer->InitData();
 			//パスを検索する
 			m_pathFiding.Execute(
 				m_path,							//構築されたパスの格納先

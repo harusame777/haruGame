@@ -10,7 +10,7 @@ public:
 	/// <summary>
 	/// スタート関数
 	/// </summary>
-	void Start() override;
+	void InitData() override;
 	/// <summary>
 	/// 条件実行
 	/// </summary>

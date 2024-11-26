@@ -17,9 +17,9 @@ public:
 
 	};
 	/// <summary>
-	/// スタート関数
+	/// 初期化処理
 	/// </summary>
-	virtual void Start()
+	virtual void InitData()
 	{
 
 	};

@@ -18,7 +18,7 @@ public:
 	/// スタート関数、初期化するので、別処理が
 	/// 入って、タイマーを初期化しなければならない時もこちらを使う
 	/// </summary>
-	void Start() override;
+	void InitData() override;
 	/// <summary>
 	/// 条件実行
 	/// </summary>

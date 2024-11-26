@@ -1,5 +1,7 @@
 #pragma once
 #include "PlayerUIBase.h"
+//一時的なモノ↓後で時間処理を実装する
+#include "EnemyAIConBase.h"
 
 class Player;
 
@@ -22,13 +24,13 @@ private:
 		/// </summary>
 		en_scanStandby,
 		/// <summary>
-		/// アルファ値をイージング
-		/// </summary>
-		en_scanAEasing,
-		/// <summary>
 		/// 走査線を描画
 		/// </summary>
 		en_scanLineEasing,
+		/// <summary>
+		/// アルファ値をイージング
+		/// </summary>
+		en_scanAEasing,
 		/// <summary>
 		/// マーカーを描画
 		/// </summary>
@@ -95,7 +97,11 @@ private:
 	/// <summary>
 	/// アルファ値割合
 	/// </summary>
-	float m_alphaRatio = 1.0f;
+	float m_alphaRatio = 0.0f;
+	/// <summary>
+	/// イージング入れ替え
+	/// </summary>
+	bool m_swapEasing = true;
 	/// <summary>
 	/// ワイプ割合
 	/// </summary>
@@ -112,7 +118,15 @@ private:
 		//スキャンフラグをtrueにする
 		m_scanFlag = true;
 		//スキャンステートをアルファ値イージングに変更する
-		m_scanState = ScanState::en_scanAEasing;
+		m_scanState = ScanState::en_scanLineEasing;
+		//イージング割合を初期化する
+		//アルファ値イージング
+		m_swapEasing = true;
+		m_scanLineData.m_paramA = 0.3;
+		m_alphaRatio = 0.0f;
+		//ワイプイージング
+		m_scanLineData.m_wipeSize = 0.0f;
+		m_wipeRatio = 0.0f;
 	}
 	/// <summary>
 	/// スキャン終了
@@ -132,5 +146,8 @@ private:
 	{
 		return (1.0f - t) * a + t * b;
 	}
+
+	//仮時間処理
+	EnemyAIConBase* m_waitTime = nullptr;
 };
 

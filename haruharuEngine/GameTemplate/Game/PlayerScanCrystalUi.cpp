@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "PlayerScanCrystalUi.h"
 #include "Player.h"
+//↓これが便利過ぎてつらたん
+#include "EnemyAIConWaitTime.h"
 
 //定数等
 namespace {
@@ -10,11 +12,11 @@ namespace {
 	static const float SCANLINE_SPRITE_W_SIZE = 1600.0f;
 	static const float SCANLINE_SPRITE_H_SIZE = 900.0f;
 
-	static const float SCANLINE_ALPHA_EASING_START = 0.0f;
+	static const float SCANLINE_ALPHA_EASING_START = 0.3f;
 	static const float SCANLINE_ALPHA_EASING_END = 0.5f;
 
-	static const float SCANLINE_WIPE_START = 450.0f;
-	static const float SCANLINE_WIPE_END = -450.0f;
+	static const float SCANLINE_WIPE_START = 0.0f;
+	static const float SCANLINE_WIPE_END = -900.0f;
 }
 
 //スタート関数
@@ -38,8 +40,12 @@ bool PlayerScanCrystalUi::Start()
 	m_scanlineSprite.Init(scanLineSpriteInitData);
 
 	m_scanlineSprite.SetPosition({ 0.0f,0.0f,0.0f });
+	
+	m_scanLineData.m_wipeDir.Set(0.0f,-1.0f);
 
-	m_scanLineData.m_wipeDir.Set(0.0f,1.0f);
+	m_waitTime = new EnemyAIConWaitTime(2.0f);
+
+	m_waitTime->InitData();
 
 	return true;
 }
@@ -73,23 +79,29 @@ void PlayerScanCrystalUi::SpriteUpdate()
 	//ステートで分岐させる
 	switch (m_scanState)
 	{
-		//現在が待機状態だったら
+		//待機状態だったら何もしない
 	case PlayerScanCrystalUi::en_scanStandby:
-		//何もしない
 		break;
-		//現在がアルファ値イージングだったら
-	case PlayerScanCrystalUi::en_scanAEasing:
-		//画像のアルファ値を操作する
-		m_scanLineData.m_paramA = AlphaEasing();
-		break;
-		//現在が画像イージングだったら
+		//走査線をイージングする
 	case PlayerScanCrystalUi::en_scanLineEasing:
-		//画像をワイプする
 		m_scanLineData.m_wipeSize = WipeEasing();
 		break;
-		//現在がマーカードローだったら
-	case PlayerScanCrystalUi::en_scanMarkerDraw:
+		//走査線を透明にする
+	case PlayerScanCrystalUi::en_scanAEasing:
+		m_scanLineData.m_paramA = AlphaEasing();
+
+		if (m_waitTime->Execution())
+		{
+			m_scanLineData.m_paramA = 0.3f;
+
+			m_scanState = ScanState::en_scanMarkerDraw;
+		}
+
+		break;
 		//マーカーを描画する
+	case PlayerScanCrystalUi::en_scanMarkerDraw:
+
+
 		break;
 	default:
 		break;
@@ -102,19 +114,35 @@ const float PlayerScanCrystalUi::AlphaEasing()
 {
 	float finalEasing;
 
-	m_alphaRatio -= g_gameTime->GetFrameDeltaTime() / 2;
-
-	if (m_alphaRatio <= 0.0f)
+	if (m_swapEasing == true)
 	{
-		//初期化して
-		m_alphaRatio = 1.0f;
-		//ステートを変更
-		m_scanState = ScanState::en_scanLineEasing;
-
+		m_alphaRatio += g_gameTime->GetFrameDeltaTime() / 2;
+	}
+	else
+	{
+		m_alphaRatio += g_gameTime->GetFrameDeltaTime() / 2;
 	}
 
-	return finalEasing = Leap(SCANLINE_ALPHA_EASING_START
-		, SCANLINE_ALPHA_EASING_END, m_alphaRatio);
+	if (m_alphaRatio > 1.0f)
+	{
+		//初期化して
+		m_alphaRatio = 0.0f;
+
+		m_waitTime->InitData();
+		
+		m_swapEasing = !m_swapEasing;
+	}
+
+	if (m_swapEasing == true)
+	{
+		return finalEasing = Leap(SCANLINE_ALPHA_EASING_START
+			, SCANLINE_ALPHA_EASING_END, m_alphaRatio);
+	}
+	else
+	{
+		return finalEasing = Leap(SCANLINE_ALPHA_EASING_END
+			, SCANLINE_ALPHA_EASING_START, m_alphaRatio);
+	}
 }
 
 //ワイプイージング関数
@@ -122,14 +150,14 @@ const float PlayerScanCrystalUi::WipeEasing()
 {
 	float finalEasing;
 
-	m_wipeRatio -= g_gameTime->GetFrameDeltaTime() / 2;
+	m_wipeRatio += g_gameTime->GetFrameDeltaTime() / 2;
 
-	if (m_wipeRatio <= 0.0f)
+	if (m_wipeRatio > 1.0f)
 	{
 		//初期化して…
 		m_wipeRatio = 1.0f;
 		//ステートを変更
-		m_scanState = ScanState::en_scanMarkerDraw;
+		m_scanState = ScanState::en_scanAEasing;
 	}
 
 	return finalEasing = Leap(SCANLINE_WIPE_START
