@@ -12,12 +12,6 @@
     <ClCompile Include="BackGroundWalls.cpp">
       <Filter>bg</Filter>
     </ClCompile>
-    <ClCompile Include="Crystal.cpp">
-      <Filter>obj</Filter>
-    </ClCompile>
-    <ClCompile Include="CrystalGetCommandSprite.cpp">
-      <Filter>obj</Filter>
-    </ClCompile>
     <ClCompile Include="ObjectBase.cpp">
       <Filter>obj</Filter>
     </ClCompile>
@@ -81,6 +75,15 @@
     <ClCompile Include="PlayerScanCrystalUi.cpp">
       <Filter>Player\PlayerUi</Filter>
     </ClCompile>
+    <ClCompile Include="Crystal.cpp">
+      <Filter>obj\Crystal</Filter>
+    </ClCompile>
+    <ClCompile Include="CrystalGetCommandSprite.cpp">
+      <Filter>obj\Crystal</Filter>
+    </ClCompile>
+    <ClCompile Include="ManagerCrystal.cpp">
+      <Filter>obj\Crystal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -92,12 +95,6 @@
     </ClInclude>
     <ClInclude Include="BackGroundWalls.h">
       <Filter>bg</Filter>
-    </ClInclude>
-    <ClInclude Include="Crystal.h">
-      <Filter>obj</Filter>
-    </ClInclude>
-    <ClInclude Include="CrystalGetCommandSprite.h">
-      <Filter>obj</Filter>
     </ClInclude>
     <ClInclude Include="ObjectBase.h">
       <Filter>obj</Filter>
@@ -175,6 +172,15 @@
     <ClInclude Include="PlayerScanCrystalUi.h">
       <Filter>Player\PlayerUi</Filter>
     </ClInclude>
+    <ClInclude Include="Crystal.h">
+      <Filter>obj\Crystal</Filter>
+    </ClInclude>
+    <ClInclude Include="CrystalGetCommandSprite.h">
+      <Filter>obj\Crystal</Filter>
+    </ClInclude>
+    <ClInclude Include="ManagerCrystal.h">
+      <Filter>obj\Crystal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bg">
@@ -212,6 +218,9 @@
     </Filter>
     <Filter Include="Player\PlayerUi">
       <UniqueIdentifier>{88aaebbd-2021-4cb6-90b9-47f7f1ab68bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="obj\Crystal">
+      <UniqueIdentifier>{d88e7ea5-d90d-46c7-b843-42f781f9b9ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

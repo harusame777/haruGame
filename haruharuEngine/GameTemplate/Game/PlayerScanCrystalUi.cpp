@@ -156,7 +156,7 @@ void PlayerScanCrystalUi::SpriteUpdate()
 
 		for (auto& ptr : m_infoDatas)
 		{
-			if (AngleCheck)
+			if (AngleCheck())
 			{
 
 			}	
@@ -233,6 +233,8 @@ const float PlayerScanCrystalUi::WipeEasing()
 const bool PlayerScanCrystalUi::AngleCheck()
 {
 
+
+	return false;
 }
 
 //ÉhÉçÅ[ä÷êî

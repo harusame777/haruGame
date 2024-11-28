@@ -11,6 +11,8 @@
 #include "DebugEnemyTrackingState.h"
 #include "Locker.h"
 #include "Accessories.h"
+#include "ManagerCrystal.h"
+
 
 bool Game::Start()
 {
@@ -22,7 +24,10 @@ bool Game::Start()
 	m_GetCOMSprite = NewGO<CrystalGetCommandSprite>(0, "object");
 
 	//エネミーウォリアーのメタAI
-	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");	
+	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");
+
+	////クリスタルのメタAI
+	m_managerCrystal = NewGO<ManagerCrystal>(0, "MetaAI");
 
 	//レベルレンダーのテスト
 	m_levelRender.Init("Assets/mapLevel/testLevel3.tkl", [&](LevelObjectData_Render& objData)
@@ -80,14 +85,14 @@ bool Game::Start()
 			floor->SetScale(objData.m_scalse);
 			return true;
 		}
-		else if (objData.ForwardMatchName(L"crystal01_Model") == true)
-		{
-			Crystal* crystal = NewGO<Crystal>(0, "object");
-			crystal->SetPosition(objData.m_position);
-			crystal->SetRotation(objData.m_rotation);
-			crystal->SetScale(objData.m_scalse);
-			return true;
-		}
+		//else if (objData.ForwardMatchName(L"crystal01_Model") == true)
+		//{
+		//	Crystal* crystal = NewGO<Crystal>(0, "object");
+		//	crystal->SetPosition(objData.m_position);
+		//	crystal->SetRotation(objData.m_rotation);
+		//	crystal->SetScale(objData.m_scalse);
+		//	return true;
+		//}
 		else if (objData.ForwardMatchName(L"youtai") == true)
 		{
 			Enemy_Warrior* enemy_warrior = NewGO<Enemy_Warrior>(0, "enemy");

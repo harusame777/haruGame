@@ -89,7 +89,7 @@ void Crystal::Render(RenderContext& rc)
 	//Žæ“¾‚³‚ê‚Ä‚¢‚È‚©‚Á‚½‚ç
 	if (!m_isGetObject)
 	{
-		//•`‰æ‚µ‚È‚¢
+		//•`‰æ‚·‚é
 		m_mainModel.Draw(rc);
 	}
 

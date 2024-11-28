@@ -9,6 +9,7 @@ class Enemy_Warrior;
 class CrystalGetCommandSprite;
 class EnemyAIMetaWarrior;
 class DebugEnemyTrackingState;
+class ManagerCrystal;
 
 class Game : public IGameObject
 {
@@ -49,6 +50,8 @@ public:
 	Enemy_Warrior* m_testEnemy = nullptr;
 
 	CrystalGetCommandSprite* m_GetCOMSprite = nullptr;
+
+	ManagerCrystal* m_managerCrystal;
 
 	ModelRender m_bgModelRendedr;
 	PhysicsStaticObject m_bgObject;

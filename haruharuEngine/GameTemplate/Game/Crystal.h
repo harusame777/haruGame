@@ -31,6 +31,19 @@ public:
 		//採取クールタイムを初期化
 		m_collectCoolTime = 2.0f;
 	}
+	//クリスタルを配置する
+	void CrystalArrangement()
+	{
+		m_isGetObject = false;
+	}
+	/// <summary>
+	/// 採取されているかどうかを取得
+	/// </summary>
+	/// <returns></returns>
+	const bool GetCollected() const
+	{
+		return m_isGetObject;
+	}
 private:
 	/// <summary>
 	/// スタート関数
