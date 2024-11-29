@@ -30,7 +30,7 @@ bool Game::Start()
 	m_managerCrystal = NewGO<ManagerCrystal>(0, "MetaAI");
 
 	//レベルレンダーのテスト
-	m_levelRender.Init("Assets/mapLevel/testLevel3.tkl", [&](LevelObjectData_Render& objData)
+	m_levelRender.Init("Assets/mapLevel/testLevel5.tkl", [&](LevelObjectData_Render& objData)
 	{
 		if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
 		{

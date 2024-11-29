@@ -79,6 +79,10 @@ void Crystal::Update()
 {
 	//クリスタル取得処理
 	GetCrystal();
+	//座標を設定
+	m_mainModel.SetPosition(m_position);
+	//回転を設定
+	m_mainModel.SetRotation(m_rotation);
 	//描画更新
 	m_mainModel.Update();
 }

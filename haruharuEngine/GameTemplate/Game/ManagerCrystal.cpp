@@ -25,7 +25,7 @@ bool ManagerCrystal::Start()
 	}
 
 	//クリスタルの配置位置の初期化
-	m_crystalArrangementLevelRender.Init("Assets/mapLevel/testLevel3.tkl", [&](LevelObjectData_Render& objData)
+	m_crystalArrangementLevelRender.Init("Assets/mapLevel/testLevel5.tkl", [&](LevelObjectData_Render& objData)
 	{
 		if (objData.ForwardMatchName(L"crystal01_Model") == true)
 		{
