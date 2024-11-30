@@ -10,6 +10,7 @@ class CrystalGetCommandSprite;
 class EnemyAIMetaWarrior;
 class DebugEnemyTrackingState;
 class ManagerCrystal;
+class PlayerScanCrystalUi;
 
 class Game : public IGameObject
 {
@@ -58,5 +59,10 @@ public:
 
 
 	FontRender m_testFont;
+
+	/// <summary>
+	/// プレイヤーのスキャンUI
+	/// </summary>
+	PlayerScanCrystalUi* m_scanUi = nullptr;
 };
 

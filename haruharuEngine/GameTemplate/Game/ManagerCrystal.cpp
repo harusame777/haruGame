@@ -7,12 +7,18 @@
 bool ManagerCrystal::Start()
 {
 
+	//共通のデータホルダーを初期化
+	m_crystalDataHolder = std::make_shared<CrystalDataHolder>();
+
 	//クリスタル3つの初期化
 	for (int CryNo = 0; CryNo < MAX_CRYSTAL_NUM; CryNo++)
 	{
 		CrystalManageData* newCrystalData = new CrystalManageData;
 
 		Crystal* crystal = NewGO<Crystal>(0, "object");
+
+		//共通ホルダーに登録
+		m_crystalDataHolder->InitCrystalDataHolder(CryNo, crystal);
 
 		newCrystalData->SetCrystalAddress(crystal);
 

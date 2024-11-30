@@ -111,6 +111,8 @@ void PlayerScanCrystalUi::Update()
 	
 	}
 
+	m_crystalDataHolder
+
 	//もしRTボタンが押されていて
 	//スキャンフラグがfalseだったら
 	if (g_pad[0]->IsTrigger(enButtonRB2) 

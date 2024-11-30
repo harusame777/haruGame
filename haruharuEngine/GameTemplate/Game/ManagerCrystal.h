@@ -1,12 +1,9 @@
 #pragma once
 #include "Crystal.h"
+#include "CrystalDataHolder.h"
 
 //定数等
 namespace {
-	/// <summary>
-	/// クリスタルの最大数
-	/// </summary>
-	static const int MAX_CRYSTAL_NUM = 3;
 	/// <summary>
 	/// 再配置までの時間
 	/// </summary>
@@ -29,6 +26,14 @@ public:
 	/// </summary>
 	/// <param name="crystal"></param>
 	void ArrangementDataRefresh(Crystal* crystal);
+	/// <summary>
+	/// データホルダーを取得
+	/// </summary>
+	/// <returns></returns>
+	std::shared_ptr<CrystalDataHolder> GetCrystalDataHolder() const
+	{
+		return m_crystalDataHolder;
+	}
 private:
 	/// <summary>
 	/// スタート関数
@@ -261,6 +266,10 @@ private:
 			return m_isCrystalUnderInstallation;
 		}
 	};
+	/// <summary>
+	/// クリスタルの共通データホルダー
+	/// </summary>
+	std::shared_ptr<CrystalDataHolder> m_crystalDataHolder;
 	/// <summary>
 	/// クリスタルの位置データを格納しておく
 	/// </summary>

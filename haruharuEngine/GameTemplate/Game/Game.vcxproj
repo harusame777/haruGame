@@ -267,6 +267,7 @@
     <ClInclude Include="BackGroundFloor.h" />
     <ClInclude Include="BackGroundWalls.h" />
     <ClInclude Include="Crystal.h" />
+    <ClInclude Include="CrystalDataHolder.h" />
     <ClInclude Include="CrystalGetCommandSprite.h" />
     <ClInclude Include="DebugEnemyTrackingState.h" />
     <ClInclude Include="EnemyAIBase.h" />

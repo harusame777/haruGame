@@ -1,18 +1,11 @@
 #pragma once
 #include "PlayerUIBase.h"
 #include "Crystal.h"
+#include "CrystalDataHolder.h"
 //一時的なモノ↓後で時間処理を実装する
 #include "EnemyAIConBase.h"
 
 class Player;
-
-//定数等
-namespace {
-	/// <summary>
-	/// クリスタル最大数
-	/// </summary>
-	static const int MAX_CRYSTAL_NUM = 3;
-}
 
 class PlayerScanCrystalUi : public PlayerUIBase
 {
@@ -25,6 +18,14 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~PlayerScanCrystalUi() {};
+	/// <summary>
+	/// データホルダーセット
+	/// </summary>
+	/// <param name="dataHolder"></param>
+	void InitCrystalDataHolder(std::shared_ptr<CrystalDataHolder> dataHolder)
+	{
+		m_crystalDataHolder = dataHolder;
+	}
 private:
 	enum ScanState
 	{
@@ -244,6 +245,10 @@ private:
 	{
 		return (1.0f - t) * a + t * b;
 	}
+	/// <summary>
+	/// クリスタルの共通データホルダー
+	/// </summary>
+	std::shared_ptr<CrystalDataHolder> m_crystalDataHolder;
 
 	//仮時間処理
 	EnemyAIConBase* m_waitTime2s = nullptr;

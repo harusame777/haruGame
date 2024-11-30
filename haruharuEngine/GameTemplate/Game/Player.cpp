@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Player.h"
-#include "PlayerScanCrystalUi.h"
 
 //’è”“™
 namespace {
@@ -30,9 +29,6 @@ bool Player::Start()
 
 	//ˆÊ’u‚Ì‰Šúİ’è
 	m_CController.SetPosition(m_position);
-
-	//UI‚Ì‰Šú‰»
-	m_scanUi = NewGO<PlayerScanCrystalUi>(0, "UI");
 
 	return true;
 }

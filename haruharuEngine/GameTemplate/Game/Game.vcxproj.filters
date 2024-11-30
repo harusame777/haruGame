@@ -181,6 +181,9 @@
     <ClInclude Include="ManagerCrystal.h">
       <Filter>obj\Crystal</Filter>
     </ClInclude>
+    <ClInclude Include="CrystalDataHolder.h">
+      <Filter>obj\Crystal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bg">
