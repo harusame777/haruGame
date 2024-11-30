@@ -14,9 +14,6 @@ bool ManagerCrystal::Start()
 
 		Crystal* crystal = NewGO<Crystal>(0, "object");
 
-		//最初は配置しないので採取されていることにする
-		crystal->CrystalCollected();
-
 		newCrystalData->SetCrystalAddress(crystal);
 
 		newCrystalData->SetCrystalRelocationState(CrystalRelocationState::en_notArrangement_State);
@@ -27,7 +24,7 @@ bool ManagerCrystal::Start()
 	//クリスタルの配置位置の初期化
 	m_crystalArrangementLevelRender.Init("Assets/mapLevel/testLevel5.tkl", [&](LevelObjectData_Render& objData)
 	{
-		if (objData.ForwardMatchName(L"crystal01_Model") == true)
+		if (objData.EqualObjectName(L"crystal01_Model") == true)
 		{
 			CrystalArrangementData* newPositionData = new CrystalArrangementData;
 
@@ -164,6 +161,39 @@ void ManagerCrystal::RelocationTimerProcess()
 			m_crystalManageDatas[CryNo]->SetCrystalRelocationState(
 				CrystalRelocationState::en_arrangement_State);
 		}
+	}
+
+}
+
+//クリスタルを再配置可能ステートにする関数
+void ManagerCrystal::ArrangementDataRefresh(Crystal* crystal)
+{
+
+	for (auto& ptr : m_crystalArrangementDatas)
+	{
+
+		if (ptr->GetAddress() == crystal)
+		{
+
+			//アドレスを初期化
+			ptr->InitAddress(nullptr);
+
+		}
+
+	}
+	
+	for (int CryNo = 0; CryNo < MAX_CRYSTAL_NUM; CryNo++)
+	{
+
+		if (m_crystalManageDatas[CryNo]->GetCrystalAddress()
+			== crystal)
+		{
+
+			m_crystalManageDatas[CryNo]->SetCrystalRelocationState(
+				CrystalRelocationState::en_notArrangement_State);
+
+		}
+
 	}
 
 }

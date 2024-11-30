@@ -24,6 +24,11 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~ManagerCrystal() {};
+	/// <summary>
+	/// 配置データを再設定可能な状態にする
+	/// </summary>
+	/// <param name="crystal"></param>
+	void ArrangementDataRefresh(Crystal* crystal);
 private:
 	/// <summary>
 	/// スタート関数

@@ -3,6 +3,7 @@
 
 class Player;
 class CrystalGetCommandSprite;
+class ManagerCrystal;
 
 class Crystal : public ObjectBase
 {
@@ -18,11 +19,7 @@ public:
 	/// <summary>
 	/// このクリスタルは採取されました
 	/// </summary>
-	void CrystalCollected()
-	{
-		//取得フラグをtrueに
-		m_isGetObject = true;
-	}
+	void CrystalCollected();
 	/// <summary>
 	/// このクリスタルの採取に失敗しました
 	/// </summary>
@@ -95,5 +92,9 @@ private:
 	/// デバック用のfontrender
 	/// </summary>
 	FontRender m_debugFontRender;
+	/// <summary>
+	/// クリスタルのメタAIのインスタンス
+	/// </summary>
+	ManagerCrystal* m_managerCrystalPtr = nullptr;
 };
 

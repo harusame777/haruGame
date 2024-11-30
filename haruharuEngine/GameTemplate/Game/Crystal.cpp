@@ -2,6 +2,7 @@
 #include "Crystal.h"
 #include "Player.h"
 #include "CrystalGetCommandSprite.h"
+#include "ManagerCrystal.h"
 
 //これを有効にするとデバッグモードになる
 //#define DEBUG_MODE
@@ -49,6 +50,8 @@ bool Crystal::Start()
 
 	//クリスタル01をモデルに設定
 	m_mainModel.Init("Assets/modelData/objects/crystal/crystal01_Model.tkm", nullptr, 0, enModelUpAxisZ, true);
+
+	m_managerCrystalPtr = FindGO<ManagerCrystal>("CrystalMetaAI");
 
 	//シャドウマップに描画するようにする
 	m_mainModel.SetShadowChasterFlag(true);
@@ -193,4 +196,11 @@ void Crystal::GetCrystal()
 	}
 #endif 
 
+}
+
+void Crystal::CrystalCollected()
+{
+	m_isGetObject = true;
+
+	m_managerCrystalPtr->ArrangementDataRefresh(this);
 }

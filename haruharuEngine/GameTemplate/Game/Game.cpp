@@ -27,7 +27,7 @@ bool Game::Start()
 	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");
 
 	////クリスタルのメタAI
-	m_managerCrystal = NewGO<ManagerCrystal>(0, "MetaAI");
+	m_managerCrystal = NewGO<ManagerCrystal>(0, "CrystalMetaAI");
 
 	//レベルレンダーのテスト
 	m_levelRender.Init("Assets/mapLevel/testLevel5.tkl", [&](LevelObjectData_Render& objData)
