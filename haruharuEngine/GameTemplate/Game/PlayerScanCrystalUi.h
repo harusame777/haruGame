@@ -6,6 +6,7 @@
 #include "EnemyAIConBase.h"
 
 class Player;
+class ManagerCrystal;
 
 class PlayerScanCrystalUi : public PlayerUIBase
 {
@@ -74,10 +75,20 @@ private:
 	/// <returns></returns>
 	const float WipeEasing();
 	/// <summary>
+	/// インフォメーションのワイプのイージング関数
+	/// </summary>
+	/// <returns></returns>
+	const float InfoWipeEasing(const int infoNo);
+	/// <summary>
+	/// インフォメーションの位置変更
+	/// </summary>
+	/// <param name="infoNo"></param>
+	void SetInfoSpritePosition(const int infoNo);
+	/// <summary>
 	/// プレイヤーのカメラ内にあるかを調べる
 	/// </summary>
 	/// <returns></returns>
-	const bool AngleCheck();
+	const bool AngleCheck(const int infoNum);
 	/// <summary>
 	/// ドロー関数
 	/// </summary>
@@ -138,10 +149,6 @@ private:
 		/// ワイプサイズ
 		/// </summary>
 		float m_wipeSize;
-		/// <summary>
-		/// アルファ値
-		/// </summary>
-		float m_paramA = 1.0f;
 	};
 	/// <summary>
 	/// インフォメーションのデータ
@@ -166,15 +173,19 @@ private:
 		/// 描画するかどうか
 		/// </summary>
 		bool m_isDraw = false;
+		/// <summary>
+		/// インフォメーションのワイプ割合
+		/// </summary>
+		float m_infoWipeRatio = 0.0f;
 	public:
 		/// <summary>
 		/// クリスタルのデータを設定
 		/// </summary>
 		/// <param name="crystalData"></param>
-		void SetCrystalData(Crystal crystalData)
+		void SetCrystalData(Crystal* crystalData)
 		{
 			//クリスタルのアドレスを代入
-			//m_crystalDataPtr = &crystalData;
+			m_crystalDataPtr = crystalData;
 		}
 		/// <summary>
 		/// クリスタルのデータを取得
@@ -190,6 +201,13 @@ private:
 		/// <param name="is"></param>
 		void SetIsDraw(const bool is)
 		{
+			if (is == false)
+			{
+				m_easingData.m_wipeSize = 0.0f;
+
+				m_infoWipeRatio = 0.0f;
+			}
+
 			m_isDraw = is;
 		}
 		/// <summary>
@@ -199,6 +217,22 @@ private:
 		const bool GetIsDraw() const
 		{
 			return m_isDraw;
+		}
+		/// <summary>
+		/// このインフォメーションのワイプ割合の設定
+		/// </summary>
+		/// <param name="wipeRatio"></param>
+		void SetInfoWipeRatio(const float wipeRatio)
+		{
+			m_infoWipeRatio = wipeRatio;
+		}
+		/// <summary>
+		/// このインフォメーションのワイプ割合の取得
+		/// </summary>
+		/// <returns></returns>
+		const float GetInfoWipeRatio() const
+		{
+			return m_infoWipeRatio;
 		}
 	};
 	/// <summary>
@@ -250,6 +284,8 @@ private:
 	/// </summary>
 	std::shared_ptr<CrystalDataHolder> m_crystalDataHolder;
 
+	ManagerCrystal* m_managerCrystal =nullptr;
+	
 	//仮時間処理
 	EnemyAIConBase* m_waitTime2s = nullptr;
 

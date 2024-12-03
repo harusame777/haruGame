@@ -30,7 +30,7 @@ public:
 	/// データホルダーを取得
 	/// </summary>
 	/// <returns></returns>
-	std::shared_ptr<CrystalDataHolder> GetCrystalDataHolder() const
+	std::shared_ptr<CrystalDataHolder> GetCrystalDataHolder() 
 	{
 		return m_crystalDataHolder;
 	}

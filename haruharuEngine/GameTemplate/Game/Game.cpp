@@ -125,7 +125,6 @@ bool Game::Start()
 	m_player = NewGO<Player>(0, "player");
 	//UI‚Ì‰Šú‰»
 	m_scanUi = NewGO<PlayerScanCrystalUi>(0, "UI");
-	m_scanUi->InitCrystalDataHolder(m_managerCrystal->GetCrystalDataHolder());
 
 	m_modelFloor.Init("Assets/modelData/testMap/Map_floor.tkm",nullptr,0,enModelUpAxisZ,true);
 	m_modelFloor.SetShadowChasterFlag(false);

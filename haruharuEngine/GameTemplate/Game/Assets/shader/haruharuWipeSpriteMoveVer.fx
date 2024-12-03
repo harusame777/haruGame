@@ -7,7 +7,6 @@ cbuffer WipeCB : register(b1)
 {
     float2 wipeDirection;	//ワイプの方向
     float wipeSize;			//ワイプサイズ
-    float pramA;			//アルファ値
 }
 
 cbuffer cb : register(b0){
@@ -39,10 +38,9 @@ float4 PSMain( PSInput In ) : SV_Target0
 {
     float4 color = colorTexture.Sample(Sampler, In.uv) * mulColor;
 	
-    color.a = pramA;
-	
 	//ピクセル座標をワイプ方向に射影する
     float t = dot(wipeDirection, In.pos.xy);
+		
     clip(t - wipeSize);
 	
     return color;
