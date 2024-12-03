@@ -11,6 +11,10 @@
 #include "DebugEnemyTrackingState.h"
 #include "Locker.h"
 #include "Accessories.h"
+#include "ManagerCrystal.h"
+#include "PlayerScanCrystalUi.h"
+
+
 
 bool Game::Start()
 {
@@ -22,10 +26,13 @@ bool Game::Start()
 	m_GetCOMSprite = NewGO<CrystalGetCommandSprite>(0, "object");
 
 	//エネミーウォリアーのメタAI
-	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");	
+	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");
+
+	////クリスタルのメタAI
+	m_managerCrystal = NewGO<ManagerCrystal>(0, "CrystalMetaAI");
 
 	//レベルレンダーのテスト
-	m_levelRender.Init("Assets/mapLevel/testLevel3.tkl", [&](LevelObjectData_Render& objData)
+	m_levelRender.Init("Assets/mapLevel/testLevel5.tkl", [&](LevelObjectData_Render& objData)
 	{
 		if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
 		{
@@ -80,14 +87,14 @@ bool Game::Start()
 			floor->SetScale(objData.m_scalse);
 			return true;
 		}
-		else if (objData.ForwardMatchName(L"crystal01_Model") == true)
-		{
-			Crystal* crystal = NewGO<Crystal>(0, "object");
-			crystal->SetPosition(objData.m_position);
-			crystal->SetRotation(objData.m_rotation);
-			crystal->SetScale(objData.m_scalse);
-			return true;
-		}
+		//else if (objData.ForwardMatchName(L"crystal01_Model") == true)
+		//{
+		//	Crystal* crystal = NewGO<Crystal>(0, "object");
+		//	crystal->SetPosition(objData.m_position);
+		//	crystal->SetRotation(objData.m_rotation);
+		//	crystal->SetScale(objData.m_scalse);
+		//	return true;
+		//}
 		else if (objData.ForwardMatchName(L"youtai") == true)
 		{
 			Enemy_Warrior* enemy_warrior = NewGO<Enemy_Warrior>(0, "enemy");
@@ -116,8 +123,8 @@ bool Game::Start()
 	//m_bgObject.CreateFromModel(m_bgModelRendedr.GetModel(), m_bgModelRendedr.GetModel().GetWorldMatrix());
 
 	m_player = NewGO<Player>(0, "player");
-
-
+	//UIの初期化
+	m_scanUi = NewGO<PlayerScanCrystalUi>(0, "UI");
 
 	m_modelFloor.Init("Assets/modelData/testMap/Map_floor.tkm",nullptr,0,enModelUpAxisZ,true);
 	m_modelFloor.SetShadowChasterFlag(false);

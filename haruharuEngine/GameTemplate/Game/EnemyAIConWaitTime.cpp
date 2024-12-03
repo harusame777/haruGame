@@ -3,7 +3,7 @@
 #include "EnemyBase.h"
 
 //スタート関数
-void EnemyAIConWaitTime::Start()
+void EnemyAIConWaitTime::InitData()
 {
 	//タイマーを0.0fに
 	m_timer = 0.0f;

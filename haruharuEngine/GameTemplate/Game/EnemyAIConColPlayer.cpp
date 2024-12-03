@@ -4,7 +4,7 @@
 #include "EnemyBase.h"
 
 //スタート関数
-void EnemyAIConColPlayer::Start()
+void EnemyAIConColPlayer::InitData()
 {
 	m_player = FindGO<Player>("player");
 }

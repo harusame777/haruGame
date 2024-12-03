@@ -9,6 +9,8 @@ class Enemy_Warrior;
 class CrystalGetCommandSprite;
 class EnemyAIMetaWarrior;
 class DebugEnemyTrackingState;
+class ManagerCrystal;
+class PlayerScanCrystalUi;
 
 class Game : public IGameObject
 {
@@ -50,10 +52,17 @@ public:
 
 	CrystalGetCommandSprite* m_GetCOMSprite = nullptr;
 
+	ManagerCrystal* m_managerCrystal;
+
 	ModelRender m_bgModelRendedr;
 	PhysicsStaticObject m_bgObject;
 
 
 	FontRender m_testFont;
+
+	/// <summary>
+	/// プレイヤーのスキャンUI
+	/// </summary>
+	PlayerScanCrystalUi* m_scanUi = nullptr;
 };
 

@@ -248,8 +248,10 @@
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Locker.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ManagerCrystal.cpp" />
     <ClCompile Include="ObjectBase.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerScanCrystalUi.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -265,6 +267,7 @@
     <ClInclude Include="BackGroundFloor.h" />
     <ClInclude Include="BackGroundWalls.h" />
     <ClInclude Include="Crystal.h" />
+    <ClInclude Include="CrystalDataHolder.h" />
     <ClInclude Include="CrystalGetCommandSprite.h" />
     <ClInclude Include="DebugEnemyTrackingState.h" />
     <ClInclude Include="EnemyAIBase.h" />
@@ -283,9 +286,12 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Locker.h" />
+    <ClInclude Include="ManagerCrystal.h" />
     <ClInclude Include="ObjectBase.h" />
     <ClInclude Include="PatrolRuteDataHolder.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerScanCrystalUi.h" />
+    <ClInclude Include="PlayerUIBase.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />

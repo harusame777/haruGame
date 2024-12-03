@@ -2,6 +2,7 @@
 #include "Crystal.h"
 #include "Player.h"
 #include "CrystalGetCommandSprite.h"
+#include "ManagerCrystal.h"
 
 //これを有効にするとデバッグモードになる
 //#define DEBUG_MODE
@@ -50,6 +51,8 @@ bool Crystal::Start()
 	//クリスタル01をモデルに設定
 	m_mainModel.Init("Assets/modelData/objects/crystal/crystal01_Model.tkm", nullptr, 0, enModelUpAxisZ, true);
 
+	m_managerCrystalPtr = FindGO<ManagerCrystal>("CrystalMetaAI");
+
 	//シャドウマップに描画するようにする
 	m_mainModel.SetShadowChasterFlag(true);
 
@@ -79,6 +82,10 @@ void Crystal::Update()
 {
 	//クリスタル取得処理
 	GetCrystal();
+	//座標を設定
+	m_mainModel.SetPosition(m_position);
+	//回転を設定
+	m_mainModel.SetRotation(m_rotation);
 	//描画更新
 	m_mainModel.Update();
 }
@@ -89,7 +96,7 @@ void Crystal::Render(RenderContext& rc)
 	//取得されていなかったら
 	if (!m_isGetObject)
 	{
-		//描画しない
+		//描画する
 		m_mainModel.Draw(rc);
 	}
 
@@ -172,7 +179,7 @@ void Crystal::GetCrystal()
 #endif
 
 		//もしBボタンが押されたら
-		if (g_pad[0]->IsTrigger(enButtonRB2))
+		if (g_pad[0]->IsTrigger(enButtonB))
 		{
 			//採取を開始する
 			m_GetCOMSprite->CrystalCollectStart(this);
@@ -189,4 +196,11 @@ void Crystal::GetCrystal()
 	}
 #endif 
 
+}
+
+void Crystal::CrystalCollected()
+{
+	m_isGetObject = true;
+
+	m_managerCrystalPtr->ArrangementDataRefresh(this);
 }

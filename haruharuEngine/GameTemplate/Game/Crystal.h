@@ -3,6 +3,7 @@
 
 class Player;
 class CrystalGetCommandSprite;
+class ManagerCrystal;
 
 class Crystal : public ObjectBase
 {
@@ -18,11 +19,7 @@ public:
 	/// <summary>
 	/// このクリスタルは採取されました
 	/// </summary>
-	void CrystalCollected()
-	{
-		//取得フラグをtrueに
-		m_isGetObject = true;
-	}
+	void CrystalCollected();
 	/// <summary>
 	/// このクリスタルの採取に失敗しました
 	/// </summary>
@@ -30,6 +27,19 @@ public:
 	{
 		//採取クールタイムを初期化
 		m_collectCoolTime = 2.0f;
+	}
+	//クリスタルを配置する
+	void CrystalArrangement()
+	{
+		m_isGetObject = false;
+	}
+	/// <summary>
+	/// 採取されているかどうかを取得
+	/// </summary>
+	/// <returns></returns>
+	const bool GetCollected() const
+	{
+		return m_isGetObject;
 	}
 private:
 	/// <summary>
@@ -82,5 +92,9 @@ private:
 	/// デバック用のfontrender
 	/// </summary>
 	FontRender m_debugFontRender;
+	/// <summary>
+	/// クリスタルのメタAIのインスタンス
+	/// </summary>
+	ManagerCrystal* m_managerCrystalPtr = nullptr;
 };
 

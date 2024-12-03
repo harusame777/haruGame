@@ -76,7 +76,7 @@ void EnemySM_Warrior::EnemyAIStart()
 	//ConListの中のプログラムのスタート関数を起動する
 	for (auto& listPtr : m_enemyConList)
 	{
-		listPtr->Start();
+		listPtr->InitData();
 	}
 
 	m_player = FindGO<Player>("player");
@@ -203,7 +203,7 @@ void EnemySM_Warrior::StateTransition_Tracking()
 	//追跡するように
 	m_isTrackingTimeOver = true;
 	//追跡時間を初期化
-	m_enemyConList[en_enemyAIConWaitTime10f]->Start();
+	m_enemyConList[en_enemyAIConWaitTime10f]->InitData();
 }
 
 //時間処理
@@ -223,7 +223,7 @@ void EnemySM_Warrior::TimeUpdate()
 	else
 	{
 		//追跡時間を初期化
-		m_enemyConList[5]->Start();
+		m_enemyConList[5]->InitData();
 	}
 
 	//現在のステートが待機状態だったら
@@ -240,7 +240,7 @@ void EnemySM_Warrior::TimeUpdate()
 	else
 	{
 		//追跡時間を初期化
-		m_enemyConList[4]->Start();
+		m_enemyConList[4]->InitData();
 	}
 
 	//現在のステートが追跡状態だったら
@@ -256,7 +256,7 @@ void EnemySM_Warrior::TimeUpdate()
 				//追跡から別のステートにするようにして
 				m_isTrackingTimeOver = false;
 				//追跡時間を初期化
-				m_enemyConList[en_enemyAIConWaitTime10f]->Start();
+				m_enemyConList[en_enemyAIConWaitTime10f]->InitData();
 
 				SetState(WarriorState::en_warrior_idle);
 
@@ -267,7 +267,7 @@ void EnemySM_Warrior::TimeUpdate()
 		else
 		{
 			//追跡時間を初期化
-			m_enemyConList[en_enemyAIConWaitTime10f]->Start();
+			m_enemyConList[en_enemyAIConWaitTime10f]->InitData();
 		}
 	}
 }

@@ -4,7 +4,7 @@
 #include "Player.h"
 
 //スタート関数
-void EnemyAIConSearch::Start()
+void EnemyAIConSearch::InitData()
 {
 	//プレイヤーのインスタンスを取得
 	m_player = FindGO<Player>("player");
