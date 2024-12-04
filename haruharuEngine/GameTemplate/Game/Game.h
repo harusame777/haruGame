@@ -11,6 +11,7 @@ class EnemyAIMetaWarrior;
 class DebugEnemyTrackingState;
 class ManagerCrystal;
 class PlayerScanCrystalUi;
+class PlayerScoreUi;
 
 class Game : public IGameObject
 {
@@ -64,5 +65,9 @@ public:
 	/// プレイヤーのスキャンUI
 	/// </summary>
 	PlayerScanCrystalUi* m_scanUi = nullptr;
+	/// <summary>
+	/// プレイヤーのスコアUI
+	/// </summary>
+	PlayerScoreUi* m_scoreUi = nullptr;
 };
 

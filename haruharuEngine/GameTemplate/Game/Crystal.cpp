@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "CrystalGetCommandSprite.h"
 #include "ManagerCrystal.h"
+#include "PlayerScoreUi.h"
 
 //これを有効にするとデバッグモードになる
 //#define DEBUG_MODE
@@ -67,6 +68,8 @@ bool Crystal::Start()
 
 	//プレイヤーのインスタンスを取得する
 	m_player = FindGO<Player>("player");
+
+	m_scoreUi = FindGO<PlayerScoreUi>("ScoreUI");
 
 	//クリスタルの取得コマンド表示プログラムのインスタンスを取得する
 	m_GetCOMSprite = FindGO<CrystalGetCommandSprite>("object");
@@ -201,6 +204,8 @@ void Crystal::GetCrystal()
 void Crystal::CrystalCollected()
 {
 	m_isGetObject = true;
+
+	m_scoreUi->ScoreAdd(m_score);
 
 	m_managerCrystalPtr->ArrangementDataRefresh(this);
 }

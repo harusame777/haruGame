@@ -84,6 +84,9 @@
     <ClCompile Include="ManagerCrystal.cpp">
       <Filter>obj\Crystal</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerScoreUi.cpp">
+      <Filter>Player\PlayerUi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -183,6 +186,9 @@
     </ClInclude>
     <ClInclude Include="CrystalDataHolder.h">
       <Filter>obj\Crystal</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerScoreUi.h">
+      <Filter>Player\PlayerUi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

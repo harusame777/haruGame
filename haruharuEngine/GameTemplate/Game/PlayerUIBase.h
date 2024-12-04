@@ -18,6 +18,5 @@ protected:
 	/// プレイヤーのポインタ
 	/// </summary>
 	Player* m_playerPtr = nullptr;
-
 };
 

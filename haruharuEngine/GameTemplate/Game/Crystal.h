@@ -4,6 +4,7 @@
 class Player;
 class CrystalGetCommandSprite;
 class ManagerCrystal;
+class PlayerScoreUi;
 
 class Crystal : public ObjectBase
 {
@@ -96,5 +97,13 @@ private:
 	/// クリスタルのメタAIのインスタンス
 	/// </summary>
 	ManagerCrystal* m_managerCrystalPtr = nullptr;
+	/// <summary>
+	/// スコアのUi
+	/// </summary>
+	PlayerScoreUi* m_scoreUi = nullptr;
+	/// <summary>
+	/// スコア
+	/// </summary>
+	float m_score = 160.0f;
 };
 

@@ -66,6 +66,17 @@ namespace nsK2EngineLow {
 			return m_color;
 		}
 
+		//ピボットを設定
+		void SetPivot(const Vector2& pivot)
+		{
+			m_pivot = pivot;
+		}
+		//ピボットを取得
+		const Vector2& GetPivot() const
+		{
+			return m_pivot;
+		}
+
 		/// <summary>
 		/// 影のパラメータを設定。
 		/// </summary>

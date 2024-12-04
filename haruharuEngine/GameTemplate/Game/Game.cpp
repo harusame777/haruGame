@@ -13,6 +13,7 @@
 #include "Accessories.h"
 #include "ManagerCrystal.h"
 #include "PlayerScanCrystalUi.h"
+#include "PlayerScoreUi.h"
 
 
 
@@ -124,7 +125,8 @@ bool Game::Start()
 
 	m_player = NewGO<Player>(0, "player");
 	//UIÇÃèâä˙âª
-	m_scanUi = NewGO<PlayerScanCrystalUi>(0, "UI");
+	m_scanUi = NewGO<PlayerScanCrystalUi>(0, "ScanUI");
+	m_scoreUi = NewGO<PlayerScoreUi>(0, "ScoreUI");
 
 	m_modelFloor.Init("Assets/modelData/testMap/Map_floor.tkm",nullptr,0,enModelUpAxisZ,true);
 	m_modelFloor.SetShadowChasterFlag(false);
