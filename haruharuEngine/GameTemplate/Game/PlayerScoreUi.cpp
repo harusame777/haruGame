@@ -2,7 +2,7 @@
 #include "PlayerScoreUi.h"
 
 //これを有効にするとデバッグモードになる
-//#define DEBUG_MODE
+#define DEBUG_MODE
 
 //定数等
 namespace {
@@ -50,12 +50,19 @@ void PlayerScoreUi::Update()
 	//スコアナンバーを更新する
 	ScoreNumUpdate();
 
+	*m_gameScore = m_mainScore;
+
 	m_scoreBase.Update();
 }
 
 //スコアナンバーを更新する関数
 void PlayerScoreUi::ScoreNumUpdate()
 {
+	if (m_gameScore == nullptr)
+	{
+		return;
+	}
+
 	m_mainScore = ScoreCalc();
 
 	swprintf_s(wcsbuf, 256, L"%06.1fg",float(m_mainScore));

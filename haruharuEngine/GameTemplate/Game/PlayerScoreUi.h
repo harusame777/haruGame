@@ -31,6 +31,14 @@ public:
 		
 		return;
 	}
+	/// <summary>
+	/// メインスコアを設定
+	/// </summary>
+	/// <param name="ptr"></param>
+	void InitMainScorePtr(float& ptr)
+	{
+		m_gameScore = &ptr;
+	}
 private:
 	/// <summary>
 	/// スタート関数
@@ -65,6 +73,10 @@ private:
 	/// メインスコア
 	/// </summary>
 	float m_mainScore = 0;
+	/// <summary>
+	/// ゲームのスコア
+	/// </summary>
+	float* m_gameScore = nullptr;
 	/// <summary>
 	/// 新しいスコアの数値
 	/// </summary>

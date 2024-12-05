@@ -69,5 +69,7 @@ public:
 	/// プレイヤーのスコアUI
 	/// </summary>
 	PlayerScoreUi* m_scoreUi = nullptr;
+
+	float m_scoreNum = 0.0; 
 };
 
