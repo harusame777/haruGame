@@ -127,6 +127,7 @@ bool Game::Start()
 	//UIÇÃèâä˙âª
 	m_scanUi = NewGO<PlayerScanCrystalUi>(0, "ScanUI");
 	m_scoreUi = NewGO<PlayerScoreUi>(0, "ScoreUI");
+	m_scoreUi->InitMainScorePtr(m_scoreNum);
 
 	m_modelFloor.Init("Assets/modelData/testMap/Map_floor.tkm",nullptr,0,enModelUpAxisZ,true);
 	m_modelFloor.SetShadowChasterFlag(false);
