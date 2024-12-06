@@ -14,6 +14,7 @@
 #include "ManagerCrystal.h"
 #include "PlayerScanCrystalUi.h"
 #include "PlayerScoreUi.h"
+#include "PlayerStaminaUi.h"
 
 
 
@@ -88,14 +89,6 @@ bool Game::Start()
 			floor->SetScale(objData.m_scalse);
 			return true;
 		}
-		//else if (objData.ForwardMatchName(L"crystal01_Model") == true)
-		//{
-		//	Crystal* crystal = NewGO<Crystal>(0, "object");
-		//	crystal->SetPosition(objData.m_position);
-		//	crystal->SetRotation(objData.m_rotation);
-		//	crystal->SetScale(objData.m_scalse);
-		//	return true;
-		//}
 		else if (objData.ForwardMatchName(L"youtai") == true)
 		{
 			Enemy_Warrior* enemy_warrior = NewGO<Enemy_Warrior>(0, "enemy");
@@ -128,6 +121,7 @@ bool Game::Start()
 	m_scanUi = NewGO<PlayerScanCrystalUi>(0, "ScanUI");
 	m_scoreUi = NewGO<PlayerScoreUi>(0, "ScoreUI");
 	m_scoreUi->InitMainScorePtr(m_scoreNum);
+	m_staminaUi = NewGO<PlayerStaminaUi>(0, "StaminaUI");
 
 	m_modelFloor.Init("Assets/modelData/testMap/Map_floor.tkm",nullptr,0,enModelUpAxisZ,true);
 	m_modelFloor.SetShadowChasterFlag(false);

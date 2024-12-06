@@ -12,6 +12,7 @@ class DebugEnemyTrackingState;
 class ManagerCrystal;
 class PlayerScanCrystalUi;
 class PlayerScoreUi;
+class PlayerStaminaUi;
 
 class Game : public IGameObject
 {
@@ -69,6 +70,10 @@ public:
 	/// プレイヤーのスコアUI
 	/// </summary>
 	PlayerScoreUi* m_scoreUi = nullptr;
+	/// <summary>
+	/// プレイヤーのスタミナUI
+	/// </summary>
+	PlayerStaminaUi* m_staminaUi = nullptr;
 
 	float m_scoreNum = 0.0; 
 };
