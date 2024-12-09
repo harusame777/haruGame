@@ -1,5 +1,7 @@
 #pragma once
 
+class PlayerStaminaUi;
+
 class Player : public IGameObject
 {
 public:
@@ -123,6 +125,14 @@ private:
 	/// </summary>
 	float m_moveSpeed;
 	/// <summary>
+	/// スタミナ
+	/// </summary>
+	int m_stamina = 100;
+	/// <summary>
+	/// スタミナ切れかどうか
+	/// </summary>
+	bool m_isStaminaOut = false;
+	/// <summary>
 	/// 移動ベクトル
 	/// </summary>
 	Vector3 m_moveVector;
@@ -130,5 +140,9 @@ private:
 	/// キャラコン
 	/// </summary>
 	CharacterController m_CController;
+	/// <summary>
+	/// プレイヤーのスタミナUI
+	/// </summary>
+	PlayerStaminaUi* m_playerStaminaUi = nullptr;
 };
 
