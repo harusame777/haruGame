@@ -17,7 +17,7 @@ namespace {
 	static const float STAMINA_OUT = 0.0f;
 	//スタミナバーのアルファ値イージングAとB
 	static const float STAMINABAR_ALPHA_EASING_START = 0.2f;
-	static const float STAMINABAR_ALPHA_EASING_END = 1.0f;
+	static const float STAMINABAR_ALPHA_EASING_END = 0.7f;
 }
 
 //スタート関数
@@ -138,7 +138,7 @@ void PlayerStaminaUi::BlinkingBarCalc()
 		//ステートがen_staminaHighの場合
 	case PlayerStaminaUi::en_staminaHigh:
 		//アルファ値が1.0f以下であれば
-		if (m_staminaBarData.GetAlpha() <= 1.0f)
+		if (m_staminaBarData.GetAlpha() <= 0.7f)
 		{
 			//アルファ値を0.1加算
 			m_staminaBarData.AddAlpha(0.1f);

@@ -54,7 +54,7 @@ float4 PSMain( PSInput In ) : SV_Target0
     float PI = 3.14159f;
 	
 	//中心点
-    float2 center = { 0.5f, 0.0f };
+    float2 center = { 0.5f, -1.2f };
 	//上方向
     float2 up = { 0.5f, 1.0f };
 	
