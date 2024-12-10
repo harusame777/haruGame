@@ -3,18 +3,19 @@
 
 //定数等
 namespace {
+	//スタミナ枠のサイズWとH
 	static const float STAMINABASE_SPRITE_W_SIZE = 545.0f;
 	static const float STAMINABASE_SPRITE_H_SIZE = 157.0f;
-
+	//スタミナバーのサイズWとH
 	static const float STAMINABAR_SPRITE_W_SIZE = 530.0f;
 	static const float STAMINABAR_SPRITE_H_SIZE = 142.0f;
-
+	//スタミナの位置、サイズ
 	static const Vector3 STAMINABASE_SPRITE_POSITION = { -0.0f,-350.0f,0.0f };
 	static const Vector3 STAMINABASE_SPRITE_SIZE = { 0.2f,0.2f,0.0f };
-
+	//スタミナ低下ラインと、空になるライン
 	static const float STAMINA_LOW = 45.0f;
 	static const float STAMINA_OUT = 0.0f;
-
+	//スタミナバーのアルファ値イージングAとB
 	static const float STAMINABAR_ALPHA_EASING_START = 0.2f;
 	static const float STAMINABAR_ALPHA_EASING_END = 1.0f;
 }
@@ -141,6 +142,8 @@ void PlayerStaminaUi::BlinkingBarCalc()
 		{
 			//アルファ値を0.1加算
 			m_staminaBarData.AddAlpha(0.1f);
+
+			m_alphaRatio = 0.0f;
 		}
 		//バーの色を通常色に
 		m_staminaBarData.SetRedAddFlag(false);

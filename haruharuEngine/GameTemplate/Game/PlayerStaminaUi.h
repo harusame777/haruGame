@@ -33,6 +33,9 @@ public:
 		m_playerStamina = staminaPtr;
 	}
 private:
+	/// <summary>
+	/// スタミナUiのステート
+	/// </summary>
 	enum StaminaUiState
 	{
 		en_staminaHigh,
