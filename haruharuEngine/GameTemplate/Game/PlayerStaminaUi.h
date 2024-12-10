@@ -8,9 +8,9 @@ namespace {
 	/// </summary>
 	static const float MAX_STAMINA_INDEX = 100; 
 
-	static const float INIT_DEGREE_VALUE = 0.7f;
+	static const float INIT_DEGREE_VALUE = 1.5f;
 
-	static const float MAX_DEGREE_VALUE = 5.6f;
+	static const float MAX_DEGREE_VALUE = 4.8f;
 }
 
 class PlayerStaminaUi : public PlayerUIBase
