@@ -15,7 +15,7 @@ namespace {
 	static const float STAMINA_LOW = 45.0f;
 	static const float STAMINA_OUT = 0.0f;
 
-	static const float STAMINABAR_ALPHA_EASING_START = 0.0f;
+	static const float STAMINABAR_ALPHA_EASING_START = 0.2f;
 	static const float STAMINABAR_ALPHA_EASING_END = 1.0f;
 }
 
