@@ -28,7 +28,7 @@ public:
 	/// プレイヤーのスタミナの変数のポインタで初期化
 	/// </summary>
 	/// <param name="staminaPtr"></param>
-	void InitPlayerStaminaPtr(int* staminaPtr)
+	void InitPlayerStaminaPtr(float* staminaPtr)
 	{
 		m_playerStamina = staminaPtr;
 	}
@@ -150,11 +150,11 @@ private:
 	/// <summary>
 	/// プレイヤーのスタミナ
 	/// </summary>
-	int* m_playerStamina = nullptr;
+	float* m_playerStamina = nullptr;
 	/// <summary>
 	/// Ui内のスタミナ
 	/// </summary>
-	int m_mainStamina = 0;
+	float m_mainStamina = 0;
 	/// <summary>
 	/// アルファ値イージング割合
 	/// </summary>

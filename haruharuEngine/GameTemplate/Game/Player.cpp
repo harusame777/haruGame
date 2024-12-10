@@ -97,7 +97,14 @@ void Player::IsWalkOrRun()
 	{
 		m_moveSpeed = playerSpeedWalk;
 
-		m_stamina++;
+		if (m_isStaminaOut == true)
+		{
+			m_stamina += 0.5f;
+		}
+		else
+		{
+			m_stamina++;
+		}
 
 		if (100 <= m_stamina)
 		{

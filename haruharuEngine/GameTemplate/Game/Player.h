@@ -127,7 +127,7 @@ private:
 	/// <summary>
 	/// スタミナ
 	/// </summary>
-	int m_stamina = 100;
+	float m_stamina = 100.0f;
 	/// <summary>
 	/// スタミナ切れかどうか
 	/// </summary>
