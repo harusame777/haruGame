@@ -51,6 +51,18 @@ private:
 	/// </summary>
 	void Update();
 	/// <summary>
+	/// スタミナステートアップデート関数
+	/// </summary>
+	void StaminaStateUpdate();
+	/// <summary>
+	/// スタミナバー点滅関数
+	/// </summary>
+	void BlinkingBarCalc();
+	/// <summary>
+	/// アルファ値イージング関数
+	/// </summary>
+	const float& AlphaEasing();
+	/// <summary>
 	/// ワイプ計算関数
 	/// </summary>
 	/// <returns></returns>
@@ -70,6 +82,8 @@ private:
 		float m_degree = INIT_DEGREE_VALUE;
 		//α値
 		float m_alpha = 1.0f;
+		//r値
+		bool m_redAddFlag = false;
 	public:
 		/// <summary>
 		/// 割合初期化
@@ -83,7 +97,7 @@ private:
 		/// 割合加算
 		/// </summary>
 		/// <param name="addValue"></param>
-		void AddDegree(const float& addValue)
+		void AddDegree(const float addValue)
 		{
 			m_degree += addValue;
 		}
@@ -95,8 +109,44 @@ private:
 		{
 			return m_degree;
 		}
+		/// <summary>
+		/// アルファ値初期化
+		/// </summary>
+		/// <param name="value"></param>
+		void SetAlpha(const float value)
+		{
+			m_alpha = value;
+		}
+		/// <summary>
+		/// アルファ値加算
+		/// </summary>
+		/// <param name="addValue"></param>
+		void AddAlpha(const float addValue)
+		{
+			m_alpha += addValue;
+		}
+		/// <summary>
+		/// アルファ値取得
+		/// </summary>
+		/// <returns></returns>
+		const float& GetAlpha() const
+		{
+			return m_alpha;
+		}
+		/// <summary>
+		/// 赤加算フラグ設定
+		/// </summary>
+		/// <param name="setFlag"></param>
+		void SetRedAddFlag(const bool setFlag)
+		{
+			m_redAddFlag = setFlag;
+		}
 	};
 	StaminaBarData m_staminaBarData;
+	/// <summary>
+	/// スタミナUiステート
+	/// </summary>
+	StaminaUiState m_staminaState = StaminaUiState::en_staminaHigh;
 	/// <summary>
 	/// プレイヤーのスタミナ
 	/// </summary>
@@ -106,9 +156,17 @@ private:
 	/// </summary>
 	int m_mainStamina = 0;
 	/// <summary>
-	/// イージング割合
+	/// アルファ値イージング割合
 	/// </summary>
-	float m_ratio = 0.0f;
+	float m_alphaRatio = 0.0f;
+	/// <summary>
+	/// スタミナが空になったかのフラグ
+	/// </summary>
+	bool m_staminaOutFlag = false;
+	/// <summary>
+	/// アルファ値イージング反転フラグ
+	/// </summary>
+	bool m_alphaEasingInversionFlag = true;
 	/// <summary>
 	/// スタミナベースUi
 	/// </summary>
@@ -121,7 +179,6 @@ private:
 	/// スタミナバーUiのアルファ操作用テクスチャ
 	/// </summary>
 	Texture m_staminaBarAlphaTexture;
-
 	/// <summary>
 	/// flaot用線形補間
 	/// </summary>
@@ -133,6 +190,5 @@ private:
 	{
 		return (1.0f - t) * a + t * b;
 	}
-
 };
 

@@ -14,6 +14,8 @@ cbuffer degreeCb : register(b1)
     float degree;
 	//アルファ値
     float alpha;
+    //赤を加算するかどうか
+    bool addRFlag;
 }
 
 struct VSInput{
@@ -82,6 +84,12 @@ float4 PSMain( PSInput In ) : SV_Target0
     if (alphaTex.r >= 1.0f)
     {
         colorTex.a = alpha;
+    }
+    
+    if (addRFlag == true 
+        && alphaTex.r >= 1.0f)
+    {
+        colorTex.r = 1.0f;
     }
 			
     return colorTex * mulColor;
