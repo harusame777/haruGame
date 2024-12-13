@@ -10,7 +10,7 @@ namespace {
 	static const float STAMINABAR_SPRITE_W_SIZE = 530.0f;
 	static const float STAMINABAR_SPRITE_H_SIZE = 142.0f;
 	//スタミナの位置、サイズ
-	static const Vector3 STAMINABASE_SPRITE_POSITION = { -0.0f,-350.0f,0.0f };
+	static const Vector3 OXYGENBASE_SPRITE_POSITION = { -0.0f,-350.0f,0.0f };
 	static const Vector3 STAMINABASE_SPRITE_SIZE = { 0.2f,0.2f,0.0f };
 	//スタミナ低下ラインと、空になるライン
 	static const float STAMINA_LOW = 45.0f;
@@ -28,7 +28,7 @@ bool PlayerStaminaUi::Start()
 		STAMINABASE_SPRITE_W_SIZE,
 		STAMINABASE_SPRITE_H_SIZE);
 	//位置を設定
-	m_staminaBase.SetPosition(STAMINABASE_SPRITE_POSITION);
+	m_staminaBase.SetPosition(OXYGENBASE_SPRITE_POSITION);
 	m_staminaBase.Update();
 
 	SpriteInitData staminaBarInitData;
@@ -49,7 +49,7 @@ bool PlayerStaminaUi::Start()
 	//設定したデータをスプライトに設定
 	m_staminaBar.Init(staminaBarInitData);
 	//位置を設定
-	m_staminaBar.SetPosition(STAMINABASE_SPRITE_POSITION);
+	m_staminaBar.SetPosition(OXYGENBASE_SPRITE_POSITION);
 	m_staminaBar.Update();
 
 	//m_staminaBar.Init("Assets/modelData/playerUI/PlayerStaminaUi/digital_stamina_gaugebar_sprite_1.DDS",

@@ -251,6 +251,7 @@
     <ClCompile Include="ManagerCrystal.cpp" />
     <ClCompile Include="ObjectBase.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerOxygenUi.cpp" />
     <ClCompile Include="PlayerScanCrystalUi.cpp" />
     <ClCompile Include="PlayerScoreUi.cpp" />
     <ClCompile Include="PlayerStaminaUi.cpp" />
@@ -292,6 +293,7 @@
     <ClInclude Include="ObjectBase.h" />
     <ClInclude Include="PatrolRuteDataHolder.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerOxygenUi.h" />
     <ClInclude Include="PlayerScanCrystalUi.h" />
     <ClInclude Include="PlayerScoreUi.h" />
     <ClInclude Include="PlayerStaminaUi.h" />

@@ -15,6 +15,7 @@
 #include "PlayerScanCrystalUi.h"
 #include "PlayerScoreUi.h"
 #include "PlayerStaminaUi.h"
+#include "PlayerOxygenUi.h"
 
 
 
@@ -122,6 +123,10 @@ bool Game::Start()
 	m_scoreUi = NewGO<PlayerScoreUi>(0, "ScoreUI");
 	m_scoreUi->InitMainScorePtr(m_scoreNum);
 	m_staminaUi = NewGO<PlayerStaminaUi>(0, "StaminaUI");
+	m_oxygenUi = NewGO<PlayerOxygenUi>(0, "OxygenUI");
+	m_oxygenUi->InitTimerPtr(&m_timerIndex);
+
+	m_timerIndex = MAX_GAMETIME;
 
 	m_modelFloor.Init("Assets/modelData/testMap/Map_floor.tkm",nullptr,0,enModelUpAxisZ,true);
 	m_modelFloor.SetShadowChasterFlag(false);
@@ -144,6 +149,13 @@ bool Game::Start()
 
 void Game::Update()
 {
+
+	m_timerIndex -= g_gameTime->GetFrameDeltaTime();
+
+	if (m_timerIndex <= 0)
+	{
+		m_timerIndex = 0;
+	}
 
 	m_modelTestPos = Vector3::Zero;
 

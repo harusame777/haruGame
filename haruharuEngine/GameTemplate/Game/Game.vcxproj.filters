@@ -90,6 +90,9 @@
     <ClCompile Include="PlayerStaminaUi.cpp">
       <Filter>Player\PlayerUi</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerOxygenUi.cpp">
+      <Filter>Player\PlayerUi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -194,6 +197,9 @@
       <Filter>Player\PlayerUi</Filter>
     </ClInclude>
     <ClInclude Include="PlayerStaminaUi.h">
+      <Filter>Player\PlayerUi</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerOxygenUi.h">
       <Filter>Player\PlayerUi</Filter>
     </ClInclude>
   </ItemGroup>
