@@ -8,6 +8,7 @@ cbuffer WipeCB : register(b1)
     float2 wipeDirection;	//ワイプの方向
     float wipeSize;			//ワイプサイズ
     float pramA;			//アルファ値
+    int colorState;         //カラーステート
 }
 
 cbuffer cb : register(b0){
@@ -46,6 +47,20 @@ float4 PSMain( PSInput In ) : SV_Target0
 	//ピクセル座標をワイプ方向に射影する
     float t = dot(wipeDirection, In.pos.xy);
     clip(t - wipeSize);
+    
+    if(colorState == 1 &&
+        alphaTex.g < 0.9f)
+    {
+        color.r += 1.0f;
+        color.b -= 0.9f;
+    }
+    else if (colorState == 2 &&
+        alphaTex.g < 0.9f)
+    {
+        color.r += 1.0f;
+        color.b -= 0.6f;
+        color.g -= 0.6f;
+    }
     
     if (alphaTex.g < 0.9f)
     {

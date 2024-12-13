@@ -13,6 +13,14 @@ class ManagerCrystal;
 class PlayerScanCrystalUi;
 class PlayerScoreUi;
 class PlayerStaminaUi;
+class PlayerOxygenUi;
+
+//定数等
+namespace {
+
+	static const float MAX_GAMETIME = 300.0f;
+
+}
 
 class Game : public IGameObject
 {
@@ -74,7 +82,17 @@ public:
 	/// プレイヤーのスタミナUI
 	/// </summary>
 	PlayerStaminaUi* m_staminaUi = nullptr;
-
+	/// <summary>
+	/// プレイヤーの酸素UI
+	/// </summary>
+	PlayerOxygenUi* m_oxygenUi = nullptr;
+	/// <summary>
+	/// スコア
+	/// </summary>
 	float m_scoreNum = 0.0; 
+	/// <summary>
+	/// タイマー
+	/// </summary>
+	float m_timerIndex = 0.0f;
 };
 
