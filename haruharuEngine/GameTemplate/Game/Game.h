@@ -14,6 +14,7 @@ class PlayerScanCrystalUi;
 class PlayerScoreUi;
 class PlayerStaminaUi;
 class PlayerOxygenUi;
+class Load;
 
 //定数等
 namespace {
@@ -26,50 +27,99 @@ class Game : public IGameObject
 {
 public:
 
+	void PlauerGameClear()
+	{
+		m_gameInState = GameInState::en_gameClear;
+	}
+
+	void PlayerGameOver()
+	{
+		m_gameInState = GameInState::en_gameOver;
+	}
+
+private:
+
+	enum GameOutState
+	{
+		en_gameTitle,
+
+		en_gameLoad,
+
+		en_gameOutEnd,
+	};
+	GameOutState m_gameOutState = GameOutState::en_gameTitle;
+	enum GameInState
+	{
+		en_gameUpdate,
+
+		en_gameClear,
+
+		en_gameOver,
+
+		
+	};
+	GameInState m_gameInState = GameInState::en_gameUpdate;
+	/// <summary>
+	/// スタート関数
+	/// </summary>
+	/// <returns></returns>
 	bool Start();
-
+	/// <summary>
+	/// アップデート関数
+	/// </summary>
 	void Update();
-
-	//テスト用座標
-
-	Vector3 m_modelTestPos = Vector3::Zero;
-
-	Vector3 m_pointLightTestPos = { 0.0f,20.0f,0.0f };
-
-	Vector3 m_spotLightTestPos = { 0.0f,80.0f,150.0f };
-
-	Vector3 m_spotLightTestDirection = { 1.0f,-1.0f,1.0f };
-
+	/// <summary>
+	/// ディレクションライト作成
+	/// </summary>
+	void InitDirctionaLight();
+	/// <summary>
+	/// クリスタルを初期化
+	/// </summary>
+	void InitObjectCrystal();
+	/// <summary>
+	/// インゲーム
+	/// </summary>
+	void DoInGame();
+	/// <summary>
+	/// タイマー処理
+	/// </summary>
+	void TimerProcess();
+	/// <summary>
+	/// アウトゲーム
+	/// </summary>
+	void DoOutGame();
+	/// <summary>
+	/// アウトゲームのロード処理
+	/// </summary>
+	void OutGameLoadProcess();
+	/// <summary>
+	/// レベルレンダー
+	/// </summary>
 	LevelRender m_levelRender;
-
-	//エネミーウォリアーのメタAI
+	/// <summary>
+	/// エネミーウォリアーのメタAI
+	/// </summary>
 	EnemyAIMetaWarrior* m_warriorMetaAI;
-	
-	//テストカメラ
-	GameCamera* m_testCamera = nullptr;
-
-	ModelRender m_modelFloor;
-
-	SpriteRender m_spriteTest1;
-
-	//太陽光の作成
+	/// <summary>
+	/// カメラ
+	/// </summary>
+	GameCamera* m_mainCamera = nullptr;
+	/// <summary>
+	/// 太陽光
+	/// </summary>
 	DirectionalLight sunDirectionalLight;
-
-
+	/// <summary>
+	/// プレイヤー
+	/// </summary>
 	Player* m_player = nullptr;
-
-	Enemy_Warrior* m_testEnemy = nullptr;
-
+	/// <summary>
+	/// クリスタルコマンドスプライト
+	/// </summary>
 	CrystalGetCommandSprite* m_GetCOMSprite = nullptr;
-
+	/// <summary>
+	/// クリスタルマネージャー
+	/// </summary>
 	ManagerCrystal* m_managerCrystal;
-
-	ModelRender m_bgModelRendedr;
-	PhysicsStaticObject m_bgObject;
-
-
-	FontRender m_testFont;
-
 	/// <summary>
 	/// プレイヤーのスキャンUI
 	/// </summary>
@@ -94,5 +144,7 @@ public:
 	/// タイマー
 	/// </summary>
 	float m_timerIndex = 0.0f;
+
+	Load* m_load = nullptr;
 };
 

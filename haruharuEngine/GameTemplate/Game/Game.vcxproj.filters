@@ -93,6 +93,9 @@
     <ClCompile Include="PlayerOxygenUi.cpp">
       <Filter>Player\PlayerUi</Filter>
     </ClCompile>
+    <ClCompile Include="Load.cpp">
+      <Filter>OutGame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -202,6 +205,9 @@
     <ClInclude Include="PlayerOxygenUi.h">
       <Filter>Player\PlayerUi</Filter>
     </ClInclude>
+    <ClInclude Include="Load.h">
+      <Filter>OutGame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bg">
@@ -242,6 +248,9 @@
     </Filter>
     <Filter Include="obj\Crystal">
       <UniqueIdentifier>{d88e7ea5-d90d-46c7-b843-42f781f9b9ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OutGame">
+      <UniqueIdentifier>{168767dd-ae1a-4e16-b782-1b1e3204f55a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
