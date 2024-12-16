@@ -35,12 +35,12 @@ bool Load::Start()
 //アップデート関数
 void Load::Update()
 {
-	m_loadRange = 0.4;
+	m_loadRange += 0.01;
 
-	//if (m_loadRange > 1.0f)
-	//{
-	//	m_loadRange = 0.0f;
-	//}
+	if (m_loadRange > 1.0f)
+	{
+		m_loadRange = 0.0f;
+	}
 
 	m_loadBackSideSprite.Update();
 }

@@ -3,6 +3,7 @@
 #include "GameCamera.h"
 #include "BackGroundWalls.h"
 #include "BackGroundFloor.h"
+#include "BackGroundCeiling.h"
 #include "Crystal.h"
 #include "CrystalGetCommandSprite.h"
 #include "Player.h"
@@ -31,7 +32,7 @@ bool Game::Start()
 	InitObjectCrystal();
 
 	//レベルレンダーのテスト
-	m_levelRender.Init("Assets/mapLevel/testLevel5.tkl", [&](LevelObjectData_Render& objData)
+	m_levelRender.Init("Assets/mapLevel/testLevel6.tkl", [&](LevelObjectData_Render& objData)
 	{
 		if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
 		{
@@ -86,6 +87,13 @@ bool Game::Start()
 			floor->SetScale(objData.m_scalse);
 			return true;
 		}
+		else if (objData.ForwardMatchName(L"laboCeiling_MainModel") == true)
+		{
+			BackGroundCeiling* ceiling = NewGO<BackGroundCeiling>(0, "background");
+			ceiling->SetPosition(objData.m_position);
+			ceiling->SetRotation(objData.m_rotation);
+			ceiling->SetScale(objData.m_scalse);
+		}
 		else if (objData.ForwardMatchName(L"youtai") == true)
 		{
 			Enemy_Warrior* enemy_warrior = NewGO<Enemy_Warrior>(0, "enemy");
@@ -123,7 +131,7 @@ bool Game::Start()
 
 	m_mainCamera = NewGO<GameCamera>(0, "camera");
 
-	m_load = NewGO<Load>(0, "Load");
+	//m_load = NewGO<Load>(0, "Load");
 
 	return true;
 }

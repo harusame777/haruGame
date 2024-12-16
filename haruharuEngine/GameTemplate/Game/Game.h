@@ -4,6 +4,7 @@
 class GameCamera;
 class BackGroundWalls;
 class BackGroundFloor;
+class BackGroundCeiling;
 class Player;
 class Enemy_Warrior;
 class CrystalGetCommandSprite;

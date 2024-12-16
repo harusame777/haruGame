@@ -227,6 +227,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Accessories.cpp" />
+    <ClCompile Include="BackGroundCeiling.cpp" />
     <ClCompile Include="BackGroundFloor.cpp" />
     <ClCompile Include="BackGroundWalls.cpp" />
     <ClCompile Include="Crystal.cpp" />
@@ -268,6 +269,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Accessories.h" />
+    <ClInclude Include="BackGroundCeiling.h" />
     <ClInclude Include="BackGroundFloor.h" />
     <ClInclude Include="BackGroundWalls.h" />
     <ClInclude Include="Crystal.h" />

@@ -96,6 +96,9 @@
     <ClCompile Include="Load.cpp">
       <Filter>OutGame</Filter>
     </ClCompile>
+    <ClCompile Include="BackGroundCeiling.cpp">
+      <Filter>bg</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -207,6 +210,9 @@
     </ClInclude>
     <ClInclude Include="Load.h">
       <Filter>OutGame</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGroundCeiling.h">
+      <Filter>bg</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
