@@ -230,9 +230,11 @@
     <ClCompile Include="BackGroundCeiling.cpp" />
     <ClCompile Include="BackGroundFloor.cpp" />
     <ClCompile Include="BackGroundWalls.cpp" />
+    <ClCompile Include="BootObjectBase.cpp" />
     <ClCompile Include="Crystal.cpp" />
     <ClCompile Include="CrystalGetCommandSprite.cpp" />
     <ClCompile Include="DebugEnemyTrackingState.cpp" />
+    <ClCompile Include="Elevator.cpp" />
     <ClCompile Include="EnemyAIBase.cpp" />
     <ClCompile Include="EnemyAIConBase.cpp" />
     <ClCompile Include="EnemyAIConColPlayer.cpp" />
@@ -272,10 +274,12 @@
     <ClInclude Include="BackGroundCeiling.h" />
     <ClInclude Include="BackGroundFloor.h" />
     <ClInclude Include="BackGroundWalls.h" />
+    <ClInclude Include="BootObjectBase.h" />
     <ClInclude Include="Crystal.h" />
     <ClInclude Include="CrystalDataHolder.h" />
     <ClInclude Include="CrystalGetCommandSprite.h" />
     <ClInclude Include="DebugEnemyTrackingState.h" />
+    <ClInclude Include="Elevator.h" />
     <ClInclude Include="EnemyAIBase.h" />
     <ClInclude Include="EnemyAIConBase.h" />
     <ClInclude Include="EnemyAIConColPlayer.h" />

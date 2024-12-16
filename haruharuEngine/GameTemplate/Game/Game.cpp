@@ -11,6 +11,7 @@
 #include "Enemy_Warrior.h"
 #include "DebugEnemyTrackingState.h"
 #include "Locker.h"
+#include "Elevator.h"
 #include "Accessories.h"
 #include "ManagerCrystal.h"
 #include "PlayerScanCrystalUi.h"
@@ -106,6 +107,12 @@ bool Game::Start()
 		{
 			Locker* locker = NewGO<Locker>(0, "object");
 			locker->SetPosition(objData.m_position);
+			return true;
+		}
+		else if (objData.ForwardMatchName(L"elevator") == true)
+		{
+			Elevator* elevator = NewGO<Elevator>(0, "object");
+			elevator->SetPosition(objData.m_position);
 			return true;
 		}
 		else if (objData.ForwardMatchName(L"desk") == true)
