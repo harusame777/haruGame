@@ -227,6 +227,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Accessories.cpp" />
+    <ClCompile Include="BackGroundCeiling.cpp" />
     <ClCompile Include="BackGroundFloor.cpp" />
     <ClCompile Include="BackGroundWalls.cpp" />
     <ClCompile Include="Crystal.cpp" />
@@ -246,6 +247,7 @@
     <ClCompile Include="Enemy_Warrior.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Load.cpp" />
     <ClCompile Include="Locker.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManagerCrystal.cpp" />
@@ -267,6 +269,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Accessories.h" />
+    <ClInclude Include="BackGroundCeiling.h" />
     <ClInclude Include="BackGroundFloor.h" />
     <ClInclude Include="BackGroundWalls.h" />
     <ClInclude Include="Crystal.h" />
@@ -288,6 +291,7 @@
     <ClInclude Include="Enemy_Warrior.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Load.h" />
     <ClInclude Include="Locker.h" />
     <ClInclude Include="ManagerCrystal.h" />
     <ClInclude Include="ObjectBase.h" />

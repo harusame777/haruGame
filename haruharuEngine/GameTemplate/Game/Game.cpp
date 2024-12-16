@@ -3,6 +3,7 @@
 #include "GameCamera.h"
 #include "BackGroundWalls.h"
 #include "BackGroundFloor.h"
+#include "BackGroundCeiling.h"
 #include "Crystal.h"
 #include "CrystalGetCommandSprite.h"
 #include "Player.h"
@@ -16,26 +17,22 @@
 #include "PlayerScoreUi.h"
 #include "PlayerStaminaUi.h"
 #include "PlayerOxygenUi.h"
+#include "Load.h"
 
 
 
 bool Game::Start()
 {
-	sunDirectionalLight.SetColor(1.0f, 1.0f, 1.0f);
-	sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
-	sunDirectionalLight.LightDirectionNormalize();
-	sunDirectionalLight.CastShadow();
+	InitDirctionaLight();
 
-	m_GetCOMSprite = NewGO<CrystalGetCommandSprite>(0, "object");
 
 	//エネミーウォリアーのメタAI
 	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");
 
-	////クリスタルのメタAI
-	m_managerCrystal = NewGO<ManagerCrystal>(0, "CrystalMetaAI");
+	InitObjectCrystal();
 
 	//レベルレンダーのテスト
-	m_levelRender.Init("Assets/mapLevel/testLevel5.tkl", [&](LevelObjectData_Render& objData)
+	m_levelRender.Init("Assets/mapLevel/testLevel6.tkl", [&](LevelObjectData_Render& objData)
 	{
 		if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
 		{
@@ -90,6 +87,13 @@ bool Game::Start()
 			floor->SetScale(objData.m_scalse);
 			return true;
 		}
+		else if (objData.ForwardMatchName(L"laboCeiling_MainModel") == true)
+		{
+			BackGroundCeiling* ceiling = NewGO<BackGroundCeiling>(0, "background");
+			ceiling->SetPosition(objData.m_position);
+			ceiling->SetRotation(objData.m_rotation);
+			ceiling->SetScale(objData.m_scalse);
+		}
 		else if (objData.ForwardMatchName(L"youtai") == true)
 		{
 			Enemy_Warrior* enemy_warrior = NewGO<Enemy_Warrior>(0, "enemy");
@@ -114,9 +118,6 @@ bool Game::Start()
 		return true;
 	});
 
-	m_bgModelRendedr.Init("Assets/modelData/bg/bg.tkm");
-	//m_bgObject.CreateFromModel(m_bgModelRendedr.GetModel(), m_bgModelRendedr.GetModel().GetWorldMatrix());
-
 	m_player = NewGO<Player>(0, "player");
 	//UIの初期化
 	m_scanUi = NewGO<PlayerScanCrystalUi>(0, "ScanUI");
@@ -128,52 +129,104 @@ bool Game::Start()
 
 	m_timerIndex = MAX_GAMETIME;
 
-	m_modelFloor.Init("Assets/modelData/testMap/Map_floor.tkm",nullptr,0,enModelUpAxisZ,true);
-	m_modelFloor.SetShadowChasterFlag(false);
+	m_mainCamera = NewGO<GameCamera>(0, "camera");
 
-	m_spriteTest1.Init("Assets/modelData/Enemy_UI_A.DDS", 1280.0f, 720.0f);
-
-	Vector3 testpos = { 0.0f,130.0f,0.0f };
-
-	m_spriteTest1.SetPosition(testpos);
-	
-	m_modelFloor.SetPosition(Vector3::Zero);
-
-	m_testCamera = NewGO<GameCamera>(0, "camera");
-
-	
-	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();
+	//m_load = NewGO<Load>(0, "Load");
 
 	return true;
 }
 
+void Game::InitDirctionaLight()
+{
+	sunDirectionalLight.SetColor(1.0f, 1.0f, 1.0f);
+	sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
+	sunDirectionalLight.LightDirectionNormalize();
+	sunDirectionalLight.CastShadow();
+}
+
+void Game::InitObjectCrystal()
+{
+	m_GetCOMSprite = NewGO<CrystalGetCommandSprite>(0, "object");
+
+	////クリスタルのメタAI
+	m_managerCrystal = NewGO<ManagerCrystal>(0, "CrystalMetaAI");
+}
+
 void Game::Update()
+{
+
+	if (m_gameOutState != GameOutState::en_gameOutEnd)
+	{
+		DoOutGame();
+	}
+	else
+	{
+		DoInGame();
+	}
+}
+
+void Game::DoInGame()
+{
+
+	switch (m_gameInState)
+	{
+	case Game::en_gameUpdate:
+
+		TimerProcess();
+
+		break;
+	case Game::en_gameClear:
+		break;
+	case Game::en_gameOver:
+		break;
+	default:
+		break;
+	}
+
+}
+
+void Game::TimerProcess()
 {
 
 	m_timerIndex -= g_gameTime->GetFrameDeltaTime();
 
 	if (m_timerIndex <= 0)
 	{
-		m_timerIndex = 0;
+
+		m_gameInState = GameInState::en_gameOver;
+
 	}
 
-	m_modelTestPos = Vector3::Zero;
+}
 
-	m_modelFloor.Update();
+void Game::DoOutGame()
+{
 
-	Vector3 targetPos = m_modelTestPos;
+	switch (m_gameOutState)
+	{
+	case Game::en_gameTitle:
 
-	targetPos.y += 50.0f;
+		m_gameOutState = GameOutState::en_gameLoad;
 
-	Vector3 diff = targetPos - m_spotLightTestPos;
+		break;
+	case Game::en_gameLoad:
 
-	diff.Normalize();
+		OutGameLoadProcess();
 
-	m_spriteTest1.Update();
+		m_gameOutState = GameOutState::en_gameOutEnd;
 
-	wchar_t wcsbuf[256];
+		break;
+	case Game::en_gameOutEnd:
+		break;
+	default:
+		break;
+	}
 
-	swprintf_s(wcsbuf, 256, L"test");
+}
 
-	m_testFont.SetText(wcsbuf);
+void Game::OutGameLoadProcess()
+{
+
+
+
 }

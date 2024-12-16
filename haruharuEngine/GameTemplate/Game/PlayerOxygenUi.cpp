@@ -3,7 +3,7 @@
 #include "Game.h"
 
 //これを有効にするとデバッグモードになる
-#define DEBUG_MODE
+//#define DEBUG_MODE
 
 //定数等
 namespace {
