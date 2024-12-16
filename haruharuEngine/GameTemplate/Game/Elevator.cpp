@@ -19,6 +19,8 @@ bool Elevator::Start()
 
 	m_mainModel.Update();
 
+	m_game = FindGO<Game>("game");
+
 	return true;
 }
 
@@ -26,7 +28,10 @@ void Elevator::Update()
 {
 	if (IsObjectBootConditions() == true)
 	{
-
+		if (g_pad[0]->IsTrigger(enButtonB))
+		{
+			m_game->PlayerGameClear();
+		}
 	}
 
 	m_mainModel.Update();

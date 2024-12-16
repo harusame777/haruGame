@@ -29,5 +29,9 @@ private:
 	/// </summary>
 	/// <param name="rc"></param>
 	void Render(RenderContext& rc);
+	/// <summary>
+	/// ゲームのインスタンス
+	/// </summary>
+	Game* m_game = nullptr;
 };
 

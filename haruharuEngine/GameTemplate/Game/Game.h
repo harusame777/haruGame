@@ -28,7 +28,7 @@ class Game : public IGameObject
 {
 public:
 
-	void PlauerGameClear()
+	void PlayerGameClear()
 	{
 		m_gameInState = GameInState::en_gameClear;
 	}
