@@ -5,7 +5,8 @@
 
 cbuffer alphaCB : register(b1)
 {
-    float range;
+    float index;
+    int state;
 }
 
 cbuffer cb : register(b0){
@@ -38,13 +39,19 @@ float4 PSMain( PSInput In ) : SV_Target0
 {
     float4 color = colorTexture.Sample(Sampler, In.uv) * mulColor;
 	
-    float distance = length(float2(0.5f, 0.5f) - In.uv);
+	if(state == 0)
+    {
+        color.a = index;
+    }
+	if(state == 1)
+    {
+        float distance = length(float2(0.5f, 0.5f) - In.uv);
 	
-    float affect = 1.0f - 1.0f / range * distance;
+        float affect = 1.0f - 1.0f / index * distance;
 		
-    affect *= -1.0f;
+        affect *= -1.0f;
 		
-    color.a *= affect;
-	
+        color.a *= affect;
+    }
     return color;
 }

@@ -138,7 +138,7 @@ bool Game::Start()
 
 	m_mainCamera = NewGO<GameCamera>(0, "camera");
 
-	//m_load = NewGO<Load>(0, "Load");
+	m_load = NewGO<Load>(0, "Load");
 
 	return true;
 }
@@ -213,14 +213,24 @@ void Game::DoOutGame()
 	{
 	case Game::en_gameTitle:
 
-		m_gameOutState = GameOutState::en_gameLoad;
+		m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadCircular });
+
+		if (m_load->IsLoadBlackout())
+		{
+			m_gameOutState = GameOutState::en_gameLoad;
+		}
 
 		break;
 	case Game::en_gameLoad:
 
 		OutGameLoadProcess();
 
-		m_gameOutState = GameOutState::en_gameOutEnd;
+		m_load->LoadExecutionFadeIn();
+
+		if (m_load->IsLoadCompletion())
+		{
+			m_gameOutState = GameOutState::en_gameOutEnd;
+		}
 
 		break;
 	case Game::en_gameOutEnd:
