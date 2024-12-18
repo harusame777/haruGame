@@ -213,7 +213,7 @@ void Game::DoOutGame()
 	{
 	case Game::en_gameTitle:
 
-		m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadCircular });
+		m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadCircular });
 
 		if (m_load->IsLoadBlackout())
 		{
@@ -223,13 +223,16 @@ void Game::DoOutGame()
 		break;
 	case Game::en_gameLoad:
 
-		OutGameLoadProcess();
-
-		m_load->LoadExecutionFadeIn();
+		if (g_pad[0]->IsTrigger(enButtonB))
+		{
+			m_load->LoadExecutionFadeIn();
+		}
 
 		if (m_load->IsLoadCompletion())
 		{
 			m_gameOutState = GameOutState::en_gameOutEnd;
+
+			OutGameLoadProcess();
 		}
 
 		break;

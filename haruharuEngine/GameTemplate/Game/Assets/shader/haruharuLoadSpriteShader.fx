@@ -53,5 +53,9 @@ float4 PSMain( PSInput In ) : SV_Target0
 		
         color.a *= affect;
     }
+    if(state == 2)
+    {
+        color.a = index;
+    }
     return color;
 }

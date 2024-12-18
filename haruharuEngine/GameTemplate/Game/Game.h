@@ -146,6 +146,8 @@ private:
 	/// </summary>
 	float m_timerIndex = 0.0f;
 
+	FontRender test;
+
 	Load* m_load = nullptr;
 };
 

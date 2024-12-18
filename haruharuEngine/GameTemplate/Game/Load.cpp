@@ -10,14 +10,20 @@ namespace
 	static const float LOADBACKSIDE_SPRITE_W_SIZE = 1600.0f;
 	static const float LOADBACKSIDE_SPRITE_H_SIZE = 900.0f;
 
+	static const float LOADOPTION_SPRITE_W_SIZE = 100.0f;
+	static const float LOADOPTION_SPRITE_H_SIZE = 100.0f;
+
+	static const Vector3 LOADOPTION_SPRITE_POSITION = { 690.0f,-350.0f,0.0f };
+
 	static const float ORDINARYLOAD_EASING_MAX = 1.0f;
 	static const float ORDINARYLOAD_EASING_MIN = 0.0f;
 
-	static const float CIRCULRLOAD_EASING_MAX = 5.0f;
+	static const float CIRCULRLOAD_EASING_MAX = 1.0f;
 	static const float CIRCULRLOAD_EASING_MIN = 0.0f;
 
 	static const float ORDINARYLOAD_EASING_ATTENUATIONRATE = 1.0f;
-	static const float CIRCULRLOAD_EASING_ATTENUATIONRATE = 15.0f;
+	static const float CIRCULRLOAD_EASING_ATTENUATIONRATE_A = 1.0f;
+	static const float CIRCULRLOAD_EASING_ATTENUATIONRATE_B = 0.2f;
 
 }
 
@@ -28,12 +34,23 @@ void Load::LoadExecutionFadeOut(const LoadOrderData& loadType)
 		return;
 	}
 
+	m_loadCompletionFlag = false;
+
 	//フェードアウトを設定
 	m_loadTypeState[LoadOrder::en_FadeOut] = loadType.m_fadeOutLoad;
 	//フェードインを設定
 	m_loadTypeState[LoadOrder::en_FadeIn] = loadType.m_fadeInLoad;
-	//ステートをフェードアウトに
-	m_loadProccesState = LoadProccesState::en_loadExecutionFadeOut;
+	//もし
+	if (m_loadTypeState[LoadOrder::en_FadeOut] != LoadTypeState::en_loadImmediately)
+	{
+		m_loadProccesState = LoadProccesState::en_loadExecutionFadeOut;
+	}
+	else
+	{
+		m_loadProccesState = LoadProccesState::en_loadBlackoutStandby;
+	}
+
+	m_loadRatio = 0.0f;
 
 	switch (m_loadTypeState[LoadOrder::en_FadeOut])
 	{
@@ -54,7 +71,14 @@ void Load::LoadExecutionFadeOut(const LoadOrderData& loadType)
 		m_loadEasingMin = CIRCULRLOAD_EASING_MIN;
 
 		m_loadSpeedAttenuationRate[LoadOrder::en_FadeOut]
-			= CIRCULRLOAD_EASING_ATTENUATIONRATE;
+			= CIRCULRLOAD_EASING_ATTENUATIONRATE_A;
+
+		break;
+	case Load::en_loadImmediately:
+
+		m_loadDatas.SetLoadIndex(1.0f);
+
+		return;
 
 		break;
 	default:
@@ -62,8 +86,6 @@ void Load::LoadExecutionFadeOut(const LoadOrderData& loadType)
 	}
 
 	m_loadDatas.SetLoadIndex(0.0f);
-
-	m_loadRatio = 0.0f;
 }
 
 void Load::LoadExecutionFadeOut(const LoadOrderData& loadType, const float& time)
@@ -85,7 +107,16 @@ void Load::LoadExecutionFadeIn()
 		return;
 	}
 
-	m_loadProccesState = LoadProccesState::en_loadExecutionFadeIn;
+	if (m_loadTypeState[LoadOrder::en_FadeIn] != LoadTypeState::en_loadImmediately)
+	{
+		m_loadProccesState = LoadProccesState::en_loadExecutionFadeIn;
+	}
+	else
+	{
+		m_loadProccesState = LoadProccesState::en_loadCompletion;
+	}
+
+	m_loadRatio = 0.0f;
 
 	switch (m_loadTypeState[LoadOrder::en_FadeIn])
 	{
@@ -95,7 +126,7 @@ void Load::LoadExecutionFadeIn()
 
 		m_loadEasingMax = ORDINARYLOAD_EASING_MAX;
 
-		m_loadDatas.SetLoadIndex(1.0f);
+		m_loadDatas.SetLoadIndex(ORDINARYLOAD_EASING_MAX);
 
 		m_loadSpeedAttenuationRate[LoadOrder::en_FadeIn]
 			= ORDINARYLOAD_EASING_ATTENUATIONRATE;
@@ -107,17 +138,20 @@ void Load::LoadExecutionFadeIn()
 
 		m_loadEasingMax = CIRCULRLOAD_EASING_MIN;
 
-		m_loadDatas.SetLoadIndex(6.0f);
+		m_loadDatas.SetLoadIndex(CIRCULRLOAD_EASING_MAX);
 
 		m_loadSpeedAttenuationRate[LoadOrder::en_FadeIn]
-			= CIRCULRLOAD_EASING_ATTENUATIONRATE;
+			= CIRCULRLOAD_EASING_ATTENUATIONRATE_B;
+
+		break;
+	case Load::en_loadImmediately:
+
+		m_loadDatas.SetLoadIndex(0.0f);
 
 		break;
 	default:
 		break;
 	}
-
-	m_loadRatio = 0.0f;
 }
 
 //スタート関数
@@ -140,17 +174,34 @@ bool Load::Start()
 	//設定したデータをスプライトに設定
 	m_loadBackSideSprite.Init(loadBackSideInitData);
 
+	m_loadOptionSpriteLarge.Init("Assets/modelData/load/load_object_2.DDS",
+		LOADOPTION_SPRITE_W_SIZE,
+		LOADOPTION_SPRITE_H_SIZE);
+
+	m_loadOptionSpriteLarge.SetPivot({ 0.5f,0.5f });
+
+	m_loadOptionSpriteLarge.SetPosition(LOADOPTION_SPRITE_POSITION);
+
+	m_loadOptionSpriteLarge.Update();
+
+	m_loadOptionSpriteSmall.Init("Assets/modelData/load/load_object_2.DDS",
+		LOADOPTION_SPRITE_W_SIZE,
+		LOADOPTION_SPRITE_H_SIZE);
+
+	m_loadOptionSpriteSmall.SetPivot({ 0.5f,0.5f });
+
+	m_loadOptionSpriteSmall.SetPosition(LOADOPTION_SPRITE_POSITION);
+
+	m_loadOptionSpriteSmall.SetScale({ 0.5f,0.5f,0.0f });
+
+	m_loadOptionSpriteSmall.Update();
+
 	return true;
 }
 
 //アップデート関数
 void Load::Update()
 {
-	if (m_loadProccesState == LoadProccesState::en_loadCompletion)
-	{
-		m_loadProccesState = LoadProccesState::en_loadStandby;
-	}
-
 #ifdef DEBUG_MODE
 
 	if (g_pad[0]->IsTrigger(enButtonB))
@@ -166,7 +217,16 @@ void Load::Update()
 
 	LoadStateUpdate();
 
+	LoadOptionSpriteUpdate();
+
 	m_loadBackSideSprite.Update();
+
+	if (m_loadProccesState == LoadProccesState::en_loadBlackoutStandby)
+	{
+		m_loadOptionSpriteLarge.Update();
+
+		m_loadOptionSpriteSmall.Update();
+	}
 }
 
 void Load::LoadStateUpdate()
@@ -175,6 +235,7 @@ void Load::LoadStateUpdate()
 	switch (m_loadProccesState)
 	{
 	case Load::en_loadStandby:
+
 		break;
 	case Load::en_loadExecutionFadeIn:
 
@@ -195,6 +256,14 @@ void Load::LoadStateUpdate()
 	case Load::en_loadBlackoutStandby:
 
 		//待機
+		m_loadDatas.SetLoadTypeState(m_loadTypeState[LoadOrder::en_FadeOut]);
+
+		break;
+	case Load::en_loadCompletion:
+
+		m_loadCompletionFlag = true;
+
+		m_loadProccesState = LoadProccesState::en_loadStandby;
 
 		break;
 	default:
@@ -205,7 +274,7 @@ void Load::LoadStateUpdate()
 
 const float& Load::LoadCalc(const float& index)
 {
-	m_loadRatio += g_gameTime->GetFrameDeltaTime() / index;
+	m_loadRatio += g_gameTime->GetFrameDeltaTime() * index;
 
 	if (m_loadRatio > 1.0f)
 	{
@@ -224,8 +293,31 @@ const float& Load::LoadCalc(const float& index)
 	return Leap(m_loadEasingMax, m_loadEasingMin, m_loadRatio);
 }
 
+void Load::LoadOptionSpriteUpdate()
+{
+	if (m_loadProccesState != LoadProccesState::en_loadBlackoutStandby)
+	{
+		return;
+	}
+
+	m_loadOptionLargeRotation.AddRotationDegZ(-10.0f);
+
+	m_loadOptionSpriteLarge.SetRotation(m_loadOptionLargeRotation);
+
+	m_loadOptionSmallRotation.AddRotationDegZ(10.0f);
+
+	m_loadOptionSpriteSmall.SetRotation(m_loadOptionSmallRotation);
+}
+
 //レンダー関数
 void Load::Render(RenderContext& rc)
 {
 	m_loadBackSideSprite.Draw(rc);
+
+	if (m_loadProccesState == LoadProccesState::en_loadBlackoutStandby)
+	{
+		m_loadOptionSpriteLarge.Draw(rc);
+
+		m_loadOptionSpriteSmall.Draw(rc);
+	}
 }

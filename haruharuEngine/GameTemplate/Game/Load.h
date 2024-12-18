@@ -19,7 +19,9 @@ public:
 		//通常ロード
 		en_loadOrdinary,
 		//円形ロード
-		en_loadCircular
+		en_loadCircular,
+		//即時明暗ロード
+		en_loadImmediately
 	};
 	/// <summary>
 	/// フェードアウトしきったか？
@@ -39,11 +41,7 @@ public:
 	/// <returns></returns>
 	const bool& IsLoadCompletion()
 	{
-		if (m_loadProccesState == LoadProccesState::en_loadCompletion)
-		{
-			return true;
-		}
-		return false;
+		return m_loadCompletionFlag;
 	}
 private:
 	/// <summary>
@@ -161,6 +159,9 @@ private:
 	/// </summary>
 	/// <returns></returns>
 	const float& LoadCalc(const float& index);
+
+	void LoadOptionSpriteUpdate();
+
 	/// <summary>
 	/// レンダー関数
 	/// </summary>
@@ -181,9 +182,29 @@ private:
 	float m_loadEasingMin = 0.0f;
 	float m_loadSpeedAttenuationRate[2];
 	/// <summary>
+	/// ロードが完了したかどうか
+	/// </summary>
+	bool m_loadCompletionFlag = false;
+	/// <summary>
+	/// オプションスプライトの回転大
+	/// </summary>
+	Quaternion m_loadOptionLargeRotation;
+	/// <summary>
+	/// オプションスプライトの回転小
+	/// </summary>
+	Quaternion m_loadOptionSmallRotation;
+	/// <summary>
 	/// ロード後ろ側スプライト
 	/// </summary>
 	SpriteRender m_loadBackSideSprite;
+	/// <summary>
+	/// ロードのオプションスプライト大
+	/// </summary>
+	SpriteRender m_loadOptionSpriteLarge;
+	/// <summary>
+	/// ロードのオプションスプライト大
+	/// </summary>
+	SpriteRender m_loadOptionSpriteSmall;
 	/// <summary>
 	/// flaot用線形補間
 	/// </summary>
