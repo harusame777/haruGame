@@ -7,69 +7,76 @@
 //定数等
 namespace 
 {
+	//ロード背景サイズ
 	static const float LOADBACKSIDE_SPRITE_W_SIZE = 1600.0f;
 	static const float LOADBACKSIDE_SPRITE_H_SIZE = 900.0f;
-
+	//ロードぐるぐるするやつのサイズ
 	static const float LOADOPTION_SPRITE_W_SIZE = 100.0f;
 	static const float LOADOPTION_SPRITE_H_SIZE = 100.0f;
-
+	//ロードぐるぐるするやつの位置
 	static const Vector3 LOADOPTION_SPRITE_POSITION = { 690.0f,-350.0f,0.0f };
-
+	//通常ロードフェードイージング数値
 	static const float ORDINARYLOAD_EASING_MAX = 1.0f;
 	static const float ORDINARYLOAD_EASING_MIN = 0.0f;
-
+	//円形ロードフェードイージング数値
 	static const float CIRCULRLOAD_EASING_MAX = 1.0f;
 	static const float CIRCULRLOAD_EASING_MIN = 0.0f;
-
+	//ロードフェードスピード
 	static const float ORDINARYLOAD_EASING_ATTENUATIONRATE = 1.0f;
 	static const float CIRCULRLOAD_EASING_ATTENUATIONRATE_A = 1.0f;
 	static const float CIRCULRLOAD_EASING_ATTENUATIONRATE_B = 0.2f;
-
 }
 
 void Load::LoadExecutionFadeOut(const LoadOrderData& loadType)
 {
+	//ロードが処理中であれば　
 	if (m_loadProccesState != LoadProccesState::en_loadStandby)
 	{
+		//処理しない
 		return;
 	}
-
+	//ロードフラグを終了していないに
 	m_loadCompletionFlag = false;
 
 	//フェードアウトを設定
 	m_loadTypeState[LoadOrder::en_FadeOut] = loadType.m_fadeOutLoad;
 	//フェードインを設定
 	m_loadTypeState[LoadOrder::en_FadeIn] = loadType.m_fadeInLoad;
-	//もし
+	//もしロード種類が即時フェードじゃなかったら
 	if (m_loadTypeState[LoadOrder::en_FadeOut] != LoadTypeState::en_loadImmediately)
 	{
+		//処理終了後のプロセスステートをフェード実行中に
 		m_loadProccesState = LoadProccesState::en_loadExecutionFadeOut;
 	}
+	//もしロード種類が即時フェードだったら
 	else
 	{
+		//処理終了後のプロセスステートを暗転待機に
 		m_loadProccesState = LoadProccesState::en_loadBlackoutStandby;
 	}
-
+	//イージング割合を初期化
 	m_loadRatio = 0.0f;
-
+	//ロード種類で分岐
 	switch (m_loadTypeState[LoadOrder::en_FadeOut])
 	{
+		//通常ロード
 	case Load::en_loadOrdinary:
-
+		//通常ロードのイージング数値を設定
 		m_loadEasingMax = ORDINARYLOAD_EASING_MIN;
 
 		m_loadEasingMin = ORDINARYLOAD_EASING_MAX;
-
+		//通常ロードのフェードスピードを設定
 		m_loadSpeedAttenuationRate[LoadOrder::en_FadeOut]
 			= ORDINARYLOAD_EASING_ATTENUATIONRATE;
 
 		break;
+		//円形ロード
 	case Load::en_loadCircular:
-
+		//円形ロードのイージング数値を設定
 		m_loadEasingMax = CIRCULRLOAD_EASING_MAX;
 
 		m_loadEasingMin = CIRCULRLOAD_EASING_MIN;
-
+		//円形ロードのフェードスピードを設定
 		m_loadSpeedAttenuationRate[LoadOrder::en_FadeOut]
 			= CIRCULRLOAD_EASING_ATTENUATIONRATE_A;
 

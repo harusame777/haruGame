@@ -24,7 +24,7 @@
 
 bool Game::Start()
 {
-	m_load = NewGO<Load>(0, "load");
+	m_load = NewGO<Load>(1, "load");
 
 	Title* title = NewGO<Title>(0, "title");
 
