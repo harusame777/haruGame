@@ -265,6 +265,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="system\system.cpp" />
+    <ClCompile Include="Title.cpp" />
     <ClCompile Include="WarriorAIMetapPatrol.cpp" />
     <ClCompile Include="WarriorAIMetaRetreat.cpp" />
     <ClCompile Include="WarriorAIMetaTracking.cpp" />
@@ -309,6 +310,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
+    <ClInclude Include="Title.h" />
     <ClInclude Include="WarriorAIMetapPatrol.h" />
     <ClInclude Include="WarriorAIMetaRetreat.h" />
     <ClInclude Include="WarriorAIMetaTracking.h" />

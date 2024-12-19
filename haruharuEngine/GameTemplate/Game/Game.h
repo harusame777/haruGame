@@ -16,6 +16,7 @@ class PlayerScoreUi;
 class PlayerStaminaUi;
 class PlayerOxygenUi;
 class Load;
+class Title;
 
 //定数等
 namespace {
@@ -145,9 +146,9 @@ private:
 	/// タイマー
 	/// </summary>
 	float m_timerIndex = 0.0f;
-
-	FontRender test;
-
+	/// <summary>
+	/// ロード画面
+	/// </summary>
 	Load* m_load = nullptr;
 };
 

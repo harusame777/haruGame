@@ -39,7 +39,7 @@ float4 PSMain( PSInput In ) : SV_Target0
 {
     float4 color = colorTexture.Sample(Sampler, In.uv) * mulColor;
 	
-	if(state == 0)
+	if(state == 0 || state == 2)
     {
         color.a = index;
     }
@@ -52,10 +52,6 @@ float4 PSMain( PSInput In ) : SV_Target0
         affect *= -1.0f;
 		
         color.a *= affect;
-    }
-    if(state == 2)
-    {
-        color.a = index;
     }
     return color;
 }
