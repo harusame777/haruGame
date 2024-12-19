@@ -45,6 +45,10 @@ private:
 	/// </summary>
 	FontRender m_subFont;
 	/// <summary>
+	/// タイトル
+	/// </summary>
+	FontRender m_title;
+	/// <summary>
 	/// ロード画面のインスタンス
 	/// </summary>
 	Load* m_load;

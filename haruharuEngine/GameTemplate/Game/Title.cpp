@@ -8,6 +8,7 @@ namespace {
 
 	static const Vector3 MAIN_FONT_POSITION = { -100.0f,-100.0f,0.0f };
 	static const Vector3 SUB_FONT_POSITION = { -50.0f,-150.0f,0.0f };
+	static const Vector3 TITLE_POSITION = { -400.0f,200.0f,0.0f };
 
 	static const Vector4 FONT_COLOR = { 0.5f,0.5f,1.0f,1.0f };
 
@@ -72,6 +73,18 @@ void Title::FontUpdate()
 	m_subFont.SetScale(0.5f);
 
 	m_subFont.SetText(wcsbuf);
+	//ƒ^ƒCƒgƒ‹
+	swprintf_s(wcsbuf, 256, L"SALVAGE");
+
+	m_title.SetColor(FONT_COLOR);
+
+	m_title.SetPivot({ 0.5f,0.5f });
+
+	m_title.SetPosition(TITLE_POSITION);
+
+	m_title.SetScale(3.0f);
+
+	m_title.SetText(wcsbuf);
 }
 
 void Title::Render(RenderContext& rc)
@@ -81,4 +94,6 @@ void Title::Render(RenderContext& rc)
 	m_mainFont.Draw(rc);
 
 	m_subFont.Draw(rc);
+
+	m_title.Draw(rc);
 }
