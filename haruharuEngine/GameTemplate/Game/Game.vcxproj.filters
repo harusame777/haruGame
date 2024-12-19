@@ -108,6 +108,9 @@
     <ClCompile Include="Title.cpp">
       <Filter>OutGame</Filter>
     </ClCompile>
+    <ClCompile Include="Result.cpp">
+      <Filter>OutGame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -230,6 +233,9 @@
       <Filter>obj</Filter>
     </ClInclude>
     <ClInclude Include="Title.h">
+      <Filter>OutGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Result.h">
       <Filter>OutGame</Filter>
     </ClInclude>
   </ItemGroup>
