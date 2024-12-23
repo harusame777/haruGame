@@ -20,6 +20,7 @@
 #include "PlayerOxygenUi.h"
 #include "Load.h"
 #include "Title.h"
+#include "Result.h"
 #include "Window.h"
 
 
@@ -58,8 +59,24 @@ void Game::DoInGame()
 
 		break;
 	case Game::en_gameClear:
+		m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadOrdinary });
+
+		if (m_load->IsLoadBlackout())
+		{
+			m_load->LoadExecutionFadeIn();
+		}
+		if (m_load->IsLoadCompletion())
+		{
+			Result* result = NewGO<Result>(0, "result");
+
+			result->SetFinalScore(m_scoreNum);
+
+			m_gameInState = Game::en_gameEndProcces;
+		}
 		break;
 	case Game::en_gameOver:
+		break;
+	case Game::en_gameEndProcces:
 		break;
 	default:
 		break;

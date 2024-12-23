@@ -30,10 +30,10 @@ bool Title::Start()
 //アップデート関数
 void Title::Update()
 {
-	//if (g_pad[0]->IsTrigger(enButtonB))
-	//{
-	//	m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadCircular });
-	//}
+	if (g_pad[0]->IsTrigger(enButtonB))
+	{
+		m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadCircular });
+	}
 
 	if (m_load->IsLoadBlackout() == true)
 	{
