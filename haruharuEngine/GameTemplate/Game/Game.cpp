@@ -20,6 +20,7 @@
 #include "PlayerOxygenUi.h"
 #include "Load.h"
 #include "Title.h"
+#include "Window.h"
 
 
 bool Game::Start()
@@ -27,6 +28,8 @@ bool Game::Start()
 	m_load = NewGO<Load>(1, "load");
 
 	Title* title = NewGO<Title>(0, "title");
+
+	Window* test = NewGO<Window>(0, "window");
 
 	return true;
 }
