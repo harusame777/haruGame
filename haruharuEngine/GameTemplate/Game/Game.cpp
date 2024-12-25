@@ -26,11 +26,7 @@
 
 bool Game::Start()
 {
-	m_load = NewGO<Load>(1, "load");
-
-	Title* title = NewGO<Title>(0, "title");
-
-	Window* test = NewGO<Window>(0, "window");
+	InitDirctionaLight();
 
 	return true;
 }
@@ -63,11 +59,11 @@ void Game::DoInGame()
 
 		if (m_load->IsLoadBlackout())
 		{
+			OutGameObjectDeleteProcces();
+
 			Result* result = NewGO<Result>(0, "result");
 
 			result->SetFinalScore(m_scoreNum);
-
-			m_gameInState = Game::en_gameEndProcces;
 
 			m_load->LoadExecutionFadeIn();
 
@@ -76,11 +72,10 @@ void Game::DoInGame()
 		break;
 	case Game::en_gameOver:
 		break;
-	case Game::en_gameEndProcces:
-		break;
 	case Game::en_gameResult:
-		if (m_load->IsLoadCompletion())
+		if (m_load->IsLoadBlackout())
 		{
+			m_gameOutState = GameOutState::en_gameTitle;
 		}
 		break;
 	default:
@@ -110,6 +105,15 @@ void Game::DoOutGame()
 	{
 	case Game::en_gameTitle:
 
+		if (m_title == nullptr)
+		{
+			m_load = NewGO<Load>(1, "load");
+
+			m_title = NewGO<Title>(0, "title");
+
+			Window* test = NewGO<Window>(0, "window");
+		}
+
 		if (m_load->IsLoadBlackout())
 		{
 			m_gameOutState = GameOutState::en_gameLoad;
@@ -135,8 +139,6 @@ void Game::DoOutGame()
 
 void Game::OutGameLoadProcess()
 {
-	InitDirctionaLight();
-
 	//エネミーウォリアーのメタAI
 	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");
 
@@ -213,25 +215,25 @@ void Game::OutGameLoadProcess()
 				enemy_warrior->SetScale(objData.m_scalse);
 				return true;
 			}
-			else if (objData.ForwardMatchName(L"locker") == true)
-			{
-				Locker* locker = NewGO<Locker>(0, "object");
-				locker->SetPosition(objData.m_position);
-				return true;
-			}
+			//else if (objData.ForwardMatchName(L"locker") == true)
+			//{
+			//	Locker* locker = NewGO<Locker>(0, "object");
+			//	locker->SetPosition(objData.m_position);
+			//	return true;
+			//}
 			else if (objData.ForwardMatchName(L"elevator") == true)
 			{
 				Elevator* elevator = NewGO<Elevator>(0, "object");
 				elevator->SetPosition(objData.m_position);
 				return true;
 			}
-			else if (objData.ForwardMatchName(L"desk") == true)
-			{
-				Accessories* desk = NewGO<Accessories>(0, "object");
-				desk->SetPosition(objData.m_position);
-				desk->SetRotation(objData.m_rotation);
-				return true;
-			}
+			//else if (objData.ForwardMatchName(L"desk") == true)
+			//{
+			//	Accessories* desk = NewGO<Accessories>(0, "object");
+			//	desk->SetPosition(objData.m_position);
+			//	desk->SetRotation(objData.m_rotation);
+			//	return true;
+			//}
 			return true;
 		});
 
@@ -263,4 +265,73 @@ void Game::InitObjectCrystal()
 
 	////クリスタルのメタAI
 	m_managerCrystal = NewGO<ManagerCrystal>(0, "CrystalMetaAI");
+}
+
+//QueryGOs<IEnemy>("summonenemy", [&](IEnemy* ienemy) {
+//	DeleteGO(ienemy);
+//	return true;
+//	});
+
+void Game::OutGameObjectDeleteProcces()
+{
+	//壁消去
+	QueryGOs<BackGroundWalls>("background", [&](BackGroundWalls* backGround) {
+			DeleteGO(backGround);
+			return true;
+		});
+	//床消去
+	QueryGOs<BackGroundFloor>("background", [&](BackGroundFloor* backGround) {
+		DeleteGO(backGround);
+		return true;
+		});
+	//天井
+	QueryGOs<BackGroundCeiling>("background", [&](BackGroundCeiling* backGround) {
+		DeleteGO(backGround);
+		return true;
+		});
+
+	QueryGOs<Elevator>("elevator", [&](Elevator* object) {
+		DeleteGO(object);
+		return true;
+		});
+
+	DeleteGO(m_warriorMetaAI);
+
+	QueryGOs<PlayerScanCrystalUi>("ScanUI", [&](PlayerScanCrystalUi* UI) {
+		DeleteGO(UI);
+		return true;
+		});
+
+	QueryGOs<Enemy_Warrior>("youtai", [&](Enemy_Warrior* UI) {
+		DeleteGO(UI);
+		return true;
+		});
+
+	QueryGOs<PlayerScoreUi>("ScoreUI", [&](PlayerScoreUi* UI) {
+		DeleteGO(UI);
+		return true;
+		});
+
+	QueryGOs<PlayerStaminaUi>("StaminaUI", [&](PlayerStaminaUi* UI) {
+		DeleteGO(UI);
+		return true;
+		});
+
+	QueryGOs<PlayerOxygenUi>("OxygenUI", [&](PlayerOxygenUi* UI) {
+		DeleteGO(UI);
+		return true;
+		});
+
+	DeleteGO(m_GetCOMSprite);
+	
+	DeleteGO(m_managerCrystal);
+
+	QueryGOs<Crystal>("object", [&](Crystal* object) {
+		DeleteGO(object);
+		return true;
+		});
+
+	DeleteGO(m_player);
+
+	DeleteGO(m_mainCamera);
 }

@@ -85,6 +85,10 @@ void EnemySM_Warrior::EnemyAIStart()
 //アップデート関数
 void EnemySM_Warrior::EnemyAIUpdate()
 {
+	if (m_warriorDataHolder->m_warriorDatas.size() == 0)
+	{
+		return;
+	}
 
 	//時間更新
 	TimeUpdate();

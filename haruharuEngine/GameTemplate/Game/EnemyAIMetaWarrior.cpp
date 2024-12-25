@@ -82,6 +82,10 @@ bool EnemyAIMetaWarrior::Start()
 //ウォリアー全体の追跡ステートを変更する関数
 void EnemyAIMetaWarrior::MetaAIExecution(EnemySM_Warrior* enemyPtr, const MetaAIMode setMode)
 {
+	if (m_AIMetaList.size() <= 0)
+	{
+		return;
+	}
 
 	if (m_AIMetaList[setMode]->GetAIMetaProgram()->GetOneTimeUpdateFlag() == true &&
 		m_AIMetaList[setMode]->GetOneTimeOnlyUpdate() == true)
@@ -123,6 +127,10 @@ void EnemyAIMetaWarrior::ListInitAIMeta(EnemyAIMetaBase* programData, const bool
 
 void EnemyAIMetaWarrior::ProcessEnd(const MetaAIMode setMode, EnemySMBase* initEnemy)
 {
+	if (m_AIMetaList.size() <= 0)
+	{
+		return;
+	}
 
 	//すべての処理が終了していたら
 	if (m_AIMetaList[setMode]->GetAIMetaProgram()->ProcessEnd(initEnemy) == true)

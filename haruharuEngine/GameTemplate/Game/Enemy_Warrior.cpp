@@ -16,7 +16,9 @@ Enemy_Warrior::Enemy_Warrior()
 //デストラクタ
 Enemy_Warrior::~Enemy_Warrior()
 {
+	delete m_enemyWarriorSM;
 
+	DeleteGO(m_collisionObject);
 }
 
 //スタート関数

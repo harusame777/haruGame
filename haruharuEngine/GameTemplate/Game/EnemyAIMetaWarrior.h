@@ -19,7 +19,19 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~EnemyAIMetaWarrior() {};
+	~EnemyAIMetaWarrior() 
+	{
+		for (auto& metaAIs : m_AIMetaList)
+		{
+			metaAIs->DeleteAIMetaProgram();
+
+			delete metaAIs;
+		}
+
+		m_AIMetaList.clear();
+
+		m_patrolRuteDataHolder->DelteListData();
+	};
 	/// <summary>
 	///	メタAIのどのプログラムを起動するか
 	/// </summary>
@@ -109,6 +121,10 @@ private:
 		void SetAIMetaProgram(EnemyAIMetaBase* initData)
 		{
 			m_metaAIProgramData = initData;
+		}
+		void DeleteAIMetaProgram()
+		{
+			delete m_metaAIProgramData;
 		}
 		/// <summary>
 		/// メタAIのプログラムを取得

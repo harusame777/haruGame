@@ -58,8 +58,6 @@ private:
 
 		en_gameOver,
 
-		en_gameEndProcces,
-
 		en_gameResult
 	};
 	GameInState m_gameInState = GameInState::en_gameUpdate;
@@ -97,6 +95,10 @@ private:
 	/// </summary>
 	void OutGameLoadProcess();
 	/// <summary>
+	/// アウトゲームのオブジェクト削除処理
+	/// </summary>
+	void OutGameObjectDeleteProcces();
+	/// <summary>
 	/// レベルレンダー
 	/// </summary>
 	LevelRender m_levelRender;
@@ -112,6 +114,10 @@ private:
 	/// 太陽光
 	/// </summary>
 	DirectionalLight sunDirectionalLight;
+	/// <summary>
+	/// タイトル
+	/// </summary>
+	Title* m_title = nullptr;
 	/// <summary>
 	/// プレイヤー
 	/// </summary>

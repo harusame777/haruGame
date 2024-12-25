@@ -5,6 +5,7 @@
 
 class PatrolRuteDataHolder
 {
+private:
 public:
 	/// <summary>
 	/// メタAIの巡回ルートのデータ
@@ -54,6 +55,15 @@ public:
 	/// パトロールルートのリスト
 	/// </summary>
 	std::vector<PatrolRuteData*> m_patrolRuteList;
+public:
+	void DelteListData()
+	{
+		for (auto& listDatas : m_patrolRuteList)
+		{
+			delete listDatas;
+		}
+	}
+private:
 	/// <summary>
 	/// ルートデータの初期化
 	/// </summary>
