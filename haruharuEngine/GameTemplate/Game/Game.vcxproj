@@ -259,15 +259,18 @@
     <ClCompile Include="PlayerScanCrystalUi.cpp" />
     <ClCompile Include="PlayerScoreUi.cpp" />
     <ClCompile Include="PlayerStaminaUi.cpp" />
+    <ClCompile Include="Result.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Preview|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="system\system.cpp" />
+    <ClCompile Include="Title.cpp" />
     <ClCompile Include="WarriorAIMetapPatrol.cpp" />
     <ClCompile Include="WarriorAIMetaRetreat.cpp" />
     <ClCompile Include="WarriorAIMetaTracking.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Accessories.h" />
@@ -307,12 +310,15 @@
     <ClInclude Include="PlayerStaminaUi.h" />
     <ClInclude Include="PlayerUIBase.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Result.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
+    <ClInclude Include="Title.h" />
     <ClInclude Include="WarriorAIMetapPatrol.h" />
     <ClInclude Include="WarriorAIMetaRetreat.h" />
     <ClInclude Include="WarriorAIMetaTracking.h" />
     <ClInclude Include="WarriorDataHolder.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

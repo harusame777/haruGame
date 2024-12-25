@@ -16,6 +16,7 @@ class PlayerScoreUi;
 class PlayerStaminaUi;
 class PlayerOxygenUi;
 class Load;
+class Title;
 
 //定数等
 namespace {
@@ -57,7 +58,9 @@ private:
 
 		en_gameOver,
 
-		
+		en_gameEndProcces,
+
+		en_gameResult
 	};
 	GameInState m_gameInState = GameInState::en_gameUpdate;
 	/// <summary>
@@ -145,7 +148,9 @@ private:
 	/// タイマー
 	/// </summary>
 	float m_timerIndex = 0.0f;
-
+	/// <summary>
+	/// ロード画面
+	/// </summary>
 	Load* m_load = nullptr;
 };
 

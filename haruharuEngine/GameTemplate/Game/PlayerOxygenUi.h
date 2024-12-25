@@ -47,7 +47,7 @@ private:
 	/// <summary>
 	/// 酸素ゲージステート更新関数
 	/// </summary>
-	void OxygenGaugeStateUpdate();
+	const OxygenGaugeState& OxygenGaugeStateUpdate();
 	/// <summary>
 	/// 酸素ゲージ点滅処理関数
 	/// </summary>

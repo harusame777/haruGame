@@ -3,7 +3,7 @@
 #include "Game.h"
 
 //これを有効にするとデバッグモードになる
-//#define DEBUG_MODE
+#define DEBUG_MODE
 
 //定数等
 namespace {
@@ -80,7 +80,7 @@ void PlayerOxygenUi::Update()
 	//Ui内の残り時間を更新
 	m_mainOxygenIndex = *m_gameTimer;
 	//酸素ゲージのステートを更新
-	OxygenGaugeStateUpdate();
+	m_oxygenGaugeState = OxygenGaugeStateUpdate();
 	//酸素ゲージの点滅処理を実行
 	BlinkingOxygenGaugeCalc();
 	//ワイプ更新
@@ -99,24 +99,20 @@ void PlayerOxygenUi::Update()
 	m_oxygenUiGauge.Update();
 }
 
-void PlayerOxygenUi::OxygenGaugeStateUpdate()
+const PlayerOxygenUi::OxygenGaugeState& PlayerOxygenUi::OxygenGaugeStateUpdate()
 {
 	const float nowGameTimer = m_mainOxygenIndex;
 
-	if (m_mainOxygenIndex <= OXYGEN_MIN_LINE)
-	{
-		m_oxygenGaugeState = OxygenGaugeState::en_oxygenMin;
-	}
-	else if (m_mainOxygenIndex > OXYGEN_MIN_LINE &&
+	if (m_mainOxygenIndex <= OXYGEN_MIN_LINE) 
+		return OxygenGaugeState::en_oxygenMin;
+
+	if (m_mainOxygenIndex > OXYGEN_MIN_LINE &&
 		m_mainOxygenIndex <= OXYGEN_LOW_LINE)
-	{
-		m_oxygenGaugeState = OxygenGaugeState::en_oxygenLow;
-	}
-	else if (m_mainOxygenIndex > OXYGEN_LOW_LINE &&
+		return OxygenGaugeState::en_oxygenLow;
+
+	if (m_mainOxygenIndex > OXYGEN_LOW_LINE &&
 		m_mainOxygenIndex <= MAX_GAMETIME)
-	{
-		m_oxygenGaugeState = OxygenGaugeState::en_oxygenHigh;
-	}
+		return OxygenGaugeState::en_oxygenHigh;
 }
 
 void PlayerOxygenUi::BlinkingOxygenGaugeCalc()
