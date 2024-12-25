@@ -63,20 +63,25 @@ void Game::DoInGame()
 
 		if (m_load->IsLoadBlackout())
 		{
-			m_load->LoadExecutionFadeIn();
-		}
-		if (m_load->IsLoadCompletion())
-		{
 			Result* result = NewGO<Result>(0, "result");
 
 			result->SetFinalScore(m_scoreNum);
 
 			m_gameInState = Game::en_gameEndProcces;
+
+			m_load->LoadExecutionFadeIn();
+
+			m_gameInState = GameInState::en_gameResult;
 		}
 		break;
 	case Game::en_gameOver:
 		break;
 	case Game::en_gameEndProcces:
+		break;
+	case Game::en_gameResult:
+		if (m_load->IsLoadCompletion())
+		{
+		}
 		break;
 	default:
 		break;

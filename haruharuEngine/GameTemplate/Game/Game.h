@@ -58,7 +58,9 @@ private:
 
 		en_gameOver,
 
-		en_gameEndProcces
+		en_gameEndProcces,
+
+		en_gameResult
 	};
 	GameInState m_gameInState = GameInState::en_gameUpdate;
 	/// <summary>
