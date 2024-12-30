@@ -13,6 +13,14 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~Title(){}
+	/// <summary>
+	/// ゲームタイトルが終了したか
+	/// </summary>
+	/// <returns></returns>
+	const bool& IsEndGameTitle()
+	{
+		return m_isGameIn;
+	}
 private:
 	/// <summary>
 	/// スタート関数
@@ -52,5 +60,9 @@ private:
 	/// ロード画面のインスタンス
 	/// </summary>
 	Load* m_load;
+	/// <summary>
+	/// タイトル終了してゲームインに入る
+	/// </summary>
+	bool m_isGameIn = false;
 };
 

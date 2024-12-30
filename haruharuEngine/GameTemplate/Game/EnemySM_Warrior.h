@@ -18,7 +18,22 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~EnemySM_Warrior(){};
+	~EnemySM_Warrior()
+	{
+		for (auto& listPtr : m_enemyAIList)
+		{
+			delete listPtr;
+		}
+
+		m_enemyAIList.clear();
+
+		for (auto& listPtr : m_enemyConList)
+		{
+			delete listPtr;
+		}
+
+		m_enemyConList.clear();
+	};
 	/// <summary>
 	/// エネミーウォリアーのステート
 	/// </summary>

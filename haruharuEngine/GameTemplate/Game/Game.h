@@ -17,6 +17,7 @@ class PlayerStaminaUi;
 class PlayerOxygenUi;
 class Load;
 class Title;
+class Result;
 
 //定数等
 namespace {
@@ -119,6 +120,10 @@ private:
 	/// </summary>
 	Title* m_title = nullptr;
 	/// <summary>
+	/// リザルト
+	/// </summary>
+	Result* m_result = nullptr;
+	/// <summary>
 	/// プレイヤー
 	/// </summary>
 	Player* m_player = nullptr;
@@ -130,22 +135,22 @@ private:
 	/// クリスタルマネージャー
 	/// </summary>
 	ManagerCrystal* m_managerCrystal;
-	/// <summary>
-	/// プレイヤーのスキャンUI
-	/// </summary>
-	PlayerScanCrystalUi* m_scanUi = nullptr;
-	/// <summary>
-	/// プレイヤーのスコアUI
-	/// </summary>
-	PlayerScoreUi* m_scoreUi = nullptr;
-	/// <summary>
-	/// プレイヤーのスタミナUI
-	/// </summary>
-	PlayerStaminaUi* m_staminaUi = nullptr;
-	/// <summary>
-	/// プレイヤーの酸素UI
-	/// </summary>
-	PlayerOxygenUi* m_oxygenUi = nullptr;
+	///// <summary>
+	///// プレイヤーのスキャンUI
+	///// </summary>
+	//PlayerScanCrystalUi* m_scanUi = nullptr;
+	///// <summary>
+	///// プレイヤーのスコアUI
+	///// </summary>
+	//PlayerScoreUi* m_scoreUi = nullptr;
+	///// <summary>
+	///// プレイヤーのスタミナUI
+	///// </summary>
+	//PlayerStaminaUi* m_staminaUi = nullptr;
+	///// <summary>
+	///// プレイヤーの酸素UI
+	///// </summary>
+	//PlayerOxygenUi* m_oxygenUi = nullptr;
 	/// <summary>
 	/// スコア
 	/// </summary>
@@ -154,6 +159,10 @@ private:
 	/// タイマー
 	/// </summary>
 	float m_timerIndex = 0.0f;
+	/// <summary>
+	/// ロードが終了しているかどうか
+	/// </summary>
+	bool m_isGameMainObjectLoadEnd = false;
 	/// <summary>
 	/// ロード画面
 	/// </summary>

@@ -10,7 +10,7 @@ namespace {
 	static const Vector3 SUB_FONT_POSITION = { -50.0f,-150.0f,0.0f };
 	static const Vector3 TITLE_POSITION = { -400.0f,200.0f,0.0f };
 
-	static const Vector4 FONT_COLOR = { 0.5f,0.5f,1.0f,1.0f };
+	static const Vector4 FONT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
 
 }
 
@@ -32,13 +32,7 @@ void Title::Update()
 {
 	if (g_pad[0]->IsTrigger(enButtonB))
 	{
-		m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadCircular });
-	}
-
-	if (m_load->IsLoadBlackout() == true)
-	{
-		DeleteGO(this);
-		return;
+		m_isGameIn = true;
 	}
 
 	//フォントのアップデート
