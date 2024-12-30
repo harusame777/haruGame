@@ -28,6 +28,10 @@ bool Game::Start()
 {
 	InitDirctionaLight();
 
+	m_load = NewGO<Load>(1, "load");
+
+	m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadImmediately });
+
 	return true;
 }
 
@@ -61,9 +65,9 @@ void Game::DoInGame()
 		{
 			OutGameObjectDeleteProcces();
 
-			Result* result = NewGO<Result>(0, "result");
+			m_result = NewGO<Result>(0, "result");
 
-			result->SetFinalScore(m_scoreNum);
+			m_result->SetFinalScore(m_scoreNum);
 
 			m_load->LoadExecutionFadeIn();
 
@@ -71,12 +75,17 @@ void Game::DoInGame()
 		}
 		break;
 	case Game::en_gameOver:
+
 		break;
 	case Game::en_gameResult:
-		if (m_load->IsLoadBlackout())
+
+		if (m_result->IsResultEnd())
 		{
+			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary, Load::en_loadOrdinary });
+
 			m_gameOutState = GameOutState::en_gameTitle;
 		}
+
 		break;
 	default:
 		break;
@@ -105,31 +114,49 @@ void Game::DoOutGame()
 	{
 	case Game::en_gameTitle:
 
-		if (m_title == nullptr)
-		{
-			m_load = NewGO<Load>(1, "load");
-
-			m_title = NewGO<Title>(0, "title");
-
-			Window* test = NewGO<Window>(0, "window");
-		}
-
 		if (m_load->IsLoadBlackout())
 		{
+			m_load->LoadExecutionFadeIn();
+
+			DeleteGO(m_result);
+
+			m_result = nullptr;
+
+			m_title = NewGO<Title>(0, "title");
+		}
+
+		if (m_title != nullptr && 
+			m_title->IsEndGameTitle())
+		{
+			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadCircular });
+
 			m_gameOutState = GameOutState::en_gameLoad;
+
+			m_gameInState = GameInState::en_gameUpdate;
 		}
 
 		break;
 	case Game::en_gameLoad:
+		
+		if (m_isGameMainObjectLoadEnd == false && m_load->IsLoadBlackout())
+		{
+			OutGameLoadProcess();
+		}
 
-		OutGameLoadProcess();
+		if (m_load->IsLoadBlackout())
+		{
+			DeleteGO(m_title);
 
-		m_gameOutState = GameOutState::en_gameOutEnd;
+			m_title = nullptr;
 
-		m_load->LoadExecutionFadeIn();
+			m_gameOutState = GameOutState::en_gameOutEnd;
+
+			m_load->LoadExecutionFadeIn();
+		}
 
 		break;
 	case Game::en_gameOutEnd:
+
 		break;
 	default:
 		break;
@@ -144,8 +171,10 @@ void Game::OutGameLoadProcess()
 
 	InitObjectCrystal();
 
+	LevelRender levelRender;
+
 	//レベルレンダーのテスト
-	m_levelRender.Init("Assets/mapLevel/testLevel6.tkl", [&](LevelObjectData_Render& objData)
+	levelRender.Init("Assets/mapLevel/testLevel6.tkl", [&](LevelObjectData_Render& objData)
 		{
 			if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
 			{
@@ -239,16 +268,18 @@ void Game::OutGameLoadProcess()
 
 	m_player = NewGO<Player>(0, "player");
 	//UIの初期化
-	m_scanUi = NewGO<PlayerScanCrystalUi>(0, "ScanUI");
-	m_scoreUi = NewGO<PlayerScoreUi>(0, "ScoreUI");
+	PlayerScanCrystalUi* m_scanUi = NewGO<PlayerScanCrystalUi>(0, "ScanUI");
+	PlayerScoreUi* m_scoreUi = NewGO<PlayerScoreUi>(0, "ScoreUI");
 	m_scoreUi->InitMainScorePtr(m_scoreNum);
-	m_staminaUi = NewGO<PlayerStaminaUi>(0, "StaminaUI");
-	m_oxygenUi = NewGO<PlayerOxygenUi>(0, "OxygenUI");
+	PlayerStaminaUi* m_staminaUi = NewGO<PlayerStaminaUi>(0, "StaminaUI");
+	PlayerOxygenUi* m_oxygenUi = NewGO<PlayerOxygenUi>(0, "OxygenUI");
 	m_oxygenUi->InitTimerPtr(&m_timerIndex);
 
 	m_timerIndex = MAX_GAMETIME;
 
 	m_mainCamera = NewGO<GameCamera>(0, "camera");
+
+	m_isGameMainObjectLoadEnd = true;
 }
 
 void Game::InitDirctionaLight()
@@ -297,12 +328,12 @@ void Game::OutGameObjectDeleteProcces()
 
 	DeleteGO(m_warriorMetaAI);
 
-	QueryGOs<PlayerScanCrystalUi>("ScanUI", [&](PlayerScanCrystalUi* UI) {
+	QueryGOs<Enemy_Warrior>("enemy", [&](Enemy_Warrior* UI) {
 		DeleteGO(UI);
 		return true;
 		});
 
-	QueryGOs<Enemy_Warrior>("youtai", [&](Enemy_Warrior* UI) {
+	QueryGOs<PlayerScanCrystalUi>("ScanUI", [&](PlayerScanCrystalUi* UI) {
 		DeleteGO(UI);
 		return true;
 		});
@@ -334,4 +365,6 @@ void Game::OutGameObjectDeleteProcces()
 	DeleteGO(m_player);
 
 	DeleteGO(m_mainCamera);
+
+	m_isGameMainObjectLoadEnd = false;
 }

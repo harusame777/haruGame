@@ -19,8 +19,6 @@ private:
 		en_infoIndexAdd,
 
 		en_infoResultEnd,
-
-		en_ResultDelete
 	};
 	ResultState m_resultState = ResultState::en_standby;
 public:
@@ -39,6 +37,14 @@ public:
 	void SetFinalScore(const float& score)
 	{
 		m_scoreIndex = score;
+	}
+	/// <summary>
+	/// リザルトが終了したかどうか
+	/// </summary>
+	/// <returns></returns>
+	const bool& IsResultEnd()
+	{
+		return m_isResultEnd;
 	}
 private:
 	/// <summary>
@@ -103,6 +109,10 @@ private:
 	/// インフォメーションに書き込まれる数値
 	/// </summary>
 	float m_infoDrawIndex = 0.0f;
+	/// <summary>
+	/// リザルトが終了したかどうか
+	/// </summary>
+	bool m_isResultEnd = false;
 	/// <summary>
 	/// ロードのインスタンス
 	/// </summary>

@@ -86,14 +86,8 @@ void Result::ResultStateUpdate()
 
 			m_load->LoadExecutionFadeOut({Load::en_loadOrdinary,Load::en_loadOrdinary});
 
-		}
+			m_isResultEnd = true;
 
-		break;
-	case Result::en_ResultDelete:
-
-		if (m_load->IsLoadBlackout())
-		{
-			DeleteGO(this);
 		}
 
 		break;
