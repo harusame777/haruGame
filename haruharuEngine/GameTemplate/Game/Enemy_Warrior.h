@@ -10,14 +10,6 @@ class Player;
 class Enemy_Warrior : public EnemyBase
 {
 public:
-	enum EnAnimationClip
-	{
-		en_idle,
-		en_tracking,
-		en_patrol,
-		en_animationNum,
-	};
-
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
@@ -62,17 +54,10 @@ private:
 	}
 private:
 	/// <summary>
-	/// モデル
-	/// </summary>
-	ModelRender m_modelRender;
-	/// <summary>
 	/// コリジョンオブジェクト
 	/// </summary>
 	CollisionObject* m_collisionObject;	
-	/// <summary>
-	/// アニメーションクリップ
-	/// </summary>
-	AnimationClip m_animationClip[en_animationNum];
+
 	//test
 	Player* m_player = nullptr;
 };

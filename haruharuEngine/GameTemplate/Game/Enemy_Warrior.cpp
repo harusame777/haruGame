@@ -27,6 +27,9 @@ bool Enemy_Warrior::Start()
 	m_animationClip[EnAnimationClip::en_idle].Load("Assets/modelData/enemyWarrior/enemy_Warrior_idle.tka");
 	m_animationClip[EnAnimationClip::en_idle].SetLoopFlag(true);
 
+	m_animationClip[EnAnimationClip::en_patrol].Load("Assets/modelData/enemyWarrior/enemy_Warrior_run.tka");
+	m_animationClip[EnAnimationClip::en_patrol].SetLoopFlag(true);
+
 	m_modelRender.Init("Assets/modelData/enemyWarrior/enemy_Warrior.tkm", m_animationClip,en_animationNum);
 	m_modelRender.SetScale(1.0f, 1.0f, 1.0f);
 	m_modelRender.SetPosition({500.0f,0.0f,0.0f});
@@ -60,7 +63,7 @@ void Enemy_Warrior::Update()
 {
 	AIListUpdate();
 
-	m_modelRender.PlayAnimation(en_idle);
+	m_modelRender.PlayAnimation(m_animationClipState);
 
 	m_modelRender.SetRotation(m_rotation);
 

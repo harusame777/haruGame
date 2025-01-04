@@ -97,11 +97,17 @@ void EnemySM_Warrior::EnemyAIUpdate()
 	{
 		//待機ステート
 	case EnemySM_Warrior::en_warrior_idle:
+
+		m_enemy->SetPlayAnimationState(EnemyBase::en_idle);
+
 		//別のステートにする
 		ChangeState();
 		break;
 		//追跡ステート
 	case EnemySM_Warrior::en_warrior_tracking:
+
+		m_enemy->SetPlayAnimationState(EnemyBase::en_patrol);
+
 		//追跡するかしないか
 		if (!m_isTrackingTimeOver)
 		{
@@ -128,6 +134,9 @@ void EnemySM_Warrior::EnemyAIUpdate()
 		}
 		break;
 	case EnemySM_Warrior::en_warrior_patrol:
+
+		m_enemy->SetPlayAnimationState(EnemyBase::en_patrol);
+
 		//巡回処理を更新して
 		m_enemyAIList[en_enemyAIMoveAstar]->EnemyAIUpdate();
 		//別のステートにする
@@ -136,6 +145,9 @@ void EnemySM_Warrior::EnemyAIUpdate()
 	case EnemySM_Warrior::en_warrior_trackingMetaAI:
 		//追跡を開始する
 		StateTransition_Tracking();
+
+		m_enemy->SetPlayAnimationState(EnemyBase::en_patrol);
+
 		break;
 	default:
 		break;
@@ -149,7 +161,7 @@ void EnemySM_Warrior::ChangeState()
 	//プレイヤーとの接触判定
 	if (m_enemyConList[en_enemyAIConColPlayer]->Execution())
 	{
-
+		m_enemy->SetPlayAnimationState(EnemyBase::en_idle);
 	}
 
 	if (m_warriorState != WarriorState::en_warrior_idle)
