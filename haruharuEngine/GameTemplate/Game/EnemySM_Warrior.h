@@ -188,6 +188,5 @@ private:
 	/// ゲームのインスタンス
 	/// </summary>
 	Game* m_game = nullptr;
-
 };
 

@@ -32,6 +32,7 @@ void EnemySM_Warrior::EnemyAIStart()
 	//メタAIにエネミーのインスタンスを送る
 	m_warriorMetaAI->ListInitEnemy(this);
 
+	//ゲームのインスタンス
 	m_game = FindGO<Game>("game");
 
 	//共通のデータホルダーを初期化
