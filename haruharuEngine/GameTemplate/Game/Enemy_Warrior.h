@@ -54,13 +54,10 @@ private:
 	}
 private:
 	/// <summary>
-	/// モデル
-	/// </summary>
-	ModelRender m_modelRender;
-	/// <summary>
 	/// コリジョンオブジェクト
 	/// </summary>
 	CollisionObject* m_collisionObject;	
+
 	//test
 	Player* m_player = nullptr;
 };

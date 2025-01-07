@@ -1,11 +1,14 @@
 #include "stdafx.h"
 #include "EnemySM_Warrior.h"
 #include "EnemyAIConSearch.h"
+#include "EnemyAIConWallSearch.h"
 #include "EnemyAIMoveAstar.h"
+#include "EnemyAIMove.h"
 #include "EnemyAIConWaitTime.h"
 #include "EnemyAIConColPlayer.h"
 #include "EnemyAIMetaWarrior.h"
 #include "Player.h"
+#include "Game.h"
 
 //エネミー全体を管理するメタAIを作成して、追跡を管理したい
 //
@@ -29,12 +32,18 @@ void EnemySM_Warrior::EnemyAIStart()
 	//メタAIにエネミーのインスタンスを送る
 	m_warriorMetaAI->ListInitEnemy(this);
 
+	//ゲームのインスタンス
+	m_game = FindGO<Game>("game");
+
 	//共通のデータホルダーを初期化
 	m_warriorDataHolder = m_warriorMetaAI->GetEnemyDatas();
 
 	//AIのListをこのエネミーに必要な物で初期化する
 	//経路探索
 	m_enemyAIList.push_back(new EnemyAIMoveAstar(m_warriorDataHolder));
+
+	//通常移動
+	m_enemyAIList.push_back(new EnemyAIMove);
 
 	//紐づいているエネミーのインスタンスをAIListのプログラムに渡す
 	for (auto& listPtr : m_enemyAIList)
@@ -53,7 +62,7 @@ void EnemySM_Warrior::EnemyAIStart()
 	m_enemyConList.push_back(new EnemyAIConSearch(45.0f,500.0f));
 
 	//10秒タイマー
-	m_enemyConList.push_back(new EnemyAIConWaitTime(30.0f));
+	m_enemyConList.push_back(new EnemyAIConWaitTime(10.0f));
 
 	//プレイヤーとの衝突判定
 	m_enemyConList.push_back(new EnemyAIConColPlayer);
@@ -66,6 +75,9 @@ void EnemySM_Warrior::EnemyAIStart()
 
 	//15秒タイマー
 	m_enemyConList.push_back(new EnemyAIConWaitTime(15.0f));
+
+	//壁を探索
+	m_enemyConList.push_back(new EnemyAIConWallSearch);
 
 	//紐づいているエネミーのインスタンスをConListのプログラムに渡す
 	for (auto& listPtr : m_enemyConList)
@@ -97,37 +109,48 @@ void EnemySM_Warrior::EnemyAIUpdate()
 	{
 		//待機ステート
 	case EnemySM_Warrior::en_warrior_idle:
+
+		m_enemy->SetPlayAnimationState(EnemyBase::en_idle);
+
 		//別のステートにする
 		ChangeState();
 		break;
 		//追跡ステート
 	case EnemySM_Warrior::en_warrior_tracking:
-		//追跡するかしないか
-		if (!m_isTrackingTimeOver)
+
+		m_enemy->SetPlayAnimationState(EnemyBase::en_patrol);
+
+		//もし退却状態じゃなかったら
+		if (m_isRetreat == false)
 		{
-			//別のステートにする
-			ChangeState();
+			Vector3 plaPos = m_player->GetPosition();
+
+			GetEnemyPtr().SetMoveTargetPosition(plaPos);
 		}
-		//10秒経っていなかったら
 		else
 		{
-			//もし退却状態じゃなかったら
-			if (m_isRetreat == false)
-			{
-				Vector3 plaPos = m_player->GetPosition();
+			//[テスト]メタAIから指示をもらう
+			m_warriorMetaAI->MetaAIExecution(this, EnemyAIMetaWarrior::mode_retreat);
+		}
 
-				GetEnemyPtr().SetMoveTargetPosition(plaPos);
-			}
-			else
-			{
-				//[テスト]メタAIから指示をもらう
-				m_warriorMetaAI->MetaAIExecution(this, EnemyAIMetaWarrior::mode_retreat);
-			}
+		if (m_isRetreat == true || 
+			m_enemyConList[6]->Execution() == true)
+		{
 			//追跡処理を更新
 			m_enemyAIList[en_enemyAIMoveAstar]->EnemyAIUpdate();
 		}
+		else
+		{
+			//通常移動処理を更新
+			m_enemyAIList[1]->EnemyAIUpdate();
+		}
+
+		ChangeState();
 		break;
 	case EnemySM_Warrior::en_warrior_patrol:
+
+		m_enemy->SetPlayAnimationState(EnemyBase::en_patrol);
+
 		//巡回処理を更新して
 		m_enemyAIList[en_enemyAIMoveAstar]->EnemyAIUpdate();
 		//別のステートにする
@@ -136,6 +159,9 @@ void EnemySM_Warrior::EnemyAIUpdate()
 	case EnemySM_Warrior::en_warrior_trackingMetaAI:
 		//追跡を開始する
 		StateTransition_Tracking();
+
+		m_enemy->SetPlayAnimationState(EnemyBase::en_patrol);
+
 		break;
 	default:
 		break;
@@ -146,10 +172,18 @@ void EnemySM_Warrior::EnemyAIUpdate()
 //共通ステート変更関数
 void EnemySM_Warrior::ChangeState()
 {
+
+	if (m_warriorState == WarriorState::en_warrior_tracking ||
+		m_warriorState == WarriorState::en_warrior_trackingMetaAI &&
+		m_isTrackingTimeOver == true)
+	{
+		return;
+	}
+
 	//プレイヤーとの接触判定
 	if (m_enemyConList[en_enemyAIConColPlayer]->Execution())
 	{
-
+		
 	}
 
 	if (m_warriorState != WarriorState::en_warrior_idle)

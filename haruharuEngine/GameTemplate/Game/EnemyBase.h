@@ -4,6 +4,13 @@
 class EnemyBase : public IGameObject
 {
 public:
+	enum EnAnimationClip
+	{
+		en_idle,
+		en_tracking,
+		en_patrol,
+		en_animationNum,
+	};
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
@@ -27,6 +34,10 @@ protected:
 	/// AIList内のプログラムのアップデート
 	/// </summary>
 	virtual void AIListUpdate() = 0;
+	/// <summary>
+	/// モデル
+	/// </summary>
+	ModelRender m_modelRender;
 	/// <summary>
 	/// 現在座標
 	/// </summary>
@@ -67,6 +78,13 @@ protected:
 	/// デバック用フォントレンダー
 	/// </summary>
 	FontRender m_debugStateDisplayRender;
+
+	/// <summary>
+	/// アニメーションクリップ
+	/// </summary>
+	AnimationClip m_animationClip[en_animationNum];
+
+	EnAnimationClip m_animationClipState = EnAnimationClip::en_idle;
 public:
 	/// <summary>
 	/// 位置設定
@@ -184,6 +202,15 @@ public:
 	CharacterController* GetCController()
 	{
 		return &m_CController;
+	}
+
+	/// <summary>
+	/// アニメーションのステートを設定
+	/// </summary>
+	/// <param name="setState"></param>
+	void SetPlayAnimationState(const EnAnimationClip& setState)
+	{
+		m_animationClipState = setState;
 	}
 };
 
