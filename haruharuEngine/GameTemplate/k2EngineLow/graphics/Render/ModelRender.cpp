@@ -218,27 +218,21 @@ namespace nsK2EngineLow {
 	{
 		if (m_isShadowChaster)
 		{
-			//for(auto& dirLigPtr : m_light.m_directionalLight)
-			//{
-			//	if (dirLigPtr.GetUse() == false)
-			//	{
-			//		continue;
-			//	}
+			for(auto& dirLigPtr : m_light.m_directionalLight)
+			{
+				if (dirLigPtr.GetUse() == false)
+				{
+					continue;
+				}
 
-			//	m_shadowModel.Draw(
-			//		rc,
-			//		g_matIdentity,
-			//		dirLigPtr.GetLightVP(),
-			//		1
-			//	);
-			//}
+				m_shadowModel.Draw(
+					rc,
+					g_matIdentity,
+					dirLigPtr.GetLightVP(),
+					1
+				);
+			}
 
-			m_shadowModel.Draw(
-						rc,
-						g_matIdentity,
-						m_light.m_directionalLight[0].GetLightVP(),
-						1
-					);
 		}
 	}
 }

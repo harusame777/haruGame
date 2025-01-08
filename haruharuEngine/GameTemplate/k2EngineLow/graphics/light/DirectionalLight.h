@@ -77,7 +77,7 @@ namespace nsK2EngineLow {
 		{
 			m_vprCam.Update();
 
-			m_directionLight->SetLightVP(m_vprCam.GetProjectionMatrix());
+			m_directionLight->SetLightVP(m_vprCam.GetViewProjectionMatrix());
 		}
 	private:
 		//ディレクションライトの構造体

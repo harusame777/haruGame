@@ -30,12 +30,12 @@ bool Enemy_Warrior::Start()
 	m_animationClip[EnAnimationClip::en_patrol].Load("Assets/modelData/enemyWarrior/enemy_Warrior_run.tka");
 	m_animationClip[EnAnimationClip::en_patrol].SetLoopFlag(true);
 
-	m_modelRender.Init("Assets/modelData/enemyWarrior/enemy_Warrior.tkm", m_animationClip,en_animationNum);
+	m_modelRender.Init("Assets/modelData/enemyWarrior/enemy_Warrior.tkm", m_animationClip,en_animationNum, enModelUpAxisZ, true);
 	m_modelRender.SetScale(1.0f, 1.0f, 1.0f);
 	m_modelRender.SetPosition({500.0f,0.0f,0.0f});
 
 	//シャドウマップに描画するようにする
-	m_modelRender.SetShadowChasterFlag(false);
+	m_modelRender.SetShadowChasterFlag(true);
 
 
 	InitAIList();
