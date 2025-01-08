@@ -17,6 +17,7 @@ class PlayerStaminaUi;
 class PlayerOxygenUi;
 class Load;
 class Title;
+class Gameover;
 class Result;
 
 //定数等
@@ -58,6 +59,8 @@ private:
 		en_gameClear,
 
 		en_gameOver,
+
+		en_gameResultGameOver,
 
 		en_gameResult
 	};
@@ -123,6 +126,10 @@ private:
 	/// リザルト
 	/// </summary>
 	Result* m_result = nullptr;
+	/// <summary>
+	/// ゲームオーバー
+	/// </summary>
+	Gameover* m_gameover = nullptr;
 	/// <summary>
 	/// プレイヤー
 	/// </summary>

@@ -21,6 +21,7 @@
 #include "Load.h"
 #include "Title.h"
 #include "Result.h"
+#include "Gameover.h"
 #include "Window.h"
 
 
@@ -75,6 +76,15 @@ void Game::DoInGame()
 		}
 		break;
 	case Game::en_gameOver:
+		m_gameover = NewGO<Gameover>(0, "gameover");
+
+		m_load->LoadExecutionFadeIn();
+
+		m_gameInState = GameInState::en_gameResultGameOver;
+		break;
+	case Game::en_gameResultGameOver:
+
+
 
 		break;
 	case Game::en_gameResult:

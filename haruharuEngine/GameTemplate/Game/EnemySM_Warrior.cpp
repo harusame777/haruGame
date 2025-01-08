@@ -173,17 +173,24 @@ void EnemySM_Warrior::EnemyAIUpdate()
 void EnemySM_Warrior::ChangeState()
 {
 
+	//プレイヤーとの接触判定
+	if (m_enemyConList[en_enemyAIConColPlayer]->Execution())
+	{
+		if (GetEnemyPtr().GetAttackFlag())
+		{
+			return;
+		}
+
+		GetEnemyPtr().SetAttackFlag(true);
+
+		m_game->PlayerGameOver();
+	}
+
 	if (m_warriorState == WarriorState::en_warrior_tracking ||
 		m_warriorState == WarriorState::en_warrior_trackingMetaAI &&
 		m_isTrackingTimeOver == true)
 	{
 		return;
-	}
-
-	//プレイヤーとの接触判定
-	if (m_enemyConList[en_enemyAIConColPlayer]->Execution())
-	{
-		
 	}
 
 	if (m_warriorState != WarriorState::en_warrior_idle)

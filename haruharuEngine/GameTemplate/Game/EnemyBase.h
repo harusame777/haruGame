@@ -85,6 +85,13 @@ protected:
 	AnimationClip m_animationClip[en_animationNum];
 
 	EnAnimationClip m_animationClipState = EnAnimationClip::en_idle;
+	/// <summary>
+	///	çUåÇÉtÉâÉO
+	/// </summary>
+	bool m_attackFlag = false;
+
+	char m_colName[20] = "";
+
 public:
 	/// <summary>
 	/// à íuê›íË
@@ -211,6 +218,26 @@ public:
 	void SetPlayAnimationState(const EnAnimationClip& setState)
 	{
 		m_animationClipState = setState;
+	}
+
+	void SetAttackFlag(const bool& flag)
+	{
+		m_attackFlag = flag;
+	}
+
+	const bool& GetAttackFlag() const
+	{
+		return m_attackFlag;
+	}
+
+	void SetCollisionName(const char* name)
+	{
+		std::strcat(m_colName, name);
+	}
+
+	const char* GetCollisionName() const
+	{
+		return m_colName;
 	}
 };
 
