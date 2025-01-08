@@ -1,6 +1,7 @@
 #include "k2EngineLowPreCompile.h"
 #include "ModelRender.h"
 
+
 namespace nsK2EngineLow {
 
 
@@ -75,29 +76,10 @@ namespace nsK2EngineLow {
 		{
 			initData.m_fxFilePath = "Assets/shader/haruharuShadowReceiverModel.fx";
 
-			Camera lightCamera;
+			m_light = *g_sceneLight->GetLightData();
 
-			lightCamera.SetAspectOneFlag(true);
-
-			lightCamera.SetViewAngle(Math::DegToRad(80.0f));
-
-			//カメラの位置を設定
-			lightCamera.SetPosition(-2000.0f, 2000.0f, 2000.0f);
-
-			// カメラの注視点を設定。これがライトが照らしている場所
-			lightCamera.SetTarget(0, 0, 0);
-
-			// 上方向を設定。今回はライトが真下を向いているので、X方向を上にしている
-			//lightCamera.SetUp(1, 0, 0);
-
-			//ライトビュープロジェクション行列を計算している
-			lightCamera.Update();
-
-			m_shadowLigData.m_light = *g_sceneLight->GetLightData();
-			m_shadowLigData.m_mt = lightCamera.GetViewProjectionMatrix();
-
-			initData.m_expandConstantBuffer = &m_shadowLigData;
-			initData.m_expandConstantBufferSize = sizeof(m_shadowLigData);
+			initData.m_expandConstantBuffer = &m_light;
+			initData.m_expandConstantBufferSize = sizeof(m_light);
 
 			//シャドウマップを拡張SRVに設定する
 			initData.m_expandShaderResoruceView[0] = &(g_renderingEngine
@@ -195,7 +177,6 @@ namespace nsK2EngineLow {
 	//モデルレンダーの更新処理
 	void ModelRender::Update()
 	{
-		m_shadowLigData.m_light = *g_sceneLight->GetLightData();
 		//ワールド行列更新
 		m_model.UpdateWorldMatrix(m_position,m_rotation, m_scale);
 
@@ -233,16 +214,31 @@ namespace nsK2EngineLow {
 	}
 
 	//影の描画処理
-	void ModelRender::OnRenderShadowMap(RenderContext& rc, const Matrix& lvpMatrix)
+	void ModelRender::OnRenderShadowMap(RenderContext& rc)
 	{
 		if (m_isShadowChaster)
 		{
+			//for(auto& dirLigPtr : m_light.m_directionalLight)
+			//{
+			//	if (dirLigPtr.GetUse() == false)
+			//	{
+			//		continue;
+			//	}
+
+			//	m_shadowModel.Draw(
+			//		rc,
+			//		g_matIdentity,
+			//		dirLigPtr.GetLightVP(),
+			//		1
+			//	);
+			//}
+
 			m_shadowModel.Draw(
-				rc,
-				g_matIdentity,
-				lvpMatrix,
-				1
-			);
+						rc,
+						g_matIdentity,
+						m_light.m_directionalLight[0].GetLightVP(),
+						1
+					);
 		}
 	}
 }

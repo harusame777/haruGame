@@ -10,6 +10,10 @@ namespace nsK2EngineLow {
 		{
 			//ディレクションライトを作成し、ポインタを登録
 			m_directionLight = g_sceneLight->NewDirectionLight();
+
+			m_vprCam.SetAspectOneFlag(true);
+
+			m_directionLight->SetLightVP(m_vprCam.GetProjectionMatrix());
 		}
 	}
 

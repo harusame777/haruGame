@@ -46,6 +46,8 @@ void Game::Update()
 	{
 		DoInGame();
 	}
+
+	sunDirectionalLight.VPCamUpdate();
 }
 
 void Game::DoInGame()
@@ -288,6 +290,10 @@ void Game::InitDirctionaLight()
 	sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
 	sunDirectionalLight.LightDirectionNormalize();
 	sunDirectionalLight.CastShadow();
+	sunDirectionalLight.VPCamSetRotation(80.0f);
+	sunDirectionalLight.VPCamSetPosition({ -2000, 2000, 2000 });
+	sunDirectionalLight.VPCamSetTarget({ 0.0f, 0.0f, 0.0f });
+	sunDirectionalLight.VPCamUpdate();
 }
 
 void Game::InitObjectCrystal()

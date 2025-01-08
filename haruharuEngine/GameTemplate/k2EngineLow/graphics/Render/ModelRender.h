@@ -17,12 +17,7 @@ namespace nsK2EngineLow {
 		/// </summary>
 		~ModelRender();
 
-		struct ShadowLightData
-		{
-		public:
-			Light m_light;
-			Matrix m_mt;
-		};
+		Light m_light;
 
 		/// <summary>
 		/// 初期化処理
@@ -142,7 +137,7 @@ namespace nsK2EngineLow {
 		void OnRenderModel(RenderContext& rc) override;
 
 		//シャドウマップへの描画パスから呼ばれる処理
-		void OnRenderShadowMap(RenderContext& rc, const Matrix& lvpMatrix) override;
+		void OnRenderShadowMap(RenderContext& rc) override;
 
 		//G-Buffer描画パスから呼ばれる処理
 		void OnRenderToGBuffer(RenderContext& rc) override;
@@ -177,8 +172,6 @@ namespace nsK2EngineLow {
 		Model m_shadowModel;
 
 		Model m_gBufferModel;
-
-		ShadowLightData m_shadowLigData;
 
 		//影を落とすか管理するフラグ
 		bool m_isShadowChaster = true;		

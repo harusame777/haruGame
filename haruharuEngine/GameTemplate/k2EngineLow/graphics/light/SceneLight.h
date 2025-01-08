@@ -15,7 +15,10 @@ namespace nsK2EngineLow {
 		int m_castShadow = true;
 		//カラー
 		Vector3 m_color;
+		//使用されいているかどうか
 		int m_isUse = false;
+		//ライトのビュープロジェクション
+		Matrix m_mt;
 	public:
 		//方向を設定
 		void SetDirection(const Vector3& direction)
@@ -76,6 +79,16 @@ namespace nsK2EngineLow {
 		const int GetUse() const
 		{
 			return m_isUse;
+		}
+		//ライトのビュープロジェクションを登録
+		void SetLightVP(const Matrix& vp)
+		{
+			m_mt = vp;
+		}
+		//ライトのビュープロジェクションを取得
+		const Matrix& GetLightVP() const
+		{
+			return m_mt;
 		}
 	};
 
