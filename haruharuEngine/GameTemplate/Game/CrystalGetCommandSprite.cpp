@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CrystalGetCommandSprite.h"
 #include "Crystal.h"
+#include "GameSound.h"
 #include <random>
 #include <algorithm>
 
@@ -61,6 +62,9 @@ CrystalGetCommandSprite::~CrystalGetCommandSprite()
 //スタート関数
 bool CrystalGetCommandSprite::Start()
 {
+	//ゲームサウンドのインスタンスを取得
+	m_gameSound = FindGO<GameSound>("gameSound");
+
 	//タイマーのスプライトの初期化
 	TimerSpriteInit();
 
@@ -347,6 +351,8 @@ void CrystalGetCommandSprite::IsJudgeingTriggerButton(const CommandTriggerState&
 	{
 		//正しくコマンドが入力された
 		PickaxeEasingInit(PickaxeMoveState::en_impact);
+
+		m_gameSound->LocalSoundOrder(GameSound::en_rockDigSound, false, 1.0f);
 
 		m_isCommandInput = false;
 
