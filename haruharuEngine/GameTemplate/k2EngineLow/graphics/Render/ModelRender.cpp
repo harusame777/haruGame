@@ -123,25 +123,20 @@ namespace nsK2EngineLow {
 		initData.m_tkmFilePath = tkmFilePath;
 		initData.m_modelUpAxis = modelUpAxis;
 
-		//ノンスキンメッシュ用の頂点シェーダーのエントリーポイントを指定する。
-		//initData.m_vsEntryPointFunc = "VSMain";
-		//スキンメッシュ用の頂点シェーダーのエントリーポイントを指定。
-		//initData.m_vsSkinEntryPointFunc = "VSSkinMain";
-
-		//if (m_animationClips != nullptr)
-		//{
-		//	//スケルトン指定
-		//	initData.m_skeleton = &m_skeleton;
-		//}
+		if (m_animationClips != nullptr)
+		{
+			//スケルトン指定
+			initData.m_skeleton = &m_skeleton;
+		}
 
 		initData.m_fxFilePath = "Assets/shader/haruharuDrawDeaphShadowMap.fx";
 
 		initData.m_colorBufferFormat[0] = DXGI_FORMAT_R32_FLOAT;/*デプスシャドウ用の設定*/
 
-		////ノンスキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
-		//initData.m_vsEntryPointFunc = "VSMain";
-		////スキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
-		//initData.m_vsSkinEntryPointFunc = "VSSkinMain";
+		//ノンスキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
+		initData.m_vsEntryPointFunc = "VSMain";
+		//スキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
+		initData.m_vsSkinEntryPointFunc = "VSSkinMain";
 
 		m_shadowModel.Init(initData);
 

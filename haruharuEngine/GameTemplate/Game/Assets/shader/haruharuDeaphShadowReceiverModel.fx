@@ -129,6 +129,7 @@ Texture2D<float4> g_speclarMap : register(t2); //スペキュラマップ
 StructuredBuffer<float4x4> g_boneMatrix : register(t3); //ボーン行列。
 Texture2D<float4> g_shadowMap : register(t10); //シャドウマップ  
 sampler g_sampler : register(s0); //サンプラステート。
+SamplerComparisonState g_shadowMapSampler : register(s1);//シャドウマップサンプリング
 
 ////////////////////////////////////////////////
 // 関数宣言
@@ -409,24 +410,30 @@ SPSIn VSSkinMain(SVSIn vsIn)
 /// </summary>
 float4 PSMain(SPSIn psIn) : SV_Target0
 {
+    float4 color = g_albedo.Sample(g_sampler, psIn.uv);
+    
     //ライトビュースクリーン空間からUV空間に変換している
     float2 shadowMapUV = psIn.posInLVP[0].xy / psIn.posInLVP[0].w;
     shadowMapUV *= float2(0.5f, -0.5f);
     shadowMapUV += 0.5f;
-        
-    bool isShadowDraw = false;
     
+    float3 finalShadowColor;
+                
     //ライトビューZ値計算
     float zInLVP = psIn.posInLVP[0].z / psIn.posInLVP[0].w;
     
     if (shadowMapUV.x > 0.0f && shadowMapUV.x < 1.0f
         && shadowMapUV.y > 0.0f && shadowMapUV.y < 1.0f);
     {
-        float shadowMap = g_shadowMap.Sample(g_sampler, shadowMapUV).r;
-        if (zInLVP > shadowMap)
-        {
-            isShadowDraw = true;
-        }
+        float shadow = g_shadowMap.SampleCmpLevelZero(
+            g_shadowMapSampler,//使用するサンプラーステート
+            shadowMapUV,       //シャドウマップにアクセスするUV座標
+            zInLVP             //比較するZ値
+        );
+
+        float3 shadowColor = color.xyz * 0.5f;
+        
+        finalShadowColor = lerp(color.xyz, shadowColor, shadow);
     }
     
     //UV座標をサンプリング
@@ -533,18 +540,14 @@ float4 PSMain(SPSIn psIn) : SV_Target0
         }
     }
     
-    //環境光合成
-    finalLig += m_ambientLight;
     
     //最終合成
-    float4 finalColor = g_albedo.Sample(g_sampler, psIn.uv);
     //影
-    if(isShadowDraw == true)
-    {
-        finalColor.xyz *= 0.5f;
-    }
+    color.xyz = finalShadowColor;
+    //環境光合成
+    finalLig += m_ambientLight;
     //光
-    finalColor.xyz *= finalLig;
+    color.xyz *= finalLig;
     
-    return finalColor;
+    return color;
 }
