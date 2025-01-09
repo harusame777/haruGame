@@ -10,6 +10,12 @@ bool GameSound::Start()
 	g_soundEngine->ResistWaveFileBank(SoundListNum::en_decisionSound,
 		"Assets/sound/decisionSound.wav");
 
+	g_soundEngine->ResistWaveFileBank(SoundListNum::en_hitByIronSound,
+		"Assets/sound/hitByIronSound.wav");
+
+	g_soundEngine->ResistWaveFileBank(SoundListNum::en_enemyWarriorWalkSound,
+		"Assets/sound/enemyWarriorWalkSound.wav");
+
 	return true;
 }
 
@@ -27,6 +33,27 @@ void GameSound::LocalSoundOrder(const SoundListNum& listNum,
 	orderSound->SetVolume(volume);
 
 	orderSound->Play(loop);
+
+}
+
+//ローカルサウンドリクエスト
+void GameSound::LocalSoundOrder(const SoundListNum& listNum,
+	const bool& loop,
+	const float& volume,
+	const Vector3& soundPos)
+{
+
+	//サウンドを作成
+	SoundSource* orderSound = NewGO<SoundSource>(0);
+
+	orderSound->Init(listNum);
+
+	orderSound->SetPosition(soundPos);
+
+	orderSound->SetVolume(volume);
+
+	orderSound->Play(loop);
+
 
 }
 

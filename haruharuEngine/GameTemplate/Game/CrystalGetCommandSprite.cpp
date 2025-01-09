@@ -363,6 +363,8 @@ void CrystalGetCommandSprite::IsJudgeingTriggerButton(const CommandTriggerState&
 		//ŠÔˆá‚Á‚½ƒRƒ}ƒ“ƒh‚ª“ü—Í‚³‚ê‚½
 		PickaxeEasingInit(PickaxeMoveState::en_impact);
 
+		m_gameSound->LocalSoundOrder(GameSound::en_hitByIronSound, false, 1.0f);
+
 		m_isCommandInput = false;
 
 		m_isCorrectButton = false;
