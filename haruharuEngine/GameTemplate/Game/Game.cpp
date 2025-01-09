@@ -22,11 +22,14 @@
 #include "Title.h"
 #include "Result.h"
 #include "Window.h"
+#include "GameSound.h"
 
 
 bool Game::Start()
 {
 	InitDirctionaLight();
+
+	m_gameSound = NewGO<GameSound>(0, "gameSound");
 
 	m_load = NewGO<Load>(1, "load");
 

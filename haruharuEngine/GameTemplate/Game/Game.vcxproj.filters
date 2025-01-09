@@ -120,6 +120,7 @@
     <ClCompile Include="EnemyAIConWallSearch.cpp">
       <Filter>Enemy\AICon</Filter>
     </ClCompile>
+    <ClCompile Include="GameSound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -256,6 +257,7 @@
     <ClInclude Include="EnemyAIConWallSearch.h">
       <Filter>Enemy\AICon</Filter>
     </ClInclude>
+    <ClInclude Include="GameSound.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bg">

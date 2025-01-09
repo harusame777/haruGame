@@ -251,6 +251,7 @@
     <ClCompile Include="Enemy_Warrior.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="GameSound.cpp" />
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="Locker.cpp" />
     <ClCompile Include="main.cpp" />
@@ -302,6 +303,7 @@
     <ClInclude Include="Enemy_Warrior.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="GameSound.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Locker.h" />
     <ClInclude Include="ManagerCrystal.h" />
