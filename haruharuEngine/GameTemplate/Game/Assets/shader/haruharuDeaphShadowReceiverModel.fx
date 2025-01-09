@@ -541,11 +541,11 @@ float4 PSMain(SPSIn psIn) : SV_Target0
     }
     
     
-    //最終合成
-    //影
-    color.xyz = finalShadowColor;
     //環境光合成
     finalLig += m_ambientLight;
+    //最終合成
+    //影
+    color.xyz *= finalShadowColor;
     //光
     color.xyz *= finalLig;
     

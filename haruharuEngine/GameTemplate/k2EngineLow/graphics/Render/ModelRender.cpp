@@ -133,6 +133,8 @@ namespace nsK2EngineLow {
 
 		initData.m_colorBufferFormat[0] = DXGI_FORMAT_R32_FLOAT;/*デプスシャドウ用の設定*/
 
+
+
 		//ノンスキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
 		initData.m_vsEntryPointFunc = "VSMain";
 		//スキンメッシュ用の頂点シェーダーのエントリーポイントを指定する

@@ -10,12 +10,12 @@ namespace nsK2EngineLow {
 
 		//シャドウマップ用のレンダリングターゲットを作成
 		m_shadowMap.Create(
-			1024,
-			1024,
+			2048,
+			2048,
 			1,
 			1,
 			//DXGI_FORMAT_R32_FLOAT,デプスシャドウ用の設定
-			DXGI_FORMAT_R32_FLOAT,
+			DXGI_FORMAT_R32G32_FLOAT,
 			DXGI_FORMAT_D32_FLOAT,
 			clearColor
 		);
