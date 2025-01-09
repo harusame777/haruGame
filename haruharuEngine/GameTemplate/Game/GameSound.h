@@ -8,6 +8,8 @@ public:
 	{
 		//石を掘る音
 		en_rockDigSound,
+		//決定音１
+		en_decisionSound,
 		//タイトルBGM
 		en_TitleBgm,
 		//サウンド数

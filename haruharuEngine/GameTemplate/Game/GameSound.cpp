@@ -7,6 +7,9 @@ bool GameSound::Start()
 	g_soundEngine->ResistWaveFileBank(SoundListNum::en_rockDigSound,
 		"Assets/sound/rockDigSound.wav");
 
+	g_soundEngine->ResistWaveFileBank(SoundListNum::en_decisionSound,
+		"Assets/sound/decisionSound.wav");
+
 	return true;
 }
 
