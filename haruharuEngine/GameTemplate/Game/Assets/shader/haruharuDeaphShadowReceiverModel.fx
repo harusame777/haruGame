@@ -17,20 +17,24 @@ struct DirectionLight
     float3 direction;
 	//ライトのカラー
     float3 color;
+    //使用中かどうか
+    int isUse;
+    //
+    float4x4 mLVP;
 };
 
 //ポイントライト
 struct PointLight
 {
 	//座標
-    float3 position; 
+    float3 position;
 	//使用中フラグ
-    int isUse; 
+    int isUse;
 	//ライトのカラー
-    float3 color; 
+    float3 color;
 	//減衰パラメータ
 	//xに影響範囲,yに影響率に累乗するパラメータ
-    float3 attn;            
+    float3 attn;
 };
 
 //スポットライト
@@ -41,25 +45,26 @@ struct SpotLight
     //使用中フラグ
     int isUse;
     //ライトのカラー
-    float3 color; 
+    float3 color;
     //影響範囲
     float range;
      //射出方向
     float3 direction;
     //射出角度
-    float angle; 
+    float angle;
     //影響率に累乗するパラメータ
-    float3 pow; 
+    float3 pow;
 };
 
 ////////////////////////////////////////////////
 // 定数バッファ。
 ////////////////////////////////////////////////
 //モデル用の定数バッファ
-cbuffer ModelCb : register(b0){
-	float4x4 mWorld;
-	float4x4 mView;
-	float4x4 mProj;
+cbuffer ModelCb : register(b0)
+{
+    float4x4 mWorld;
+    float4x4 mView;
+    float4x4 mProj;
 };
 
 //ユーザー拡張
@@ -79,47 +84,51 @@ cbuffer LightCb : register(b1)
     float3 m_ambientLight;
     //使用中のスポットライトの数
     int m_numSpotLight;
-    float4x4 mLVP;
+    //使用中のディレクションライトの数
+    int m_numDirectionLight;
 };
 
 ////////////////////////////////////////////////
 // 構造体
 ////////////////////////////////////////////////
 //スキニング用の頂点データをひとまとめ。
-struct SSkinVSIn{
-	int4  Indices  	: BLENDINDICES0;
-    float4 Weights  : BLENDWEIGHT0;
+struct SSkinVSIn
+{
+    int4 Indices : BLENDINDICES0;
+    float4 Weights : BLENDWEIGHT0;
 };
 //頂点シェーダーへの入力。
-struct SVSIn{
-	float4 pos 		: POSITION;		//モデルの頂点座標。
-	float2 uv 		: TEXCOORD0;	//UV座標。
-    float3 normal	: NORMAL;		//法線
-    float3 tangent  : TANGENT;      //接ベクトル
-    float4 biNormal : BINORMAL;     //従ベクトル
-	SSkinVSIn skinVert;				//スキン用のデータ。
+struct SVSIn
+{
+    float4 pos : POSITION; //モデルの頂点座標。
+    float2 uv : TEXCOORD0; //UV座標。
+    float3 normal : NORMAL; //法線
+    float3 tangent : TANGENT; //接ベクトル
+    float4 biNormal : BINORMAL; //従ベクトル
+    SSkinVSIn skinVert; //スキン用のデータ。
 };
 //ピクセルシェーダーへの入力。
-struct SPSIn{
-	float4 pos 			: SV_POSITION;	//スクリーン空間でのピクセルの座標。
-	float2 uv 			: TEXCOORD0;	//uv座標。
-    float3 normal		: NORMAL;		//法線
-    float3 tangent      : TANGENT;      //接ベクトル
-    float3 biNormal     : BINORMAL;     //従ベクトル
-    float3 worldPos		: TEXCOORD1;	//ワールド座標系でのポジション
-    float3 normalInView : TEXCOORD2;    //カメラ空間の法線
-    float4 posInLVP     : TEXCOORD3;    //ライトビュースクリーン空間でのピクセルの座標 
+struct SPSIn
+{
+    float4 pos : SV_POSITION; //スクリーン空間でのピクセルの座標。
+    float2 uv : TEXCOORD0; //uv座標。
+    float3 normal : NORMAL; //法線
+    float3 tangent : TANGENT; //接ベクトル
+    float3 biNormal : BINORMAL; //従ベクトル
+    float3 worldPos : TEXCOORD1; //ワールド座標系でのポジション
+    float3 normalInView : TEXCOORD2; //カメラ空間の法線
+    float4 posInLVP[4] : TEXCOORD3; //ライトビュースクリーン空間でのピクセルの座標 
 };
 
 ////////////////////////////////////////////////
 // グローバル変数。
 ////////////////////////////////////////////////
-Texture2D<float4> g_albedo : register(t0);				//アルベドマップ
-Texture2D<float4> g_normalMap : register(t1);           //法線マップ
-Texture2D<float4> g_speclarMap : register(t2);          //スペキュラマップ
-StructuredBuffer<float4x4> g_boneMatrix : register(t3);	//ボーン行列。
-Texture2D<float4> g_shadowMap : register(t10);        //シャドウマップ  
-sampler g_sampler : register(s0);	                    //サンプラステート。
+Texture2D<float4> g_albedo : register(t0); //アルベドマップ
+Texture2D<float4> g_normalMap : register(t1); //法線マップ
+Texture2D<float4> g_speclarMap : register(t2); //スペキュラマップ
+StructuredBuffer<float4x4> g_boneMatrix : register(t3); //ボーン行列。
+Texture2D<float4> g_shadowMap : register(t10); //シャドウマップ  
+sampler g_sampler : register(s0); //サンプラステート。
 
 ////////////////////////////////////////////////
 // 関数宣言
@@ -134,6 +143,8 @@ float3 CalcPhongSpecular(float3 lightDirection, float3 lightColor, float3 worldP
 float3 CalcLigFromPointLight(SPSIn psIn, PointLight ptlig, float specPow);
 //スポットライトの計算
 float3 CalcLigFromSpotLight(SPSIn psIn, SpotLight spLig, float specPow);
+//リムライトの計算
+float3 CalcLigFromRimLight(SPSIn psIn, float3 lightDirection, float3 lightColor);
 ////////////////////////////////////////////////
 // 関数定義。
 ////////////////////////////////////////////////
@@ -255,6 +266,28 @@ float3 CalcLigFromSpotLight(SPSIn psIn, SpotLight spLig, float specPow)
     return diffLight + specLight;
 }
 
+float3 CalcLigFromRimLight(SPSIn psIn, float3 lightDirection, float3 lightColor)
+{
+    //サーフェイスの法線と光の入射方法に依存するリムの強さを求める
+    float power1 = 1.0f - max(0.0f, dot(lightDirection, psIn.normal));
+    
+    //サーフェイスの法線と視線の方向に依存するリムの強さを求める
+    float power2 = 1.0f - max(0.0f, psIn.normalInView.z * -1.0f);
+    
+    //最終的なリムの強さを求める
+    float limPower = power1 * power2;
+    
+    //pow()を利用して、強さの変化を指数関数的にする
+    limPower = pow(limPower, 1.3f);
+    
+    //最終的な反射光にリムライトの反射光を合算する
+    //リムライトのカラーを計算する
+    float3 limColor = limPower * lightColor;
+    
+    //最終的な値を返す
+    return limColor;
+}
+
 // Lambert拡散反射光の計算
 float3 CalcLambertDiffuse(float3 lightDirection, float3 lightColor, float3 normal)
 {
@@ -264,7 +297,6 @@ float3 CalcLambertDiffuse(float3 lightDirection, float3 lightColor, float3 norma
     //内積の結果が0より小さい時は0にする
     t = max(0.0f, t);
     
-    //拡散反射光を計算する
     return lightColor * t;
 }
 
@@ -299,8 +331,8 @@ float3 CalcPhongSpecular(float3 lightDirection, float3 lightColor, float3 worldP
 /// </summary>
 float4x4 CalcSkinMatrix(SSkinVSIn skinVert)
 {
-	float4x4 skinning = 0;	
-	float w = 0.0f;
+    float4x4 skinning = 0;
+    float w = 0.0f;
 	[unroll]
     for (int i = 0; i < 3; i++)
     {
@@ -318,24 +350,27 @@ float4x4 CalcSkinMatrix(SSkinVSIn skinVert)
 /// </summary>
 SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
 {
-	SPSIn psIn;
-	float4x4 m;
-	if( hasSkin ){
-		m = CalcSkinMatrix(vsIn.skinVert);
-	}else{
-		m = mWorld;
-	}
+    SPSIn psIn;
+    float4x4 m;
+    if (hasSkin)
+    {
+        m = CalcSkinMatrix(vsIn.skinVert);
+    }
+    else
+    {
+        m = mWorld;
+    }
     // モデルの頂点をワールド座標系に変換
-    psIn.pos = mul(m, vsIn.pos); 
+    psIn.pos = mul(m, vsIn.pos);
     psIn.worldPos = psIn.pos;
     // ワールド座標系からカメラ座標系に変換
-	psIn.pos = mul(mView, psIn.pos);
+    psIn.pos = mul(mView, psIn.pos);
     // カメラ座標系からスクリーン座標系に変換
-	psIn.pos = mul(mProj, psIn.pos);
+    psIn.pos = mul(mProj, psIn.pos);
 	//法線を回転させる
-    psIn.normal = mul(m, vsIn.normal); 
+    psIn.normal = mul(m, vsIn.normal);
 
-	psIn.uv = vsIn.uv;
+    psIn.uv = vsIn.uv;
 
     //カメラ空間の法線
     psIn.normalInView = mul(mView, psIn.normal);
@@ -345,9 +380,14 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
     psIn.biNormal = normalize(mul(m, vsIn.biNormal));
     
     float4 worldPos = mul(mWorld, vsIn.pos);
-    psIn.posInLVP = mul(mLVP, worldPos);
     
-	return psIn;
+    for (int ligNo = 0; ligNo < NUM_DIRECTIONAL_LIGHT; ligNo++)
+    {
+        psIn.posInLVP[ligNo] = mul(m_directionalLight[ligNo].mLVP, worldPos);
+    }
+    //psIn.posInLVP[0] = mul(m_directionalLight[0].mLVP, worldPos);
+    
+    return psIn;
 }
 
 /// <summary>
@@ -355,41 +395,156 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
 /// </summary>
 SPSIn VSMain(SVSIn vsIn)
 {
-	return VSMainCore(vsIn, false);
+    return VSMainCore(vsIn, false);
 }
 /// <summary>
 /// スキンありメッシュの頂点シェーダーのエントリー関数。
 /// </summary>
-SPSIn VSSkinMain( SVSIn vsIn ) 
+SPSIn VSSkinMain(SVSIn vsIn)
 {
-	return VSMainCore(vsIn, true);
+    return VSMainCore(vsIn, true);
 }
 /// <summary>
 /// ピクセルシェーダーのエントリー関数。
 /// </summary>
-float4 PSMain( SPSIn psIn ) : SV_Target0
-{    
-    float4 finalColor = g_albedo.Sample(g_sampler, psIn.uv);
-    
+float4 PSMain(SPSIn psIn) : SV_Target0
+{
     //ライトビュースクリーン空間からUV空間に変換している
-    float2 shadowMapUV = psIn.posInLVP.xy / psIn.posInLVP.w;
+    float2 shadowMapUV = psIn.posInLVP[0].xy / psIn.posInLVP[0].w;
     shadowMapUV *= float2(0.5f, -0.5f);
     shadowMapUV += 0.5f;
-            
-    //ライトビュースクリーン空間でのZ値を計算する.
-    float zInLVP = psIn.posInLVP.z / psIn.posInLVP.w;
+        
+    bool isShadowDraw = false;
     
-    if (shadowMapUV.x > 0.0f && shadowMapUV.x < 1.0f 
-        && shadowMapUV.y > 0.0f && shadowMapUV.y < 1.0)
+    //ライトビューZ値計算
+    float zInLVP = psIn.posInLVP[0].z / psIn.posInLVP[0].w;
+    
+    if (shadowMapUV.x > 0.0f && shadowMapUV.x < 1.0f
+        && shadowMapUV.y > 0.0f && shadowMapUV.y < 1.0f);
     {
-        //シャドウマップに描き込まれているZ値と比較する
-        // 計算したUV座標を使って、シャドウマップから深度値をサンプリング
-        float zInShadowMap = g_shadowMap.Sample(g_sampler, shadowMapUV).r;
-        if(zInLVP > zInShadowMap)
+        float shadowMap = g_shadowMap.Sample(g_sampler, shadowMapUV).r;
+        if (zInLVP > shadowMap)
         {
-            //遮蔽されている
-            finalColor.xyz *= 0.5f;
+            isShadowDraw = true;
         }
     }
+    
+    //UV座標をサンプリング
+    float3 localNormal = g_normalMap.Sample(g_sampler, psIn.uv);
+    localNormal = (localNormal - 0.5) * 2.0f;
+    
+    psIn.normal = psIn.tangent * localNormal.x
+                + psIn.biNormal * localNormal.y
+                + psIn.normal * localNormal.z;
+    
+    psIn.normal = normalize(psIn.normal);
+
+    float specPow = g_speclarMap.Sample(g_sampler, psIn.uv);
+        
+    //最終的合成
+    float3 finalLig;
+    
+    finalLig.x = 0.0f;
+    finalLig.y = 0.0f;
+    finalLig.z = 0.0f;
+    
+    //ココからディレクションライトの計算
+    
+    if (m_numDirectionLight == 0)
+    {
+        //処理したディレクションライトの数を確認する変数
+        int afpCountDi = 0;
+        
+        //ディレクションライトの配列を回して使用中のライトを探す
+        for (int diLigNo = 0; diLigNo < NUM_DIRECTIONAL_LIGHT; diLigNo++)
+        {
+            if (m_directionalLight[diLigNo].isUse)
+            {
+                //ライトの計算処理
+                finalLig += CalcLigFromDirectionLight(psIn, m_directionalLight[diLigNo], specPow);
+                //処理したライトの数を加算
+                afpCountDi++;
+                //処理した数が使用中のライトの数以上になったらfor文を抜ける
+                if (afpCountDi >= m_numDirectionLight)
+                {
+                    break;
+                }
+            }
+        }
+    }
+    
+    //for (int dirligNo = 0; dirligNo < NUM_DIRECTIONAL_LIGHT; dirligNo++)
+    //{
+    //    //ディレクションライトの計算
+    //    finalLig += CalcLigFromDirectionLight(psIn, m_directionalLight[dirligNo], specPow);
+    //    //リムライトの計算
+    //    finalLig += CalcLigFromRimLight(psIn, m_directionalLight[dirligNo].direction, m_directionalLight[dirligNo].color);
+    //}
+
+    //ココからポイントライトの計算
+    
+    //使用されているポイントライトがあるか確認
+    if (m_numPointLight <= 0 == false)
+    {
+        //処理したポイントライトの数を確認する変数
+        int afpCountPt = 0;
+        
+        //ポイントライトの配列を回して使用中のライトを探す
+        for (int ptLigNo = 0; ptLigNo < MAX_POINT_LIGHT; ptLigNo++)
+        {
+            if (m_pointLights[ptLigNo].isUse)
+            {
+                //ライトの計算処理
+                finalLig += CalcLigFromPointLight(psIn, m_pointLights[ptLigNo], specPow);
+                //処理したライトの数を加算
+                afpCountPt++;
+                //処理した数が使用中のライトの数以上になったらfor文を抜ける
+                if (afpCountPt >= m_numPointLight)
+                {
+                    break;
+                }
+            }
+        }
+    }
+    
+    //使用されているスポットライトがあるか確認
+    if (m_numSpotLight <= 0 == false)
+    {
+        //処理したスポットライトの数を確認する変数
+        int afpCountSp = 0;
+        
+        //スポットライトの配列を回して使用中のライトを探す
+        for (int spLigNo = 0; spLigNo < MAX_SPOT_LIGHT; spLigNo++)
+        {
+            if (m_spotLights[spLigNo].isUse)
+            {
+                //ライトの計算処理
+                finalLig += CalcLigFromSpotLight(psIn, m_spotLights[spLigNo], specPow);
+                //リムライトの計算
+                //finalLig += CalcLigFromRimLight(psIn, m_spotLights[spLigNo].direction, m_spotLights[spLigNo].color);
+                //処理したライトの数を加算
+                afpCountSp++;
+                //処理した数が使用中のライトの数以上になったらfor文を抜ける
+                if (afpCountSp >= m_numSpotLight)
+                {
+                    break;
+                }
+            }
+        }
+    }
+    
+    //環境光合成
+    finalLig += m_ambientLight;
+    
+    //最終合成
+    float4 finalColor = g_albedo.Sample(g_sampler, psIn.uv);
+    //影
+    if(isShadowDraw == true)
+    {
+        finalColor.xyz *= 0.5f;
+    }
+    //光
+    finalColor.xyz *= finalLig;
+    
     return finalColor;
 }
