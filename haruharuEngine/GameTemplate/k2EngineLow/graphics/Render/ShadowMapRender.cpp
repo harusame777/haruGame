@@ -19,6 +19,10 @@ namespace nsK2EngineLow {
 			DXGI_FORMAT_D32_FLOAT,
 			clearColor
 		);
+
+		m_shadowMapModelGaussianBlur.Init(
+			&m_shadowMap.GetRenderTargetTexture()
+		);
 	}
 
 	//シャドウマップ描画
@@ -40,6 +44,8 @@ namespace nsK2EngineLow {
 		}
 
 		renderContext.WaitUntilFinishDrawingToRenderTarget(m_shadowMap);
+
+		ShadouMapBlurExecute(renderContext);
 
 		renderContext.SetRenderTarget(
 			g_graphicsEngine->GetCurrentFrameBuffuerRTV(),

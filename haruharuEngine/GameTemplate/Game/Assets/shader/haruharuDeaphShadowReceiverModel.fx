@@ -436,6 +436,7 @@ float4 PSMain(SPSIn psIn) : SV_Target0
         finalShadowColor = lerp(color.xyz, shadowColor, shadow);
     }
     
+    //法線
     //UV座標をサンプリング
     float3 localNormal = g_normalMap.Sample(g_sampler, psIn.uv);
     localNormal = (localNormal - 0.5) * 2.0f;
@@ -480,14 +481,6 @@ float4 PSMain(SPSIn psIn) : SV_Target0
         }
     }
     
-    //for (int dirligNo = 0; dirligNo < NUM_DIRECTIONAL_LIGHT; dirligNo++)
-    //{
-    //    //ディレクションライトの計算
-    //    finalLig += CalcLigFromDirectionLight(psIn, m_directionalLight[dirligNo], specPow);
-    //    //リムライトの計算
-    //    finalLig += CalcLigFromRimLight(psIn, m_directionalLight[dirligNo].direction, m_directionalLight[dirligNo].color);
-    //}
-
     //ココからポイントライトの計算
     
     //使用されているポイントライトがあるか確認

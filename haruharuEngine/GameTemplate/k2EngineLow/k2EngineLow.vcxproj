@@ -333,6 +333,7 @@
     <ClCompile Include="graphics\Render\RenderingEngine.cpp" />
     <ClCompile Include="graphics\light\PointLight.cpp" />
     <ClCompile Include="graphics\Render\ShadowMapRender.cpp" />
+    <ClCompile Include="ShadowMapModelRender.cpp" />
     <ClCompile Include="sound\SoundEngine.cpp" />
     <ClCompile Include="sound\SoundSource.cpp" />
     <ClCompile Include="sound\WaveFile.cpp" />
@@ -437,6 +438,7 @@
     <ClInclude Include="graphics\Render\RenderingEngine.h" />
     <ClInclude Include="graphics\light\PointLight.h" />
     <ClInclude Include="graphics\Render\ShadowMapRender.h" />
+    <ClInclude Include="ShadowMapModelRender.h" />
     <ClInclude Include="sound\SoundEngine.h" />
     <ClInclude Include="sound\SoundSource.h" />
     <ClInclude Include="sound\WaveFile.h" />

@@ -39,6 +39,10 @@ bool BackGroundWalls::Start()
 		//壁ドア付き4_4を設定
 		m_mainModel.Init("Assets/modelData/BackGround/laboDoorWay_4-4Model.tkm", nullptr, 0, enModelUpAxisZ, true);
 		break;
+	case BackGroundWalls::en_wallOnes:
+		//壁一体化モデル
+		m_mainModel.Init("Assets/modelData/BackGround/laboWal_lOnesModel.tkm", nullptr, 0, enModelUpAxisZ, true);
+		break;
 	}
 
 	//シャドウマップに描画するようにする

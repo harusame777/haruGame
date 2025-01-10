@@ -176,48 +176,12 @@ void Game::OutGameLoadProcess()
 	LevelRender levelRender;
 
 	//レベルレンダーのテスト
-	levelRender.Init("Assets/mapLevel/testLevel6.tkl", [&](LevelObjectData_Render& objData)
+	levelRender.Init("Assets/mapLevel/testLevel7.tkl", [&](LevelObjectData_Render& objData)
 		{
-			if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
+			if (objData.ForwardMatchName(L"wallOnes") == true)
 			{
 				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallType1_4);
-				walls->SetPosition(objData.m_position);
-				walls->SetRotation(objData.m_rotation);
-				walls->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"laboWall_2-4Model") == true)
-			{
-				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallType2_4);
-				walls->SetPosition(objData.m_position);
-				walls->SetRotation(objData.m_rotation);
-				walls->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"laboWall_4-4Model") == true)
-			{
-				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallType4_4);
-				walls->SetPosition(objData.m_position);
-				walls->SetRotation(objData.m_rotation);
-				walls->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"laboWall_4-6Model") == true)
-			{
-				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallType4_6);
-				walls->SetPosition(objData.m_position);
-				walls->SetRotation(objData.m_rotation);
-				walls->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"laboDoorWay_4-4Model") == true)
-			{
-				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallTypeDoorWay4_4);
+				walls->SetWallType(BackGroundWalls::en_wallOnes);
 				walls->SetPosition(objData.m_position);
 				walls->SetRotation(objData.m_rotation);
 				walls->SetScale(objData.m_scalse);

@@ -1,5 +1,6 @@
 #include "k2EngineLowPreCompile.h"
 #include "ModelRender.h"
+#include "ShadowMapModelRender.h"
 
 
 namespace nsK2EngineLow {
@@ -40,7 +41,8 @@ namespace nsK2EngineLow {
 		InitNormalModel(tkmfilePath, animationClips, numAnimationClips, enModelUpAxis, isRecieveShadow);
 
 		//シャドウマップ描画用モデルの初期化
-		InitShadowModel(tkmfilePath, enModelUpAxis);
+		ShadowMapModelRender shadowModel;
+		shadowModel.InitShadowMapModelRender(tkmfilePath,enModelUpAxis);
 	}
 
 	//GBuffer描画用のモデルを初期化
@@ -82,8 +84,7 @@ namespace nsK2EngineLow {
 			initData.m_expandConstantBufferSize = sizeof(m_light);
 
 			//シャドウマップを拡張SRVに設定する
-			initData.m_expandShaderResoruceView[0] = &(g_renderingEngine
-				->GetShadowMapRenderTarget()->GetRenderTargetTexture());
+			initData.m_expandShaderResoruceView[0] = &m_shadowMapModelGaussianBlur.GetBokeTexture();
 		}
 		else
 		{
@@ -114,39 +115,6 @@ namespace nsK2EngineLow {
 
 		//作成した初期化データをもとにモデルを初期化
 		m_model.Init(initData);
-	}
-
-	//シャドウマップに表示するモデルの作成
-	void ModelRender::InitShadowModel(const char* tkmFilePath, EnModelUpAxis modelUpAxis)
-	{
-		ModelInitData initData;
-		initData.m_tkmFilePath = tkmFilePath;
-		initData.m_modelUpAxis = modelUpAxis;
-
-		if (m_animationClips != nullptr)
-		{
-			//スケルトン指定
-			initData.m_skeleton = &m_skeleton;
-		}
-
-		initData.m_fxFilePath = "Assets/shader/haruharuDrawDeaphShadowMap.fx";
-
-		initData.m_colorBufferFormat[0] = DXGI_FORMAT_R32_FLOAT;/*デプスシャドウ用の設定*/
-
-
-
-		//ノンスキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
-		initData.m_vsEntryPointFunc = "VSMain";
-		//スキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
-		initData.m_vsSkinEntryPointFunc = "VSSkinMain";
-
-		m_shadowModel.Init(initData);
-
-		m_shadowModel.UpdateWorldMatrix(
-			m_position,
-			m_rotation,
-			m_scale
-			);
 	}
 
 	//スケルトンの登録処理
@@ -183,7 +151,7 @@ namespace nsK2EngineLow {
 		//ワールド行列更新
 		m_model.UpdateWorldMatrix(m_position,m_rotation, m_scale);
 
-		m_shadowModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+		m_shadowMapModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
 
 		//スケルトンが初期化済みの場合、スケルトンの更新
 		if (m_skeleton.IsInited())
@@ -228,7 +196,7 @@ namespace nsK2EngineLow {
 					continue;
 				}
 
-				m_shadowModel.Draw(
+				m_shadowMapModel.Draw(
 					rc,
 					g_matIdentity,
 					dirLigPtr.GetLightVP(),

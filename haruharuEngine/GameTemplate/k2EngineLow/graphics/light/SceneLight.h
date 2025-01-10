@@ -19,6 +19,8 @@ namespace nsK2EngineLow {
 		int m_isUse = false;
 		//ライトのビュープロジェクション
 		Matrix m_mt;
+		//ビュープロジェクションカメラのポジション
+		Vector3 m_vPCamPosition;
 	public:
 		//方向を設定
 		void SetDirection(const Vector3& direction)
@@ -90,6 +92,23 @@ namespace nsK2EngineLow {
 		{
 			return m_mt;
 		}
+		/// <summary>
+		/// ビュープロジェクションカメラの位置設定
+		/// </summary>
+		/// <param name="vPCamPos"></param>
+		void SetVPCamPosition(const Vector3& vPCamPos)
+		{
+			m_vPCamPosition = vPCamPos;
+		}
+		/// <summary>
+		/// ビュープロジェクションカメラの位置取得
+		/// </summary>
+		/// <returns></returns>
+		const Vector3& GetVPCamPosition()const
+		{
+			return m_vPCamPosition;
+		}
+		
 	};
 
 	struct SPointLight 

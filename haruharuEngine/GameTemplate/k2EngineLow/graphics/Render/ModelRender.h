@@ -1,12 +1,13 @@
 #pragma once
 
 #include "graphics/light/SceneLight.h"
+#include "graphics/Render/ShadowMapRender.h"
 
 namespace nsK2EngineLow {
 	/// <summary>
 	/// モデルを描画するためのヤツ
 	/// </summary>
-	class ModelRender : public IRenderer{
+	class ModelRender : public IRenderer, public ShadowMapRender{
 	public:
 		/// <summary>
 		/// コンストラクタ
@@ -42,11 +43,6 @@ namespace nsK2EngineLow {
 			int numAnimationClips = 0,
 			EnModelUpAxis enModelUpAxis = enModelUpAxisZ,
 			bool isRecieveShadow = false
-		);
-
-		void InitShadowModel(
-			const char* tkmfilePath,
-			EnModelUpAxis modelUpAxis
 		);
 
 		/// <summary>
@@ -148,7 +144,7 @@ namespace nsK2EngineLow {
 			m_isShadowChaster = flag;
 		}
 
-	private:
+	protected:
 		//モデルレンダーに設定されているモデル
 		Model m_model;
 		//モデルレンダーに設定されているスケルトン
@@ -169,7 +165,8 @@ namespace nsK2EngineLow {
 		//モデルレンダーに設定されているモデルの大きさ
 		Vector3 m_scale = Vector3::One;
 		
-		Model m_shadowModel;
+		Model m_shadowMapModel;
+
 
 		Model m_gBufferModel;
 

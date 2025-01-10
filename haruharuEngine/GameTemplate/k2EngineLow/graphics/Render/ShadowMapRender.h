@@ -1,4 +1,5 @@
 #pragma once
+#include "graphics/GaussianBlur.h"
 
 namespace nsK2EngineLow {
 	class IRenderer;
@@ -21,9 +22,21 @@ namespace nsK2EngineLow {
 			return &m_shadowMap;
 		}
 
-	private:
+		const Texture& GetShadowMapBokeTexture()
+		{
+			return m_shadowMapModelGaussianBlur.GetBokeTexture();
+		}
+
+		void ShadouMapBlurExecute(RenderContext& rc)
+		{
+			m_shadowMapModelGaussianBlur.ExecuteOnGPU(rc, 5.0f);
+		}
+
+	protected:
 		//レンダリングターゲット(影)
 		RenderTarget m_shadowMap;
+		//ガウシアンブラー
+		GaussianBlur m_shadowMapModelGaussianBlur;
 	};
 }
 

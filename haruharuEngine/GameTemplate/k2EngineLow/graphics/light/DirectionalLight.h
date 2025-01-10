@@ -56,6 +56,7 @@ namespace nsK2EngineLow {
 		void VPCamSetPosition(const Vector3& pos)
 		{
 			m_vprCam.SetPosition(pos);
+			m_directionLight->SetVPCamPosition(pos);
 		}
 		//ビュープロジェクションカメラ回転設定
 		void VPCamSetRotation(const float& rot)
