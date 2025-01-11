@@ -1,7 +1,7 @@
 #include "k2EngineLowPreCompile.h"
 #include "ModelRender.h"
-#include "ShadowMapModelRender.h"
-
+#include "graphics/Render/ShadowMapModelRender.h"
+#include "graphics/Render/ShadowMapRender.h"
 
 namespace nsK2EngineLow {
 
@@ -41,8 +41,7 @@ namespace nsK2EngineLow {
 		InitNormalModel(tkmfilePath, animationClips, numAnimationClips, enModelUpAxis, isRecieveShadow);
 
 		//シャドウマップ描画用モデルの初期化
-		ShadowMapModelRender shadowModel;
-		shadowModel.InitShadowMapModelRender(tkmfilePath,enModelUpAxis,animationClips,m_light);
+		m_shadowMapModel = m_shadowMapModelRender.InitShadowMapModelRender(tkmfilePath,enModelUpAxis,animationClips,m_light);
 	}
 
 	//GBuffer描画用のモデルを初期化

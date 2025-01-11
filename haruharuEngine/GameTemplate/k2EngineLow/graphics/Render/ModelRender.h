@@ -2,8 +2,11 @@
 
 #include "graphics/light/SceneLight.h"
 #include "graphics/Render/ShadowMapRender.h"
+#include "graphics/Render/ShadowMapModelRender.h"
 
 namespace nsK2EngineLow {
+	class ShadowMapModelRender;
+
 	/// <summary>
 	/// モデルを描画するためのヤツ
 	/// </summary>
@@ -144,6 +147,7 @@ namespace nsK2EngineLow {
 			m_isShadowChaster = flag;
 		}
 
+
 	protected:
 		//モデルレンダーに設定されているモデル
 		Model m_model;
@@ -164,10 +168,11 @@ namespace nsK2EngineLow {
 		Quaternion m_rotation = Quaternion::Identity;
 		//モデルレンダーに設定されているモデルの大きさ
 		Vector3 m_scale = Vector3::One;
-		
+
+		ShadowMapModelRender m_shadowMapModelRender;
+
 		Model m_shadowMapModel;
-
-
+		
 		Model m_gBufferModel;
 
 		//影を落とすか管理するフラグ

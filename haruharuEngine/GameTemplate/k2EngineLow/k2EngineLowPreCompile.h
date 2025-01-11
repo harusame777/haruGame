@@ -89,6 +89,7 @@ using namespace Microsoft::WRL;
 #include "graphics/light/DirectionalLight.h"
 #include "level3D/LevelRender.h"
 #include "graphics/Render/FontRender.h"
+#include "graphics/Render/ShadowMapModelRender.h"
 
 #include "graphics/GaussianBlur.h"
 

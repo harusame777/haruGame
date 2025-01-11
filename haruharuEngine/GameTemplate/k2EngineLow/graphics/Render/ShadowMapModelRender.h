@@ -1,12 +1,9 @@
 #pragma once
-#include "graphics/Render/ModelRender.h"
 #include "graphics/Render/ShadowMapRender.h"
-
 
 namespace nsK2EngineLow {
 
 	class ShadowMapModelRender :
-		public ModelRender,
 		public ShadowMapRender,
 		Noncopyable
 	{
@@ -22,9 +19,11 @@ namespace nsK2EngineLow {
 		/// <summary>
 		/// シャドウマップのモデルを初期化
 		/// </summary>
-		void InitShadowMapModelRender(
+		const Model& InitShadowMapModelRender(
 			const char* tkmfilePath,
-			EnModelUpAxis enModelUpAxis
+			EnModelUpAxis enModelUpAxis,
+			AnimationClip* animationClips,
+			const Light& ligPtr
 		);
 	private:
 		/// <summary>
@@ -35,6 +34,25 @@ namespace nsK2EngineLow {
 			Matrix mLVP;
 			Vector3 ligPos;
 		};
+		/// <summary>
+		/// スケルトン
+		/// </summary>
+		Skeleton m_skeleton;
+		/// <summary>
+		/// シャドウマップのモデル
+		/// </summary>
+		Model m_shadowMapModel;
+		/// <summary>
+		/// ポジション
+		/// </summary>
+		Vector3 m_position = Vector3::Zero;
+		/// <summary>
+		/// 回転
+		/// </summary>
+		Quaternion m_rotation = Quaternion::Identity;
+		/// <summary>
+		/// 拡大率
+		/// </summary>
+		Vector3 m_scale = Vector3::One;
 	};
-
 }

@@ -292,6 +292,7 @@
     <ClCompile Include="graphics\raytracing\RaytracingWorld.cpp" />
     <ClCompile Include="graphics\raytracing\TLASBuffer.cpp" />
     <ClCompile Include="graphics\RenderTarget.cpp" />
+    <ClCompile Include="graphics\Render\ShadowMapModelRender.cpp" />
     <ClCompile Include="graphics\RootSignature.cpp" />
     <ClCompile Include="graphics\RWStructuredBuffer.cpp" />
     <ClCompile Include="graphics\Shader.cpp" />
@@ -333,7 +334,6 @@
     <ClCompile Include="graphics\Render\RenderingEngine.cpp" />
     <ClCompile Include="graphics\light\PointLight.cpp" />
     <ClCompile Include="graphics\Render\ShadowMapRender.cpp" />
-    <ClCompile Include="ShadowMapModelRender.cpp" />
     <ClCompile Include="sound\SoundEngine.cpp" />
     <ClCompile Include="sound\SoundSource.cpp" />
     <ClCompile Include="sound\WaveFile.cpp" />
@@ -397,6 +397,7 @@
     <ClInclude Include="graphics\RenderContext.h" />
     <ClInclude Include="graphics\RenderContext_inline.h" />
     <ClInclude Include="graphics\RenderTarget.h" />
+    <ClInclude Include="graphics\Render\ShadowMapModelRender.h" />
     <ClInclude Include="graphics\RootSignature.h" />
     <ClInclude Include="graphics\RWStructuredBuffer.h" />
     <ClInclude Include="graphics\Shader.h" />
@@ -438,7 +439,6 @@
     <ClInclude Include="graphics\Render\RenderingEngine.h" />
     <ClInclude Include="graphics\light\PointLight.h" />
     <ClInclude Include="graphics\Render\ShadowMapRender.h" />
-    <ClInclude Include="ShadowMapModelRender.h" />
     <ClInclude Include="sound\SoundEngine.h" />
     <ClInclude Include="sound\SoundSource.h" />
     <ClInclude Include="sound\WaveFile.h" />
