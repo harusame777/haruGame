@@ -21,6 +21,8 @@ struct DirectionLight
     int isUse;
     //
     float4x4 mLVP;
+    //
+    float3 ligPos;
 };
 
 //ポイントライト
@@ -384,7 +386,7 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
     
     for (int ligNo = 0; ligNo < NUM_DIRECTIONAL_LIGHT; ligNo++)
     {
-        psIn.posInLVP[ligNo] = mul(m_directionalLight[ligNo].mLVP, worldPos);
+        psIn.posInLVP[ligNo] = length(worldPos.xyz - m_directionalLight[ligNo].ligPos) / 1000.0f;
     }
     //psIn.posInLVP[0] = mul(m_directionalLight[0].mLVP, worldPos);
     
@@ -420,20 +422,35 @@ float4 PSMain(SPSIn psIn) : SV_Target0
     float3 finalShadowColor;
                 
     //ライトビューZ値計算
-    float zInLVP = psIn.posInLVP[0].z / psIn.posInLVP[0].w;
+    float zInLVP = psIn.posInLVP[0].z;
     
     if (shadowMapUV.x > 0.0f && shadowMapUV.x < 1.0f
         && shadowMapUV.y > 0.0f && shadowMapUV.y < 1.0f);
     {
-        float shadow = g_shadowMap.SampleCmpLevelZero(
-            g_shadowMapSampler,//使用するサンプラーステート
-            shadowMapUV,       //シャドウマップにアクセスするUV座標
-            zInLVP             //比較するZ値
-        );
-
-        float3 shadowColor = color.xyz * 0.5f;
+        //シャドウマップから値をサンプリング
+        float2 shadowValue = g_shadowMap.Sample(g_sampler, shadowMapUV).xy;
         
-        finalShadowColor = lerp(color.xyz, shadowColor, shadow);
+        //まずこのピクセルが遮蔽されているか調べる
+        if(zInLVP > shadowValue.r && zInLVP <= 1.0f)
+        {
+            //遮蔽されているなら、チェビシェフの不等式を利用して光が当たる確率を求める
+            float depth_sq = shadowValue.x * shadowValue.x;
+            
+            //このグループの分散度合いを求める
+            //分散が大きいほど、varianceの数値は大きくなる
+            float variance = min(max(shadowValue.y - depth_sq, 0.0001f), 1.0f);
+            
+            //このピクセルのライトから見た深度値とシャドウマップの平均の深度値の差を求める
+            float md = zInLVP - shadowValue.x;
+            
+            //光が届く確率を求める
+            float lit_factor = variance / (variance + md * md);
+            
+            //シャドウカラーを求める
+            float3 shadowColor = color.xyz * 0.5f;
+            
+            finalShadowColor.xyz = lerp(shadowColor, color.xyz, lit_factor);
+        }
     }
     
     //法線
