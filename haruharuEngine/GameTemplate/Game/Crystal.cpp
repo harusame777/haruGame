@@ -50,7 +50,7 @@ bool Crystal::Start()
 {
 
 	//クリスタル01をモデルに設定
-	m_mainModel.Init("Assets/modelData/objects/crystal/crystal01_Model.tkm", nullptr, 0, enModelUpAxisZ, true);
+	m_mainModel.Init("Assets/modelData/objects/crystal/crystal01_Model.tkm", nullptr, 0, enModelUpAxisZ, ModelRender::en_crystalShader);
 
 	m_managerCrystalPtr = FindGO<ManagerCrystal>("CrystalMetaAI");
 

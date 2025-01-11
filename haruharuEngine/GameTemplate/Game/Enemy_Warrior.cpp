@@ -32,7 +32,8 @@ bool Enemy_Warrior::Start()
 	m_animationClip[EnAnimationClip::en_patrol].Load("Assets/modelData/enemyWarrior/enemy_Warrior_run.tka");
 	m_animationClip[EnAnimationClip::en_patrol].SetLoopFlag(true);
 
-	m_modelRender.Init("Assets/modelData/enemyWarrior/enemy_Warrior.tkm", m_animationClip,en_animationNum);
+	m_modelRender.Init("Assets/modelData/enemyWarrior/enemy_Warrior.tkm", m_animationClip,en_animationNum
+		,enModelUpAxisZ,ModelRender::en_shadowShader);
 	m_modelRender.SetScale(1.0f, 1.0f, 1.0f);
 	m_modelRender.SetPosition({500.0f,0.0f,0.0f});
 
@@ -71,10 +72,10 @@ void Enemy_Warrior::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eve
 {
 	if (wcscmp(eventName, L"enemyRunSound") == 0)
 	{
-		m_gameSound->LocalSoundOrder(GameSound::en_enemyWarriorWalkSound,false
-			,0.5f
-			,m_position
-		);
+		//m_gameSound->LocalSoundOrder(GameSound::en_enemyWarriorWalkSound,false
+		//	,0.5f
+		//	,m_position
+		//);
 	}
 }
 

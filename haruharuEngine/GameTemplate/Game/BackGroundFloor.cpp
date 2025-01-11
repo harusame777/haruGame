@@ -17,7 +17,7 @@ BackGroundFloor::~BackGroundFloor()
 bool BackGroundFloor::Start()
 {
 	//メイン床を設定
-	m_mainModel.Init("Assets/modelData/BackGround/laboFloor_MainModel.tkm", nullptr, 0, enModelUpAxisZ, true);
+	m_mainModel.Init("Assets/modelData/BackGround/laboFloor_MainModel.tkm", nullptr, 0, enModelUpAxisZ, ModelRender::en_shadowShader);
 
 	//シャドウマップに描画しないようにする
 	m_mainModel.SetShadowChasterFlag(false);
