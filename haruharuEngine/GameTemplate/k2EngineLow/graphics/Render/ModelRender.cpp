@@ -42,7 +42,7 @@ namespace nsK2EngineLow {
 
 		//シャドウマップ描画用モデルの初期化
 		ShadowMapModelRender shadowModel;
-		shadowModel.InitShadowMapModelRender(tkmfilePath,enModelUpAxis);
+		shadowModel.InitShadowMapModelRender(tkmfilePath,enModelUpAxis,animationClips,m_light);
 	}
 
 	//GBuffer描画用のモデルを初期化
