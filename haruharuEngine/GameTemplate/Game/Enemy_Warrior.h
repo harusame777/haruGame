@@ -5,6 +5,7 @@
 #include "AI/PathFinding/Path.h"
 #include "AI/PathFinding/PathFinding.h"
 
+class GameSound;
 class Player;
 
 class Enemy_Warrior : public EnemyBase
@@ -24,6 +25,12 @@ private:
 	/// </summary>
 	/// <returns></returns>
 	bool Start();
+	/// <summary>
+	/// アニメーションイベント
+	/// </summary>
+	/// <param name="clipName"></param>
+	/// <param name="eventName"></param>
+	void OnAnimationEvent(const wchar_t* clipName, const wchar_t* eventName);
 	/// <summary>
 	/// アップデート関数
 	/// </summary>
@@ -60,5 +67,9 @@ private:
 
 	//test
 	Player* m_player = nullptr;
+	/// <summary>
+	/// ゲームサウンド
+	/// </summary>
+	GameSound* m_gameSound = nullptr;
 };
 

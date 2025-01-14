@@ -22,11 +22,14 @@
 #include "Title.h"
 #include "Result.h"
 #include "Window.h"
+#include "GameSound.h"
 
 
 bool Game::Start()
 {
 	InitDirctionaLight();
+
+	m_gameSound = NewGO<GameSound>(2, "gameSound");
 
 	m_load = NewGO<Load>(1, "load");
 
@@ -46,6 +49,7 @@ void Game::Update()
 	{
 		DoInGame();
 	}
+
 }
 
 void Game::DoInGame()
@@ -128,6 +132,8 @@ void Game::DoOutGame()
 		if (m_title != nullptr && 
 			m_title->IsEndGameTitle())
 		{
+			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 1.0f);
+
 			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadCircular });
 
 			m_gameOutState = GameOutState::en_gameLoad;
