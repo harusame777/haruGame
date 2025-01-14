@@ -4,6 +4,7 @@
 #include "EnemyAIMoveAstar.h"
 #include "EnemySM_Warrior.h"
 #include "EnemyAIMetaWarrior.h"
+#include "GameSound.h"
 
 //これを有効にするとデバッグモードになる
 //#define DEBUG_MODE
@@ -24,6 +25,7 @@ Enemy_Warrior::~Enemy_Warrior()
 	DeleteGO(m_collisionObject);
 }
 
+
 //スタート関数
 bool Enemy_Warrior::Start()
 {
@@ -33,9 +35,17 @@ bool Enemy_Warrior::Start()
 	m_animationClip[EnAnimationClip::en_patrol].Load("Assets/modelData/enemyWarrior/enemy_Warrior_run.tka");
 	m_animationClip[EnAnimationClip::en_patrol].SetLoopFlag(true);
 
-	m_modelRender.Init("Assets/modelData/enemyWarrior/enemy_Warrior.tkm", m_animationClip,en_animationNum);
+	m_modelRender.Init("Assets/modelData/enemyWarrior/enemy_Warrior.tkm", m_animationClip,en_animationNum
+		,enModelUpAxisZ,ModelRender::en_shadowShader);
 	m_modelRender.SetScale(1.0f, 1.0f, 1.0f);
 	m_modelRender.SetPosition({500.0f,0.0f,0.0f});
+
+	//アニメーションイベント用関数設定
+	m_modelRender.AddAnimationEvent([&](const wchar_t* clipName, const wchar_t* eventName) {
+		OnAnimationEvent(clipName, eventName);
+		});
+
+	m_gameSound = FindGO<GameSound>("gameSound");
 
 	//シャドウマップに描画するようにする
 	m_modelRender.SetShadowChasterFlag(false);
@@ -77,6 +87,22 @@ bool Enemy_Warrior::Start()
 	m_collisionObject->SetIsEnableAutoDelete(false);
 	
 	return true;
+}
+
+void Enemy_Warrior::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eventName)
+{
+	if (wcscmp(eventName, L"enemyRunSound") == 0)
+	{
+		//m_gameSound->LocalSoundOrder(GameSound::en_enemyWarriorWalkSound,false
+		//	,0.5f
+		//	,m_position
+		//);
+
+		//m_gameSound->SoundListInit(
+		//	GameSound::en_enemyWarriorWalkSound,
+		//	GameSound::en_priority_low,
+		//	0.5f);
+	}
 }
 
 //アップデート関数

@@ -19,6 +19,7 @@ class Load;
 class Title;
 class Gameover;
 class Result;
+class GameSound;
 
 //定数等
 namespace {
@@ -174,5 +175,9 @@ private:
 	/// ロード画面
 	/// </summary>
 	Load* m_load = nullptr;
+	/// <summary>
+	/// ゲームサウンド
+	/// </summary>
+	GameSound* m_gameSound = nullptr;
 };
 

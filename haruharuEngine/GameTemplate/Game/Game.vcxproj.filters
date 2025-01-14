@@ -124,6 +124,7 @@
       <Filter>OutGame</Filter>
     </ClCompile>
     <ClCompile Include="WarriorAIMetaStop.cpp" />
+    <ClCompile Include="GameSound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -260,6 +261,7 @@
     <ClInclude Include="EnemyAIConWallSearch.h">
       <Filter>Enemy\AICon</Filter>
     </ClInclude>
+    <ClInclude Include="GameSound.h" />
     <ClInclude Include="Gameover.h">
       <Filter>OutGame</Filter>
     </ClInclude>

@@ -3,7 +3,7 @@
 
 bool Locker::Start()
 {
-	m_mainModel.Init("Assets/modelData/objects/locker/locker.tkm", nullptr, 0, enModelUpAxisZ, true);
+	m_mainModel.Init("Assets/modelData/objects/locker/locker.tkm", nullptr, 0, enModelUpAxisZ, ModelRender::en_usuallyShader);
 
 	m_mainModel.SetPosition(m_position);
 

@@ -51,7 +51,7 @@ float4 PSLuminance(PSInput In) : SV_Target0
     //clip関数は引数の値がマイナスになると移行の処理をスキップする
     //なので、マイナスになるとピクセルカラーは出力されない
     //今回の実装はカラーの明るさが1以下ならピクセルキルする
-    clip(t - 1.0f);
+    clip(t - 0.9f);
     
     return color;
 }

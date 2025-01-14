@@ -17,6 +17,13 @@ namespace nsK2EngineLow {
 		/// </summary>
 		~ModelRender();
 
+		enum EnShader
+		{
+			en_usuallyShader,
+			en_shadowShader,
+			en_crystalShader
+		};
+
 		struct ShadowLightData
 		{
 		public:
@@ -38,7 +45,7 @@ namespace nsK2EngineLow {
 			AnimationClip* animationClips = nullptr,
 			int numAnimationClips = 0,
 			EnModelUpAxis enModelUpAxis = enModelUpAxisZ,
-			bool isRecieveShadow = false
+			const EnShader& shader = ModelRender::en_usuallyShader
 		);
 
 		void InitNormalModel(
@@ -46,7 +53,7 @@ namespace nsK2EngineLow {
 			AnimationClip* animationClips = nullptr,
 			int numAnimationClips = 0,
 			EnModelUpAxis enModelUpAxis = enModelUpAxisZ,
-			bool isRecieveShadow = false
+			const EnShader& shader = ModelRender::en_usuallyShader
 		);
 
 		void InitShadowModel(
