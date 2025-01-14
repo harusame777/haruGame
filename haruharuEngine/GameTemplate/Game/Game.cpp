@@ -29,7 +29,7 @@ bool Game::Start()
 {
 	InitDirctionaLight();
 
-	m_gameSound = NewGO<GameSound>(0, "gameSound");
+	m_gameSound = NewGO<GameSound>(2, "gameSound");
 
 	m_load = NewGO<Load>(1, "load");
 

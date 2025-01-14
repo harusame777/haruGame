@@ -76,6 +76,11 @@ void Enemy_Warrior::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eve
 		//	,0.5f
 		//	,m_position
 		//);
+
+		//m_gameSound->SoundListInit(
+		//	GameSound::en_enemyWarriorWalkSound,
+		//	GameSound::en_priority_low,
+		//	0.5f);
 	}
 }
 
