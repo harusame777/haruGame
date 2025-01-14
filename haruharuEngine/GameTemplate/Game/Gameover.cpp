@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "Gameover.h"
 #include "EnemyAIMetaWarrior.h"
+#include "EnemySM_Warrior.h"
 #include "EnemyBase.h"
 #include "Player.h"
+#include "Load.h"
 
 //定数等
 namespace {
@@ -17,9 +19,7 @@ bool Gameover::Start()
 		BACKSIDE_SPRITE_W_SIZE,
 		BACKSIDE_SPRITE_H_SIZE);
 
-	Player* player = FindGO<Player>("player");
-
-	Vector3 playerPos = player->GetPosition();
+	m_load = FindGO<Load>("load");
 
 	EnemyAIMetaWarrior* enemyMetaAI = FindGO<EnemyAIMetaWarrior>("MetaAI");
 
@@ -27,31 +27,16 @@ bool Gameover::Start()
 
 	warriorDataHolder = enemyMetaAI->GetEnemyDatas();
 
-	Vector3 attackWarriorPos;
-
 	for (auto& ptr : warriorDataHolder->m_warriorDatas)
 	{
-		bool flag = ptr->GetEnemyPtr().GetAttackFlag();
 
-		if (flag)
+		if (ptr->GetEnemyPtr().GetStateNumber() 
+			== EnemySM_Warrior::en_attack)
 		{
-			attackWarriorPos = ptr->GetEnemyPtr().GetPosition();
+			m_attackEnemy = &ptr->GetEnemyPtr();
 		}
+
 	}
-
-	m_cameraToWarriorDir = attackWarriorPos - g_camera3D->GetPosition();
-
-	float endAngle = atan2(m_cameraToWarriorDir.x, m_cameraToWarriorDir.z);
-
-	m_endRotation.SetRotation(Vector3::AxisY, endAngle);
-
-	m_cameraToTargetDir = g_camera3D->GetTarget() - g_camera3D->GetPosition();
-
-	m_cameraToTargetDir.Normalize();
-
-	float startAngle = atan2(m_cameraToTargetDir.x, m_cameraToTargetDir.z);
-
-	m_startRotation.SetRotation(Vector3::AxisY, startAngle);
 
 	m_gameoverState = GameoverState::en_cameraEasing;
 
@@ -67,40 +52,54 @@ void Gameover::Update()
 //ステート更新関数
 void Gameover::GameoverStateUpdate()
 {
+	Vector3 cameraToEnemyVec;
+	Vector3 targetPos;
+
 	switch (m_gameoverState)
 	{
 	case Gameover::en_standby:
 		break;
 	case Gameover::en_cameraEasing:
+		
+		cameraToEnemyVec = m_attackEnemy->GetPosition() 
+			- g_camera3D->GetPosition();
+			 
 
-		//if (CameraEasing())
-		//{
-		//	m_gameoverState = GameoverState::en_enemyAnimation;
-		//}
+		cameraToEnemyVec.Normalize();
+
+		cameraToEnemyVec.x *= 50.0f;
+		cameraToEnemyVec.z *= 50.0f;
+		cameraToEnemyVec.y = 10.0f;
+
+		targetPos = cameraToEnemyVec + g_camera3D->GetPosition();
+
+		g_camera3D->SetTarget(targetPos);
+
+		if (m_attackEnemy->GetAttackImpact() == true)
+		{
+			m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadOrdinary });
+
+			m_gameoverState = GameoverState::en_enemyAnimation;
+		}
 
 		break;
 	case Gameover::en_enemyAnimation:
+
+		if (m_attackEnemy->GetAnimationEnd() == true)
+		{
+			SetKillEndFlag(true);
+
+			m_gameoverState = GameoverState::en_gameoverDraw;
+		}
+
 		break;
+	case Gameover::en_gameoverDraw:
+
+	
+
 	default:
 		break;
 	}
-}
-
-//カメラのイージング関数
-const bool& Gameover::CameraEasing()
-{
-	//回転まで実装
-	m_startRotation.AddRotationDegY(5.0f);
-
-	m_startRotation.Apply(m_cameraToTargetDir);
-
-	Vector3 newCameraPos = m_cameraToTargetDir + g_camera3D->GetPosition();
-
-	g_camera3D->SetTarget(newCameraPos);
-
-	m_cameraToTargetDir = Vector3::AxisZ;
-
-	return false;
 }
 
 //レンダー関数

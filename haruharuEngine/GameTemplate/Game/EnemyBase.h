@@ -9,6 +9,7 @@ public:
 		en_idle,
 		en_tracking,
 		en_patrol,
+		en_attack,
 		en_animationNum,
 	};
 	/// <summary>
@@ -91,6 +92,12 @@ protected:
 	bool m_attackFlag = false;
 
 	char m_colName[20] = "";
+	/// <summary>
+	/// アニメーションが終わった
+	/// </summary>
+	bool m_isAnimationEnd = false;
+
+	bool m_isAttackImpact = false;
 
 public:
 	/// <summary>
@@ -238,6 +245,36 @@ public:
 	const char* GetCollisionName() const
 	{
 		return m_colName;
+	}
+
+	void SetAnimationEnd(const bool& setBool)
+	{
+		m_isAnimationEnd = setBool;
+	}
+
+	const bool& GetAnimationEnd() const
+	{
+		return m_isAnimationEnd;
+	}
+
+	const bool& IsAnimationClipEnd() const 
+	{
+		if (m_modelRender.IsPlayingAnimation() == false)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	void SetAttackImpact(const bool& is)
+	{
+		m_isAttackImpact = is;
+	}
+
+	const bool& GetAttackImpact() const
+	{
+		return m_isAttackImpact;
 	}
 };
 

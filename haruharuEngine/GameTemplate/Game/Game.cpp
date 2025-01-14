@@ -80,11 +80,18 @@ void Game::DoInGame()
 		}
 		break;
 	case Game::en_gameOver:
-		m_gameover = NewGO<Gameover>(0, "gameover");
 
-		m_load->LoadExecutionFadeIn();
+		if (m_gameover == nullptr)
+		{
+			m_gameover = NewGO<Gameover>(0, "gameover");
+		}
 
-		m_gameInState = GameInState::en_gameResultGameOver;
+		if (m_gameover->GetKillEndFlag() == true)
+		{
+			OutGameObjectDeleteProcces();
+
+			m_gameInState = GameInState::en_gameResultGameOver;
+		}
 		break;
 	case Game::en_gameResultGameOver:
 

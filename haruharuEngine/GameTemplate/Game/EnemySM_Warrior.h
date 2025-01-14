@@ -49,7 +49,9 @@ public:
 		//ƒƒ^AIw—ß’ÇÕó‘Ô
 		en_warrior_trackingMetaAI,
 		//’â~
-		en_stop
+		en_stop,
+		//UŒ‚
+		en_attack
 	};
 public:
 	enum EnemyAINum

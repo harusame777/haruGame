@@ -35,6 +35,9 @@ bool Enemy_Warrior::Start()
 	m_animationClip[EnAnimationClip::en_patrol].Load("Assets/modelData/enemyWarrior/enemy_Warrior_run.tka");
 	m_animationClip[EnAnimationClip::en_patrol].SetLoopFlag(true);
 
+	m_animationClip[EnAnimationClip::en_attack].Load("Assets/modelData/enemyWarrior/enemy_Warrior_attack.tka");
+	m_animationClip[EnAnimationClip::en_attack].SetLoopFlag(false);
+
 	m_modelRender.Init("Assets/modelData/enemyWarrior/enemy_Warrior.tkm", m_animationClip,en_animationNum
 		,enModelUpAxisZ,ModelRender::en_shadowShader);
 	m_modelRender.SetScale(1.0f, 1.0f, 1.0f);
@@ -93,15 +96,14 @@ void Enemy_Warrior::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eve
 {
 	if (wcscmp(eventName, L"enemyRunSound") == 0)
 	{
-		//m_gameSound->LocalSoundOrder(GameSound::en_enemyWarriorWalkSound,false
-		//	,0.5f
-		//	,m_position
-		//);
-
 		//m_gameSound->SoundListInit(
 		//	GameSound::en_enemyWarriorWalkSound,
 		//	GameSound::en_priority_low,
 		//	0.5f);
+	}
+	else if (wcscmp(eventName, L"AttackImpact") == 0)
+	{
+		SetAttackImpact(true);
 	}
 }
 

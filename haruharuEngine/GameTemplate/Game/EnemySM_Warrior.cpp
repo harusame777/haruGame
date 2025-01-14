@@ -168,6 +168,16 @@ void EnemySM_Warrior::EnemyAIUpdate()
 		m_enemy->SetPlayAnimationState(EnemyBase::en_idle);
 
 		break;
+	case EnemySM_Warrior::en_attack:
+
+		m_enemy->SetPlayAnimationState(EnemyBase::en_attack);
+
+		if (GetEnemyPtr().IsAnimationClipEnd() == true)
+		{
+			GetEnemyPtr().SetAnimationEnd(true);
+		}
+
+		break;
 	default:
 		break;
 	}
@@ -190,7 +200,11 @@ void EnemySM_Warrior::ChangeState()
 
 		m_warriorMetaAI->MetaAIExecution(this,EnemyAIMetaWarrior::mode_stop);
 
+		SetState(WarriorState::en_attack);
+
 		m_game->PlayerGameOver();
+
+		return;
 	}
 
 	if (m_warriorState == WarriorState::en_warrior_tracking ||
