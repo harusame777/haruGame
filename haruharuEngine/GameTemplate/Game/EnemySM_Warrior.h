@@ -48,6 +48,8 @@ public:
 		en_warrior_patrol,
 		//ƒƒ^AIw—ß’ÇÕó‘Ô
 		en_warrior_trackingMetaAI,
+		//’â~
+		en_stop
 	};
 public:
 	enum EnemyAINum

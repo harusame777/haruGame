@@ -73,10 +73,10 @@ void Gameover::GameoverStateUpdate()
 		break;
 	case Gameover::en_cameraEasing:
 
-		if (CameraEasing())
-		{
-			m_gameoverState = GameoverState::en_enemyAnimation;
-		}
+		//if (CameraEasing())
+		//{
+		//	m_gameoverState = GameoverState::en_enemyAnimation;
+		//}
 
 		break;
 	case Gameover::en_enemyAnimation:

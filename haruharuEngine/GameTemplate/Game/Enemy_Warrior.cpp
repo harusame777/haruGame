@@ -8,6 +8,8 @@
 //これを有効にするとデバッグモードになる
 //#define DEBUG_MODE
 
+//AttackImpact
+
 //コンストラクタ
 Enemy_Warrior::Enemy_Warrior()
 {

@@ -163,6 +163,11 @@ void EnemySM_Warrior::EnemyAIUpdate()
 		m_enemy->SetPlayAnimationState(EnemyBase::en_patrol);
 
 		break;
+	case EnemySM_Warrior::en_stop:
+
+		m_enemy->SetPlayAnimationState(EnemyBase::en_idle);
+
+		break;
 	default:
 		break;
 	}
@@ -182,6 +187,8 @@ void EnemySM_Warrior::ChangeState()
 		}
 
 		GetEnemyPtr().SetAttackFlag(true);
+
+		m_warriorMetaAI->MetaAIExecution(this,EnemyAIMetaWarrior::mode_stop);
 
 		m_game->PlayerGameOver();
 	}

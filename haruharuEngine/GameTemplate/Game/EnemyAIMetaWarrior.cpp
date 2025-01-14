@@ -5,6 +5,7 @@
 #include "PatrolRuteDataHolder.h"
 #include "WarriorAIMetaTracking.h"
 #include "WarriorAIMetapPatrol.h"
+#include "WarriorAIMetaStop.h"
 #include "EnemySM_Warrior.h"
 #include "EnemyWarriorTrackingState.h"
 #include "EnemyBase.h"
@@ -68,6 +69,9 @@ bool EnemyAIMetaWarrior::Start()
 
 	//メタAIの処理プログラムを初期化
 	ListInitAIMeta(new WarriorAIMetaRetreat(m_patrolRuteDataHolder), true);
+
+	//メタAIの処理プログラムを初期化
+	ListInitAIMeta(new WarriorAIMetaStop(m_warriorDataHolder), true);
 
 	for (auto& metaAIs : m_AIMetaList)
 	{

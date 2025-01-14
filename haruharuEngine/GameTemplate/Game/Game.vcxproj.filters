@@ -123,6 +123,7 @@
     <ClCompile Include="Gameover.cpp">
       <Filter>OutGame</Filter>
     </ClCompile>
+    <ClCompile Include="WarriorAIMetaStop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -262,6 +263,7 @@
     <ClInclude Include="Gameover.h">
       <Filter>OutGame</Filter>
     </ClInclude>
+    <ClInclude Include="WarriorAIMetaStop.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bg">
