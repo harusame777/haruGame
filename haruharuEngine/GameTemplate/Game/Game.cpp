@@ -86,16 +86,30 @@ void Game::DoInGame()
 			m_gameover = NewGO<Gameover>(0, "gameover");
 		}
 
+		if (m_gameover->GetFadeOutFlag() == true)
+		{
+			m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadOrdinary });
+
+			m_gameInState = GameInState::en_gameResultGameOver;
+		}
+
+		break;
+	case Game::en_gameResultGameOver:
+
 		if (m_gameover->GetKillEndFlag() == true)
 		{
 			OutGameObjectDeleteProcces();
 
-			m_gameInState = GameInState::en_gameResultGameOver;
+			m_load->LoadExecutionFadeIn();
 		}
-		break;
-	case Game::en_gameResultGameOver:
 
+		if (m_load->IsLoadCompletion() == true &&
+			m_gameover->GetGameoverEnd() == true)
+		{
+			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary, Load::en_loadOrdinary });
 
+			m_gameOutState = GameOutState::en_gameTitle;
+		}
 
 		break;
 	case Game::en_gameResult:
@@ -139,9 +153,19 @@ void Game::DoOutGame()
 		{
 			m_load->LoadExecutionFadeIn();
 
-			DeleteGO(m_result);
+			if (m_result != nullptr)
+			{
+				DeleteGO(m_result);
+			}
+
+			if (m_gameover != nullptr)
+			{
+				DeleteGO(m_gameover);
+			}
 
 			m_result = nullptr;
+
+			m_gameover = nullptr;
 
 			m_title = NewGO<Title>(0, "title");
 		}
@@ -376,7 +400,6 @@ void Game::OutGameObjectDeleteProcces()
 		return true;
 		});
 
-	DeleteGO(m_GetCOMSprite);
 	
 	DeleteGO(m_managerCrystal);
 
@@ -384,6 +407,8 @@ void Game::OutGameObjectDeleteProcces()
 		DeleteGO(object);
 		return true;
 		});
+
+	DeleteGO(m_GetCOMSprite);
 
 	DeleteGO(m_player);
 

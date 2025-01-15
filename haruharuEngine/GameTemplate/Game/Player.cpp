@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "PlayerStaminaUi.h"
+#include "Game.h"
 
 //定数等
 namespace {
@@ -32,6 +33,8 @@ bool Player::Start()
 	m_CController.SetPosition(m_position);
 
 	m_playerStaminaUi = FindGO<PlayerStaminaUi>("StaminaUI");
+
+	m_game = FindGO<Game>("game");
 	
 	m_playerStaminaUi->InitPlayerStaminaPtr(&m_stamina);
 
@@ -50,6 +53,11 @@ void Player::Update()
 //移動関数
 void Player::Move()
 {
+	if (m_game->GetGameInState() == Game::en_gameOver)
+	{
+		return;
+	}
+
 	//プレイヤーが歩き状態か走り状態化を調べて
 	//速度を選択する
 	IsWalkOrRun();
@@ -80,7 +88,22 @@ void Player::Move()
 //プレイヤーが走り状態か歩き状態化を調べる関数
 void Player::IsWalkOrRun()
 {
-	if (g_pad[0]->IsPress(enButtonRB1) && m_isStaminaOut == false)
+	float lStick_x = g_pad[0]->GetLStickXF();
+	float lStick_y = g_pad[0]->GetLStickYF();
+
+	bool stick_move = false;
+
+	if (lStick_x > 0.0f ||
+		lStick_x < 0.0f ||
+		lStick_y > 0.0f ||
+		lStick_y < 0.0f)
+	{
+		stick_move = true;
+	}
+	
+	if (stick_move == true &&
+		g_pad[0]->IsPress(enButtonRB1) && 
+		m_isStaminaOut == false)
 	{
 		m_moveSpeed = playerSpeedRun;
 

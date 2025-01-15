@@ -56,7 +56,7 @@ void Title::FontUpdate()
 
 	m_mainFont.SetText(wcsbuf);
 	//サブフォント
-	swprintf_s(wcsbuf, 256, L"push A");
+	swprintf_s(wcsbuf, 256, L"push B");
 
 	m_subFont.SetColor(FONT_COLOR);
 

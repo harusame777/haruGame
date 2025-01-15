@@ -2,6 +2,7 @@
 
 class EnemyBase;
 class Load;
+class GameSound;
 
 class Gameover : public IGameObject
 {
@@ -18,6 +19,8 @@ private:
 		en_enemyAnimation,
 
 		en_gameoverDraw,
+		
+		en_gameoverEnd,
 	};
 	GameoverState m_gameoverState = GameoverState::en_standby;
 public:
@@ -49,6 +52,10 @@ private:
 	/// <param name="rc"></param>
 	void Render(RenderContext& rc);
 	/// <summary>
+	/// フェードアウトフラグ
+	/// </summary>
+	bool m_fadeOutFlag = false;
+	/// <summary>
 	/// 暗転したか
 	/// </summary>
 	bool m_killEndFlag = false;
@@ -57,6 +64,22 @@ private:
 	/// </summary>
 	SpriteRender  m_backSideSprite;
 	/// <summary>
+	/// メイン文字
+	/// </summary>
+	FontRender m_mainFont;
+	/// <summary>
+	/// サブ文字
+	/// </summary>
+	FontRender m_subFont;
+	/// <summary>
+	/// gameover文字
+	/// </summary>
+	FontRender m_gameoverFont;
+	/// <summary>
+	/// 後ろ側のスプライトを描画するかどうか
+	/// </summary>
+	bool m_backSideSpriteDrawFlag = false;
+	/// <summary>
 	/// 攻撃エネミー
 	/// </summary>
 	EnemyBase* m_attackEnemy = nullptr;
@@ -64,6 +87,10 @@ private:
 	/// ロードインスタンス
 	/// </summary>
 	Load* m_load = nullptr;
+	/// <summary>
+	/// ゲームサウンド
+	/// </summary>
+	GameSound* m_gameSound = nullptr;
 public:
 	/// <summary>
 	/// 暗転したかどうかを設定
@@ -80,6 +107,43 @@ public:
 	const bool& GetKillEndFlag() const
 	{
 		return m_killEndFlag;
+	}
+	/// <summary>
+	/// 暗転するかどうかを設定
+	/// </summary>
+	/// <param name="flag"></param>
+	void SetFadeOutFlag(const bool& flag)
+	{
+		m_fadeOutFlag = flag;
+	}
+	/// <summary>
+	/// 暗転するかどうかを取得
+	/// </summary>
+	/// <returns></returns>
+	const bool& GetFadeOutFlag() const
+	{
+		return m_fadeOutFlag;
+	}
+	/// <summary>
+	/// ゲームオーバーが終了したかどうか
+	/// </summary>
+	/// <returns></returns>
+	const bool& GetGameoverEnd() const
+	{
+		if (m_gameoverState == GameoverState::en_gameoverEnd)
+		{
+			return true;
+		}
+
+		return false;
+	}
+	/// <summary>
+	/// 後ろ側のスプライトを描画するかどうか
+	/// </summary>
+	/// <param name="flag"></param>
+	void BackSideSpriteDraw(const bool& flag)
+	{
+		m_backSideSpriteDrawFlag = flag;
 	}
 };
 

@@ -32,18 +32,6 @@ class Game : public IGameObject
 {
 public:
 
-	void PlayerGameClear()
-	{
-		m_gameInState = GameInState::en_gameClear;
-	}
-
-	void PlayerGameOver()
-	{
-		m_gameInState = GameInState::en_gameOver;
-	}
-
-private:
-
 	enum GameOutState
 	{
 		en_gameTitle,
@@ -52,7 +40,7 @@ private:
 
 		en_gameOutEnd,
 	};
-	GameOutState m_gameOutState = GameOutState::en_gameTitle;
+
 	enum GameInState
 	{
 		en_gameUpdate,
@@ -65,6 +53,24 @@ private:
 
 		en_gameResult
 	};
+
+	void PlayerGameClear()
+	{
+		m_gameInState = GameInState::en_gameClear;
+	}
+
+	void PlayerGameOver()
+	{
+		m_gameInState = GameInState::en_gameOver;
+	}
+
+	const int& GetGameInState() const 
+	{
+		return m_gameInState;
+	}
+
+private:
+	GameOutState m_gameOutState = GameOutState::en_gameTitle;
 	GameInState m_gameInState = GameInState::en_gameUpdate;
 	/// <summary>
 	/// スタート関数

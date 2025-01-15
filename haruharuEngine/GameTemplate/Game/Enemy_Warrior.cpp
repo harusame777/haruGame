@@ -103,6 +103,8 @@ void Enemy_Warrior::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eve
 	}
 	else if (wcscmp(eventName, L"AttackImpact") == 0)
 	{
+		m_gameSound->LocalSoundOrder(GameSound::en_killSound, false, 1.0f);
+
 		SetAttackImpact(true);
 	}
 }
