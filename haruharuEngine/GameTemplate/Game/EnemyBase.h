@@ -9,6 +9,7 @@ public:
 		en_idle,
 		en_tracking,
 		en_patrol,
+		en_attack,
 		en_animationNum,
 	};
 	/// <summary>
@@ -85,6 +86,19 @@ protected:
 	AnimationClip m_animationClip[en_animationNum];
 
 	EnAnimationClip m_animationClipState = EnAnimationClip::en_idle;
+	/// <summary>
+	///	攻撃フラグ
+	/// </summary>
+	bool m_attackFlag = false;
+
+	char m_colName[20] = "";
+	/// <summary>
+	/// アニメーションが終わった
+	/// </summary>
+	bool m_isAnimationEnd = false;
+
+	bool m_isAttackImpact = false;
+
 public:
 	/// <summary>
 	/// 位置設定
@@ -211,6 +225,56 @@ public:
 	void SetPlayAnimationState(const EnAnimationClip& setState)
 	{
 		m_animationClipState = setState;
+	}
+
+	void SetAttackFlag(const bool& flag)
+	{
+		m_attackFlag = flag;
+	}
+
+	const bool& GetAttackFlag() const
+	{
+		return m_attackFlag;
+	}
+
+	void SetCollisionName(const char* name)
+	{
+		std::strcat(m_colName, name);
+	}
+
+	const char* GetCollisionName() const
+	{
+		return m_colName;
+	}
+
+	void SetAnimationEnd(const bool& setBool)
+	{
+		m_isAnimationEnd = setBool;
+	}
+
+	const bool& GetAnimationEnd() const
+	{
+		return m_isAnimationEnd;
+	}
+
+	const bool& IsAnimationClipEnd() const 
+	{
+		if (m_modelRender.IsPlayingAnimation() == false)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	void SetAttackImpact(const bool& is)
+	{
+		m_isAttackImpact = is;
+	}
+
+	const bool& GetAttackImpact() const
+	{
+		return m_isAttackImpact;
 	}
 };
 

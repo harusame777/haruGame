@@ -1,5 +1,6 @@
 #pragma once
 
+class Game;
 class PlayerStaminaUi;
 
 class Player : public IGameObject
@@ -144,5 +145,9 @@ private:
 	/// プレイヤーのスタミナUI
 	/// </summary>
 	PlayerStaminaUi* m_playerStaminaUi = nullptr;
+	/// <summary>
+	/// ゲームのインスタンス
+	/// </summary>
+	Game* m_game = nullptr;
 };
 

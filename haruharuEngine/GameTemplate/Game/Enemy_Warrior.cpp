@@ -3,10 +3,13 @@
 #include "Player.h"
 #include "EnemyAIMoveAstar.h"
 #include "EnemySM_Warrior.h"
+#include "EnemyAIMetaWarrior.h"
 #include "GameSound.h"
 
 //これを有効にするとデバッグモードになる
 //#define DEBUG_MODE
+
+//AttackImpact
 
 //コンストラクタ
 Enemy_Warrior::Enemy_Warrior()
@@ -31,6 +34,9 @@ bool Enemy_Warrior::Start()
 
 	m_animationClip[EnAnimationClip::en_patrol].Load("Assets/modelData/enemyWarrior/enemy_Warrior_run.tka");
 	m_animationClip[EnAnimationClip::en_patrol].SetLoopFlag(true);
+
+	m_animationClip[EnAnimationClip::en_attack].Load("Assets/modelData/enemyWarrior/enemy_Warrior_attack.tka");
+	m_animationClip[EnAnimationClip::en_attack].SetLoopFlag(false);
 
 	m_modelRender.Init("Assets/modelData/enemyWarrior/enemy_Warrior.tkm", m_animationClip,en_animationNum
 		,enModelUpAxisZ,ModelRender::en_shadowShader);
@@ -58,9 +64,27 @@ bool Enemy_Warrior::Start()
 
 	//コリジョンオブジェクトを作成する。
 	m_collisionObject = NewGO<CollisionObject>(0);
+
+	EnemyAIMetaWarrior* enemyMetaAI = FindGO<EnemyAIMetaWarrior>("MetaAI");
+
+	std::shared_ptr<WarriorDataHolder> warriorDataHolder;
+
+	warriorDataHolder = enemyMetaAI->GetEnemyDatas();
+
+	int enemyNum = warriorDataHolder->m_warriorDatas.size();
+
+	char colName[20] = "enemy_col:";
+
+	char enemyNumChar[20] = "";
+
+	std::sprintf(enemyNumChar, "%d", enemyNum);  // 数字を文字列に変換
+	std::strcat(colName, enemyNumChar);        // 配列に追加
+
+	SetCollisionName(colName);
+
 	//球状のコリジョンを作成する。
 	m_collisionObject->CreateSphere(m_position, Quaternion::Identity, 30.0f * m_scale.z);
-	m_collisionObject->SetName("enemy_col");
+	m_collisionObject->SetName(GetCollisionName());
 	m_collisionObject->SetPosition(m_position);
 	////コリジョンオブジェクトが自動で削除されないようにする。
 	m_collisionObject->SetIsEnableAutoDelete(false);
@@ -72,15 +96,16 @@ void Enemy_Warrior::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eve
 {
 	if (wcscmp(eventName, L"enemyRunSound") == 0)
 	{
-		//m_gameSound->LocalSoundOrder(GameSound::en_enemyWarriorWalkSound,false
-		//	,0.5f
-		//	,m_position
-		//);
-
 		//m_gameSound->SoundListInit(
 		//	GameSound::en_enemyWarriorWalkSound,
 		//	GameSound::en_priority_low,
 		//	0.5f);
+	}
+	else if (wcscmp(eventName, L"AttackImpact") == 0)
+	{
+		m_gameSound->LocalSoundOrder(GameSound::en_killSound, false, 1.0f);
+
+		SetAttackImpact(true);
 	}
 }
 

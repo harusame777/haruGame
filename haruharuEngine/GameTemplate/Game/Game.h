@@ -17,6 +17,7 @@ class PlayerStaminaUi;
 class PlayerOxygenUi;
 class Load;
 class Title;
+class Gameover;
 class Result;
 class GameSound;
 
@@ -31,6 +32,28 @@ class Game : public IGameObject
 {
 public:
 
+	enum GameOutState
+	{
+		en_gameTitle,
+
+		en_gameLoad,
+
+		en_gameOutEnd,
+	};
+
+	enum GameInState
+	{
+		en_gameUpdate,
+
+		en_gameClear,
+
+		en_gameOver,
+
+		en_gameResultGameOver,
+
+		en_gameResult
+	};
+
 	void PlayerGameClear()
 	{
 		m_gameInState = GameInState::en_gameClear;
@@ -41,27 +64,13 @@ public:
 		m_gameInState = GameInState::en_gameOver;
 	}
 
+	const int& GetGameInState() const 
+	{
+		return m_gameInState;
+	}
+
 private:
-
-	enum GameOutState
-	{
-		en_gameTitle,
-
-		en_gameLoad,
-
-		en_gameOutEnd,
-	};
 	GameOutState m_gameOutState = GameOutState::en_gameTitle;
-	enum GameInState
-	{
-		en_gameUpdate,
-
-		en_gameClear,
-
-		en_gameOver,
-
-		en_gameResult
-	};
 	GameInState m_gameInState = GameInState::en_gameUpdate;
 	/// <summary>
 	/// スタート関数
@@ -124,6 +133,10 @@ private:
 	/// リザルト
 	/// </summary>
 	Result* m_result = nullptr;
+	/// <summary>
+	/// ゲームオーバー
+	/// </summary>
+	Gameover* m_gameover = nullptr;
 	/// <summary>
 	/// プレイヤー
 	/// </summary>

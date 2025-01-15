@@ -50,6 +50,10 @@ public:
 		/// </summary>
 		mode_retreat,
 		/// <summary>
+		/// ’â~
+		/// </summary>
+		mode_stop,
+		/// <summary>
 		/// ‰Šú‰»—p
 		/// </summary>
 		mode_init,

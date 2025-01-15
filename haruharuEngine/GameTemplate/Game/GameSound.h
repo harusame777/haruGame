@@ -17,6 +17,8 @@ public:
 		en_hitByIronSound,
 		//エネミーウォリアー走行音
 		en_enemyWarriorWalkSound,
+		//キルサウンド
+		en_killSound,
 		//タイトルBGM
 		en_TitleBgm,
 		//サウンド数

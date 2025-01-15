@@ -251,6 +251,7 @@
     <ClCompile Include="Enemy_Warrior.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="Gameover.cpp" />
     <ClCompile Include="GameSound.cpp" />
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="Locker.cpp" />
@@ -272,6 +273,7 @@
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="WarriorAIMetapPatrol.cpp" />
     <ClCompile Include="WarriorAIMetaRetreat.cpp" />
+    <ClCompile Include="WarriorAIMetaStop.cpp" />
     <ClCompile Include="WarriorAIMetaTracking.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -303,6 +305,7 @@
     <ClInclude Include="Enemy_Warrior.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="Gameover.h" />
     <ClInclude Include="GameSound.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Locker.h" />
@@ -322,6 +325,7 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="WarriorAIMetapPatrol.h" />
     <ClInclude Include="WarriorAIMetaRetreat.h" />
+    <ClInclude Include="WarriorAIMetaStop.h" />
     <ClInclude Include="WarriorAIMetaTracking.h" />
     <ClInclude Include="WarriorDataHolder.h" />
     <ClInclude Include="Window.h" />

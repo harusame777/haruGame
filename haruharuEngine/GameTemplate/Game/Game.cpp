@@ -21,6 +21,7 @@
 #include "Load.h"
 #include "Title.h"
 #include "Result.h"
+#include "Gameover.h"
 #include "Window.h"
 #include "GameSound.h"
 
@@ -80,6 +81,36 @@ void Game::DoInGame()
 		break;
 	case Game::en_gameOver:
 
+		if (m_gameover == nullptr)
+		{
+			m_gameover = NewGO<Gameover>(0, "gameover");
+		}
+
+		if (m_gameover->GetFadeOutFlag() == true)
+		{
+			m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadOrdinary });
+
+			m_gameInState = GameInState::en_gameResultGameOver;
+		}
+
+		break;
+	case Game::en_gameResultGameOver:
+
+		if (m_gameover->GetKillEndFlag() == true)
+		{
+			OutGameObjectDeleteProcces();
+
+			m_load->LoadExecutionFadeIn();
+		}
+
+		if (m_load->IsLoadCompletion() == true &&
+			m_gameover->GetGameoverEnd() == true)
+		{
+			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary, Load::en_loadOrdinary });
+
+			m_gameOutState = GameOutState::en_gameTitle;
+		}
+
 		break;
 	case Game::en_gameResult:
 
@@ -122,9 +153,19 @@ void Game::DoOutGame()
 		{
 			m_load->LoadExecutionFadeIn();
 
-			DeleteGO(m_result);
+			if (m_result != nullptr)
+			{
+				DeleteGO(m_result);
+			}
+
+			if (m_gameover != nullptr)
+			{
+				DeleteGO(m_gameover);
+			}
 
 			m_result = nullptr;
+
+			m_gameover = nullptr;
 
 			m_title = NewGO<Title>(0, "title");
 		}
@@ -359,7 +400,6 @@ void Game::OutGameObjectDeleteProcces()
 		return true;
 		});
 
-	DeleteGO(m_GetCOMSprite);
 	
 	DeleteGO(m_managerCrystal);
 
@@ -367,6 +407,8 @@ void Game::OutGameObjectDeleteProcces()
 		DeleteGO(object);
 		return true;
 		});
+
+	DeleteGO(m_GetCOMSprite);
 
 	DeleteGO(m_player);
 
