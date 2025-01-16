@@ -7,6 +7,7 @@ class GameSound;
 
 class WarriorAIMetaFootSteps : public EnemyAIMetaBase
 {
+public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>

@@ -54,6 +54,10 @@ public:
 		/// </summary>
 		mode_stop,
 		/// <summary>
+		/// ‘«‰¹
+		/// </summary>
+		mode_footStep,
+		/// <summary>
 		/// ‰Šú‰»—p
 		/// </summary>
 		mode_init,

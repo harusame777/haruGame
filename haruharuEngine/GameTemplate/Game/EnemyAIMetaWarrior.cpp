@@ -6,6 +6,7 @@
 #include "WarriorAIMetaTracking.h"
 #include "WarriorAIMetapPatrol.h"
 #include "WarriorAIMetaStop.h"
+#include "WarriorAIMetaFootSteps.h"
 #include "EnemySM_Warrior.h"
 #include "EnemyWarriorTrackingState.h"
 #include "EnemyBase.h"
@@ -72,6 +73,9 @@ bool EnemyAIMetaWarrior::Start()
 
 	//メタAIの処理プログラムを初期化
 	ListInitAIMeta(new WarriorAIMetaStop(m_warriorDataHolder), true);
+
+	//メタAIの処理プログラムを初期化
+	ListInitAIMeta(new WarriorAIMetaFootSteps(m_warriorDataHolder), false);
 
 	for (auto& metaAIs : m_AIMetaList)
 	{
