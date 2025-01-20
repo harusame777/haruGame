@@ -99,6 +99,8 @@ protected:
 
 	bool m_isAttackImpact = false;
 
+	float m_footStepValumeCalcValue = 0.0;
+
 public:
 	/// <summary>
 	/// à íuê›íË
@@ -280,6 +282,16 @@ public:
 	const ModelRender* GetModelRender() const
 	{
 		return &m_modelRender;
+	}
+
+	void  SetFootStepValumeCalcValue(const float& valume)
+	{
+		m_footStepValumeCalcValue = valume;
+	}
+
+	const float& GetFootStepValumeCalcValue() const
+	{
+		return m_footStepValumeCalcValue;
 	}
 };
 

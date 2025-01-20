@@ -2,22 +2,17 @@
 #include "WarriorAIMetaFootSteps.h"
 #include "GameSound.h"
 #include "Player.h"
+#include "EnemySM_Warrior.h"
+#include "EnemyBase.h"
 
 namespace {
 
-	static const float MAX_RANGE_CALC_NUM = 500.0f;
-	static const float MIN_RANGE_NUM = 0.0f;
-
-	static const float MAX_VOLUME_NUM = 1.0f;
-	static const float MIN_VOLUME_NUM = 0.0f;
 }
 
 //メタAIの初期化
 void WarriorAIMetaFootSteps::MetaAIInit()
 {
 	m_player = FindGO<Player>("player");
-
-	m_gameSound = FindGO<GameSound>("gamesound");
 }
 
 //メタAIの実行
@@ -26,39 +21,34 @@ void WarriorAIMetaFootSteps::MetaAIExecution(EnemySMBase* initEnemy)
 	m_MainCallWarrior = initEnemy;
 
 	LengthCalc();
-
-	float finalValume = RatioCalc();
-
-	m_gameSound->LocalSoundOrder(
-		GameSound::en_enemyWarriorWalkSound
-		, false
-		, finalValume);
 }
 
 //距離計算
 void WarriorAIMetaFootSteps::LengthCalc()
 {
-	Vector3 playerPos = m_player->GetPosition();
 
-	Vector3 enemyPos = m_MainCallWarrior
-		->GetEnemyPtr().GetPosition();
+	EnemyFootValumeData datas[3];
 
-	Vector3 playerToEnemydiff = playerPos - enemyPos;
+	int enemyNum = 3;
 
-	m_playerToEnemyDiffSq = playerToEnemydiff.LengthSq();
-}
+	//エネミー全体のプレイヤーとの距離を測る
+	for (int enemyNo = 0; enemyNo < enemyNum; enemyNo++)
+	{
+		
+		Vector3 diff = m_player->GetPosition() 
+			- m_sharedWarriorDatas->m_warriorDatas[enemyNo]->GetEnemyPtr().GetPosition();
 
-//距離計算
-const float& WarriorAIMetaFootSteps::RatioCalc()
-{
-	float finalValue;
+		datas[enemyNo].m_distance = diff.Length();
 
-	float RangeValue = MAX_RANGE_CALC_NUM * MAX_RANGE_CALC_NUM;
+	}
 
-	finalValue = MIN_VOLUME_NUM + (m_playerToEnemyDiffSq / RangeValue) *
-		(MAX_VOLUME_NUM - MIN_VOLUME_NUM);
+	for ()
+	{
 
-	return finalValue;
+
+
+	}
+
 }
 
 //処理終了

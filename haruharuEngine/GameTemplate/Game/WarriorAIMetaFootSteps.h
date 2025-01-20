@@ -33,15 +33,19 @@ public:
 	/// </summary>
 	const bool ProcessEnd(EnemySMBase* initEnemy);
 private:
+	enum EnemyDistance_Kinds
+	{
+		//優先度一番
+		en_priority_high,
+		//優先度二番
+		en_priority_middle,
+		//優先度三番
+		en_priority_low,
+	};
 	/// <summary>
 	/// 距離計算
 	/// </summary>
 	void LengthCalc();
-	/// <summary>
-	/// 割合計算
-	/// </summary>
-	/// <returns></returns>
-	const float& RatioCalc();
 	/// <summary>
 	/// プレイヤーからエネミーまでの距離
 	/// </summary>
@@ -62,5 +66,7 @@ private:
 	/// 共通しているウォリアーのデータ
 	/// </summary>
 	std::shared_ptr<WarriorDataHolder> m_sharedWarriorDatas;
+
+	float m_valumeKinds[3];
 };
 
