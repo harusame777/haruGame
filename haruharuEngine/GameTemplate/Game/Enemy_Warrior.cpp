@@ -106,52 +106,9 @@ void Enemy_Warrior::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eve
 {
 	if (wcscmp(eventName, L"enemyRunSound") == 0)
 	{
-		//m_gameSound->SoundListInit(
-		//	GameSound::en_enemyWarriorWalkSound,
-		//	GameSound::en_priority_low,
-		//	0.5f);
-
-		//Vector3 playerPos = m_player->GetPosition();
-
-		//Vector3 enemyPos = GetPosition();
-
-		//Vector3 playerToEnemydiff = playerPos - enemyPos;
-
-		//float playerToEnemyDiffSq = playerToEnemydiff.LengthSq();
-
-		//if (playerToEnemyDiffSq >= 25000)
-		//{
-		//	playerToEnemyDiffSq = 25000;
-		//}
-
-		//float RangeValue = MAX_RANGE_CALC_NUM * MAX_RANGE_CALC_NUM;
-
-		//float t = static_cast<float>(playerToEnemyDiffSq) / RangeValue;
-
-		//float finalValue;
-
-		//finalValue = (1.0f - t) * 0.0f + t * 1.0f;
-
-		//m_gameSound->LocalSoundOrder(
-		//	GameSound::en_enemyWarriorWalkSound
-		//	, false
-		//	, finalValue);
-
 		Vector3 playerPos = m_player->GetPosition();
 		Vector3 enemyPos = GetPosition();
 		Vector3 playerToEnemydiff = playerPos - enemyPos;
-
-		//// 距離の平方値を計算
-		//float playerToEnemyDiffSq = playerToEnemydiff.LengthSq();
-
-		//// 距離をクランプ（0～25000）
-		//playerToEnemyDiffSq = std::clamp(playerToEnemyDiffSq, 0.0f, 25000.0f);
-
-		//// 最大範囲の平方値
-		//float RangeValue = MAX_RANGE_CALC_NUM * MAX_RANGE_CALC_NUM;
-
-		//// 正規化された値を計算（0～1）
-		//float t = playerToEnemyDiffSq / RangeValue;
 
 		float diss = playerToEnemydiff.Length();
 
@@ -169,9 +126,9 @@ void Enemy_Warrior::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eve
 		// 線形補間（ここでは t がそのまま最終値）
 		float finalValue = t;
 
-		m_gameSound->LocalSoundOrder(
+		m_gameSound->SoundListInit(
 			GameSound::en_enemyWarriorWalkSound,
-			false,
+			GameSound::en_priority_high,
 			finalValue
 		);
 	}

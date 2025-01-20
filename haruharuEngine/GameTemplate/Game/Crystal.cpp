@@ -72,7 +72,7 @@ bool Crystal::Start()
 	m_scoreUi = FindGO<PlayerScoreUi>("ScoreUI");
 
 	//クリスタルの取得コマンド表示プログラムのインスタンスを取得する
-	m_GetCOMSprite = FindGO<CrystalGetCommandSprite>("object");
+	m_GetCOMSprite = FindGO<CrystalGetCommandSprite>("comSprite");
 
 	//コライダーを初期化する
 	m_sphereCollider.Create(1.0f);

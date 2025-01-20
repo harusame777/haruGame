@@ -86,10 +86,6 @@ private:
 	/// </summary>
 	void InitDirctionaLight();
 	/// <summary>
-	/// クリスタルを初期化
-	/// </summary>
-	void InitObjectCrystal();
-	/// <summary>
 	/// インゲーム
 	/// </summary>
 	void DoInGame();

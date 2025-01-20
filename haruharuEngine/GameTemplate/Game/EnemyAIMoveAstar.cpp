@@ -147,7 +147,7 @@ void EnemyAIMoveAstar::EnemyAIUpdate()
 		//ˆÚ“®æ‚ğŒvZ
 		Vector3 pathMovePos = m_path.Move(
 			myPos,
-			5.0f,
+			3.0f,
 			isEnd
 		);
 

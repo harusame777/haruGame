@@ -96,7 +96,8 @@ void Game::DoInGame()
 		break;
 	case Game::en_gameResultGameOver:
 
-		if (m_gameover->GetKillEndFlag() == true)
+		if (m_gameover->GetKillEndFlag() == true &&
+			m_load->IsLoadBlackout())
 		{
 			OutGameObjectDeleteProcces();
 
@@ -171,7 +172,8 @@ void Game::DoOutGame()
 		}
 
 		if (m_title != nullptr && 
-			m_title->IsEndGameTitle())
+			m_title->IsEndGameTitle() &&
+			m_load->IsLoadCompletion())
 		{
 			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 1.0f);
 
@@ -216,7 +218,10 @@ void Game::OutGameLoadProcess()
 	//エネミーウォリアーのメタAI
 	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");
 
-	InitObjectCrystal();
+	m_GetCOMSprite = NewGO<CrystalGetCommandSprite>(0, "comSprite");
+
+	////クリスタルのメタAI
+	m_managerCrystal = NewGO<ManagerCrystal>(0, "CrystalMetaAI");
 
 	LevelRender levelRender;
 
@@ -335,14 +340,6 @@ void Game::InitDirctionaLight()
 	sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
 	sunDirectionalLight.LightDirectionNormalize();
 	sunDirectionalLight.CastShadow();
-}
-
-void Game::InitObjectCrystal()
-{
-	m_GetCOMSprite = NewGO<CrystalGetCommandSprite>(0, "object");
-
-	////クリスタルのメタAI
-	m_managerCrystal = NewGO<ManagerCrystal>(0, "CrystalMetaAI");
 }
 
 //QueryGOs<IEnemy>("summonenemy", [&](IEnemy* ienemy) {

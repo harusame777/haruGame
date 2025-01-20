@@ -24,6 +24,9 @@ bool GameSound::Start()
 	g_soundEngine->ResistWaveFileBank(SoundListNum::en_killSound,
 		"Assets/sound/killSound.wav");
 
+	g_soundEngine->ResistWaveFileBank(SoundListNum::en_playerWalkSound,
+		"Assets/sound/playerWalkSound.wav");
+
 	return true;
 }
 
@@ -39,19 +42,24 @@ void GameSound::Update()
 void GameSound::PlayListSound()
 {
 
-	//優先順位
-	//std::sort(
-	//	m_playSoundList.begin(),
-	//	m_playSoundList.end(),
-	//	compareByValueDesc);
+	if (m_playSoundList[0].IsListUse() == false)
+	{
+		return;
+	}
+
+	// ソート処理
+	std::sort(std::begin(m_playSoundList), std::end(m_playSoundList),
+		[](const SoundListData& a, const SoundListData& b) {
+			return a.GetSoundPriority() < b.GetSoundPriority(); // 昇順ソート
+		});
 
 	//再生
-	for (int soundNum = 0;
-		soundNum < MAX_SOUND_PLAY_VALUE;
-		soundNum++)
+	for (int listNo = 0;
+		listNo < MAX_SOUND_PLAY_VALUE;
+		listNo++)
 	{
 		
-		//m_playSoundList[soundNum]->PlayListSound();
+		m_playSoundList[listNo].PlayListSound();
 
 	}
 
@@ -67,12 +75,12 @@ bool GameSound::compareByValueDesc(
 void GameSound::SoundListReset()
 {
 
-	for (auto& listPtr: m_playSoundList)
+	for (int listNo = 0;
+		listNo < MAX_SOUNDLIST_NUM; 
+		listNo++)
 	{
-		delete(listPtr);
+		m_playSoundList[listNo].SoundDataReset();
 	}
-
-	m_playSoundList.clear();
 
 }
 
@@ -113,21 +121,38 @@ void GameSound::LocalSoundOrder(const SoundListNum& listNum,
 
 }
 
-void GameSound::SoundListInit(
+const SoundSource& GameSound::SoundListInit(
 	const SoundListNum& listNum,
 	const SoundPriority& priority,
 	const float& volume
 )
 {
-	SoundListData* newData = new SoundListData;
 
-	newData->SetSoundInit(listNum);
+	SoundListData* initData = nullptr;
 
-	newData->SetSoundPriority(priority);
+	for (int listNo = 0;
+		listNo < MAX_SOUNDLIST_NUM;
+		listNo++)
+	{
+		if (m_playSoundList[listNo].IsListUse() == false)
+		{
 
-	newData->SetVolume(volume);
+			initData = &m_playSoundList[listNo];
 
-	m_playSoundList.push_back(newData);
+			break;
+
+		}
+	}
+
+	initData->SetSoundInit(listNum);
+
+	initData->SetSoundPriority(priority);
+
+	initData->SetVolume(volume);
+
+	initData->SetSoundUse(true);
+
+	return initData->GetSoundPtr();
 }
 
 //ポインタサウンドリクエスト
