@@ -276,5 +276,10 @@ public:
 	{
 		return m_isAttackImpact;
 	}
+
+	const ModelRender* GetModelRender() const
+	{
+		return &m_modelRender;
+	}
 };
 

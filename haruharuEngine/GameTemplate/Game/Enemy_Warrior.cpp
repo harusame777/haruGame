@@ -11,6 +11,15 @@
 
 //AttackImpact
 
+namespace {
+
+	static const float MAX_RANGE_CALC_NUM = 500.0f;
+	static const float MIN_RANGE_NUM = 0.0f;
+
+	static const float MAX_VOLUME_NUM = 1.0f;
+	static const float MIN_VOLUME_NUM = 0.0f;
+}
+
 //コンストラクタ
 Enemy_Warrior::Enemy_Warrior()
 {
@@ -53,6 +62,7 @@ bool Enemy_Warrior::Start()
 	//シャドウマップに描画するようにする
 	m_modelRender.SetShadowChasterFlag(false);
 
+	m_player = FindGO<Player>("player");
 
 	InitAIList();
 
@@ -96,13 +106,35 @@ void Enemy_Warrior::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eve
 {
 	if (wcscmp(eventName, L"enemyRunSound") == 0)
 	{
-		//m_gameSound->SoundListInit(
-		//	GameSound::en_enemyWarriorWalkSound,
-		//	GameSound::en_priority_low,
-		//	0.5f);
+		Vector3 playerPos = m_player->GetPosition();
+		Vector3 enemyPos = GetPosition();
+		Vector3 playerToEnemydiff = playerPos - enemyPos;
+
+		float diss = playerToEnemydiff.Length();
+
+		float t;
+
+		if (diss > 1000.0f)
+		{
+			t = 0.0f;
+		}
+		else
+		{
+			t = 1.0f - (diss / 1000.0f);
+		}
+
+		// 線形補間（ここでは t がそのまま最終値）
+		float finalValue = t;
+
+		m_gameSound->SoundListInit(
+			GameSound::en_enemyWarriorWalkSound,
+			GameSound::en_priority_high,
+			finalValue
+		);
 	}
 	else if (wcscmp(eventName, L"AttackImpact") == 0)
 	{
+
 		m_gameSound->LocalSoundOrder(GameSound::en_killSound, false, 1.0f);
 
 		SetAttackImpact(true);

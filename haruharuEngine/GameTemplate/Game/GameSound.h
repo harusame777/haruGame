@@ -1,6 +1,11 @@
 #pragma once
 #include "sound/SoundSource.h"
 
+//定数等
+namespace {
+	static const int MAX_SOUNDLIST_NUM = 30;
+}
+
 class GameSound : public IGameObject
 {
 public:
@@ -19,6 +24,8 @@ public:
 		en_enemyWarriorWalkSound,
 		//キルサウンド
 		en_killSound,
+		//エネミーウォリアー走行音
+		en_playerWalkSound,
 		//タイトルBGM
 		en_TitleBgm,
 		//サウンド数
@@ -58,7 +65,7 @@ public:
 		const float& volume,
 		const Vector3& soundPos);
 	const SoundSource& PointerSoundOrder(const SoundListNum& listNum);
-	void SoundListInit(
+	const SoundSource& SoundListInit(
 		const SoundListNum& listNum, 
 		const SoundPriority& priority,
 		const float& volume
@@ -83,12 +90,22 @@ private:
 		/// 音量
 		/// </summary>
 		float m_volume = 0.0f;
+		/// <summary>
+		/// このサウンドリストが使用中かどうか
+		/// </summary>
+		bool m_use = false;
 	public:
 		void SetSoundInit(const SoundListNum& soundListNum)
 		{
+			m_soundListNum = soundListNum;
+
 			m_soundData = NewGO<SoundSource>(0);
 
-			m_soundData->Init(soundListNum);
+			m_soundData->Init(m_soundListNum);
+		}
+		const SoundSource& GetSoundPtr() const
+		{
+			return *m_soundData;
 		}
 		void SetSoundPriority(const SoundPriority& soundPriority)
 		{
@@ -104,7 +121,29 @@ private:
 		}
 		void PlayListSound()
 		{
+			m_soundData->SetVolume(m_volume);
+
 			m_soundData->Play(false);
+		}
+		void SetSoundUse(const bool& use)
+		{
+			m_use = use;
+		}
+		const bool& IsListUse() const
+		{
+			return m_use;
+		}
+		void SoundDataReset()
+		{
+			m_soundData = nullptr;
+
+			m_soundListNum = SoundListNum::Non;
+
+			m_soundPriority = SoundPriority::en_priority_non;
+
+			m_volume = 0.0f;
+
+			m_use = false;
 		}
 	};
 	/// <summary>
@@ -133,6 +172,6 @@ private:
 	/// <summary>
 	/// 音再生リスト
 	/// </summary>
-	std::vector<SoundListData*> m_playSoundList;
+	SoundListData m_playSoundList[MAX_SOUNDLIST_NUM];
 };
 
