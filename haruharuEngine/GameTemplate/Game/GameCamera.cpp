@@ -45,7 +45,7 @@ bool GameCamera::Start()
 //アップデート関数
 void GameCamera::Update()
 {
-#ifdef DEBUG_MODE
+#ifdef _DEBUG
 	//カメラのモード切替の処理
 	CamFPSorTPS();
 	//TPSカメラの処理
@@ -58,7 +58,7 @@ void GameCamera::Update()
 //FPSカメラの関数
 void GameCamera::FPSCam()
 {
-#ifdef DEBUG_MODE 
+#ifdef _DEBUG 
 	if (m_camMode != en_camModeFPS)
 	{
 		return;
