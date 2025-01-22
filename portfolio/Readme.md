@@ -17,7 +17,8 @@
   - [◇基本設計](#基本設計)
   - [◇ダッシュ](#ダッシュ)
   - [◇スキャン](#スキャン)
-- [◇エネミーについて](#エネミーについて)
+- [◇モンスターについて](#モンスターについて)
+  - [◇仕様](#仕様-1)
 
 <br />
   
@@ -28,25 +29,25 @@
 > <dd>SALVAGE</dd>
 > <dt>制作期間</dt>
 > <dd>2024年8月から現在まで</dd>
-> <dt> ゲームジャンル</dt>
-> <dd> ホラーゲーム</dd>
-> <dt> プレイ人数</dt>
-> <dd> 一人</dd>
-> <dt> 使用言語</dt>
-> <dd> C++</dd>
-> <dd> HLSL</dd>
-> <dt> 使用ツール</dt>
-> <dd> Visual Studio 2022</dd>
-> <dd> Visual Studio Code</dd>
-> <dd> Adobe Photoshop 2025</dd>
-> <dd> 3ds Max 2024</dd>
-> <dd> Effekseer</dd>
-> <dd> GitHub</dd>
-> <dd> Fork</dd>
-> <dd> Trello</dd>
-> <dt> 開発環境</dt>
-> <dd> 学校内製の簡易エンジン</dd>
-> <dd> Windows11</dd>
+> <dt>ゲームジャンル</dt>
+> <dd>ホラーゲーム</dd>
+> <dt>プレイ人数</dt>
+> <dd>一人</dd>
+> <dt>使用言語</dt>
+> <dd>C++</dd>
+> <dd>HLSL</dd>
+> <dt>使用ツール</dt>
+> <dd>Visual Studio 2022</dd>
+> <dd>Visual Studio Code</dd>
+> <dd>Adobe Photoshop 2025</dd>
+> <dd>3ds Max 2024</dd>
+> <dd>Effekseer</dd>
+> <dd>GitHub</dd>
+> <dd>Fork</dd>
+> <dd>Trello</dd>
+> <dt>開発環境</dt>
+> <dd>学校内製の簡易エンジン</dd>
+> <dd>Windows11</dd>
 > </dl>
 
 
@@ -122,7 +123,14 @@
 <br />
 
 <a id = "enemy"></a>
-# ◇エネミーについて
+# ◇モンスターについて
 
 <br />
+
+<a id = "enemySpecification"></a>
+## ◇仕様
+> <dl>
+> <dt>数</dt>
+> <dd>3体</dd>
+> </dl>
 
