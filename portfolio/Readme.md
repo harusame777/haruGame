@@ -10,6 +10,7 @@
   - [作品概要](#作品概要)
 - [作成したソースコード](#作成したソースコード)
 - [作成したエンジンコード](#作成したエンジンコード)
+- [◇作成したシェーダー](#作成したシェーダー)
 - [◇ゲーム説明](#ゲーム説明)
 - [◇操作説明](#操作説明)
 - [◇技術紹介](#技術紹介)
@@ -179,6 +180,27 @@
 <br />
 
 <a id = "anchor4"></a>
+# ◇作成したシェーダー
+>- haruharuCircularGaugeSprite.fx
+>- haruharuCrystalModel.fx
+>- haruharuDeaphShadowReceiverModel.fx
+>- haruharuDrawDeaphShadowMap.fx
+>- haruharuDrawShadowMap.fx
+>- haruharuLoadSpriteShader.fx
+>- haruharuModel.fx
+>- haruharuOxygenGaugeSpriteShader.fx
+>- haruharuPostEffect.fx
+>- haruharuRenderToGBufferFor3DModel.fx
+>- haruharuShadowReceiverModel.fx
+>- haruharuSprite.fx
+>- haruharuStaminaBarSpriteShader.fx
+>- haruharuWindowSpriteShader.fx
+>- haruharuWipeSprite.fx
+>- haruharuWipeSpriteMoveVer.fx
+
+<br />
+
+<a id = "anchor5"></a>
 # ◇ゲーム説明
 > ### このゲームは廃研究所に侵入した主人公が研究所内部にある鉱石を</dd>
 > ### 残り酸素が続く限り採取して、内部にいるモンスターに襲われないように</dd>
@@ -192,18 +214,18 @@
 
 <br />
 
-<a id = "anchor5"></a>
+<a id = "anchor6"></a>
 # ◇操作説明
 > ![alt text](image3.png)
 
 <br />
 
-<a id = "anchor6"></a>
+<a id = "anchor7"></a>
 # ◇技術紹介
 
 <br />
 
-<a id = "anchor7"></a>
+<a id = "anchor8"></a>
 ## ◇ステートマシン
 >実装理由:プログラムの順序を分かりやすく視覚化しておくことによって、
 >プログラムの制御や追加がやりやすくなるため。
@@ -213,7 +235,7 @@
 
 <br />
 
-<a id = "anchor8"></a>
+<a id = "anchor9"></a>
 ## ◇集団制御(メタＡＩ)
 >実装理由:モンスター3体の集団制御のため
 >
@@ -222,7 +244,7 @@
 
 <br />
 
-<a id = "anchor9"></a>
+<a id = "anchor10"></a>
 ## 川瀬式Bloomフィルターの実装
 >実装理由:暗がりでの光をよりリアルに見せるため
 >
@@ -258,7 +280,7 @@
 
 <br />
 
-<a id = "anchor10"></a>
+<a id = "anchor11"></a>
 ## ◇デバッグ機能
 >実装理由:デバッグのため
 >
