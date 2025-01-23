@@ -6,11 +6,6 @@
 #include "EnemyAIMetaWarrior.h"
 #include "GameSound.h"
 
-//これを有効にするとデバッグモードになる
-//#define DEBUG_MODE
-
-//AttackImpact
-
 namespace {
 
 	static const float MAX_RANGE_CALC_NUM = 500.0f;
@@ -156,10 +151,6 @@ void Enemy_Warrior::Update()
 
 	m_CController.SetPosition(m_position);
 
-#ifdef DEBUG_MODE
-	DebugStateDisplay(GetStateNumber());
-#endif
-
 	m_modelRender.Update();
 
 }
@@ -168,10 +159,6 @@ void Enemy_Warrior::Update()
 void Enemy_Warrior::Render(RenderContext& rc)
 {
 	m_modelRender.Draw(rc);
-
-#ifdef DEBUG_MODE
-	m_debugStateDisplayRender.Draw(rc);
-#endif
 }
 
 //AIListの初期化

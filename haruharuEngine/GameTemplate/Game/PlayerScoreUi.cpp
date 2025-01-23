@@ -90,8 +90,11 @@ const float PlayerScoreUi::ScoreCalc()
 	//違ったら
 	else
 	{
+		finalScoreNum = m_newScoreIndex;
 		//スコアの更新処理を終了する
 		m_isScoreUpdate = false;
+
+		return finalScoreNum;
 	}
 }
 

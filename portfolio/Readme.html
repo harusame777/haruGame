@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Readme.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="salvage">SALVAGE</h1>
+<blockquote>
+<h3 id="%E6%B2%B3%E5%8E%9F%E9%9B%BB%E5%AD%90%E3%83%93%E3%82%B8%E3%83%8D%E3%82%B9-%E3%82%B2%E3%83%BC%E3%83%A0%E3%82%AF%E3%83%AA%E3%82%A8%E3%82%A4%E3%82%BF%E3%83%BC%E7%A7%91">河原電子ビジネス　ゲームクリエイター科</h3>
+<h3 id="%E6%B0%8F%E5%90%8D%E6%AD%A6%E7%94%B0-%E6%82%A0%E4%B8%96-%E3%81%9F%E3%81%91%E3%81%A0-%E3%81%AF%E3%82%8B%E3%81%9B">氏名：武田　悠世 （たけだ　はるせ）</h3>
+</blockquote>
+<h1 id="%E7%9B%AE%E6%AC%A1">目次</h1>
+<ul>
+<li><a href="#salvage">SALVAGE</a></li>
+<li><a href="#%E7%9B%AE%E6%AC%A1">目次</a>
+<ul>
+<li><a href="#%E4%BD%9C%E5%93%81%E6%A6%82%E8%A6%81">作品概要</a></li>
+</ul>
+</li>
+<li><a href="#1%E4%BD%9C%E6%88%90%E3%81%97%E3%81%9F%E3%82%BD%E3%83%BC%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%89">1.作成したソースコード</a></li>
+<li><a href="#2%E4%BD%9C%E6%88%90%E3%81%97%E3%81%9F%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%82%B3%E3%83%BC%E3%83%89">2.作成したエンジンコード</a></li>
+<li><a href="#3%E4%BD%9C%E6%88%90%E3%81%97%E3%81%9F%E3%82%B7%E3%82%A7%E3%83%BC%E3%83%80%E3%83%BC">3.作成したシェーダー</a></li>
+<li><a href="#4%E3%82%B2%E3%83%BC%E3%83%A0%E8%AA%AC%E6%98%8E">4.ゲーム説明</a></li>
+<li><a href="#5%E6%93%8D%E4%BD%9C%E8%AA%AC%E6%98%8E">5.操作説明</a></li>
+<li><a href="#6%E6%8A%80%E8%A1%93%E7%B4%B9%E4%BB%8B">6.技術紹介</a>
+<ul>
+<li><a href="#6-1%E3%82%B9%E3%83%86%E3%83%BC%E3%83%88%E3%83%9E%E3%82%B7%E3%83%B3">6-1.ステートマシン</a></li>
+<li><a href="#6-2%E9%9B%86%E5%9B%A3%E5%88%B6%E5%BE%A1%E3%83%A1%E3%82%BF%EF%BD%81%EF%BD%89">6-2.集団制御(メタＡＩ)</a></li>
+<li><a href="#6-3%E5%B7%9D%E7%80%AC%E5%BC%8Fbloom%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%83%BC%E3%81%AE%E5%AE%9F%E8%A3%85">6-3.川瀬式Bloomフィルターの実装</a></li>
+<li><a href="#6-4%E3%83%87%E3%83%90%E3%83%83%E3%82%B0%E6%A9%9F%E8%83%BD">6-4.デバッグ機能</a></li>
+</ul>
+</li>
+</ul>
+<br />
+<p><a id = "anchor1"></a></p>
+<h2 id="%E4%BD%9C%E5%93%81%E6%A6%82%E8%A6%81">作品概要</h2>
+<blockquote>
+<dl>
+<dt>タイトル</dt>
+<dd>SALVAGE</dd>
+<dt>制作期間</dt>
+<dd>2024年8月から現在まで</dd>
+<dt>ゲームジャンル</dt>
+<dd>ホラーゲーム</dd>
+<dt>プレイ人数</dt>
+<dd>一人</dd>
+<dt>使用言語</dt>
+<dd>C++</dd>
+<dd>HLSL</dd>
+<dt>使用ツール</dt>
+<dd>Visual Studio 2022</dd>
+<dd>Visual Studio Code</dd>
+<dd>Adobe Photoshop 2025</dd>
+<dd>3ds Max 2024</dd>
+<dd>Effekseer</dd>
+<dd>GitHub</dd>
+<dd>Fork</dd>
+<dd>Trello</dd>
+<dt>開発環境</dt>
+<dd>学校内製の簡易エンジン</dd>
+<dd>Windows11</dd>
+</dl>
+</blockquote>
+<br />
+<p><a id = "anchor2"></a></p>
+<h1 id="1%E4%BD%9C%E6%88%90%E3%81%97%E3%81%9F%E3%82%BD%E3%83%BC%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%89">1.作成したソースコード</h1>
+<blockquote>
+<ul>
+<li>Accessories.cpp</li>
+<li>Accessories.h</li>
+<li>BackGroundCeiling.cpp</li>
+<li>BackGroundCeiling.h</li>
+<li>BackGroundFloor.cpp</li>
+<li>BackGroundFloor.h</li>
+<li>BackGroundWalls.cpp</li>
+<li>BackGroundWalls.h</li>
+<li>BootObjectBase.cpp</li>
+<li>BootObjectBase.h</li>
+<li>Crystal.cpp</li>
+<li>Crystal.h</li>
+<li>CrystalDataHolder.h</li>
+<li>CrystalGetCommandSprite.cpp</li>
+<li>CrystalGetCommandSprite.h</li>
+<li>DebugEnemyTrackingState.cpp</li>
+<li>DebugEnemyTrackingState.h</li>
+<li>Elevator.cpp</li>
+<li>Elevator.h</li>
+<li>Enemy_Warrior.cpp</li>
+<li>Enemy_Warrior.h</li>
+<li>EnemyAIBase.cpp</li>
+<li>EnemyAIBase.h</li>
+<li>EnemyAIConBase.cpp</li>
+<li>EnemyAIConBase.h</li>
+<li>EnemyAIConColPlayer.cpp</li>
+<li>EnemyAIConColPlayer.h</li>
+<li>EnemyAIConSearch.cpp</li>
+<li>EnemyAIConSearch.h</li>
+<li>EnemyAIConWaitTime.cpp</li>
+<li>EnemyAIConWaitTime.h</li>
+<li>EnemyAIConWallSearch.cpp</li>
+<li>EnemyAIConWallSearch.h</li>
+<li>EnemyAIMetaBase.cpp</li>
+<li>EnemyAIMetaBase.h</li>
+<li>EnemyAIMetaWarrior.cpp</li>
+<li>EnemyAIMetaWarrior.h</li>
+<li>EnemyAIMove.cpp</li>
+<li>EnemyAIMove.h</li>
+<li>EnemyAIMoveAstar.cpp</li>
+<li>EnemyAIMoveAstar.h</li>
+<li>EnemyBase.cpp</li>
+<li>EnemyBase.h</li>
+<li>EnemySM_Warrior.cpp</li>
+<li>EnemySM_Warrior.h</li>
+<li>EnemySMBase.cpp</li>
+<li>EnemySMBase.h</li>
+<li>EnemyWarriorTrackingState.h</li>
+<li>Game.cpp</li>
+<li>Game.h</li>
+<li>GameCamera.cpp</li>
+<li>GameCamera.h</li>
+<li>Gameover.cpp</li>
+<li>Gameover.h</li>
+<li>GameSound.cpp</li>
+<li>GameSound.h</li>
+<li>Load.cpp</li>
+<li>Load.h</li>
+<li>Locker.cpp</li>
+<li>Locker.h</li>
+<li>ManagerCrystal.cpp</li>
+<li>ManagerCrystal.h</li>
+<li>ObjectBase.cpp</li>
+<li>ObjectBase.h</li>
+<li>PatrolRuteDataHolder.h</li>
+<li>Player.cpp</li>
+<li>Player.h</li>
+<li>PlayerOxygenUi.cpp</li>
+<li>PlayerOxygenUi.h</li>
+<li>PlayerScanCrystalUi.cpp</li>
+<li>PlayerScanCrystalUi.h</li>
+<li>PlayerScoreUi.cpp</li>
+<li>PlayerScoreUi.h</li>
+<li>PlayerStaminaUi.cpp</li>
+<li>PlayerStaminaUi.h</li>
+<li>PlayerUIBase.h</li>
+<li>Result.cpp</li>
+<li>Result.h</li>
+<li>Title.cpp</li>
+<li>Title.h</li>
+<li>WarriorAIMetaFootSteps.cpp</li>
+<li>WarriorAIMetaFootSteps.h</li>
+<li>WarriorAIMetapPatrol.cpp</li>
+<li>WarriorAIMetapPatrol.h</li>
+<li>WarriorAIMetaRetreat.cpp</li>
+<li>WarriorAIMetaRetreat.h</li>
+<li>WarriorAIMetaStop.cpp</li>
+<li>WarriorAIMetaStop.h</li>
+<li>WarriorAIMetaTracking.cpp</li>
+<li>WarriorAIMetaTracking.h</li>
+<li>WarriorDataHolder.h</li>
+<li>Window.cpp</li>
+<li>Window.h</li>
+</ul>
+</blockquote>
+<br />
+<p><a id = "anchor3"></a></p>
+<h1 id="2%E4%BD%9C%E6%88%90%E3%81%97%E3%81%9F%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%B3%E3%82%B3%E3%83%BC%E3%83%89">2.作成したエンジンコード</h1>
+<blockquote>
+<ul>
+<li>DirectionalLight.cpp</li>
+<li>DirectionalLight.h</li>
+<li>FontRender.cpp</li>
+<li>FontRender.h</li>
+<li>IRenderer.h</li>
+<li>LevelRender.cpp</li>
+<li>LevelRender.h</li>
+<li>LuminnceRender.cpp</li>
+<li>LuminnceRender.h</li>
+<li>ModelRender.cpp</li>
+<li>ModelRender.h</li>
+<li>PointLight.cpp</li>
+<li>PointLight.h</li>
+<li>RenderingEngine.cpp</li>
+<li>RenderingEngine.h</li>
+<li>SceneLight.cpp</li>
+<li>SceneLight.h</li>
+<li>ShadowMapRender.cpp</li>
+<li>ShadowMapRender.h</li>
+<li>SpotLight.cpp</li>
+<li>SpotLight.h</li>
+<li>SpriteRender.cpp</li>
+<li>SpriteRender.h</li>
+</ul>
+</blockquote>
+<br />
+<p><a id = "anchor4"></a></p>
+<h1 id="3%E4%BD%9C%E6%88%90%E3%81%97%E3%81%9F%E3%82%B7%E3%82%A7%E3%83%BC%E3%83%80%E3%83%BC">3.作成したシェーダー</h1>
+<blockquote>
+<ul>
+<li>haruharuCircularGaugeSprite.fx</li>
+<li>haruharuCrystalModel.fx</li>
+<li>haruharuDeaphShadowReceiverModel.fx</li>
+<li>haruharuDrawDeaphShadowMap.fx</li>
+<li>haruharuDrawShadowMap.fx</li>
+<li>haruharuLoadSpriteShader.fx</li>
+<li>haruharuModel.fx</li>
+<li>haruharuOxygenGaugeSpriteShader.fx</li>
+<li>haruharuPostEffect.fx</li>
+<li>haruharuRenderToGBufferFor3DModel.fx</li>
+<li>haruharuShadowReceiverModel.fx</li>
+<li>haruharuSprite.fx</li>
+<li>haruharuStaminaBarSpriteShader.fx</li>
+<li>haruharuWindowSpriteShader.fx</li>
+<li>haruharuWipeSprite.fx</li>
+<li>haruharuWipeSpriteMoveVer.fx</li>
+</ul>
+</blockquote>
+<br />
+<p><a id = "anchor5"></a></p>
+<h1 id="4%E3%82%B2%E3%83%BC%E3%83%A0%E8%AA%AC%E6%98%8E">4.ゲーム説明</h1>
+<blockquote>
+<h3 id="%E3%81%93%E3%81%AE%E3%82%B2%E3%83%BC%E3%83%A0%E3%81%AF%E5%BB%83%E7%A0%94%E7%A9%B6%E6%89%80%E3%81%AB%E4%BE%B5%E5%85%A5%E3%81%97%E3%81%9F%E4%B8%BB%E4%BA%BA%E5%85%AC%E3%81%8C%E7%A0%94%E7%A9%B6%E6%89%80%E5%86%85%E9%83%A8%E3%81%AB%E3%81%82%E3%82%8B%E9%89%B1%E7%9F%B3%E3%82%92dd">このゲームは廃研究所に侵入した主人公が研究所内部にある鉱石を</dd></h3>
+<h3 id="%E6%AE%8B%E3%82%8A%E9%85%B8%E7%B4%A0%E3%81%8C%E7%B6%9A%E3%81%8F%E9%99%90%E3%82%8A%E6%8E%A1%E5%8F%96%E3%81%97%E3%81%A6%E5%86%85%E9%83%A8%E3%81%AB%E3%81%84%E3%82%8B%E3%83%A2%E3%83%B3%E3%82%B9%E3%82%BF%E3%83%BC%E3%81%AB%E8%A5%B2%E3%82%8F%E3%82%8C%E3%81%AA%E3%81%84%E3%82%88%E3%81%86%E3%81%ABdd">残り酸素が続く限り採取して、内部にいるモンスターに襲われないように</dd></h3>
+<h3 id="%E7%A0%94%E7%A9%B6%E6%89%80%E3%81%8B%E3%82%89%E8%84%B1%E5%87%BA%E3%81%99%E3%82%8B%E3%83%9B%E3%83%A9%E3%83%BC%E6%8E%A1%E5%8F%96%E3%82%B2%E3%83%BC%E3%83%A0%E3%81%A7%E3%81%99dd">研究所から脱出するホラー採取ゲームです</dd></h3>
+<h3 id="%E9%85%B8%E7%B4%A0%E3%82%B2%E3%83%BC%E3%82%B8%E3%81%8C%E3%81%AA%E3%81%8F%E3%81%AA%E3%82%8B%E5%89%8D%E3%81%AB%E3%81%A7%E3%81%8D%E3%82%8B%E3%81%A0%E3%81%91%E5%A4%9A%E3%81%8F%E3%81%AE%E9%89%B1%E7%9F%B3%E3%82%92%E6%8E%A1%E5%8F%96%E3%81%99%E3%82%8B%E3%81%AE%E3%81%8C%E7%9B%AE%E7%9A%84%E3%81%AEdd">酸素ゲージがなくなる前に、できるだけ多くの鉱石を採取するのが目的の</dd></h3>
+<h3 id="%E3%82%B2%E3%83%BC%E3%83%A0%E3%81%A7%E3%81%99">ゲームです。</h3>
+<p>メインゲーム画面
+<img src="image1.png" alt="alt text">
+<img src="image2.png" alt="alt text"></p>
+</blockquote>
+<br />
+<p><a id = "anchor6"></a></p>
+<h1 id="5%E6%93%8D%E4%BD%9C%E8%AA%AC%E6%98%8E">5.操作説明</h1>
+<blockquote>
+<p><img src="image3.png" alt="alt text"></p>
+</blockquote>
+<br />
+<p><a id = "anchor7"></a></p>
+<h1 id="6%E6%8A%80%E8%A1%93%E7%B4%B9%E4%BB%8B">6.技術紹介</h1>
+<br />
+<p><a id = "anchor8"></a></p>
+<h2 id="6-1%E3%82%B9%E3%83%86%E3%83%BC%E3%83%88%E3%83%9E%E3%82%B7%E3%83%B3">6-1.ステートマシン</h2>
+<blockquote>
+<p>実装理由:プログラムの順序を分かりやすく視覚化しておくことによって、
+プログラムの制御や追加がやりやすくなるため。</p>
+<p>例：モンスターのステートマシン
+<img src="image4.png" alt="alt text"></p>
+</blockquote>
+<br />
+<p><a id = "anchor9"></a></p>
+<h2 id="6-2%E9%9B%86%E5%9B%A3%E5%88%B6%E5%BE%A1%E3%83%A1%E3%82%BF%EF%BD%81%EF%BD%89">6-2.集団制御(メタＡＩ)</h2>
+<blockquote>
+<p>実装理由:モンスター3体の集団制御のため</p>
+<p>実際のメタAIの形式
+<img src="image5.png" alt="alt text"></p>
+</blockquote>
+<br />
+<p><a id = "anchor10"></a></p>
+<h2 id="6-3%E5%B7%9D%E7%80%AC%E5%BC%8Fbloom%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF%E3%83%BC%E3%81%AE%E5%AE%9F%E8%A3%85">6-3.川瀬式Bloomフィルターの実装</h2>
+<blockquote>
+<p>実装理由:暗がりでの光をよりリアルに見せるため</p>
+<dl>
+<dt>実装方式</dt>
+<dt>1.輝度抽出用のレンダリングターゲットを作成する。</dt>
+<dd>本書や、サンプルプログラムでは、同じくレンダリングエンジンのプログラムファイルに記載されているが</dd>
+<dd>今回はプログラム量の多さから、分かりにくくなってしまうためプログラムをクラスにして別に実装した。
+<dd>説明上の分かりやすさのため輝度抽出クラスと呼びます。</dd>
+<dd>この輝度抽出クラスをレンダリングエンジン側でメンバ変数として宣言、レンダリングエンジンの
+<dd>初期化の際共に初期化し、その初期化のタイミングでレンダリングターゲットが作成される。
+<dd>この初期化の際には、ほかにも</dd>
+<dd>・輝度抽出用のスプライトの初期化</dd>
+<dd>・ガウシアンブラークラスの初期化、ぼかすテクスチャのアドレスの設定</dd>
+<dd>・生成したボケ画像を合成するスプライトの初期化
+<dd>などが行われている。</dd>
+</dl>
+以下輝度抽出_合成描画用のシェーダーのプログラム
+<hr>
+<p>cbuffer cb : register(b0)
+{
+float4x4 mvp;       // MVP行列
+float4 mulColor;    // 乗算カラー
+};</p>
+<p>struct VSInput
+{
+float4 pos : POSITION;
+float2 uv  : TEXCOORD0;
+};</p>
+<p>struct PSInput
+{
+float4 pos : SV_POSITION;
+float2 uv  : TEXCOORD0;
+};</p>
+<p>/*!</p>
+<ul>
+<li>@brief 頂点シェーダー
+*/
+PSInput VSMain(VSInput In)
+{
+PSInput psIn;
+psIn.pos = mul(mvp, In.pos);
+psIn.uv = In.uv;
+return psIn;
+}</li>
+</ul>
+<p>Texture2D<float4> mainRenderTargetTexture : register(t0); // メインレンダリングターゲットのテクスチャ
+sampler Sampler : register(s0);</p>
+<p>/////////////////////////////////////////////////////////
+// 輝度抽出用
+/////////////////////////////////////////////////////////
+/*!</p>
+<ul>
+<li>
+<p>@brief 輝度抽出用のピクセルシェーダー
+*/
+float4 PSLuminance(PSInput In) : SV_Target0
+{
+// 輝度を抽出するピクセルシェーダーを実装
+float4 color = mainRenderTargetTexture.Sample(Sampler, In.uv);</p>
+<p>// サンプリングされたカラーの明るさを計算
+float t = dot(color.xyz, float3(0.2125f, 0.7154f, 0.0721f));</p>
+<p>// clip関数は引数の値がマイナスになると以降の処理をスキップする
+// なので、マイナスになるとピクセルカラーは出力されない
+// 今回の実装はカラーの明るさが1以下ならピクセルキルする
+clip(t - 0.9f);</p>
+<p>return color;
+}</p>
+</li>
+</ul>
+<p>// ボケ画にアクセスする為の変数
+Texture2D<float4> g_bokeTexture_0 : register(t0);
+Texture2D<float4> g_bokeTexture_1 : register(t1);
+Texture2D<float4> g_bokeTexture_2 : register(t2);
+Texture2D<float4> g_bokeTexture_3 : register(t3);</p>
+<p>// ボケ画像合成用のピクセルシェーダー
+float4 PSBloomFinal(PSInput In) : SV_Target0
+{
+// ボケ画像を合成
+float4 combineColor = g_bokeTexture_0.Sample(Sampler, In.uv);
+combineColor += g_bokeTexture_1.Sample(Sampler, In.uv);
+combineColor += g_bokeTexture_2.Sample(Sampler, In.uv);
+combineColor += g_bokeTexture_3.Sample(Sampler, In.uv);
+combineColor /= 4.0f;
+combineColor.a = 1.0f;
+return combineColor;
+}</p>
+<hr>
+<dl>
+<dt>2.輝度抽出をするタイミングでレンダリングターゲットを作成したものに変更する。</dt>
+<dd>レンダリングターゲットをモデルの描画やライトの処理をしたレンダリングターゲットから変更する。
+<dd>輝度抽出クラスの関数に変更からその後の処理までがプログラムされているため</dd>
+<dd>関数から抜ける頃には輝度抽出の処理は終わっている。</dd>
+<dt>3.ガウシアンブラーの実行</dt>
+<dd>通常のBloomとは違い複数回ガウシアンブラーを実行します。こうすることで、光のあふれテクスチャを</dd>
+<dd>生成することができます。</dd>
+<dt>4.ボケ画像を合成しメインレンダリングターゲットに加算する</dt>
+<dd>シェーダー側でボケ画像を合成し、メインレンダリングターゲットにレンダリングターゲットを変更</dd>
+<dd>合成します。</dd>
+<dd>この合成スプライトは輝度抽出クラスで宣言、初期化されているため、レンダリングエンジンのプログラム</dd>
+<dd>から、輝度抽出クラスのメンバ変数を使ってクラスにあるドローコール関数を実行します。
+<dd>これにより、川瀬式Bloomフィルターを使用した輝度抽出から合成描画までが完了します。</dd>
+</dl>
+</blockquote>
+<br />
+<p><a id = "anchor11"></a></p>
+<h2 id="6-4%E3%83%87%E3%83%90%E3%83%83%E3%82%B0%E6%A9%9F%E8%83%BD">6-4.デバッグ機能</h2>
+<blockquote>
+<p>実装理由:デバッグのため</p>
+<p>今回の開発では、ifdef _DEBUGを使い、Debugの起動方式で自動的に
+デバックのプログラムが実行されるようにした。</p>
+<dl>
+<dt>追加したデバッグ機能は</dt>
+<dd>鉱石が採取可能かどうか画面に表示</dd>
+<dd>鉱石採取時のコマンドステートを画面に表示</dd>
+<dd>現在のエネミーのステートを色分けで画面に表示</dd>
+<dd>カメラを一人称から三人称に切り替えるボタンを有効化(LB)</dd>
+<dd>残り酸素量を時間で画面に表示</dd>
+</dl>
+</blockquote>
+<br />
+</body>
+</html>

@@ -76,11 +76,6 @@ protected:
 	/// </summary>
 	int m_trackingStateNumber = 0;
 	/// <summary>
-	/// デバック用フォントレンダー
-	/// </summary>
-	FontRender m_debugStateDisplayRender;
-
-	/// <summary>
 	/// アニメーションクリップ
 	/// </summary>
 	AnimationClip m_animationClip[en_animationNum];
