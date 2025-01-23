@@ -47,6 +47,8 @@
 > <dt>開発環境</dt>
 > <dd>学校内製の簡易エンジン</dd>
 > <dd>Windows11</dd>
+> <dt>GitHubのURL</dt>
+> <dd>https://github.com/harusame777/haruGame</dd>
 > </dl>
 
 
