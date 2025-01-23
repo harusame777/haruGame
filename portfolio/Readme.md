@@ -48,7 +48,7 @@
 > <dd>学校内製の簡易エンジン</dd>
 > <dd>Windows11</dd>
 > <dt>GitHubのURL</dt>
-> <dd>https://github.com/harusame777/haruGame</dd>
+> <a href="https://github.com/harusame777/haruGame"><dd>https://github.com/harusame777/haruGame</dd></a>
 > </dl>
 
 
