@@ -2,6 +2,7 @@
 
 class Crystal;
 class GameSound;
+class Player;
 
 //定数等
 namespace {
@@ -109,6 +110,11 @@ private:
 	/// ツルハシの回転イージング関数
 	/// </summary>
 	const float PickaxeRotEasing(const PickaxeMoveState picMoveState);
+	/// <summary>
+	/// プレイヤーが採取可能範囲内にいるかどうかを判定
+	/// </summary>
+	/// <returns></returns>
+	const bool& IsRangeInPlayer();
 	/// <summary>
 	/// 何ボタンが押されたかを判定するステート
 	/// </summary>
@@ -259,6 +265,10 @@ private:
 	/// ゲームサウンドのインスタンス
 	/// </summary>
 	GameSound* m_gameSound = nullptr;
+	/// <summary>
+	/// プレイヤーのインスタンス
+	/// </summary>
+	Player* m_player = nullptr;
 	/// <summary>
 	/// デバック用のfontrender
 	/// </summary>
