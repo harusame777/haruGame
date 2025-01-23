@@ -105,6 +105,10 @@
 >- Game.h
 >- GameCamera.cpp
 >- GameCamera.h
+>- Gameover.cpp
+>- Gameover.h
+>- GameSound.cpp
+>- GameSound.h
 >- Load.cpp
 >- Load.h
 >- Locker.cpp
@@ -127,6 +131,21 @@
 >- PlayerUIBase.h
 >- Result.cpp 
 >- Result.h
+>- Title.cpp
+>- Title.h
+>- WarriorAIMetaFootSteps.cpp
+>- WarriorAIMetaFootSteps.h
+>- WarriorAIMetapPatrol.cpp
+>- WarriorAIMetapPatrol.h
+>- WarriorAIMetaRetreat.cpp
+>- WarriorAIMetaRetreat.h
+>- WarriorAIMetaStop.cpp
+>- WarriorAIMetaStop.h
+>- WarriorAIMetaTracking.cpp
+>- WarriorAIMetaTracking.h
+>- WarriorDataHolder.h
+>- Window.cpp
+>- Window.h
 
 <br />
 
