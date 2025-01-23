@@ -262,9 +262,9 @@
 ><dd>・生成したボケ画像を合成するスプライトの初期化
 ><dd>などが行われている。</dd>
 ></dl>
+>以下輝度抽出_合成描画用のシェーダーのプログラム
 ><hr>
-> ```ruby : haruharuPostEffect.fx
-> 
+>
 > cbuffer cb : register(b0)
 > {
 >     float4x4 mvp;       // MVP行列
@@ -338,8 +338,6 @@
 >     return combineColor;
 > }
 > 
-> ```
->
 ><hr>
 ><dl>
 ><dt>2.輝度抽出をするタイミングでレンダリングターゲットを作成したものに変更する。</dt>
