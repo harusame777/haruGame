@@ -262,7 +262,8 @@
 ><dd>・生成したボケ画像を合成するスプライトの初期化
 ><dd>などが行われている。</dd>
 ><hr>
-> ```hlsl
+> ```ruby : haruharuPostEffect.fx
+> 
 > cbuffer cb : register(b0)
 > {
 >     float4x4 mvp;       // MVP行列
@@ -335,6 +336,7 @@
 >     combineColor.a = 1.0f;
 >     return combineColor;
 > }
+> 
 > ```
 ><hr>
 ><dt>2.輝度抽出をするタイミングでレンダリングターゲットを作成したものに変更する。</dt>
