@@ -2,9 +2,6 @@
 #include "PlayerOxygenUi.h"
 #include "Game.h"
 
-//これを有効にするとデバッグモードになる
-#define DEBUG_MODE
-
 //定数等
 namespace {
 	//酸素枠のサイズWとH
