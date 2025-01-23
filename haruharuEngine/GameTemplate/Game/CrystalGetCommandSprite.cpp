@@ -2,6 +2,7 @@
 #include "CrystalGetCommandSprite.h"
 #include "Crystal.h"
 #include "GameSound.h"
+#include "Player.h"
 #include <random>
 #include <algorithm>
 
@@ -43,6 +44,10 @@ namespace {
 	/// </summary>
 	static const Vector3 ROCK_POSITION = { 0.0f,-250.0f,0.0f };
 	/// <summary>
+	/// 取得距離の計算に使うやつ
+	/// </summary>
+	static const float GET_RANGE_CALC = 90.0f;
+	/// <summary>
 	/// デバック文字の位置
 	/// </summary>
 	static const Vector3 DEBUG_FONT_POSITION = { 0.0f,200.0f,0.0f };
@@ -65,6 +70,9 @@ bool CrystalGetCommandSprite::Start()
 {
 	//ゲームサウンドのインスタンスを取得
 	m_gameSound = FindGO<GameSound>("gameSound");
+
+	//プレイヤーのインスタンスを取得
+	m_player = FindGO<Player>("player");
 
 	//タイマーのスプライトの初期化
 	TimerSpriteInit();
@@ -279,6 +287,16 @@ void CrystalGetCommandSprite::CommandUpdate()
 		//クリスタル本体にこのクリスタルの採取に失敗したと伝える
 		m_crystal->CollectedFailure();
 	}
+	else if(IsRangeInPlayer() == false)
+	{
+
+		//採取フラグをオフにする
+		m_isCollectFlag = false;
+
+		//クリスタル本体にこのクリスタルの採取に失敗したと伝える
+		m_crystal->CollectedFailure();
+
+	}
 
 }
 
@@ -453,4 +471,26 @@ const float CrystalGetCommandSprite::PickaxeRotEasing(const PickaxeMoveState pic
 
 	//線形補間した値を返す	
 	return finalFloat = Leap(m_pickaxeRotStartValue, m_pickaxeRotEndValue, m_pickaxeEasingRatio);
+}
+
+const bool& CrystalGetCommandSprite::IsRangeInPlayer()
+{
+	//プレイヤーの座標を取得
+	Vector3 playerPos = m_player->GetPosition();
+
+	//プレイヤーの座標から自身の座標を引いて
+	//自身からプレイヤーへ伸びるベクトルを計算する
+	Vector3 diff = playerPos - m_crystal->GetPosition();
+
+	//自身からプレイヤーへ伸びるベクトルの２乗を計算する
+	float range = diff.LengthSq();
+
+	//もし取得範囲内だったら
+	if (range <= GET_RANGE_CALC * GET_RANGE_CALC)
+	{
+		//trueを返す
+		return true;
+	}
+
+	return false;
 }
