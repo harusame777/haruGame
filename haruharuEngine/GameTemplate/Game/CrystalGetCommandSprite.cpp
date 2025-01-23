@@ -5,9 +5,6 @@
 #include <random>
 #include <algorithm>
 
-//これを有効にするとデバッグモードになる
-//#define DEBUG_MODE
-
 //定数等
 namespace {
 	/// <summary>
@@ -45,6 +42,10 @@ namespace {
 	/// 岩位置
 	/// </summary>
 	static const Vector3 ROCK_POSITION = { 0.0f,-250.0f,0.0f };
+	/// <summary>
+	/// デバック文字の位置
+	/// </summary>
+	static const Vector3 DEBUG_FONT_POSITION = { 0.0f,200.0f,0.0f };
 }
 
 //コンストラクタ
@@ -154,10 +155,12 @@ void CrystalGetCommandSprite::Update()
 {
 	//コマンドのアップデート処理
 	CommandUpdate();
-#ifdef DEBUG_MODE
+#ifdef _DEBUG 
 	wchar_t wcsbuf[256];
 
 	swprintf_s(wcsbuf, 256, L"Command[%01d]",int(m_commandList[m_nowCommandNum]));
+
+	m_debugFontRender.SetPosition(DEBUG_FONT_POSITION);
 
 	m_debugFontRender.SetText(wcsbuf);
 
@@ -199,7 +202,7 @@ void CrystalGetCommandSprite::Render(RenderContext& rc)
 			return;
 		m_sprites[m_nowCommandNum]->Draw(rc);
 	}
-#ifdef DEBUG_MODE
+#ifdef _DEBUG 
 	m_debugFontRender.Draw(rc);
 #endif
 }

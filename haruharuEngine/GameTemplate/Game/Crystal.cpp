@@ -5,9 +5,6 @@
 #include "ManagerCrystal.h"
 #include "PlayerScoreUi.h"
 
-//これを有効にするとデバッグモードになる
-//#define DEBUG_MODE
-
 //クリスタルを採取するときにクリスタルにカメラを向けないと採取できないようにしたい
 //
 //1.クリスタルから、カメラに伸びるベクトルAを作る
@@ -31,6 +28,10 @@ namespace {
 	/// 修正値１
 	/// </summary>
 	static const Vector3 CORRE_POSITION = { 0.0f,-60.0f,0.0f };
+	/// <summary>
+	/// デバッグのフォントの位置
+	/// </summary>
+	static const Vector3 DEBUG_FONT_POSITION = { 0.0f,100.0f,0.0f };
 }
 
 //コンストラクタ
@@ -103,7 +104,7 @@ void Crystal::Render(RenderContext& rc)
 		m_mainModel.Draw(rc);
 	}
 
-#ifdef DEBUG_MODE
+#ifdef _DEBUG
 	m_debugFontRender.Draw(rc);
 #endif
 }
@@ -173,10 +174,12 @@ void Crystal::GetCrystal()
 
 	if (IsInGetRange() && IsLookCrystal())
 	{
-#ifdef DEBUG_MODE
+#ifdef _DEBUG
 		wchar_t wcsbuf[256];
 
 		swprintf_s(wcsbuf, 256, L"GetTrue");
+
+		m_debugFontRender.SetPosition(DEBUG_FONT_POSITION);
 
 		m_debugFontRender.SetText(wcsbuf);
 #endif
@@ -188,12 +191,14 @@ void Crystal::GetCrystal()
 			m_GetCOMSprite->CrystalCollectStart(this);
 		}
 	}
-#ifdef DEBUG_MODE
+#ifdef _DEBUG
 	else
 	{
 		wchar_t wcsbuf[256];
 
 		swprintf_s(wcsbuf, 256, L"GetFalse");
+
+		m_debugFontRender.SetPosition(DEBUG_FONT_POSITION);
 
 		m_debugFontRender.SetText(wcsbuf);
 	}
