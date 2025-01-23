@@ -1,6 +1,7 @@
 #pragma once
 
 class Crystal;
+class GameSound;
 
 //定数等
 namespace {
@@ -254,6 +255,10 @@ private:
 	/// 正しいコマンドが入力されたかどうかを判断する
 	/// </summary>
 	void IsJudgeingTriggerButton(const CommandTriggerState& initCommand);
+	/// <summary>
+	/// ゲームサウンドのインスタンス
+	/// </summary>
+	GameSound* m_gameSound = nullptr;
 	/// <summary>
 	/// デバック用のfontrender
 	/// </summary>

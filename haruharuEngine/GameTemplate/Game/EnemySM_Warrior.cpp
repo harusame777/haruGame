@@ -163,6 +163,21 @@ void EnemySM_Warrior::EnemyAIUpdate()
 		m_enemy->SetPlayAnimationState(EnemyBase::en_patrol);
 
 		break;
+	case EnemySM_Warrior::en_stop:
+
+		m_enemy->SetPlayAnimationState(EnemyBase::en_idle);
+
+		break;
+	case EnemySM_Warrior::en_attack:
+
+		m_enemy->SetPlayAnimationState(EnemyBase::en_attack);
+
+		if (GetEnemyPtr().IsAnimationClipEnd() == true)
+		{
+			GetEnemyPtr().SetAnimationEnd(true);
+		}
+
+		break;
 	default:
 		break;
 	}
@@ -173,17 +188,30 @@ void EnemySM_Warrior::EnemyAIUpdate()
 void EnemySM_Warrior::ChangeState()
 {
 
+	//プレイヤーとの接触判定
+	if (m_enemyConList[en_enemyAIConColPlayer]->Execution())
+	{
+		if (GetEnemyPtr().GetAttackFlag())
+		{
+			return;
+		}
+
+		GetEnemyPtr().SetAttackFlag(true);
+
+		m_warriorMetaAI->MetaAIExecution(this,EnemyAIMetaWarrior::mode_stop);
+
+		SetState(WarriorState::en_attack);
+
+		m_game->PlayerGameOver();
+
+		return;
+	}
+
 	if (m_warriorState == WarriorState::en_warrior_tracking ||
 		m_warriorState == WarriorState::en_warrior_trackingMetaAI &&
 		m_isTrackingTimeOver == true)
 	{
 		return;
-	}
-
-	//プレイヤーとの接触判定
-	if (m_enemyConList[en_enemyAIConColPlayer]->Execution())
-	{
-		
 	}
 
 	if (m_warriorState != WarriorState::en_warrior_idle)

@@ -5,6 +5,7 @@
 #include "AI/PathFinding/Path.h"
 #include "AI/PathFinding/PathFinding.h"
 
+class GameSound;
 class Player;
 
 class Enemy_Warrior : public EnemyBase
@@ -25,6 +26,12 @@ private:
 	/// <returns></returns>
 	bool Start();
 	/// <summary>
+	/// アニメーションイベント
+	/// </summary>
+	/// <param name="clipName"></param>
+	/// <param name="eventName"></param>
+	void OnAnimationEvent(const wchar_t* clipName, const wchar_t* eventName);
+	/// <summary>
 	/// アップデート関数
 	/// </summary>
 	void Update();
@@ -41,17 +48,6 @@ private:
 	/// AIList内のプログラムのアップデート
 	/// </summary>
 	void AIListUpdate();
-	/// <summary>
-	/// デバックディスプレイ文字設定
-	/// </summary>
-	void DebugStateDisplay(int setnum)
-	{
-		wchar_t wcsbuf[256];
-
-		swprintf_s(wcsbuf, 256, L"NowState[%01d]", int(setnum));
-
-		m_debugStateDisplayRender.SetText(wcsbuf);
-	}
 private:
 	/// <summary>
 	/// コリジョンオブジェクト
@@ -60,5 +56,9 @@ private:
 
 	//test
 	Player* m_player = nullptr;
+	/// <summary>
+	/// ゲームサウンド
+	/// </summary>
+	GameSound* m_gameSound = nullptr;
 };
 

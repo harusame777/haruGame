@@ -21,23 +21,23 @@ bool BackGroundWalls::Start()
 	{
 	case BackGroundWalls::en_wallType1_4:
 		//ï«1-4Çê›íË
-		m_mainModel.Init("Assets/modelData/BackGround/laboWall_1-4Model.tkm", nullptr, 0, enModelUpAxisZ, true);
+		m_mainModel.Init("Assets/modelData/BackGround/laboWall_1-4Model.tkm", nullptr, 0, enModelUpAxisZ, ModelRender::en_shadowShader);
 		break;
 	case BackGroundWalls::en_wallType2_4:
 		//ï«2-4Çê›íË
-		m_mainModel.Init("Assets/modelData/BackGround/laboWall_2-4Model.tkm", nullptr, 0, enModelUpAxisZ, true);
+		m_mainModel.Init("Assets/modelData/BackGround/laboWall_2-4Model.tkm", nullptr, 0, enModelUpAxisZ, ModelRender::en_shadowShader);
 		break;
 	case BackGroundWalls::en_wallType4_4:
 		//ï«4-4Çê›íË
-		m_mainModel.Init("Assets/modelData/BackGround/laboWall_4-4Model.tkm", nullptr, 0, enModelUpAxisZ, true);
+		m_mainModel.Init("Assets/modelData/BackGround/laboWall_4-4Model.tkm", nullptr, 0, enModelUpAxisZ, ModelRender::en_shadowShader);
 		break;
 	case BackGroundWalls::en_wallType4_6:
 		//ï«4-6Çê›íË
-		m_mainModel.Init("Assets/modelData/BackGround/laboWall_4-6Model.tkm", nullptr, 0, enModelUpAxisZ, true);
+		m_mainModel.Init("Assets/modelData/BackGround/laboWall_4-6Model.tkm", nullptr, 0, enModelUpAxisZ, ModelRender::en_shadowShader);
 		break;
 	case BackGroundWalls::en_wallTypeDoorWay4_4:
 		//ï«ÉhÉAïtÇ´4_4Çê›íË
-		m_mainModel.Init("Assets/modelData/BackGround/laboDoorWay_4-4Model.tkm", nullptr, 0, enModelUpAxisZ, true);
+		m_mainModel.Init("Assets/modelData/BackGround/laboDoorWay_4-4Model.tkm", nullptr, 0, enModelUpAxisZ, ModelRender::en_shadowShader);
 		break;
 	}
 

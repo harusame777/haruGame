@@ -1,6 +1,8 @@
 #pragma once
 
+class Game;
 class PlayerStaminaUi;
+class GameSound;
 
 class Player : public IGameObject
 {
@@ -105,6 +107,10 @@ private:
 	/// </summary>
 	void IsWalkOrRun();
 	/// <summary>
+	/// 足音処理
+	/// </summary>
+	void FootSteps();
+	/// <summary>
 	/// 現在座標
 	/// </summary>
 	Vector3 m_position = Vector3::Zero;
@@ -133,6 +139,14 @@ private:
 	/// </summary>
 	bool m_isStaminaOut = false;
 	/// <summary>
+	/// プレイヤーが走っているかどうか
+	/// </summary>
+	bool m_isPlayerRun = false;
+	/// <summary>
+	/// 足音の感覚タイマー
+	/// </summary>
+	float m_footStepsTimer = 0.0f;
+	/// <summary>
 	/// 移動ベクトル
 	/// </summary>
 	Vector3 m_moveVector;
@@ -144,5 +158,13 @@ private:
 	/// プレイヤーのスタミナUI
 	/// </summary>
 	PlayerStaminaUi* m_playerStaminaUi = nullptr;
+	/// <summary>
+	/// ゲームのインスタンス
+	/// </summary>
+	Game* m_game = nullptr;
+	/// <summary>
+	/// ゲームサウンド
+	/// </summary>
+	GameSound* m_gameSound = nullptr;
 };
 

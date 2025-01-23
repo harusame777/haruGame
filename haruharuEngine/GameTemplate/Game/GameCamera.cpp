@@ -2,9 +2,6 @@
 #include "GameCamera.h"
 #include "Player.h"
 
-//これを有効にするとデバッグモードになる
-#define DEBUG_MODE
-
 //定数等
 namespace {
 	static const float FPSInitToCameraPos_Y = 125.0f;

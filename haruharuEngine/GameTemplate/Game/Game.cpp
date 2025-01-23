@@ -21,12 +21,16 @@
 #include "Load.h"
 #include "Title.h"
 #include "Result.h"
+#include "Gameover.h"
 #include "Window.h"
+#include "GameSound.h"
 
 
 bool Game::Start()
 {
 	InitDirctionaLight();
+
+	m_gameSound = NewGO<GameSound>(2, "gameSound");
 
 	m_load = NewGO<Load>(1, "load");
 
@@ -46,6 +50,7 @@ void Game::Update()
 	{
 		DoInGame();
 	}
+
 }
 
 void Game::DoInGame()
@@ -75,6 +80,37 @@ void Game::DoInGame()
 		}
 		break;
 	case Game::en_gameOver:
+
+		if (m_gameover == nullptr)
+		{
+			m_gameover = NewGO<Gameover>(0, "gameover");
+		}
+
+		if (m_gameover->GetFadeOutFlag() == true)
+		{
+			m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadOrdinary });
+
+			m_gameInState = GameInState::en_gameResultGameOver;
+		}
+
+		break;
+	case Game::en_gameResultGameOver:
+
+		if (m_gameover->GetKillEndFlag() == true &&
+			m_load->IsLoadBlackout())
+		{
+			OutGameObjectDeleteProcces();
+
+			m_load->LoadExecutionFadeIn();
+		}
+
+		if (m_load->IsLoadCompletion() == true &&
+			m_gameover->GetGameoverEnd() == true)
+		{
+			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary, Load::en_loadOrdinary });
+
+			m_gameOutState = GameOutState::en_gameTitle;
+		}
 
 		break;
 	case Game::en_gameResult:
@@ -118,16 +154,29 @@ void Game::DoOutGame()
 		{
 			m_load->LoadExecutionFadeIn();
 
-			DeleteGO(m_result);
+			if (m_result != nullptr)
+			{
+				DeleteGO(m_result);
+			}
+
+			if (m_gameover != nullptr)
+			{
+				DeleteGO(m_gameover);
+			}
 
 			m_result = nullptr;
+
+			m_gameover = nullptr;
 
 			m_title = NewGO<Title>(0, "title");
 		}
 
 		if (m_title != nullptr && 
-			m_title->IsEndGameTitle())
+			m_title->IsEndGameTitle() &&
+			m_load->IsLoadCompletion())
 		{
+			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 1.0f);
+
 			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadCircular });
 
 			m_gameOutState = GameOutState::en_gameLoad;
@@ -169,7 +218,10 @@ void Game::OutGameLoadProcess()
 	//エネミーウォリアーのメタAI
 	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");
 
-	InitObjectCrystal();
+	m_GetCOMSprite = NewGO<CrystalGetCommandSprite>(0, "comSprite");
+
+	////クリスタルのメタAI
+	m_managerCrystal = NewGO<ManagerCrystal>(0, "CrystalMetaAI");
 
 	LevelRender levelRender;
 
@@ -290,14 +342,6 @@ void Game::InitDirctionaLight()
 	sunDirectionalLight.CastShadow();
 }
 
-void Game::InitObjectCrystal()
-{
-	m_GetCOMSprite = NewGO<CrystalGetCommandSprite>(0, "object");
-
-	////クリスタルのメタAI
-	m_managerCrystal = NewGO<ManagerCrystal>(0, "CrystalMetaAI");
-}
-
 //QueryGOs<IEnemy>("summonenemy", [&](IEnemy* ienemy) {
 //	DeleteGO(ienemy);
 //	return true;
@@ -353,7 +397,6 @@ void Game::OutGameObjectDeleteProcces()
 		return true;
 		});
 
-	DeleteGO(m_GetCOMSprite);
 	
 	DeleteGO(m_managerCrystal);
 
@@ -361,6 +404,8 @@ void Game::OutGameObjectDeleteProcces()
 		DeleteGO(object);
 		return true;
 		});
+
+	DeleteGO(m_GetCOMSprite);
 
 	DeleteGO(m_player);
 

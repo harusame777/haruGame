@@ -17,7 +17,9 @@ class PlayerStaminaUi;
 class PlayerOxygenUi;
 class Load;
 class Title;
+class Gameover;
 class Result;
+class GameSound;
 
 //定数等
 namespace {
@@ -30,6 +32,28 @@ class Game : public IGameObject
 {
 public:
 
+	enum GameOutState
+	{
+		en_gameTitle,
+
+		en_gameLoad,
+
+		en_gameOutEnd,
+	};
+
+	enum GameInState
+	{
+		en_gameUpdate,
+
+		en_gameClear,
+
+		en_gameOver,
+
+		en_gameResultGameOver,
+
+		en_gameResult
+	};
+
 	void PlayerGameClear()
 	{
 		m_gameInState = GameInState::en_gameClear;
@@ -40,27 +64,13 @@ public:
 		m_gameInState = GameInState::en_gameOver;
 	}
 
+	const int& GetGameInState() const 
+	{
+		return m_gameInState;
+	}
+
 private:
-
-	enum GameOutState
-	{
-		en_gameTitle,
-
-		en_gameLoad,
-
-		en_gameOutEnd,
-	};
 	GameOutState m_gameOutState = GameOutState::en_gameTitle;
-	enum GameInState
-	{
-		en_gameUpdate,
-
-		en_gameClear,
-
-		en_gameOver,
-
-		en_gameResult
-	};
 	GameInState m_gameInState = GameInState::en_gameUpdate;
 	/// <summary>
 	/// スタート関数
@@ -75,10 +85,6 @@ private:
 	/// ディレクションライト作成
 	/// </summary>
 	void InitDirctionaLight();
-	/// <summary>
-	/// クリスタルを初期化
-	/// </summary>
-	void InitObjectCrystal();
 	/// <summary>
 	/// インゲーム
 	/// </summary>
@@ -124,6 +130,10 @@ private:
 	/// </summary>
 	Result* m_result = nullptr;
 	/// <summary>
+	/// ゲームオーバー
+	/// </summary>
+	Gameover* m_gameover = nullptr;
+	/// <summary>
 	/// プレイヤー
 	/// </summary>
 	Player* m_player = nullptr;
@@ -167,5 +177,9 @@ private:
 	/// ロード画面
 	/// </summary>
 	Load* m_load = nullptr;
+	/// <summary>
+	/// ゲームサウンド
+	/// </summary>
+	GameSound* m_gameSound = nullptr;
 };
 

@@ -106,7 +106,7 @@ namespace nsK2EngineLow {
 
 		//ガウシアンブラーを実行
 		for (int i = 0; i < MAX_GAUSSIAN_BLUR; i++) {
-			m_gaussianBlur[i].ExecuteOnGPU(rc, 10);
+			m_gaussianBlur[i].ExecuteOnGPU(rc, 50);
 		}
 	}
 }

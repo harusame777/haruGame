@@ -211,7 +211,7 @@ const float& PlayerStaminaUi::AlphaEasing()
 	}
 
 	//アルファ値イージング割合を加算
-	m_alphaRatio += g_gameTime->GetFrameDeltaTime() * 2;
+	m_alphaRatio += g_gameTime->GetFrameDeltaTime();
 
 	//アルファ値イージング割合が1.0fより多かったら
 	if (m_alphaRatio > 1.0f)
