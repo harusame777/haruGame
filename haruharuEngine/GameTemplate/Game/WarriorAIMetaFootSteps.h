@@ -42,6 +42,7 @@ private:
 		//優先度三番
 		en_priority_low,
 	};
+	
 	/// <summary>
 	/// 距離計算
 	/// </summary>
@@ -66,6 +67,8 @@ private:
 	/// 共通しているウォリアーのデータ
 	/// </summary>
 	std::shared_ptr<WarriorDataHolder> m_sharedWarriorDatas;
+
+	int m_enemyNum = 0;
 
 	float m_valumeKinds[3];
 };
