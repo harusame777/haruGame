@@ -1,11 +1,10 @@
 #include "stdafx.h"
 #include "CrystalGetCommandSprite.h"
 #include "Crystal.h"
+#include "GameSound.h"
+#include "Player.h"
 #include <random>
 #include <algorithm>
-
-//これを有効にするとデバッグモードになる
-//#define DEBUG_MODE
 
 //定数等
 namespace {
@@ -44,6 +43,14 @@ namespace {
 	/// 岩位置
 	/// </summary>
 	static const Vector3 ROCK_POSITION = { 0.0f,-250.0f,0.0f };
+	/// <summary>
+	/// 取得距離の計算に使うやつ
+	/// </summary>
+	static const float GET_RANGE_CALC = 90.0f;
+	/// <summary>
+	/// デバック文字の位置
+	/// </summary>
+	static const Vector3 DEBUG_FONT_POSITION = { 0.0f,200.0f,0.0f };
 }
 
 //コンストラクタ
@@ -61,6 +68,12 @@ CrystalGetCommandSprite::~CrystalGetCommandSprite()
 //スタート関数
 bool CrystalGetCommandSprite::Start()
 {
+	//ゲームサウンドのインスタンスを取得
+	m_gameSound = FindGO<GameSound>("gameSound");
+
+	//プレイヤーのインスタンスを取得
+	m_player = FindGO<Player>("player");
+
 	//タイマーのスプライトの初期化
 	TimerSpriteInit();
 
@@ -150,10 +163,12 @@ void CrystalGetCommandSprite::Update()
 {
 	//コマンドのアップデート処理
 	CommandUpdate();
-#ifdef DEBUG_MODE
+#ifdef _DEBUG 
 	wchar_t wcsbuf[256];
 
 	swprintf_s(wcsbuf, 256, L"Command[%01d]",int(m_commandList[m_nowCommandNum]));
+
+	m_debugFontRender.SetPosition(DEBUG_FONT_POSITION);
 
 	m_debugFontRender.SetText(wcsbuf);
 
@@ -195,7 +210,7 @@ void CrystalGetCommandSprite::Render(RenderContext& rc)
 			return;
 		m_sprites[m_nowCommandNum]->Draw(rc);
 	}
-#ifdef DEBUG_MODE
+#ifdef _DEBUG 
 	m_debugFontRender.Draw(rc);
 #endif
 }
@@ -271,6 +286,16 @@ void CrystalGetCommandSprite::CommandUpdate()
 
 		//クリスタル本体にこのクリスタルの採取に失敗したと伝える
 		m_crystal->CollectedFailure();
+	}
+	else if(IsRangeInPlayer() == false)
+	{
+
+		//採取フラグをオフにする
+		m_isCollectFlag = false;
+
+		//クリスタル本体にこのクリスタルの採取に失敗したと伝える
+		m_crystal->CollectedFailure();
+
 	}
 
 }
@@ -348,6 +373,8 @@ void CrystalGetCommandSprite::IsJudgeingTriggerButton(const CommandTriggerState&
 		//正しくコマンドが入力された
 		PickaxeEasingInit(PickaxeMoveState::en_impact);
 
+		m_gameSound->LocalSoundOrder(GameSound::en_rockDigSound, false, 1.0f);
+
 		m_isCommandInput = false;
 
 		m_isCorrectButton = true;
@@ -356,6 +383,8 @@ void CrystalGetCommandSprite::IsJudgeingTriggerButton(const CommandTriggerState&
 	{
 		//間違ったコマンドが入力された
 		PickaxeEasingInit(PickaxeMoveState::en_impact);
+
+		m_gameSound->LocalSoundOrder(GameSound::en_hitByIronSound, false, 1.0f);
 
 		m_isCommandInput = false;
 
@@ -442,4 +471,26 @@ const float CrystalGetCommandSprite::PickaxeRotEasing(const PickaxeMoveState pic
 
 	//線形補間した値を返す	
 	return finalFloat = Leap(m_pickaxeRotStartValue, m_pickaxeRotEndValue, m_pickaxeEasingRatio);
+}
+
+const bool& CrystalGetCommandSprite::IsRangeInPlayer()
+{
+	//プレイヤーの座標を取得
+	Vector3 playerPos = m_player->GetPosition();
+
+	//プレイヤーの座標から自身の座標を引いて
+	//自身からプレイヤーへ伸びるベクトルを計算する
+	Vector3 diff = playerPos - m_crystal->GetPosition();
+
+	//自身からプレイヤーへ伸びるベクトルの２乗を計算する
+	float range = diff.LengthSq();
+
+	//もし取得範囲内だったら
+	if (range <= GET_RANGE_CALC * GET_RANGE_CALC)
+	{
+		//trueを返す
+		return true;
+	}
+
+	return false;
 }

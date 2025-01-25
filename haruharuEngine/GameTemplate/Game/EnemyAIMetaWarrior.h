@@ -1,13 +1,12 @@
 #pragma once
 #include "WarriorDataHolder.h"
 #include "PatrolRuteDataHolder.h"
+#include "DebugEnemyTrackingState.h"
 
 class EnemySM_Warrior;
 class EnemyBase;
 class Player;
 class EnemyAIMetaBase;
-
-class DebugEnemyTrackingState;
 
 class EnemyAIMetaWarrior : public IGameObject
 {
@@ -31,6 +30,12 @@ public:
 		m_AIMetaList.clear();
 
 		m_patrolRuteDataHolder->DelteListData();
+
+#ifdef _DEBUG 
+
+		DeleteGO(m_debugWarriorTrackingState);
+
+#endif
 	};
 	/// <summary>
 	///	メタAIのどのプログラムを起動するか
@@ -49,6 +54,14 @@ public:
 		/// 退却
 		/// </summary>
 		mode_retreat,
+		/// <summary>
+		/// 停止
+		/// </summary>
+		mode_stop,
+		/// <summary>
+		/// 足音
+		/// </summary>
+		mode_footStep,
 		/// <summary>
 		/// 初期化用
 		/// </summary>

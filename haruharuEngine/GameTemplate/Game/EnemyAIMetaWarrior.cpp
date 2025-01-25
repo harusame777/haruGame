@@ -5,6 +5,8 @@
 #include "PatrolRuteDataHolder.h"
 #include "WarriorAIMetaTracking.h"
 #include "WarriorAIMetapPatrol.h"
+#include "WarriorAIMetaStop.h"
+#include "WarriorAIMetaFootSteps.h"
 #include "EnemySM_Warrior.h"
 #include "EnemyWarriorTrackingState.h"
 #include "EnemyBase.h"
@@ -35,9 +37,11 @@ bool EnemyAIMetaWarrior::Start()
 	//共通のデータホルダーを初期化
 	m_warriorDataHolder = std::make_shared<WarriorDataHolder>();
 	
-	//m_debugWarriorTrackingState = NewGO<DebugEnemyTrackingState>(0, "debug");
+#ifdef _DEBUG 
+	m_debugWarriorTrackingState = NewGO<DebugEnemyTrackingState>(0, "debug");
 
-	//m_debugWarriorTrackingState->InitWarriorListData(m_warriorDataHolder);
+	m_debugWarriorTrackingState->InitWarriorListData(m_warriorDataHolder);
+#endif
 
 	//共通のデータホルダーを初期化
 	m_patrolRuteDataHolder = std::make_shared<PatrolRuteDataHolder>();
@@ -68,6 +72,12 @@ bool EnemyAIMetaWarrior::Start()
 
 	//メタAIの処理プログラムを初期化
 	ListInitAIMeta(new WarriorAIMetaRetreat(m_patrolRuteDataHolder), true);
+
+	//メタAIの処理プログラムを初期化
+	ListInitAIMeta(new WarriorAIMetaStop(m_warriorDataHolder), true);
+
+	//メタAIの処理プログラムを初期化
+	ListInitAIMeta(new WarriorAIMetaFootSteps(m_warriorDataHolder), false);
 
 	for (auto& metaAIs : m_AIMetaList)
 	{

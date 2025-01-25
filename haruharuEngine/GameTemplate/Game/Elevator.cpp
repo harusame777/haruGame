@@ -11,7 +11,7 @@ namespace {
 
 bool Elevator::Start()
 {
-	m_mainModel.Init("Assets/modelData/objects/elevator/elevator.tkm", nullptr, 0, enModelUpAxisZ, true);
+	m_mainModel.Init("Assets/modelData/objects/elevator/elevator.tkm",nullptr,0,enModelUpAxisZ, ModelRender::en_usuallyShader);
 
 	InitBootObject("Assets/modelData/objects/elevator/elevatorBootPos.tkl");
 

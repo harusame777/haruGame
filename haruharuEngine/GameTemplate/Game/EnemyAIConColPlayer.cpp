@@ -18,7 +18,7 @@ bool EnemyAIConColPlayer::Execution()
 	}
 
 	//エネミーのコリジョンを取得する
-	const auto& enemyCollision = g_collisionObjectManager->FindCollisionObject("enemy_col");
+	const auto& enemyCollision = g_collisionObjectManager->FindCollisionObject(GetEnemyPtr().GetCollisionName());
 
 	if (enemyCollision == nullptr)
 	{

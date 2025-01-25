@@ -5,7 +5,7 @@
 
 namespace nsK2EngineLow {
 
-
+	
 	//コンストラクタ
 	ModelRender::ModelRender()
 	{
@@ -24,7 +24,7 @@ namespace nsK2EngineLow {
 		AnimationClip* animationClips,
 		int numAnimationClips,
 		EnModelUpAxis enModelUpAxis,
-		bool isRecieveShadow
+		const EnShader& shader 
 	)
 	{
 		//スケルトンの初期化
@@ -38,7 +38,7 @@ namespace nsK2EngineLow {
 		//InitModelOnRenderGBuffer(*g_renderingEngine,tkmfilePath,enModelUpAxis,isRecieveShadow);
 
 		//基本のモデル初期化
-		InitNormalModel(tkmfilePath, animationClips, numAnimationClips, enModelUpAxis, isRecieveShadow);
+		InitNormalModel(tkmfilePath, animationClips, numAnimationClips, enModelUpAxis, shader);
 
 		//シャドウマップ描画用モデルの初期化
 		m_shadowMapModel = m_shadowMapModelRender.InitShadowMapModelRender(tkmfilePath,enModelUpAxis,animationClips,m_light);
@@ -64,29 +64,21 @@ namespace nsK2EngineLow {
 		AnimationClip* animationClips,
 		int numAnimationClips,
 		EnModelUpAxis enModelUpAxis,
-		bool isRecieveShadow
+		const EnShader& shader
 	)
 	{
 		//基本モデルの初期化構造体を作成
 		ModelInitData initData;
 
+		Camera lightCamera;
+
 		//ファイルパスを登録
 		initData.m_tkmFilePath = tkmfilePath;
 
-		if (isRecieveShadow)
+		switch (shader)
 		{
-			initData.m_fxFilePath = "Assets/shader/haruharuDeaphShadowReceiverModel.fx";
+		case ModelRender::en_usuallyShader:
 
-			m_light = *g_sceneLight->GetLightData();
-
-			initData.m_expandConstantBuffer = &m_light;
-			initData.m_expandConstantBufferSize = sizeof(m_light);
-
-			//シャドウマップを拡張SRVに設定する
-			initData.m_expandShaderResoruceView[0] = &m_shadowMapModelGaussianBlur.GetBokeTexture();
-		}
-		else
-		{
 			//描画シェーダーを登録
 			initData.m_fxFilePath = "Assets/shader/haruharuModel.fx";
 
@@ -94,7 +86,53 @@ namespace nsK2EngineLow {
 			initData.m_expandConstantBuffer = g_sceneLight->GetLightData();
 			initData.m_expandConstantBufferSize = sizeof(Light);
 
+			break;
+		case ModelRender::en_shadowShader:
+			initData.m_fxFilePath = "Assets/shader/haruharuShadowReceiverModel.fx";
 
+			lightCamera.SetAspectOneFlag(true);
+
+			lightCamera.SetViewAngle(Math::DegToRad(80.0f));
+
+			//カメラの位置を設定
+			lightCamera.SetPosition(-2000.0f, 2000.0f, 2000.0f);
+
+			// カメラの注視点を設定。これがライトが照らしている場所
+			lightCamera.SetTarget(0, 0, 0);
+
+			//シャドウマップを拡張SRVに設定する
+			initData.m_expandShaderResoruceView[0] = &(g_renderingEngine
+				->GetShadowMapRenderTarget()->GetRenderTargetTexture());
+			break;
+		case ModelRender::en_crystalShader:
+			initData.m_fxFilePath = "Assets/shader/haruharuCrystalModel.fx";
+
+			lightCamera.SetAspectOneFlag(true);
+
+			lightCamera.SetViewAngle(Math::DegToRad(80.0f));
+
+			//カメラの位置を設定
+			lightCamera.SetPosition(-2000.0f, 2000.0f, 2000.0f);
+
+			// カメラの注視点を設定。これがライトが照らしている場所
+			lightCamera.SetTarget(0, 0, 0);
+
+			// 上方向を設定。今回はライトが真下を向いているので、X方向を上にしている
+			//lightCamera.SetUp(1, 0, 0);
+
+			//ライトビュープロジェクション行列を計算している
+			lightCamera.Update();
+
+			m_shadowLigData.m_light = *g_sceneLight->GetLightData();
+			m_shadowLigData.m_mt = lightCamera.GetViewProjectionMatrix();
+
+			initData.m_expandConstantBuffer = &m_shadowLigData;
+			initData.m_expandConstantBufferSize = sizeof(m_shadowLigData);
+
+			//シャドウマップを拡張SRVに設定する
+			initData.m_expandShaderResoruceView[0] = &(g_renderingEngine
+				->GetShadowMapRenderTarget()->GetRenderTargetTexture());
+			break;
 		}
 
 		//ノンスキンメッシュ用の頂点シェーダーのエントリーポイントを指定する。

@@ -2,9 +2,6 @@
 #include "PlayerOxygenUi.h"
 #include "Game.h"
 
-//これを有効にするとデバッグモードになる
-#define DEBUG_MODE
-
 //定数等
 namespace {
 	//酸素枠のサイズWとH
@@ -86,7 +83,7 @@ void PlayerOxygenUi::Update()
 	//ワイプ更新
 	m_oxygenGaugeSpriteData.SetDegree(WipeCalc());
 
-#ifdef DEBUG_MODE
+#ifdef _DEBUG
 	wchar_t wcsbuf[256];
 
 	swprintf_s(wcsbuf, 256, L"%06.1ftime",float(m_mainOxygenIndex));
@@ -215,7 +212,7 @@ void PlayerOxygenUi::Render(RenderContext& rc)
 
 	m_oxygenUiBase.Draw(rc);
 
-#ifdef DEBUG_MODE
+#ifdef _DEBUG
 	m_debugFontRender.Draw(rc);
 #endif
 }
