@@ -122,16 +122,15 @@ void Enemy_Warrior::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eve
 
 		if (m_footStepsFlag == true)
 		{
-			m_gameSound->SoundListInit(
+			m_gameSound->LocalSoundOrder(
 				GameSound::en_enemyWarriorWalkSound,
-				GameSound::en_priority_high,
+				false,
 				finalValue
 			);
 		}
 	}
 	else if (wcscmp(eventName, L"AttackImpact") == 0)
 	{
-
 		m_gameSound->LocalSoundOrder(GameSound::en_killSound, false, 1.0f);
 
 		SetAttackImpact(true);
