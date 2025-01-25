@@ -94,7 +94,7 @@ protected:
 
 	bool m_isAttackImpact = false;
 
-	float m_footStepValumeCalcValue = 0.0;
+	bool m_footStepsFlag = true;
 
 public:
 	/// <summary>
@@ -279,14 +279,14 @@ public:
 		return &m_modelRender;
 	}
 
-	void  SetFootStepValumeCalcValue(const float& valume)
+	void  SetFootStepValumeCalcValue(const bool& valumeFlag)
 	{
-		m_footStepValumeCalcValue = valume;
+		m_footStepsFlag = valumeFlag;
 	}
 
-	const float& GetFootStepValumeCalcValue() const
+	const bool& GetFootStepValumeCalcValue() const
 	{
-		return m_footStepValumeCalcValue;
+		return m_footStepsFlag;
 	}
 };
 

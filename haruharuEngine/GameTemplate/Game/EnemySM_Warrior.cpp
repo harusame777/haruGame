@@ -105,6 +105,10 @@ void EnemySM_Warrior::EnemyAIUpdate()
 	//時間更新
 	TimeUpdate();
 
+	//足音を調整
+	m_warriorMetaAI->MetaAIExecution(this, EnemyAIMetaWarrior::mode_footStep);
+
+
 	switch (m_warriorState)
 	{
 		//待機ステート
@@ -189,23 +193,23 @@ void EnemySM_Warrior::ChangeState()
 {
 
 	//プレイヤーとの接触判定
-	if (m_enemyConList[en_enemyAIConColPlayer]->Execution())
-	{
-		if (GetEnemyPtr().GetAttackFlag())
-		{
-			return;
-		}
+	//if (m_enemyConList[en_enemyAIConColPlayer]->Execution())
+	//{
+	//	if (GetEnemyPtr().GetAttackFlag())
+	//	{
+	//		return;
+	//	}
 
-		GetEnemyPtr().SetAttackFlag(true);
+	//	GetEnemyPtr().SetAttackFlag(true);
 
-		m_warriorMetaAI->MetaAIExecution(this,EnemyAIMetaWarrior::mode_stop);
+	//	m_warriorMetaAI->MetaAIExecution(this,EnemyAIMetaWarrior::mode_stop);
 
-		SetState(WarriorState::en_attack);
+	//	SetState(WarriorState::en_attack);
 
-		m_game->PlayerGameOver();
+	//	m_game->PlayerGameOver();
 
-		return;
-	}
+	//	return;
+	//}
 
 	if (m_warriorState == WarriorState::en_warrior_tracking ||
 		m_warriorState == WarriorState::en_warrior_trackingMetaAI &&

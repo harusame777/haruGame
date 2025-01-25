@@ -9,8 +9,8 @@
 namespace {
 
 	static const float HIGH_VALUME_INDEX = 1.0f;
-	static const float MIDDLE_VALUME_INDEX = 0.4f;
-	static const float LOW_VALUME_INDEX = 0.3f;
+	static const float MIDDLE_VALUME_INDEX = 0.0f;
+	static const float LOW_VALUME_INDEX = 0.0f;
 
 }
 
@@ -28,20 +28,53 @@ void WarriorAIMetaFootSteps::MetaAIExecution(EnemySMBase* initEnemy)
 	//エネミーの数取得
 	m_enemyNum = m_sharedWarriorDatas->m_warriorDatas.size();
 
+	if (m_enemyLengthDatas[0].m_enemyData == nullptr)
+	{
+		for (int enemyNo = 0; enemyNo < m_enemyNum; enemyNo++)
+		{
+			m_enemyLengthDatas[enemyNo].m_enemyData
+				= &m_sharedWarriorDatas->m_warriorDatas[enemyNo]->GetEnemyPtr();
+		}
+
+		return;
+	}
+
 	//距離データ初期化
-	//for (int enemyNo = 0; enemyNo < m_enemyNum; enemyNo++)
-	//{
-	//	m_enemyLengthDatas[enemyNo].m_enemyData 
-	//		= &m_sharedWarriorDatas->m_warriorDatas[enemyNo]->GetEnemyPtr();
+	for (int enemyNo = 0; enemyNo < m_enemyNum; enemyNo++)
+	{
+		m_enemyLengthDatas[enemyNo].m_length = 0.0f;
 
-	//	m_enemyLengthDatas[enemyNo].m_length = 0.0f;
+		m_enemyLengthDatas[enemyNo].m_priority = en_priority_non;
+	}
 
-	//	m_enemyLengthDatas[enemyNo].m_priority = en_priority_non;
-	//}
+	EnemyStateCheck();
 
 	LengthCalc();
 
-	//DatasPriorityInit();
+	DatasPriorityInit();
+}
+
+void WarriorAIMetaFootSteps::EnemyStateCheck()
+{
+
+	for (int enemyNo = 0; enemyNo < m_enemyNum; enemyNo++)
+	{
+
+		m_enemyLengthDatas[enemyNo].m_warriorStateNum
+			= m_enemyLengthDatas[enemyNo].m_enemyData->GetStateNumber();
+
+		if (m_enemyLengthDatas[enemyNo].m_warriorStateNum
+			!= EnemySM_Warrior::en_warrior_tracking &&
+			m_enemyLengthDatas[enemyNo].m_warriorStateNum
+			!= EnemySM_Warrior::en_warrior_trackingMetaAI)
+		{
+			m_enemyLengthDatas[enemyNo].m_enemyData
+				->SetFootStepValumeCalcValue(true);
+
+			return;
+		}
+	}
+
 }
 
 //距離計算
@@ -52,63 +85,54 @@ void WarriorAIMetaFootSteps::LengthCalc()
 	for (int enemyNo = 0; enemyNo < m_enemyNum; enemyNo++)
 	{
 		
-		Vector3 diff = m_player->GetPosition() 
-			- m_sharedWarriorDatas->m_warriorDatas[enemyNo]->GetEnemyPtr().GetPosition();
+		Vector3 diff = m_player->GetPosition()
+			- m_enemyLengthDatas[enemyNo].m_enemyData->GetPosition();
 
-		//m_enemyLengthDatas[enemyNo].m_length = diff.Length();
+		m_enemyLengthDatas[enemyNo].m_length = diff.Length();
 
 	}	
 
 }
-//
-//void WarriorAIMetaFootSteps::DatasPriorityInit()
-//{
-//
-//	EnemyLength_Data* highData = nullptr;
-//	EnemyLength_Data* lowData = nullptr;
-//	std::vector<EnemyLength_Data*> middleData;
-//	
-//	//まず先頭要素のエネミーを一番近いエネミーと課程する
-//	//そして格納したデータとほかのデータを
-//	//比べて小さい方をhighに代入する
-//	//lowも大体同じ処理
-//	highData = &m_enemyLengthDatas[0];
-//	lowData = &m_enemyLengthDatas[0];
-//	for (int enemyNo = 0;
-//		enemyNo < m_enemyNum;
-//		enemyNo++)
-//	{
-//		if (highData->m_length
-//			> m_enemyLengthDatas[enemyNo].m_length)
-//			highData = &m_enemyLengthDatas[enemyNo];
-//
-//		if (lowData->m_length
-//			< m_enemyLengthDatas[enemyNo].m_length)
-//			lowData = &m_enemyLengthDatas[enemyNo];
-//	}
-//
-//	//そしてそれ以外のデータをmiddleに指定
-//	for (int enemyNo = 0;
-//		enemyNo < m_enemyNum;
-//		enemyNo++)
-//	{
-//		if (&m_enemyLengthDatas[enemyNo] == highData ||
-//			&m_enemyLengthDatas[enemyNo] == lowData)
-//			continue;
-//		else
-//			middleData.push_back(&m_enemyLengthDatas[enemyNo]);
-//	}
-//
-//	//最終設定
-//	highData->m_enemyData->SetFootStepValumeCalcValue(HIGH_VALUME_INDEX);
-//
-//	lowData->m_enemyData->SetFootStepValumeCalcValue(LOW_VALUME_INDEX);
-//
-//	for (auto& listData : middleData)
-//	{
-//		listData->m_enemyData->SetFootStepValumeCalcValue(MIDDLE_VALUME_INDEX);
-//	}
-//}
+
+void WarriorAIMetaFootSteps::DatasPriorityInit()
+{
+
+	EnemyLength_Data* highData = nullptr;
+	std::vector<EnemyLength_Data*> lowDatas;
+	
+	//まず先頭要素のエネミーを一番近いエネミーと課程する
+	//そして格納したデータとほかのデータを
+	//比べて小さい方をhighに代入する
+	//lowも大体同じ処理
+	highData = &m_enemyLengthDatas[0];
+	for (int enemyNo = 0;
+		enemyNo < m_enemyNum;
+		enemyNo++)
+	{
+		if (highData->m_length
+			> m_enemyLengthDatas[enemyNo].m_length)
+			highData = &m_enemyLengthDatas[enemyNo];
+	}
+
+	//そしてそれ以外のデータをlowに指定
+	for (int enemyNo = 0;
+		enemyNo < m_enemyNum;
+		enemyNo++)
+	{
+		if (&m_enemyLengthDatas[enemyNo] == highData)
+			continue;
+		else
+			lowDatas.push_back(&m_enemyLengthDatas[enemyNo]);
+	}
+
+	//最終設定
+	highData->m_enemyData->SetFootStepValumeCalcValue(true);
+
+	for (auto& listData : lowDatas)
+	{
+		listData->m_enemyData->SetFootStepValumeCalcValue(false);
+	}
+}
 
 //処理終了
 const bool WarriorAIMetaFootSteps::ProcessEnd(EnemySMBase* initEnemy)

@@ -1,6 +1,7 @@
 #pragma once
 #include "EnemyAIMetaBase.h"
 #include "WarriorDataHolder.h"
+#include "EnemyBase.h"
 
 class Player;
 class GameSound;
@@ -33,6 +34,17 @@ public:
 	/// </summary>
 	const bool ProcessEnd(EnemySMBase* initEnemy);
 private:
+	/// <summary>
+	/// エネミーのステートを確認する
+	/// </summary>
+	void EnemyStateCheck();
+	/// <summary>
+	/// データに数値を入力
+	/// </summary>
+	void DatasPriorityInit();
+	/// <summary>
+	/// 優先度
+	/// </summary>
 	enum EnemyDistance_Kinds
 	{
 		//優先度一番
@@ -41,8 +53,23 @@ private:
 		en_priority_middle,
 		//優先度三番
 		en_priority_low,
+		//設定なし
+		en_priority_non = 4,
 	};
-	
+	/// <summary>
+	/// エネミーデータ
+	/// </summary>
+	struct EnemyLength_Data
+	{
+		EnemyBase* m_enemyData = nullptr;
+
+		float m_length = 0.0f;
+
+		EnemyDistance_Kinds m_priority
+			= EnemyDistance_Kinds::en_priority_non;
+
+		int m_warriorStateNum = -1;
+	};
 	/// <summary>
 	/// 距離計算
 	/// </summary>
@@ -67,6 +94,8 @@ private:
 	/// 共通しているウォリアーのデータ
 	/// </summary>
 	std::shared_ptr<WarriorDataHolder> m_sharedWarriorDatas;
+
+	EnemyLength_Data m_enemyLengthDatas[3];
 
 	int m_enemyNum = 0;
 
