@@ -3,7 +3,7 @@
 
 //定数等
 namespace{
-	static const int MAX_SOUND_PLAY_VALUE = 1;
+	static const int MAX_SOUND_PLAY_VALUE = 3;
 }
 
 //スタート関数

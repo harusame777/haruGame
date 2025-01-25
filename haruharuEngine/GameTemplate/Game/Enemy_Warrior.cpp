@@ -121,9 +121,9 @@ void Enemy_Warrior::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eve
 		// 線形補間（ここでは t がそのまま最終値）
 		float finalValue = t;
 
-		m_gameSound->SoundListInit(
+		m_gameSound->LocalSoundOrder(
 			GameSound::en_enemyWarriorWalkSound,
-			GameSound::en_priority_high,
+			false,
 			finalValue
 		);
 	}
