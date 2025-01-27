@@ -23,14 +23,14 @@ void BootObjectBase::InitBootObject(const char* filePath)
 			if (objData.EqualObjectName(L"bootPosition") == true)
 			{
 
-				m_bootPosition = objData.m_position;
+				m_levelPosition = objData.m_position;
 
 				return true;
 			}
 			return true;
 		});
 
-	m_bootPosition += m_position;
+	m_bootPosition = m_levelPosition + m_position;
 }
 
 //ï«ÇÃîªíËÇéÊÇÈç\ë¢ëÃ
