@@ -75,6 +75,8 @@ bool Crystal::Start()
 	//クリスタルの取得コマンド表示プログラムのインスタンスを取得する
 	m_GetCOMSprite = FindGO<CrystalGetCommandSprite>("comSprite");
 
+	InitBootObject("Assets/modelData/objects/crystal/crystalBootPos.tkl");
+
 	//コライダーを初期化する
 	m_sphereCollider.Create(1.0f);
 
@@ -90,6 +92,8 @@ void Crystal::Update()
 	m_mainModel.SetPosition(m_position);
 	//回転を設定
 	m_mainModel.SetRotation(m_rotation);
+	//押せる位置をリセット
+	ResetBootPosition(m_position);
 	//描画更新
 	m_mainModel.Update();
 }
@@ -172,7 +176,7 @@ void Crystal::GetCrystal()
 		return;
 	}
 
-	if (IsInGetRange() && IsLookCrystal())
+	if (IsObjectBootConditions())
 	{
 #ifdef _DEBUG
 		wchar_t wcsbuf[256];

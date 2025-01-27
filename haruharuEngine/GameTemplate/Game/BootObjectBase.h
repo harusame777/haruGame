@@ -96,6 +96,14 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	const bool IsObjectBootConditions();
+	/// <summary>
+	/// 位置リセット
+	/// </summary>
+	/// <param name="resetPos"></param>
+	void ResetBootPosition(const Vector3& resetPos)
+	{
+		m_bootPosition = m_levelPosition + resetPos;
+	}
 private:
 	/// <summary>
 	/// オブジェクトが起動可能カメラベクター方向内にあるかどうか調べる関数
@@ -138,6 +146,10 @@ protected:
 	/// </summary>
 	ModelRender m_mainModel;
 private:
+	/// <summary>
+	/// レベル上の座標
+	/// </summary>
+	Vector3 m_levelPosition = Vector3::Zero;
 	/// <summary>
 	/// レベル
 	/// </summary>
