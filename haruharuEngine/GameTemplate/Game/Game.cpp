@@ -32,6 +32,8 @@ bool Game::Start()
 
 	m_gameSound = NewGO<GameSound>(2, "gameSound");
 
+	NewGO<Window>(1, "window");
+
 	m_load = NewGO<Load>(1, "load");
 
 	m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadImmediately });
