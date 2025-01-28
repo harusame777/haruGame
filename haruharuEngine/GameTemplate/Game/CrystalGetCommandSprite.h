@@ -61,6 +61,12 @@ public:
 		//コマンドを入力できるように
 		m_isCommandInput = true;
 	}
+
+	const bool& GetCollectFlag() const
+	{
+		return m_isCollectFlag;
+	}
+
 private:
 	/// <summary>
 	/// ツルハシの回転ステート

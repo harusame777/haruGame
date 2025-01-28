@@ -92,8 +92,10 @@ void Crystal::Update()
 	m_mainModel.SetPosition(m_position);
 	//回転を設定
 	m_mainModel.SetRotation(m_rotation);
-	//押せる位置をリセット
-	ResetBootPosition(m_position);
+	if (m_GetCOMSprite->GetCollectFlag() == false)
+	{
+		UpdateBootData();
+	}
 	//描画更新
 	m_mainModel.Update();
 }
@@ -173,6 +175,11 @@ void Crystal::GetCrystal()
 	else
 	{
 		m_collectCoolTime -= g_gameTime->GetFrameDeltaTime();
+		return;
+	}
+
+	if (m_GetCOMSprite->GetCollectFlag() == true)
+	{
 		return;
 	}
 
