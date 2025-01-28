@@ -30,10 +30,10 @@ bool Title::Start()
 //アップデート関数
 void Title::Update()
 {
-	if (g_pad[0]->IsTrigger(enButtonB))
-	{
-		m_isGameIn = true;
-	}
+	//if (g_pad[0]->IsTrigger(enButtonB))
+	//{
+	//	m_isGameIn = true;
+	//}
 
 	//フォントのアップデート
 	FontUpdate();

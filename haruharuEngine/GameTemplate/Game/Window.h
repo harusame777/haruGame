@@ -1,7 +1,7 @@
 #pragma once
 
 //定数等
-namespace {
+namespace WindowConstants_H {
 	static const Vector3 WINDOWTOP_OPEN_POSITION = { 0.0f,400.0f,0.0f };
 	static const Vector3 WINDOWTOP_CLOSE_POSITION = { 0.0f,20.0f,0.0f };
 	static const Vector3 WINDOWBOTTOM_OPEN_POSITION = { 0.0f,-400.0f,0.0f };
@@ -16,15 +16,15 @@ private:
 	/// </summary>
 	enum WindowState {
 		//待機
-		en_state_standby,
+		en_state_standby = 0,
 		//ウィンドウ開ける
-		en_state_windowOpen,
+		en_state_windowOpen = 1,
 		//開いた状態で待機
-		en_state_openWait,
+		en_state_openWait = 2,
 		//ウィンドウ閉める
-		en_state_windowClose,
+		en_state_windowClose = 3,
 		//ウィンドウ閉じる処理完了
-		en_state_windowCloseCompletion,
+		en_state_windowCloseCompletion = 4,
 		
 	};
 	WindowState m_windowState = WindowState::en_state_standby;
@@ -47,11 +47,17 @@ public:
 			return;
 		}
 
+		m_windowTopPos = Vector3::Zero;
+
+		m_windowBottomPos = Vector3::Zero;
+
+		m_windowDatas.SetWipeRatio(0.0);
+
 		m_windowState = WindowState::en_state_windowOpen;
 
-		m_windowFrameEasingMax = WINDOWTOP_OPEN_POSITION.y;
+		m_windowFrameEasingMax = WindowConstants_H::WINDOWTOP_OPEN_POSITION.y;
 
-		m_windowFrameEasingMin = WINDOWTOP_CLOSE_POSITION.y;
+		m_windowFrameEasingMin = WindowConstants_H::WINDOWTOP_CLOSE_POSITION.y;
 
 		m_windowFrameRatio = 0.0f;
 
@@ -71,9 +77,9 @@ public:
 
 		m_windowState = WindowState::en_state_windowClose;
 
-		m_windowFrameEasingMax = WINDOWTOP_CLOSE_POSITION.y;
+		m_windowFrameEasingMax = WindowConstants_H::WINDOWTOP_CLOSE_POSITION.y;
 
-		m_windowFrameEasingMin = WINDOWTOP_OPEN_POSITION.y;
+		m_windowFrameEasingMin = WindowConstants_H::WINDOWTOP_OPEN_POSITION.y;
 
 		m_windowFrameRatio = 0.0f;
 	}
@@ -165,6 +171,14 @@ private:
 	/// </summary>
 	SpriteRender m_window_bottom;
 	/// <summary>
+	/// ウィンドウ上部座標
+	/// </summary>
+	Vector3 m_windowTopPos = Vector3::Zero;
+	/// <summary>
+	/// ウィンドウ下部座標
+	/// </summary>
+	Vector3 m_windowBottomPos = Vector3::Zero;
+	/// <summary>
 	/// ウィンドウのフレームのイージングに使用する変数
 	/// </summary>
 	float m_windowFrameRatio = 0.0f;
@@ -181,9 +195,17 @@ private:
 	/// <param name="b"></param>
 	/// <param name="t"></param>
 	/// <returns></returns>
-	const float Leap(const float a, const float b, const float t)
+	const float& Leap(const float& a, const float& b, const float& t)
 	{
 		return (1.0f - t) * a + t * b;
 	}
+	/// <summary>
+	/// デバック用のフォントレンダー
+	/// </summary>
+	FontRender m_debugFontRender_A;
+	/// <summary>
+	/// デバック用のフォントレンダー
+	/// </summary>
+	FontRender m_debugFontRender_B;
 };
 

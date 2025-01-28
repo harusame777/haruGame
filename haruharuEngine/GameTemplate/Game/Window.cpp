@@ -1,19 +1,16 @@
 #include "stdafx.h"
 #include "Window.h"
 
-//これを有効にするとデバッグモードになる
-//#define DEBUG_MODE
-
 //定数等
-namespace {
+namespace WindowConstants_CPP {
 
 	static const float WINDOWTOP_SPRITE_W_SIZE = 1508.0f;
 	static const float WINDOWTOP_SPRITE_H_SIZE = 50.0f;
 
-	static const float WINDOWBOTTOM_SPRITE_W_SIZE = 1508.0f;
+	static const float WINDOWBOTTOM_SPRITE_W_SIZE = 1500.0f;
 	static const float WINDOWBOTTOM_SPRITE_H_SIZE = 55.0f;
 
-	static const float WINDOWBASE_SPRITE_W_SIZE = 1503.0f;
+	static const float WINDOWBASE_SPRITE_W_SIZE = 1500.0f;
 	static const float WINDOWBASE_SPRITE_H_SIZE = 810.0f;
 
 
@@ -27,17 +24,17 @@ bool Window::Start()
 {
 	//ウィンドウのフレーム上
 	m_window_top.Init("Assets/modelData/window/window_sprite_top_1.DDS",
-		WINDOWTOP_SPRITE_W_SIZE,
-		WINDOWTOP_SPRITE_H_SIZE);
+		WindowConstants_CPP::WINDOWTOP_SPRITE_W_SIZE,
+		WindowConstants_CPP::WINDOWTOP_SPRITE_H_SIZE);
 
-	m_window_top.SetPosition(WINDOWTOP_CLOSE_POSITION);
+	m_window_top.SetPosition(WindowConstants_H::WINDOWTOP_CLOSE_POSITION);
 
 	//ウィンドウのフレーム下
 	m_window_bottom.Init("Assets/modelData/window/window_sprite_bottom_1.DDS",
-		WINDOWBOTTOM_SPRITE_W_SIZE,
-		WINDOWBOTTOM_SPRITE_H_SIZE);
+		WindowConstants_CPP::WINDOWBOTTOM_SPRITE_W_SIZE,
+		WindowConstants_CPP::WINDOWBOTTOM_SPRITE_H_SIZE);
 
-	m_window_bottom.SetPosition(WINDOWBOTTOM_CLOSE_POSITION);
+	m_window_bottom.SetPosition(WindowConstants_H::WINDOWBOTTOM_CLOSE_POSITION);
 
 	//m_window_base.Init("Assets/modelData/window/window_sprite_base_1.DDS",
 	//	WINDOWBASE_SPRITE_W_SIZE,
@@ -50,16 +47,23 @@ bool Window::Start()
 	//シェーダーファイルを設定
 	windowBaseInitData.m_fxFilePath = "Assets/shader/haruharuWindowSpriteShader.fx";
 	//ユーザー拡張データを設定
+	//windowBaseInitData.m_expandConstantBuffer = &m_windowDatas;
+	//windowBaseInitData.m_expandConstantBufferSize = sizeof(m_windowDatas);
 	windowBaseInitData.m_expandConstantBuffer = &m_windowDatas;
 	windowBaseInitData.m_expandConstantBufferSize = sizeof(m_windowDatas);
 	//比率を設定
-	windowBaseInitData.m_width = static_cast<UINT>(WINDOWBASE_SPRITE_W_SIZE);
-	windowBaseInitData.m_height = static_cast<UINT>(WINDOWBASE_SPRITE_H_SIZE);
+	windowBaseInitData.m_width = static_cast<UINT>(WindowConstants_CPP::WINDOWBASE_SPRITE_W_SIZE);
+	windowBaseInitData.m_height = static_cast<UINT>(WindowConstants_CPP::WINDOWBASE_SPRITE_H_SIZE);
 	//ブレンドモードを設定
 	windowBaseInitData.m_alphaBlendMode = AlphaBlendMode_Trans;
 	//設定したデータをスプライトに設定
 	m_window_base.Init(windowBaseInitData);
 
+	m_windowTopPos = Vector3::Zero;
+
+	m_windowBottomPos = Vector3::Zero;
+
+	m_windowDatas.SetWipeRatio(0.0);
 
 	return true;
 }
@@ -67,27 +71,10 @@ bool Window::Start()
 //アップデート関数
 void Window::Update()
 {
-#ifdef DEBUG_MODE
 	if (g_pad[0]->IsTrigger(enButtonA))
 	{
 		WindowOpen();
 	}
-
-	if (IsWindowClose())
-	{
-		float test1;
-
-		test1 = 1;
-	}
-
-	if (IsWindowOpen())
-	{
-		float test2;
-
-		test2 = 2;
-	}
-
-#endif
 
 	WindowStateUpdate();
 	
@@ -101,9 +88,6 @@ void Window::Update()
 //ウィンドウのステートを更新する関数
 void Window::WindowStateUpdate()
 {
-	Vector3 windowTopNewPos = { 0.0f,0.0f,0.0f };
-	Vector3 windowBottomNewPos = { 0.0f,0.0f,0.0f };
-
 	switch (m_windowState)
 	{
 	case Window::en_state_standby:
@@ -113,14 +97,13 @@ void Window::WindowStateUpdate()
 		break;
 	case Window::en_state_windowOpen:
 
+		m_windowTopPos.y = WindowFrameUpdate();
 
-		windowTopNewPos.y = WindowFrameUpdate();
+		m_window_top.SetPosition(m_windowTopPos);
 
-		m_window_top.SetPosition(windowTopNewPos);
+		m_windowBottomPos.y = m_windowTopPos.y * -1.0f;
 
-		windowBottomNewPos.y = windowTopNewPos.y * -1.0f;
-
-		m_window_bottom.SetPosition(windowBottomNewPos);
+		m_window_bottom.SetPosition(m_windowBottomPos);
 
 		m_windowDatas.SetWipeRatio(WindowBaseWipeCalc());
 
@@ -135,13 +118,13 @@ void Window::WindowStateUpdate()
 		break;
 	case Window::en_state_windowClose:
 
-		windowTopNewPos.y = WindowFrameUpdate();
+		m_windowTopPos.y = WindowFrameUpdate();
 
-		m_window_top.SetPosition(windowTopNewPos);
+		m_window_top.SetPosition(m_windowTopPos);
 
-		windowBottomNewPos.y = windowTopNewPos.y * -1.0f;
+		m_windowBottomPos.y = m_windowTopPos.y * -1.0f;
 
-		m_window_bottom.SetPosition(windowBottomNewPos);
+		m_window_bottom.SetPosition(m_windowBottomPos);
 
 		m_windowDatas.SetWipeRatio(WindowBaseWipeCalc());
 
@@ -164,7 +147,7 @@ void Window::WindowStateUpdate()
 //ウィンドウのフレームの位置を更新する関数
 const float& Window::WindowFrameUpdate()
 {
-	m_windowFrameRatio += g_gameTime->GetFrameDeltaTime() * 2.0f;
+	m_windowFrameRatio += g_gameTime->GetFrameDeltaTime() * 0.5f;
 
 	if (m_windowFrameRatio > 1.0f)
 	{
@@ -188,15 +171,15 @@ const float& Window::WindowFrameUpdate()
 //ウィンドウのベースのワイプ割合を計算する関数
 const float& Window::WindowBaseWipeCalc()
 {
-	float finalIndex;
+	float finalIndex = 0.0f;
 
 	//ちょっと縮めたいからy値を少し引き算する
-	float windowTopIndex = m_window_top.GetPosition().y - 10.0f;
+	float windowTopIndex = m_window_top.GetPosition().y - 30.0f;
 
 	//ウィンドウのフレームの位置を考慮して計算する
-	finalIndex = WINDOWBASE_WIPE_MIN 
-		+ (windowTopIndex / WINDOWTOP_OPEN_POSITION.y) 
-		* (WINDOWBASE_WIPE_MAX - WINDOWBASE_WIPE_MIN);
+	finalIndex = WindowConstants_CPP::WINDOWBASE_WIPE_MIN
+		+ (windowTopIndex / WindowConstants_H::WINDOWTOP_OPEN_POSITION.y)
+		* (WindowConstants_CPP::WINDOWBASE_WIPE_MAX - WindowConstants_CPP::WINDOWBASE_WIPE_MIN);
 
 	return finalIndex;
 }
@@ -204,15 +187,35 @@ const float& Window::WindowBaseWipeCalc()
 //レンダー関数
 void Window::Render(RenderContext& rc)
 {
-	if (m_isWindowDraw == false)
+
+	if (m_isWindowDraw == true)
 	{
-		return;
+		m_window_base.Draw(rc);
+
+		m_window_bottom.Draw(rc);
+
+		m_window_top.Draw(rc);
+
 	}
 
-	m_window_base.Draw(rc);
+	wchar_t wcsbuf[256] = {};
 
-	m_window_bottom.Draw(rc);
+	swprintf_s(wcsbuf, 256, L"state: %d,FrameRatio: %.2f, topPosY: %.2f", int(m_windowState), m_windowFrameRatio, m_windowBottomPos.y);
 
-	m_window_top.Draw(rc);
+	m_debugFontRender_A.SetText(wcsbuf);
+
+	m_debugFontRender_A.SetPosition({ -900.0f,-300.0f,0.0f });
+
+	m_debugFontRender_A.Draw(rc);
+
+	swprintf_s(wcsbuf, 256, L"WindowRatio: %.2f, BottomPosY: %.2f",m_windowDatas.GetWipeRatio(), m_windowBottomPos.y);
+
+	m_debugFontRender_B.SetText(wcsbuf);
+
+	m_debugFontRender_B.SetPosition({ -900.0f,-400.0f,0.0f });
+
+	m_debugFontRender_B.Draw(rc);
+
+
 }
 
