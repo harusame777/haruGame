@@ -1,6 +1,7 @@
 #pragma once
 
 class Player;
+class PlayerInteractableUi;
 
 class BootObjectBase : public IGameObject
 {
@@ -96,6 +97,11 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	const bool IsObjectBootConditions();
+	/// <summary>
+	/// 位置リセット
+	/// </summary>
+	/// <param name="resetPos"></param>
+	void UpdateBootData();
 private:
 	/// <summary>
 	/// オブジェクトが起動可能カメラベクター方向内にあるかどうか調べる関数
@@ -139,6 +145,10 @@ protected:
 	ModelRender m_mainModel;
 private:
 	/// <summary>
+	/// レベル上の座標
+	/// </summary>
+	Vector3 m_levelPosition = Vector3::Zero;
+	/// <summary>
 	/// レベル
 	/// </summary>
 	LevelRender m_getBootPosition;
@@ -150,6 +160,10 @@ private:
 	/// 起動座標
 	/// </summary>
 	Vector3 m_bootPosition = Vector3::Zero;
+	/// <summary>
+	/// インタラクト可能スプライトUiのインスタンス
+	/// </summary>
+	PlayerInteractableUi* m_playerInteractableUi = nullptr;
 	/// <summary>
 	/// コライダー
 	/// </summary>

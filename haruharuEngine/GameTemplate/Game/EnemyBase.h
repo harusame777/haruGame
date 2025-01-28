@@ -94,6 +94,8 @@ protected:
 
 	bool m_isAttackImpact = false;
 
+	bool m_footStepsFlag = true;
+
 public:
 	/// <summary>
 	/// à íuê›íË
@@ -275,6 +277,16 @@ public:
 	const ModelRender* GetModelRender() const
 	{
 		return &m_modelRender;
+	}
+
+	void  SetFootStepValumeCalcValue(const bool& valumeFlag)
+	{
+		m_footStepsFlag = valumeFlag;
+	}
+
+	const bool& GetFootStepValumeCalcValue() const
+	{
+		return m_footStepsFlag;
 	}
 };
 

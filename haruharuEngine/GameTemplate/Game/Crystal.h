@@ -1,12 +1,12 @@
 #pragma once
-#include "ObjectBase.h"
+#include "BootObjectBase.h"
 
 class Player;
 class CrystalGetCommandSprite;
 class ManagerCrystal;
 class PlayerScoreUi;
 
-class Crystal : public ObjectBase
+class Crystal : public BootObjectBase
 {
 public:
 	/// <summary>
