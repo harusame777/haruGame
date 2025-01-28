@@ -14,6 +14,7 @@
 #include "Elevator.h"
 #include "Accessories.h"
 #include "ManagerCrystal.h"
+#include "PlayerInteractableUi.h"
 #include "PlayerScanCrystalUi.h"
 #include "PlayerScoreUi.h"
 #include "PlayerStaminaUi.h"
@@ -322,6 +323,7 @@ void Game::OutGameLoadProcess()
 
 	m_player = NewGO<Player>(0, "player");
 	//UIÇÃèâä˙âª
+	PlayerInteractableUi* m_interactableUi = NewGO<PlayerInteractableUi>(0,"InteractableUi");
 	PlayerScanCrystalUi* m_scanUi = NewGO<PlayerScanCrystalUi>(0, "ScanUI");
 	PlayerScoreUi* m_scoreUi = NewGO<PlayerScoreUi>(0, "ScoreUI");
 	m_scoreUi->InitMainScorePtr(m_scoreNum);

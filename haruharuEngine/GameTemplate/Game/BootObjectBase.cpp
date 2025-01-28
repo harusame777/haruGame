@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "BootObjectBase.h"
+#include "PlayerInteractableUi.h"
 #include "Player.h"
 
 //定数等
@@ -16,6 +17,8 @@ void BootObjectBase::InitBootObject(const char* filePath)
 	//コライダーを初期化する
 	m_sphereCollider.Create(0.1f);
 
+	m_playerInteractableUi = FindGO<PlayerInteractableUi>("InteractableUi");
+
 	m_bootPlayer = FindGO<Player>("player");
 
 	m_getBootPosition.Init(filePath, [&](LevelObjectData_Render& objData)
@@ -31,6 +34,20 @@ void BootObjectBase::InitBootObject(const char* filePath)
 		});
 
 	m_bootPosition = m_levelPosition + m_position;
+}
+
+void BootObjectBase::UpdateBootData()
+{
+	m_bootPosition = m_levelPosition + m_position;
+
+	if (IsObjectBootConditions() == true)
+	{
+		m_playerInteractableUi->SetInteractableDrawFlag(true);
+	}
+	else
+	{
+		m_playerInteractableUi->SetInteractableDrawFlag(false);
+	}
 }
 
 //壁の判定を取る構造体
@@ -66,8 +83,8 @@ struct SweepResultWall : public btCollisionWorld::ConvexResultCallback
 const bool BootObjectBase::IsObjectBootConditions()
 {
 	if (IsObjectBootingRange() == true &&
-		IsObjectBootingCameraVector() == true &&
-		IsRayTestWall() == false)
+		IsObjectBootingCameraVector() == true/* &&
+		IsRayTestWall() == false*/)
 	{
 		return true;
 	}
@@ -142,7 +159,7 @@ const bool BootObjectBase::IsRayTestWall()
 
 	//終点位置決定
 	Vector3 endPos = GetBootPosition();
-	endPos.y += 5.0f;
+	endPos.y += 60.0f;
 	end.setOrigin(btVector3(endPos.x, endPos.y, endPos.z));
 
 	SweepResultWall callback;
