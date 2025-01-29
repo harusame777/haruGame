@@ -8,7 +8,7 @@ namespace WindowConstants_H {
 	static const Vector3 WINDOWBOTTOM_CLOSE_POSITION = { 0.0f,-20.0f,0.0f };
 }
 
-class Window : public IGameObject
+class GameWindow : public IGameObject
 {
 private:
 	/// <summary>
@@ -32,11 +32,11 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	Window(){}
+	GameWindow(){}
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~Window(){}
+	~GameWindow(){}
 	/// <summary>
 	/// ウィンドウオープン
 	/// </summary>
@@ -153,6 +153,7 @@ private:
 			return m_wipeRatio;
 		}
 	};
+
 	WindowDatas m_windowDatas;
 	/// <summary>
 	/// ウィンドウを描画するかどうか
@@ -197,7 +198,9 @@ private:
 	/// <returns></returns>
 	const float& Leap(const float& a, const float& b, const float& t)
 	{
-		return (1.0f - t) * a + t * b;
+		float finalValue = (1.0f - t) * a + t * b;
+
+		return finalValue;
 	}
 	/// <summary>
 	/// デバック用のフォントレンダー
@@ -207,5 +210,10 @@ private:
 	/// デバック用のフォントレンダー
 	/// </summary>
 	FontRender m_debugFontRender_B;
+	/// <summary>
+	/// デバック用のフォントレンダー
+	/// </summary>
+	FontRender m_debugFontRender_C;
+	wchar_t m_debugFontValue_C[256] = {};
 };
 

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "Window.h"
+#include "GameWindow.h"
 
 //定数等
 namespace WindowConstants_CPP {
@@ -20,7 +20,7 @@ namespace WindowConstants_CPP {
 }
 
 //スタート関数
-bool Window::Start()
+bool GameWindow::Start()
 {
 	//ウィンドウのフレーム上
 	m_window_top.Init("Assets/modelData/window/window_sprite_top_1.DDS",
@@ -36,10 +36,6 @@ bool Window::Start()
 
 	m_window_bottom.SetPosition(WindowConstants_H::WINDOWBOTTOM_CLOSE_POSITION);
 
-	//m_window_base.Init("Assets/modelData/window/window_sprite_base_1.DDS",
-	//	WINDOWBASE_SPRITE_W_SIZE,
-	//	WINDOWBASE_SPRITE_H_SIZE);
-
 	SpriteInitData windowBaseInitData;
 
 	//画像を設定
@@ -47,8 +43,8 @@ bool Window::Start()
 	//シェーダーファイルを設定
 	windowBaseInitData.m_fxFilePath = "Assets/shader/haruharuWindowSpriteShader.fx";
 	//ユーザー拡張データを設定
-	//windowBaseInitData.m_expandConstantBuffer = &m_windowDatas;
-	//windowBaseInitData.m_expandConstantBufferSize = sizeof(m_windowDatas);
+	windowBaseInitData.m_expandConstantBuffer = &m_windowDatas;
+	windowBaseInitData.m_expandConstantBufferSize = sizeof(m_windowDatas);
 	windowBaseInitData.m_expandConstantBuffer = &m_windowDatas;
 	windowBaseInitData.m_expandConstantBufferSize = sizeof(m_windowDatas);
 	//比率を設定
@@ -69,7 +65,7 @@ bool Window::Start()
 }
 
 //アップデート関数
-void Window::Update()
+void GameWindow::Update()
 {
 	if (g_pad[0]->IsTrigger(enButtonA))
 	{
@@ -86,16 +82,16 @@ void Window::Update()
 }
 
 //ウィンドウのステートを更新する関数
-void Window::WindowStateUpdate()
+void GameWindow::WindowStateUpdate()
 {
 	switch (m_windowState)
 	{
-	case Window::en_state_standby:
+	case GameWindow::en_state_standby:
 
 		m_isWindowCloseCompletion = false;
 
 		break;
-	case Window::en_state_windowOpen:
+	case GameWindow::en_state_windowOpen:
 
 		m_windowTopPos.y = WindowFrameUpdate();
 
@@ -108,7 +104,7 @@ void Window::WindowStateUpdate()
 		m_windowDatas.SetWipeRatio(WindowBaseWipeCalc());
 
 		break;
-	case Window::en_state_openWait:
+	case GameWindow::en_state_openWait:
 
 		if (g_pad[0]->IsTrigger(enButtonB))
 		{
@@ -116,7 +112,7 @@ void Window::WindowStateUpdate()
 		}
 
 		break;
-	case Window::en_state_windowClose:
+	case GameWindow::en_state_windowClose:
 
 		m_windowTopPos.y = WindowFrameUpdate();
 
@@ -129,7 +125,7 @@ void Window::WindowStateUpdate()
 		m_windowDatas.SetWipeRatio(WindowBaseWipeCalc());
 
 		break;
-	case Window::en_state_windowCloseCompletion:
+	case GameWindow::en_state_windowCloseCompletion:
 
 		m_isWindowCloseCompletion = true;
 
@@ -145,7 +141,7 @@ void Window::WindowStateUpdate()
 }
 
 //ウィンドウのフレームの位置を更新する関数
-const float& Window::WindowFrameUpdate()
+const float& GameWindow::WindowFrameUpdate()
 {
 	m_windowFrameRatio += g_gameTime->GetFrameDeltaTime() * 0.5f;
 
@@ -169,7 +165,7 @@ const float& Window::WindowFrameUpdate()
 }
 
 //ウィンドウのベースのワイプ割合を計算する関数
-const float& Window::WindowBaseWipeCalc()
+const float& GameWindow::WindowBaseWipeCalc()
 {
 	float finalIndex = 0.0f;
 
@@ -185,7 +181,7 @@ const float& Window::WindowBaseWipeCalc()
 }
 
 //レンダー関数
-void Window::Render(RenderContext& rc)
+void GameWindow::Render(RenderContext& rc)
 {
 
 	if (m_isWindowDraw == true)
@@ -200,11 +196,11 @@ void Window::Render(RenderContext& rc)
 
 	wchar_t wcsbuf[256] = {};
 
-	swprintf_s(wcsbuf, 256, L"state: %d,FrameRatio: %.2f, topPosY: %.2f", int(m_windowState), m_windowFrameRatio, m_windowBottomPos.y);
+	swprintf_s(wcsbuf, 256, L"state: %d,FrameRatio: %.2f, topPosY: %.2f", int(m_windowState), m_windowFrameRatio, m_windowTopPos.y);
 
 	m_debugFontRender_A.SetText(wcsbuf);
 
-	m_debugFontRender_A.SetPosition({ -900.0f,-300.0f,0.0f });
+	m_debugFontRender_A.SetPosition({ -900.0f,-200.0f,0.0f });
 
 	m_debugFontRender_A.Draw(rc);
 
@@ -212,10 +208,15 @@ void Window::Render(RenderContext& rc)
 
 	m_debugFontRender_B.SetText(wcsbuf);
 
-	m_debugFontRender_B.SetPosition({ -900.0f,-400.0f,0.0f });
+	m_debugFontRender_B.SetPosition({ -900.0f,-300.0f,0.0f });
 
 	m_debugFontRender_B.Draw(rc);
 
+	m_debugFontRender_C.SetText(m_debugFontValue_C);
+
+	m_debugFontRender_C.SetPosition({ -900.0f,-400.0f,0.0f });
+
+	m_debugFontRender_C.Draw(rc);
 
 }
 

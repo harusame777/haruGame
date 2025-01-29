@@ -277,7 +277,7 @@
     <ClCompile Include="WarriorAIMetaRetreat.cpp" />
     <ClCompile Include="WarriorAIMetaStop.cpp" />
     <ClCompile Include="WarriorAIMetaTracking.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="GameWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Accessories.h" />
@@ -332,7 +332,7 @@
     <ClInclude Include="WarriorAIMetaStop.h" />
     <ClInclude Include="WarriorAIMetaTracking.h" />
     <ClInclude Include="WarriorDataHolder.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="GameWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

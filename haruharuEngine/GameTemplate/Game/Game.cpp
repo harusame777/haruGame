@@ -23,21 +23,21 @@
 #include "Title.h"
 #include "Result.h"
 #include "Gameover.h"
-#include "Window.h"
+#include "GameWindow.h"
 #include "GameSound.h"
 
 
 bool Game::Start()
 {
-	InitDirctionaLight();
+	//InitDirctionaLight();
 
-	m_gameSound = NewGO<GameSound>(2, "gameSound");
+	//m_gameSound = NewGO<GameSound>(2, "gameSound");
 
-	NewGO<Window>(1, "window");
+	NewGO<GameWindow>(1, "window");
 
-	m_load = NewGO<Load>(1, "load");
+	//m_load = NewGO<Load>(1, "load");
 
-	m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadImmediately });
+	//m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadImmediately });
 
 	return true;
 }
@@ -45,14 +45,14 @@ bool Game::Start()
 void Game::Update()
 {
 
-	if (m_gameOutState != GameOutState::en_gameOutEnd)
-	{
-		DoOutGame();
-	}
-	else
-	{
-		DoInGame();
-	}
+	//if (m_gameOutState != GameOutState::en_gameOutEnd)
+	//{
+	//	DoOutGame();
+	//}
+	//else
+	//{
+	//	DoInGame();
+	//}
 
 }
 
