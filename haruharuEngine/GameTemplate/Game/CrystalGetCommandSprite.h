@@ -2,6 +2,7 @@
 
 class Crystal;
 class GameSound;
+class GameEffect;
 class Player;
 
 //定数等
@@ -271,6 +272,10 @@ private:
 	/// ゲームサウンドのインスタンス
 	/// </summary>
 	GameSound* m_gameSound = nullptr;
+	/// <summary>
+	/// ゲームエフェクトのインスタンス
+	/// </summary>
+	GameEffect* m_gameEffect = nullptr;
 	/// <summary>
 	/// プレイヤーのインスタンス
 	/// </summary>

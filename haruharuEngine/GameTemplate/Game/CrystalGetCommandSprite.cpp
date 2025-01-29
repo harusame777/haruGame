@@ -2,6 +2,7 @@
 #include "CrystalGetCommandSprite.h"
 #include "Crystal.h"
 #include "GameSound.h"
+#include "GameEffect.h"
 #include "Player.h"
 #include <random>
 #include <algorithm>
@@ -374,6 +375,8 @@ void CrystalGetCommandSprite::IsJudgeingTriggerButton(const CommandTriggerState&
 		PickaxeEasingInit(PickaxeMoveState::en_impact);
 
 		m_gameSound->LocalSoundOrder(GameSound::en_rockDigSound, false, 1.0f);
+
+		m_gameEffect->LocalEffectOrder(GameEffect::en_hitEffect, m_crystal->GetPosition())
 
 		m_isCommandInput = false;
 
