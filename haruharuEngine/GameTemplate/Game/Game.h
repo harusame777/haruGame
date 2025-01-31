@@ -20,6 +20,7 @@ class Title;
 class Gameover;
 class Result;
 class GameSound;
+class GameEffect;
 
 //定数等
 namespace {

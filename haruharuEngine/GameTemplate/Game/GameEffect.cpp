@@ -43,8 +43,22 @@ void GameEffect::LocalEffectOrder(
 
 	localEffectEmitter->SetPosition(effectPos);
 
+	//‰ñ“]Ý’è
+	Vector3 rotVec = targetPosA - effectPos;
 
+	rotVec.Normalize();
 
+	float angle = atan2(rotVec.x, rotVec.z);
+
+	Quaternion rot;
+
+	rot.SetRotation(Vector3::AxisY, angle);
+
+	//localEffectEmitter->SetRotation(rot);
+
+	localEffectEmitter->SetScale(Vector3::One * 5);
+
+	localEffectEmitter->Play();
 }
 
 void GameEffect::Render(RenderContext& rc)

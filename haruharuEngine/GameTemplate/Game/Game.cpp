@@ -25,6 +25,7 @@
 #include "Gameover.h"
 #include "Window.h"
 #include "GameSound.h"
+#include "GameEffect.h"
 
 
 bool Game::Start()
@@ -32,6 +33,8 @@ bool Game::Start()
 	InitDirctionaLight();
 
 	m_gameSound = NewGO<GameSound>(2, "gameSound");
+
+	NewGO<GameEffect>(0, "gameEffect");
 
 	NewGO<Window>(1, "window");
 
