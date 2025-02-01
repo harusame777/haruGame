@@ -127,6 +127,7 @@
     <ClCompile Include="GameSound.cpp" />
     <ClCompile Include="WarriorAIMetaFootSteps.cpp" />
     <ClCompile Include="PlayerInteractableUi.cpp" />
+    <ClCompile Include="GameInformation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -270,6 +271,7 @@
     <ClInclude Include="WarriorAIMetaStop.h" />
     <ClInclude Include="WarriorAIMetaFootSteps.h" />
     <ClInclude Include="PlayerInteractableUi.h" />
+    <ClInclude Include="GameInformation.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bg">

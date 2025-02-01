@@ -67,10 +67,10 @@ bool GameWindow::Start()
 //アップデート関数
 void GameWindow::Update()
 {
-	if (g_pad[0]->IsTrigger(enButtonA))
-	{
-		WindowOpen();
-	}
+	//if (g_pad[0]->IsTrigger(enButtonA))
+	//{
+	//	WindowOpen();
+	//}
 
 	WindowStateUpdate();
 	
@@ -106,10 +106,12 @@ void GameWindow::WindowStateUpdate()
 		break;
 	case GameWindow::en_state_openWait:
 
-		if (g_pad[0]->IsTrigger(enButtonB))
-		{
-			WindowClose();
-		}
+		//待機
+
+		//if (g_pad[0]->IsTrigger(enButtonB))
+		//{
+		//	WindowClose();
+		//}
 
 		break;
 	case GameWindow::en_state_windowClose:
