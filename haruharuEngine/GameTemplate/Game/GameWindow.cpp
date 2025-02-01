@@ -196,29 +196,29 @@ void GameWindow::Render(RenderContext& rc)
 
 	}
 
-	wchar_t wcsbuf[256] = {};
+	//wchar_t wcsbuf[256] = {};
 
-	swprintf_s(wcsbuf, 256, L"state: %d,FrameRatio: %.2f, topPosY: %.2f", int(m_windowState), m_windowFrameRatio, m_windowTopPos.y);
+	//swprintf_s(wcsbuf, 256, L"state: %d,FrameRatio: %.2f, topPosY: %.2f", int(m_windowState), m_windowFrameRatio, m_windowTopPos.y);
 
-	m_debugFontRender_A.SetText(wcsbuf);
+	//m_debugFontRender_A.SetText(wcsbuf);
 
-	m_debugFontRender_A.SetPosition({ -900.0f,-200.0f,0.0f });
+	//m_debugFontRender_A.SetPosition({ -900.0f,-200.0f,0.0f });
 
-	m_debugFontRender_A.Draw(rc);
+	//m_debugFontRender_A.Draw(rc);
 
-	swprintf_s(wcsbuf, 256, L"WindowRatio: %.2f, BottomPosY: %.2f",m_windowDatas.GetWipeRatio(), m_windowBottomPos.y);
+	//swprintf_s(wcsbuf, 256, L"WindowRatio: %.2f, BottomPosY: %.2f",m_windowDatas.GetWipeRatio(), m_windowBottomPos.y);
 
-	m_debugFontRender_B.SetText(wcsbuf);
+	//m_debugFontRender_B.SetText(wcsbuf);
 
-	m_debugFontRender_B.SetPosition({ -900.0f,-300.0f,0.0f });
+	//m_debugFontRender_B.SetPosition({ -900.0f,-300.0f,0.0f });
 
-	m_debugFontRender_B.Draw(rc);
+	//m_debugFontRender_B.Draw(rc);
 
-	m_debugFontRender_C.SetText(m_debugFontValue_C);
+	//m_debugFontRender_C.SetText(m_debugFontValue_C);
 
-	m_debugFontRender_C.SetPosition({ -900.0f,-400.0f,0.0f });
+	//m_debugFontRender_C.SetPosition({ -900.0f,-400.0f,0.0f });
 
-	m_debugFontRender_C.Draw(rc);
+	//m_debugFontRender_C.Draw(rc);
 
 }
 

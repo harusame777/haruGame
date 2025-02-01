@@ -9,7 +9,7 @@ namespace {
 	/// </summary>
 	static const Vector4 FONT_COLOR = { 0.3f,0.3f,1.0f,1.0f };
 	static const Vector4 FONT_COLOR_TEST = { 1.0f,1.0f,1.0f,1.0f };
-	static const float TIME_N = 0.2f;
+	static const float TIME_N = 0.1f;
 
 }
 
@@ -25,10 +25,19 @@ bool GameInformation::Start()
 void GameInformation::Update()
 {
 
-	if (g_pad[0]->IsTrigger(enButtonA))
-	{
-		InitAndGoInformation(L"testAndtestAndtest");
-	}
+	//if (g_pad[0]->IsTrigger(enButtonA))
+	//{
+	//	InitTextData(L"I am haruse takeda");
+	//	InitTextData(L"I like harusame");
+	//	InitTextData(L"Eigo amari tokuizyanai");
+	//	InitTextData(L"test dayo");
+	//	InitTextData(L"test5");
+	//	InitTextData(L"test6");
+	//	InitTextData(L"test7");
+	//	InitTextData(L"test8");
+	//	InitTextData(L"test9");
+	//	GoInformation();
+	//}
 
 	InformationStateUpdate();
 
@@ -57,9 +66,19 @@ void GameInformation::InformationStateUpdate()
 		break;
 	case GameInformation::en_textDraw:
 
-		if (m_externalInputTextList[m_nowTextNum] == L'\0')
+		if (m_textDataList[m_listNowNum].
+			m_externalInputTextList[m_nowTextNum] == L'\0')
 		{
-			StateChange(GameInformationState::en_openWait);
+			if (m_listNowNum > m_listEndNum)
+			{
+				StateChange(GameInformationState::en_openWait);
+
+				return;
+			}
+
+			m_nowTextNum = 0;
+
+			m_listNowNum++;
 		}
 
 		if (Delay(TIME_N))
@@ -108,13 +127,15 @@ bool GameInformation::Delay(const float delayTime)
 
 void GameInformation::DisplayTextUpdate()
 {
-	m_mainFontRender.SetColor(FONT_COLOR_TEST);
+	m_textDataList[m_listNowNum].m_mainFontRender.SetColor(FONT_COLOR_TEST);
 
-	m_mainFontRender.SetPivot({ 0.5f,0.5f });
+	m_textDataList[m_listNowNum].m_mainFontRender.SetPivot({ 0.5f,0.5f });
 
-	//m_mainFontRender.SetPosition();
+	m_textDataList[m_listNowNum].m_mainFontRender
+		.SetPosition(m_textDataList[m_listNowNum].m_textPos);
 
-	m_mainFontRender.SetText(m_displayTextList);
+	m_textDataList[m_listNowNum].m_mainFontRender.
+		SetText(m_textDataList[m_listNowNum].m_displayTextList);
 }
 
 //表示文字配列更新関数
@@ -123,9 +144,9 @@ void GameInformation::DisplayTextListUpdate()
 
 	m_nowTextNum++;
 
-	wcsncpy_s(m_displayTextList,
-		_countof(m_displayTextList),
-		m_externalInputTextList,
+	wcsncpy_s(m_textDataList[m_listNowNum].m_displayTextList,
+		_countof(m_textDataList[m_listNowNum].m_displayTextList),
+		m_textDataList[m_listNowNum].m_externalInputTextList,
 		m_nowTextNum
 	);
 
@@ -140,5 +161,10 @@ void GameInformation::Render(RenderContext& rc)
 		return;
 	}
 
-	m_mainFontRender.Draw(rc);
+	for (int listNo = 0;
+		listNo < MAX_TEXTDATALIST_EXP;
+		listNo++)
+	{
+		m_textDataList[listNo].m_mainFontRender.Draw(rc);
+	}
 }

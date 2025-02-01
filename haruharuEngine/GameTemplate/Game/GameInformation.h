@@ -3,6 +3,15 @@
 
 class GameWindow;
 
+//定数等
+namespace {
+
+	static const int MAX_TEXTDATALIST_EXP = 8;
+
+	static const Vector3 TEXT_FIXED_POS = { -850.0f,400.0f,0.0f };
+
+}
+
 class GameInformation : public IGameObject
 {
 public:
@@ -15,19 +24,64 @@ public:
 	/// </summary>
 	~GameInformation(){}
 	/// <summary>
-	/// 起動関数
+	///	テキストをインフォメーションに設定
 	/// </summary>
 	/// <param name="text"></param>
-	void InitAndGoInformation(const wchar_t* text)
+	void InitTextData(const wchar_t* text)
 	{
 		if (m_gameInformationState != GameInformationState::en_standby)
 		{
 			return;
 		}
+
+		for (int listNo = 0;
+			listNo < MAX_TEXTDATALIST_EXP;
+			listNo++)
+		{
+
+			if (m_textDataList[listNo].m_isUse == false)
+			{
+				m_textDataList[listNo].m_isUse = true;
+
+				m_textDataList[listNo].m_textPos = TEXT_FIXED_POS;
+
+				m_textDataList[listNo].m_textPos.y -= 100 * listNo;
+
+				//文字列textをm_externalInputFontListにコピー
+				swprintf_s(m_textDataList[listNo].m_externalInputTextList, text);
+
+				break;
+			}
+
+		}
+	}
+	/// <summary>
+	/// 起動関数
+	/// </summary>
+	/// <param name="text"></param>
+	void GoInformation()
+	{
+		if (m_gameInformationState != GameInformationState::en_standby)
+		{
+			return;
+		}
+
+		for (int listNo = 0;
+			listNo < MAX_TEXTDATALIST_EXP;
+			listNo++)
+		{
+
+			m_listEndNum = listNo - 1;
+
+			if (m_textDataList[listNo].m_isUse == false)
+			{
+				break;
+			}
+
+		}
+
 		//ウィンドウを開ける
 		m_gameWindow->WindowOpen();
-		//文字列textをm_externalInputFontListにコピー
-		swprintf_s(m_externalInputTextList, text);
 		//ステートをwindowOpenに変更
 		StateChange(GameInformationState::en_windowOpen);
 	}
@@ -38,7 +92,31 @@ private:
 	/// </summary>
 	struct TextOneParagraphData
 	{
-
+	public:
+		/// <summary>
+		/// フォントレンダー
+		/// </summary>
+		FontRender m_mainFontRender;
+		/// <summary>
+		/// 外部入力文字配列
+		/// </summary>
+		wchar_t m_externalInputTextList[256] = {};
+		/// <summary>
+		/// メインフォントの配列
+		/// </summary>
+		wchar_t m_displayTextList[256] = {};
+		/// <summary>
+		/// このコンテナを使用中かどうか
+		/// </summary>
+		bool m_isUse = false;
+		/// <summary>
+		/// この段落のテキストを出力し終わったか
+		/// </summary>
+		bool m_isOneParagrapgTextEnd = false;
+		/// <summary>
+		/// テキストの位置
+		/// </summary>
+		Vector3 m_textPos = Vector3::Zero;
 	};
 
 	/// <summary>
@@ -101,22 +179,6 @@ private:
 	/// <param name="rc"></param>
 	void Render(RenderContext& rc);
 	/// <summary>
-	/// ウィンドウのインスタンス
-	/// </summary>
-	GameWindow* m_gameWindow = nullptr;
-	/// <summary>
-	/// フォントレンダー
-	/// </summary>
-	FontRender m_mainFontRender;
-	/// <summary>
-	/// 外部入力文字配列
-	/// </summary>
-	wchar_t m_externalInputTextList[256] = {};
-	/// <summary>
-	/// メインフォントの配列
-	/// </summary>
-	wchar_t m_displayTextList[256] = {};
-	/// <summary>
 	/// 現在の文字表示数
 	/// </summary>
 	int m_nowTextNum = 0;
@@ -124,5 +186,21 @@ private:
 	/// 文字表示遅延
 	/// </summary>
 	float m_textDelayTime = 0.0f;
+	/// <summary>
+	/// テキストデータの配列
+	/// </summary>
+	TextOneParagraphData m_textDataList[MAX_TEXTDATALIST_EXP];
+	/// <summary>
+	/// textDataListの設定されていない要素番号
+	/// </summary>
+	int m_listEndNum = 0;
+	/// <summary>
+	/// 現在のtextDataListの要素番号
+	/// </summary>
+	int m_listNowNum = 0;
+	/// <summary>
+	/// ウィンドウのインスタンス
+	/// </summary>
+	GameWindow* m_gameWindow = nullptr;
 };
 
