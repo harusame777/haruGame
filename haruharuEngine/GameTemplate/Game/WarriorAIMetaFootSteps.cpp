@@ -8,9 +8,9 @@
 //’è”“™
 namespace {
 
-	static const float HIGH_VALUME_INDEX = 10.0f;
-	static const float MIDDLE_VALUME_INDEX = 7.0f;
-	static const float LOW_VALUME_INDEX = 5.0f;
+	static const float HIGH_VALUME_EXP = 3.0f;
+	static const float MIDDLE_VALUME_EXP = 5.0f;
+	static const float LOW_VALUME_EXP = 10.0f;
 }
 
 //ƒƒ^AI‚Ì‰Šú‰»
@@ -237,19 +237,19 @@ void WarriorAIMetaFootSteps::DatasEnemyWallCheck()
 
 		if (RayTestWall(m_enemyLengthDatas[enemyNo].m_enemyData))
 		{
-			m_enemyLengthDatas[enemyNo].m_enemyData->SetValumeCalcValue(LOW_VALUME_INDEX);
+			m_enemyLengthDatas[enemyNo].m_enemyData->SetValumeCalcValue(LOW_VALUME_EXP);
 
 			continue;
 		}
 
 		if (IsinCamera(m_enemyLengthDatas[enemyNo].m_enemyData))
 		{
-			m_enemyLengthDatas[enemyNo].m_enemyData->SetValumeCalcValue(HIGH_VALUME_INDEX);
+			m_enemyLengthDatas[enemyNo].m_enemyData->SetValumeCalcValue(HIGH_VALUME_EXP);
 
 			continue;
 		}
 
-		m_enemyLengthDatas[enemyNo].m_enemyData->SetValumeCalcValue(MIDDLE_VALUME_INDEX);
+		m_enemyLengthDatas[enemyNo].m_enemyData->SetValumeCalcValue(MIDDLE_VALUME_EXP);
 
 	}
 }
