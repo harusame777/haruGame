@@ -251,6 +251,7 @@
     <ClCompile Include="Enemy_Warrior.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="GameInformation.cpp" />
     <ClCompile Include="Gameover.cpp" />
     <ClCompile Include="GameSound.cpp" />
     <ClCompile Include="Load.cpp" />
@@ -277,7 +278,7 @@
     <ClCompile Include="WarriorAIMetaRetreat.cpp" />
     <ClCompile Include="WarriorAIMetaStop.cpp" />
     <ClCompile Include="WarriorAIMetaTracking.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="GameWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Accessories.h" />
@@ -307,6 +308,7 @@
     <ClInclude Include="Enemy_Warrior.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="GameInformation.h" />
     <ClInclude Include="Gameover.h" />
     <ClInclude Include="GameSound.h" />
     <ClInclude Include="Load.h" />
@@ -332,7 +334,7 @@
     <ClInclude Include="WarriorAIMetaStop.h" />
     <ClInclude Include="WarriorAIMetaTracking.h" />
     <ClInclude Include="WarriorDataHolder.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="GameWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc" />

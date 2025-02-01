@@ -23,7 +23,7 @@
 #include "Title.h"
 #include "Result.h"
 #include "Gameover.h"
-#include "Window.h"
+#include "GameInformation.h"
 #include "GameSound.h"
 
 
@@ -31,9 +31,11 @@ bool Game::Start()
 {
 	InitDirctionaLight();
 
+	NewGO<GameInformation>(2, "gameInformation");
+
 	m_gameSound = NewGO<GameSound>(2, "gameSound");
 
-	NewGO<Window>(1, "window");
+	NewGO<GameWindow>(1, "window");
 
 	m_load = NewGO<Load>(1, "load");
 
