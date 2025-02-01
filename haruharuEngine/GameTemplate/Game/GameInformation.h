@@ -8,6 +8,8 @@ namespace {
 
 	static const int MAX_TEXTDATALIST_EXP = 8;
 
+	static const int MAX_TEXT_SIZE = 256;
+
 	static const Vector3 TEXT_FIXED_POS = { -850.0f,400.0f,0.0f };
 
 }
@@ -85,7 +87,19 @@ public:
 		//ステートをwindowOpenに変更
 		StateChange(GameInformationState::en_windowOpen);
 	}
+	/// <summary>
+	/// インフォメーションが起動中かどうか
+	/// </summary>
+	/// <returns></returns>
+	bool IsInformationNow()const 
+	{
+		if (m_gameInformationState != GameInformationState::en_standby)
+		{
+			return true;
+		}
 
+		return false;
+	}
 private:
 	/// <summary>
 	/// 一段落の文字配列のデータ
@@ -100,11 +114,11 @@ private:
 		/// <summary>
 		/// 外部入力文字配列
 		/// </summary>
-		wchar_t m_externalInputTextList[256] = {};
+		wchar_t m_externalInputTextList[MAX_TEXT_SIZE] = {};
 		/// <summary>
 		/// メインフォントの配列
 		/// </summary>
-		wchar_t m_displayTextList[256] = {};
+		wchar_t m_displayTextList[MAX_TEXT_SIZE] = {};
 		/// <summary>
 		/// このコンテナを使用中かどうか
 		/// </summary>
@@ -118,7 +132,6 @@ private:
 		/// </summary>
 		Vector3 m_textPos = Vector3::Zero;
 	};
-
 	/// <summary>
 	/// インフォメーションステート
 	/// </summary>
@@ -134,6 +147,8 @@ private:
 		en_openWait,
 		//ウィンドウクローズ
 		en_windowClose,
+		//終了処理
+		en_end
 	};
 	/// <summary>
 	/// インフォメーションステート変数

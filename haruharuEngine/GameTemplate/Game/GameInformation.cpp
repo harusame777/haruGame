@@ -9,7 +9,7 @@ namespace {
 	/// </summary>
 	static const Vector4 FONT_COLOR = { 0.3f,0.3f,1.0f,1.0f };
 	static const Vector4 FONT_COLOR_TEST = { 1.0f,1.0f,1.0f,1.0f };
-	static const float TIME_N = 0.1f;
+	static const float TIME_N = 0.05f;
 
 }
 
@@ -101,8 +101,39 @@ void GameInformation::InformationStateUpdate()
 
 		if (m_gameWindow->IsWindowClose())
 		{
-			StateChange(GameInformationState::en_standby);
+			StateChange(GameInformationState::en_end);
 		}
+
+		break;
+	case GameInformation::en_end:
+
+		for (int listNo = 0;
+			listNo < MAX_TEXTDATALIST_EXP;
+			listNo++)
+		{
+
+			m_textDataList[listNo].m_mainFontRender.SetText(L"");
+
+			std::memset(m_textDataList[listNo].m_displayTextList,
+				0,
+				sizeof(m_textDataList[listNo].m_displayTextList));
+
+			std::memset(m_textDataList[listNo].m_externalInputTextList,
+				0,
+				sizeof(m_textDataList[listNo].m_externalInputTextList));
+
+			m_textDataList[listNo].m_textPos = Vector3::Zero;
+
+			m_textDataList[listNo].m_isUse = false;
+
+			m_nowTextNum = 0;
+
+			m_listEndNum = 0;
+
+			m_listNowNum = 0;
+		}
+
+		StateChange(GameInformationState::en_standby);
 
 		break;
 	default:
