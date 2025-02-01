@@ -141,7 +141,7 @@ void GameWindow::WindowStateUpdate()
 }
 
 //ウィンドウのフレームの位置を更新する関数
-const float& GameWindow::WindowFrameUpdate()
+float GameWindow::WindowFrameUpdate()
 {
 	m_windowFrameRatio += g_gameTime->GetFrameDeltaTime() * 0.5f;
 
@@ -165,7 +165,7 @@ const float& GameWindow::WindowFrameUpdate()
 }
 
 //ウィンドウのベースのワイプ割合を計算する関数
-const float& GameWindow::WindowBaseWipeCalc()
+float GameWindow::WindowBaseWipeCalc()
 {
 	float finalIndex = 0.0f;
 

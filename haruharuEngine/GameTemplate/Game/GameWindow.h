@@ -84,7 +84,7 @@ public:
 		m_windowFrameRatio = 0.0f;
 	}
 
-	const bool& IsWindowOpen()const 
+	bool IsWindowOpen()const 
 	{
 		if (m_windowState != WindowState::en_state_openWait)
 		{
@@ -94,7 +94,7 @@ public:
 		return true;
 	}
 
-	const bool& IsWindowClose()const 
+	bool IsWindowClose()const 
 	{
 		return m_isWindowCloseCompletion;
 	}
@@ -115,11 +115,11 @@ private:
 	/// <summary>
 	/// ウィンドウ枠更新
 	/// </summary>
-	const float& WindowFrameUpdate();
+	float WindowFrameUpdate();
 	/// <summary>
 	/// ウィンドウベースのワイプ計算関数
 	/// </summary>
-	const float& WindowBaseWipeCalc();
+	float WindowBaseWipeCalc();
 	/// <summary>
 	/// レンダー関数
 	/// </summary>
@@ -148,7 +148,7 @@ private:
 		/// ワイプ割合取得
 		/// </summary>
 		/// <returns></returns>
-		const float GetWipeRatio() const
+		float GetWipeRatio() const
 		{
 			return m_wipeRatio;
 		}
