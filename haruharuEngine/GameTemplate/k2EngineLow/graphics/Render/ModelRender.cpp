@@ -40,6 +40,7 @@ namespace nsK2EngineLow {
 		//基本のモデル初期化
 		InitNormalModel(tkmfilePath, animationClips, numAnimationClips, enModelUpAxis, shader);
 
+		//InitShadowModel(tkmfilePath, enModelUpAxis);
 		//シャドウマップ描画用モデルの初期化
 		m_shadowMapModel = m_shadowMapModelRender.InitShadowMapModelRender(tkmfilePath,enModelUpAxis,animationClips,m_light);
 	}
@@ -88,46 +89,21 @@ namespace nsK2EngineLow {
 
 			break;
 		case ModelRender::en_shadowShader:
-			initData.m_fxFilePath = "Assets/shader/haruharuShadowReceiverModel.fx";
+			initData.m_fxFilePath = "Assets/shader/haruharuDeaphShadowReceiverModel.fx";
 
-			lightCamera.SetAspectOneFlag(true);
-
-			lightCamera.SetViewAngle(Math::DegToRad(80.0f));
-
-			//カメラの位置を設定
-			lightCamera.SetPosition(-2000.0f, 2000.0f, 2000.0f);
-
-			// カメラの注視点を設定。これがライトが照らしている場所
-			lightCamera.SetTarget(0, 0, 0);
+			initData.m_expandConstantBuffer = &m_light;
+			initData.m_expandConstantBufferSize = sizeof(m_light);
 
 			//シャドウマップを拡張SRVに設定する
 			initData.m_expandShaderResoruceView[0] = &(g_renderingEngine
 				->GetShadowMapRenderTarget()->GetRenderTargetTexture());
+
 			break;
 		case ModelRender::en_crystalShader:
 			initData.m_fxFilePath = "Assets/shader/haruharuCrystalModel.fx";
 
-			lightCamera.SetAspectOneFlag(true);
-
-			lightCamera.SetViewAngle(Math::DegToRad(80.0f));
-
-			//カメラの位置を設定
-			lightCamera.SetPosition(-2000.0f, 2000.0f, 2000.0f);
-
-			// カメラの注視点を設定。これがライトが照らしている場所
-			lightCamera.SetTarget(0, 0, 0);
-
-			// 上方向を設定。今回はライトが真下を向いているので、X方向を上にしている
-			//lightCamera.SetUp(1, 0, 0);
-
-			//ライトビュープロジェクション行列を計算している
-			lightCamera.Update();
-
-			m_shadowLigData.m_light = *g_sceneLight->GetLightData();
-			m_shadowLigData.m_mt = lightCamera.GetViewProjectionMatrix();
-
-			initData.m_expandConstantBuffer = &m_shadowLigData;
-			initData.m_expandConstantBufferSize = sizeof(m_shadowLigData);
+			initData.m_expandConstantBuffer = &m_light;
+			initData.m_expandConstantBufferSize = sizeof(m_light);
 
 			//シャドウマップを拡張SRVに設定する
 			initData.m_expandShaderResoruceView[0] = &(g_renderingEngine
@@ -152,6 +128,36 @@ namespace nsK2EngineLow {
 
 		//作成した初期化データをもとにモデルを初期化
 		m_model.Init(initData);
+	}
+
+	//シャドウマップに表示するモデルの作成
+	void ModelRender::InitShadowModel(const char* tkmFilePath, EnModelUpAxis modelUpAxis)
+	{
+		ModelInitData initData;
+		initData.m_tkmFilePath = tkmFilePath;
+		initData.m_modelUpAxis = modelUpAxis;
+
+		//ノンスキンメッシュ用の頂点シェーダーのエントリーポイントを指定する。
+		//initData.m_vsEntryPointFunc = "VSMain";
+		//スキンメッシュ用の頂点シェーダーのエントリーポイントを指定。
+		//initData.m_vsSkinEntryPointFunc = "VSSkinMain";
+
+		if (m_animationClips != nullptr)
+		{
+			//スケルトン指定
+			initData.m_skeleton = &m_skeleton;
+		}
+
+		initData.m_fxFilePath = "Assets/shader/haruharuDrawShadowMap.fx";
+
+		//initData.m_colorBufferFormat[0] = DXGI_FORMAT_R32_FLOAT;デプスシャドウ用の設定
+
+		//ノンスキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
+		initData.m_vsEntryPointFunc = "VSMain";
+		//スキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
+		initData.m_vsSkinEntryPointFunc = "VSSkinMain";
+
+		m_shadowMapModel.Init(initData);
 	}
 
 	//スケルトンの登録処理

@@ -38,7 +38,7 @@ namespace nsK2EngineLow {
 			initData.m_skeleton = &m_skeleton;
 		}
 
-		initData.m_fxFilePath = "Assets/shader/haruharuDrawDeaphShadowMap.fx";
+		initData.m_fxFilePath = "Assets/shader/haruharuDrawShadowMap.fx";
 
 		ShadowMapParam shadowMapParam;
 		shadowMapParam.mLVP = ligPtr.m_directionalLight[0].GetLightVP();

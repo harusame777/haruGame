@@ -56,6 +56,11 @@ namespace nsK2EngineLow {
 			const EnShader& shader = ModelRender::en_usuallyShader
 		);
 
+		void InitShadowModel(
+			const char* tkmfilePath,
+			EnModelUpAxis modelUpAxis
+		);
+
 		/// <summary>
 		/// GBuffer•`‰æ—p‚Ìƒ‚ƒfƒ‹‚ğ‰Šú‰»B
 		/// </summary>
