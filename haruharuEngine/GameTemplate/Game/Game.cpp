@@ -25,6 +25,7 @@
 #include "Gameover.h"
 #include "GameInformation.h"
 #include "GameSound.h"
+#include "GameEffect.h"
 
 
 bool Game::Start()
@@ -35,7 +36,9 @@ bool Game::Start()
 
 	m_gameSound = NewGO<GameSound>(2, "gameSound");
 
-	NewGO<GameWindow>(1, "window");
+	NewGO<GameEffect>(0, "gameEffect");
+
+	m_gameWindow = NewGO<GameWindow>(1, "gameWindow");
 
 	m_load = NewGO<Load>(1, "load");
 
@@ -54,6 +57,16 @@ void Game::Update()
 	else
 	{
 		DoInGame();
+	}
+
+	if (g_pad[0]->IsTrigger(enButtonX))
+	{
+		m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_stop);
+	}
+
+	if (g_pad[0]->IsTrigger(enButtonY))
+	{
+		m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
 	}
 
 }
@@ -136,6 +149,11 @@ void Game::DoInGame()
 
 void Game::TimerProcess()
 {
+	//ウィンドウが開いていたら
+	if (m_gameWindow->IsWindowOpen() == true)
+	{
+		return;
+	}
 
 	m_timerIndex -= g_gameTime->GetFrameDeltaTime();
 

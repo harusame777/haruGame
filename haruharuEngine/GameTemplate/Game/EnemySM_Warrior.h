@@ -155,7 +155,7 @@ private:
 	/// <summary>
 	/// エネミーウォリアーのステート、待機状態で初期化
 	/// </summary>
-	WarriorState m_warriorState = WarriorState::en_warrior_idle;
+	WarriorState m_warriorState = WarriorState::en_stop;
 	/// <summary>
 	/// エネミーウォリアーの追跡ステート、待機状態で非追跡状態
 	/// </summary>

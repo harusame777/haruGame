@@ -128,6 +128,8 @@
     <ClCompile Include="WarriorAIMetaFootSteps.cpp" />
     <ClCompile Include="PlayerInteractableUi.cpp" />
     <ClCompile Include="GameInformation.cpp" />
+    <ClCompile Include="GameEffect.cpp" />
+    <ClCompile Include="WarriorAIMetaIdle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -272,6 +274,8 @@
     <ClInclude Include="WarriorAIMetaFootSteps.h" />
     <ClInclude Include="PlayerInteractableUi.h" />
     <ClInclude Include="GameInformation.h" />
+    <ClInclude Include="GameEffect.h" />
+    <ClInclude Include="WarriorAIMetaIdle.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bg">

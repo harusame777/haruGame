@@ -145,7 +145,7 @@ void GameWindow::WindowStateUpdate()
 //ウィンドウのフレームの位置を更新する関数
 float GameWindow::WindowFrameUpdate()
 {
-	m_windowFrameRatio += g_gameTime->GetFrameDeltaTime() * 0.5f;
+	m_windowFrameRatio += g_gameTime->GetFrameDeltaTime() * 2.0f;
 
 	if (m_windowFrameRatio > 1.0f)
 	{
