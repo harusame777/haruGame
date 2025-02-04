@@ -21,6 +21,7 @@ class Gameover;
 class Result;
 class GameSound;
 class GameEffect;
+class GameWindow;
 
 //定数等
 namespace {
@@ -175,6 +176,10 @@ private:
 	/// </summary>
 	bool m_isGameMainObjectLoadEnd = false;
 	/// <summary>
+	/// チュートリアルが終了しているかどうか
+	/// </summary>
+	bool m_isGameMainTutorialEnd = false;
+	/// <summary>
 	/// ロード画面
 	/// </summary>
 	Load* m_load = nullptr;
@@ -182,5 +187,9 @@ private:
 	/// ゲームサウンド
 	/// </summary>
 	GameSound* m_gameSound = nullptr;
+	/// <summary>
+	/// ゲームウィンドウ
+	/// </summary>
+	GameWindow* m_gameWindow = nullptr;
 };
 
