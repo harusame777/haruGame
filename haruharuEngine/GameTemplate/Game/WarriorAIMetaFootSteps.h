@@ -43,6 +43,19 @@ private:
 	/// </summary>
 	void DatasPriorityInit();
 	/// <summary>
+	/// レイテスト、壁判定
+	/// </summary>
+	/// <returns></returns>
+	const bool& RayTestWall(EnemyBase* initEnemy);
+	/// <summary>
+	/// カメラ内判定
+	/// </summary>
+	const bool& IsinCamera(EnemyBase* initEnemy);
+	/// <summary>
+	/// データのエネミーとプレイヤーの間に壁があるかどうかを確認する
+	/// </summary>
+	void DatasEnemyWallCheck();
+	/// <summary>
 	/// 優先度
 	/// </summary>
 	enum EnemyDistance_Kinds
@@ -91,14 +104,20 @@ private:
 	/// </summary>
 	EnemySMBase* m_MainCallWarrior = nullptr;
 	/// <summary>
+	/// コライダー
+	/// </summary>
+	SphereCollider m_sphereCollider;
+	/// <summary>
 	/// 共通しているウォリアーのデータ
 	/// </summary>
 	std::shared_ptr<WarriorDataHolder> m_sharedWarriorDatas;
-
+	/// <summary>
+	/// エネミーのデータ
+	/// </summary>
 	EnemyLength_Data m_enemyLengthDatas[3];
-
+	/// <summary>
+	/// エネミーの数
+	/// </summary>
 	int m_enemyNum = 0;
-
-	float m_valumeKinds[3];
 };
 

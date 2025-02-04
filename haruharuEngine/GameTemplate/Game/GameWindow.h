@@ -1,14 +1,14 @@
 #pragma once
 
 //定数等
-namespace {
+namespace WindowConstants_H {
 	static const Vector3 WINDOWTOP_OPEN_POSITION = { 0.0f,400.0f,0.0f };
 	static const Vector3 WINDOWTOP_CLOSE_POSITION = { 0.0f,20.0f,0.0f };
 	static const Vector3 WINDOWBOTTOM_OPEN_POSITION = { 0.0f,-400.0f,0.0f };
 	static const Vector3 WINDOWBOTTOM_CLOSE_POSITION = { 0.0f,-20.0f,0.0f };
 }
 
-class Window : public IGameObject
+class GameWindow : public IGameObject
 {
 private:
 	/// <summary>
@@ -16,15 +16,15 @@ private:
 	/// </summary>
 	enum WindowState {
 		//待機
-		en_state_standby,
+		en_state_standby = 0,
 		//ウィンドウ開ける
-		en_state_windowOpen,
+		en_state_windowOpen = 1,
 		//開いた状態で待機
-		en_state_openWait,
+		en_state_openWait = 2,
 		//ウィンドウ閉める
-		en_state_windowClose,
+		en_state_windowClose = 3,
 		//ウィンドウ閉じる処理完了
-		en_state_windowCloseCompletion,
+		en_state_windowCloseCompletion = 4,
 		
 	};
 	WindowState m_windowState = WindowState::en_state_standby;
@@ -32,11 +32,11 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	Window(){}
+	GameWindow(){}
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~Window(){}
+	~GameWindow(){}
 	/// <summary>
 	/// ウィンドウオープン
 	/// </summary>
@@ -47,11 +47,17 @@ public:
 			return;
 		}
 
+		m_windowTopPos = Vector3::Zero;
+
+		m_windowBottomPos = Vector3::Zero;
+
+		m_windowDatas.SetWipeRatio(0.0);
+
 		m_windowState = WindowState::en_state_windowOpen;
 
-		m_windowFrameEasingMax = WINDOWTOP_OPEN_POSITION.y;
+		m_windowFrameEasingMax = WindowConstants_H::WINDOWTOP_OPEN_POSITION.y;
 
-		m_windowFrameEasingMin = WINDOWTOP_CLOSE_POSITION.y;
+		m_windowFrameEasingMin = WindowConstants_H::WINDOWTOP_CLOSE_POSITION.y;
 
 		m_windowFrameRatio = 0.0f;
 
@@ -71,14 +77,14 @@ public:
 
 		m_windowState = WindowState::en_state_windowClose;
 
-		m_windowFrameEasingMax = WINDOWTOP_CLOSE_POSITION.y;
+		m_windowFrameEasingMax = WindowConstants_H::WINDOWTOP_CLOSE_POSITION.y;
 
-		m_windowFrameEasingMin = WINDOWTOP_OPEN_POSITION.y;
+		m_windowFrameEasingMin = WindowConstants_H::WINDOWTOP_OPEN_POSITION.y;
 
 		m_windowFrameRatio = 0.0f;
 	}
 
-	const bool& IsWindowOpen()const 
+	bool IsWindowOpen()const 
 	{
 		if (m_windowState != WindowState::en_state_openWait)
 		{
@@ -88,7 +94,7 @@ public:
 		return true;
 	}
 
-	const bool& IsWindowClose()const 
+	bool IsWindowClose()const 
 	{
 		return m_isWindowCloseCompletion;
 	}
@@ -109,11 +115,11 @@ private:
 	/// <summary>
 	/// ウィンドウ枠更新
 	/// </summary>
-	const float& WindowFrameUpdate();
+	float WindowFrameUpdate();
 	/// <summary>
 	/// ウィンドウベースのワイプ計算関数
 	/// </summary>
-	const float& WindowBaseWipeCalc();
+	float WindowBaseWipeCalc();
 	/// <summary>
 	/// レンダー関数
 	/// </summary>
@@ -142,11 +148,12 @@ private:
 		/// ワイプ割合取得
 		/// </summary>
 		/// <returns></returns>
-		const float GetWipeRatio() const
+		float GetWipeRatio() const
 		{
 			return m_wipeRatio;
 		}
 	};
+
 	WindowDatas m_windowDatas;
 	/// <summary>
 	/// ウィンドウを描画するかどうか
@@ -165,6 +172,14 @@ private:
 	/// </summary>
 	SpriteRender m_window_bottom;
 	/// <summary>
+	/// ウィンドウ上部座標
+	/// </summary>
+	Vector3 m_windowTopPos = Vector3::Zero;
+	/// <summary>
+	/// ウィンドウ下部座標
+	/// </summary>
+	Vector3 m_windowBottomPos = Vector3::Zero;
+	/// <summary>
 	/// ウィンドウのフレームのイージングに使用する変数
 	/// </summary>
 	float m_windowFrameRatio = 0.0f;
@@ -181,9 +196,24 @@ private:
 	/// <param name="b"></param>
 	/// <param name="t"></param>
 	/// <returns></returns>
-	const float Leap(const float a, const float b, const float t)
+	const float& Leap(const float& a, const float& b, const float& t)
 	{
-		return (1.0f - t) * a + t * b;
+		float finalValue = (1.0f - t) * a + t * b;
+
+		return finalValue;
 	}
+	/// <summary>
+	/// デバック用のフォントレンダー
+	/// </summary>
+	FontRender m_debugFontRender_A;
+	/// <summary>
+	/// デバック用のフォントレンダー
+	/// </summary>
+	FontRender m_debugFontRender_B;
+	/// <summary>
+	/// デバック用のフォントレンダー
+	/// </summary>
+	FontRender m_debugFontRender_C;
+	wchar_t m_debugFontValue_C[256] = {};
 };
 

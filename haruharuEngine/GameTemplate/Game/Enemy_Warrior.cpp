@@ -118,7 +118,7 @@ void Enemy_Warrior::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eve
 		}
 
 		// 線形補間（ここでは t がそのまま最終値）
-		float finalValue = pow(t, 7.0f);
+		float finalValue = pow(t, m_valumePowCalcValue);
 
 		if (m_footStepsFlag == true)
 		{

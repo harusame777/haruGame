@@ -96,6 +96,8 @@ protected:
 
 	bool m_footStepsFlag = true;
 
+	float m_valumePowCalcValue = 0.0f;
+
 public:
 	/// <summary>
 	/// à íuê›íË
@@ -279,14 +281,19 @@ public:
 		return &m_modelRender;
 	}
 
-	void  SetFootStepValumeCalcValue(const bool& valumeFlag)
+	void  SetFootStepFlag(const bool& valumeFlag)
 	{
 		m_footStepsFlag = valumeFlag;
 	}
 
-	const bool& GetFootStepValumeCalcValue() const
+	const bool& GetFootStepFlag() const
 	{
 		return m_footStepsFlag;
+	}
+
+	void SetValumeCalcValue(const float& value)
+	{
+		m_valumePowCalcValue = value;
 	}
 };
 
