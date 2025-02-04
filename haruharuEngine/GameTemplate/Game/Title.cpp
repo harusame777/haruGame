@@ -32,7 +32,7 @@ void Title::Update()
 {
 	if (g_pad[0]->IsTrigger(enButtonB))
 	{
-		//m_isGameIn = true;
+		m_isGameIn = true;
 	}
 
 	//フォントのアップデート
