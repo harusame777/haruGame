@@ -61,7 +61,7 @@ void Player::Update()
 void Player::Move()
 {
 
-	if (m_game->GetGameInState() != Game::en_gameUpdate)
+	if (m_game->IsNowGameUpdate() == false)
 	{
 		return;
 	}

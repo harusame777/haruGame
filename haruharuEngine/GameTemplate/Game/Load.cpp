@@ -19,7 +19,7 @@ namespace
 	static const float ORDINARYLOAD_EASING_MAX = 1.0f;
 	static const float ORDINARYLOAD_EASING_MIN = 0.0f;
 	//円形ロードフェードイージング数値
-	static const float CIRCULRLOAD_EASING_MAX = 1.0f;
+	static const float CIRCULRLOAD_EASING_MAX = 0.5f;
 	static const float CIRCULRLOAD_EASING_MIN = 0.0f;
 	//ロードフェードスピード
 	static const float ORDINARYLOAD_EASING_ATTENUATIONRATE = 1.0f;

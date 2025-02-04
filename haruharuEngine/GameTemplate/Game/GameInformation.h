@@ -226,6 +226,14 @@ private:
 	/// </summary>
 	bool m_isInformationCloseing = false;
 	/// <summary>
+	/// 閉じるテキスト
+	/// </summary>
+	FontRender m_closeButtonText;
+	/// <summary>
+	/// 閉じるテキストを描画するフラグ
+	/// </summary>
+	bool m_closeButtonTextDrawFlag = false;
+	/// <summary>
 	/// ウィンドウのインスタンス
 	/// </summary>
 	GameWindow* m_gameWindow = nullptr;

@@ -54,7 +54,7 @@ bool GameWindow::Start()
 	windowBaseInitData.m_alphaBlendMode = AlphaBlendMode_Trans;
 	//設定したデータをスプライトに設定
 	m_window_base.Init(windowBaseInitData);
-
+	
 	m_windowTopPos = Vector3::Zero;
 
 	m_windowBottomPos = Vector3::Zero;

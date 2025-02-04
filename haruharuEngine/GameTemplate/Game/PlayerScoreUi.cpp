@@ -9,8 +9,8 @@ namespace {
 	static const float SCOREBASE_SPRITE_W_SIZE = 1920.0f;
 	static const float SCOREBASE_SPRITE_H_SIZE = 900.0f;
 
-	static const Vector3 SCOREBASE_SPRITE_POSITION = { -630.0f,350.0f,0.0f };
-	static const Vector3 SCOREBASE_SPRITE_SIZE = { 0.2f,0.2f,0.0f };
+	static const Vector3 SCOREBASE_SPRITE_POSITION = { -550.0f,350.0f,0.0f };
+	static const Vector3 SCOREBASE_SPRITE_SIZE = { 0.25f,0.2f,0.0f };
 
 	static const Vector3 SCORENUM_SPRITE_POSITION = { -920.0f,460.0f,0.0f };
 	static const float SCORENUM_SPRITE_SIZE = 2.0f;
@@ -20,7 +20,7 @@ namespace {
 bool PlayerScoreUi::Start()
 {
 	//ÉXÉRÉAògÇÃèâä˙âª
-	m_scoreBase.Init("Assets/modelData/playerUI/PlayerScoreUi/Score_Base_2.DDS",
+	m_scoreBase.Init("Assets/modelData/playerUI/PlayerScoreUi/Score_Base_1.DDS",
 		SCOREBASE_SPRITE_W_SIZE,
 		SCOREBASE_SPRITE_H_SIZE);
 

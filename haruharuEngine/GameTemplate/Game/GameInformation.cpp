@@ -8,7 +8,8 @@ namespace {
 	/// フォントのカラー
 	/// </summary>
 	static const Vector4 FONT_COLOR = { 0.3f,0.3f,1.0f,1.0f };
-	static const Vector4 FONT_COLOR_TEST = { 1.0f,1.0f,1.0f,1.0f };
+	static const Vector4 MAINTEXT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
+	static const Vector4 CLOSETEXT_COLOR = { 0.3f,0.1f,0.1f,1.0f };
 	static const float TIME_N = 0.05f;
 
 }
@@ -71,6 +72,8 @@ void GameInformation::InformationStateUpdate()
 		{
 			if (m_listNowNum > m_listEndNum)
 			{
+				m_closeButtonTextDrawFlag = true;
+
 				StateChange(GameInformationState::en_openWait);
 
 				return;
@@ -162,7 +165,7 @@ bool GameInformation::Delay(const float delayTime)
 
 void GameInformation::DisplayTextUpdate()
 {
-	m_textDataList[m_listNowNum].m_mainFontRender.SetColor(FONT_COLOR_TEST);
+	m_textDataList[m_listNowNum].m_mainFontRender.SetColor(MAINTEXT_COLOR);
 
 	m_textDataList[m_listNowNum].m_mainFontRender.SetPivot({ 0.5f,0.5f });
 
@@ -194,6 +197,21 @@ void GameInformation::Render(RenderContext& rc)
 		m_gameInformationState != GameInformationState::en_openWait)
 	{
 		return;
+	}
+
+	if (m_closeButtonTextDrawFlag == true)
+	{
+		wchar_t wcsbuf[256] = {};
+
+		swprintf_s(wcsbuf, 256, L"Close Push Button B");
+
+		m_closeButtonText.SetText(wcsbuf);
+
+		m_closeButtonText.SetPosition({ 230.0f,-400.0f,0.0f });
+
+		m_closeButtonText.SetColor(CLOSETEXT_COLOR);
+
+		m_closeButtonText.Draw(rc);
 	}
 
 	for (int listNo = 0;

@@ -182,8 +182,8 @@ void Game::DoInGame()
 
 void Game::TimerProcess()
 {
-	//チュートリアルがまだ終わっていなかったら
-	if (m_isGameMainTutorialEnd == false)
+
+	if (IsNowGameUpdate() == false)
 	{
 		return;
 	}
@@ -469,4 +469,24 @@ void Game::OutGameObjectDeleteProcces()
 	DeleteGO(m_mainCamera);
 
 	m_isGameMainObjectLoadEnd = false;
+}
+
+bool Game::IsNowGameUpdate() const
+{
+	if (m_isGameMainTutorialEnd == false)
+	{
+		return false;
+	}
+
+	if (m_load->IsLoadCompletion() == false)
+	{
+		return false;
+	}
+
+	if (m_gameInState != GameInState::en_gameUpdate)
+	{
+		return false;
+	}
+
+	return true;
 }

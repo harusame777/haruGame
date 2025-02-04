@@ -74,6 +74,8 @@ public:
 		return m_gameInState;
 	}
 
+	bool IsNowGameUpdate() const;
+
 private:
 	GameOutState m_gameOutState = GameOutState::en_gameTitle;
 	GameInState m_gameInState = GameInState::en_gameUpdate;
