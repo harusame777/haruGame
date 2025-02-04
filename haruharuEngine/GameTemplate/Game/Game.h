@@ -22,6 +22,7 @@ class Result;
 class GameSound;
 class GameEffect;
 class GameWindow;
+class GameInformation;
 
 //定数等
 namespace {
@@ -53,7 +54,9 @@ public:
 
 		en_gameResultGameOver,
 
-		en_gameResult
+		en_gameResult,
+
+		en_gameTutorial
 	};
 
 	void PlayerGameClear()
@@ -191,5 +194,9 @@ private:
 	/// ゲームウィンドウ
 	/// </summary>
 	GameWindow* m_gameWindow = nullptr;
+	/// <summary>
+	/// ゲームインフォメーション
+	/// </summary>
+	GameInformation* m_gameInformation = nullptr;
 };
 

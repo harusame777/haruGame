@@ -93,6 +93,8 @@ void GameInformation::InformationStateUpdate()
 		{
 			m_gameWindow->WindowClose();
 
+			m_isInformationCloseing = true;
+
 			StateChange(GameInformationState::en_windowClose);
 		}
 
@@ -132,6 +134,8 @@ void GameInformation::InformationStateUpdate()
 
 			m_listNowNum = 0;
 		}
+
+		m_isInformationCloseing = false;
 
 		StateChange(GameInformationState::en_standby);
 

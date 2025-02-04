@@ -100,6 +100,14 @@ public:
 
 		return false;
 	}
+	/// <summary>
+	/// インフォメーションが閉まりだした時にtrue
+	/// </summary>
+	/// <returns></returns>
+	bool IsInformationCloseing()const
+	{
+		return m_isInformationCloseing;
+	}
 private:
 	/// <summary>
 	/// 一段落の文字配列のデータ
@@ -213,6 +221,10 @@ private:
 	/// 現在のtextDataListの要素番号
 	/// </summary>
 	int m_listNowNum = 0;
+	/// <summary>
+	/// インフォメーションが閉まりだしたか
+	/// </summary>
+	bool m_isInformationCloseing = false;
 	/// <summary>
 	/// ウィンドウのインスタンス
 	/// </summary>

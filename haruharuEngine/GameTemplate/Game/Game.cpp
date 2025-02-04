@@ -24,6 +24,7 @@
 #include "Result.h"
 #include "Gameover.h"
 #include "GameInformation.h"
+#include "GameInformation.h"
 #include "GameSound.h"
 #include "GameEffect.h"
 
@@ -38,7 +39,10 @@ bool Game::Start()
 
 	NewGO<GameEffect>(0, "gameEffect");
 
+
 	m_gameWindow = NewGO<GameWindow>(1, "gameWindow");
+
+	m_gameInformation = NewGO<GameInformation>(2, "gameInformation");
 
 	m_load = NewGO<Load>(1, "load");
 
@@ -59,15 +63,15 @@ void Game::Update()
 		DoInGame();
 	}
 
-	if (g_pad[0]->IsTrigger(enButtonX))
-	{
-		m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_stop);
-	}
+	//if (g_pad[0]->IsTrigger(enButtonX))
+	//{
+	//	m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_stop);
+	//}
 
-	if (g_pad[0]->IsTrigger(enButtonY))
-	{
-		m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
-	}
+	//if (g_pad[0]->IsTrigger(enButtonY))
+	//{
+	//	m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
+	//}
 
 }
 
@@ -79,6 +83,14 @@ void Game::DoInGame()
 	case Game::en_gameUpdate:
 
 		TimerProcess();
+
+		if (m_isGameMainTutorialEnd == false &&
+			m_load->IsLoadCompletion() == true)
+		{
+
+			m_gameInState = GameInState::en_gameTutorial;
+
+		}
 
 		break;
 	case Game::en_gameClear:
@@ -141,6 +153,27 @@ void Game::DoInGame()
 		}
 
 		break;
+	case Game::en_gameTutorial:
+
+		if (m_isGameMainTutorialEnd == false &&
+			m_gameInformation->IsInformationNow() == false)
+		{
+			m_gameInformation->InitTextData(L"test");
+			m_gameInformation->InitTextData(L"test");
+
+			m_gameInformation->GoInformation();
+		}
+
+		if (m_gameInformation->IsInformationCloseing() == true)
+		{
+			m_isGameMainTutorialEnd = true;
+
+			m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
+
+			m_gameInState = GameInState::en_gameUpdate;
+		}
+
+		break;
 	default:
 		break;
 	}
@@ -149,8 +182,8 @@ void Game::DoInGame()
 
 void Game::TimerProcess()
 {
-	//ウィンドウが開いていたら
-	if (m_gameWindow->IsWindowOpen() == true)
+	//チュートリアルがまだ終わっていなかったら
+	if (m_isGameMainTutorialEnd == false)
 	{
 		return;
 	}
