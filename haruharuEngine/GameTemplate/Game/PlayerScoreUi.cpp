@@ -2,11 +2,11 @@
 #include "PlayerScoreUi.h"
 
 //これを有効にするとデバッグモードになる
-//#define DEBUG_MODE
+#define DEBUG_MODE
 
 //定数等
 namespace {
-	static const float SCOREBASE_SPRITE_W_SIZE = 1600.0f;
+	static const float SCOREBASE_SPRITE_W_SIZE = 1920.0f;
 	static const float SCOREBASE_SPRITE_H_SIZE = 900.0f;
 
 	static const Vector3 SCOREBASE_SPRITE_POSITION = { -630.0f,350.0f,0.0f };
@@ -20,7 +20,7 @@ namespace {
 bool PlayerScoreUi::Start()
 {
 	//スコア枠の初期化
-	m_scoreBase.Init("Assets/modelData/playerUI/PlayerScoreUi/Score_Base_1.DDS",
+	m_scoreBase.Init("Assets/modelData/playerUI/PlayerScoreUi/Score_Base_2.DDS",
 		SCOREBASE_SPRITE_W_SIZE,
 		SCOREBASE_SPRITE_H_SIZE);
 

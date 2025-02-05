@@ -105,6 +105,10 @@ void EnemySM_Warrior::EnemyAIUpdate()
 	//時間更新
 	TimeUpdate();
 
+	//足音を調整
+	m_warriorMetaAI->MetaAIExecution(this, EnemyAIMetaWarrior::mode_footStep);
+
+
 	switch (m_warriorState)
 	{
 		//待機ステート

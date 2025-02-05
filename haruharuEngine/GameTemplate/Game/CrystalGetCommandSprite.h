@@ -2,6 +2,7 @@
 
 class Crystal;
 class GameSound;
+class GameEffect;
 class Player;
 
 //定数等
@@ -61,6 +62,12 @@ public:
 		//コマンドを入力できるように
 		m_isCommandInput = true;
 	}
+
+	const bool& GetCollectFlag() const
+	{
+		return m_isCollectFlag;
+	}
+
 private:
 	/// <summary>
 	/// ツルハシの回転ステート
@@ -265,6 +272,10 @@ private:
 	/// ゲームサウンドのインスタンス
 	/// </summary>
 	GameSound* m_gameSound = nullptr;
+	/// <summary>
+	/// ゲームエフェクトのインスタンス
+	/// </summary>
+	GameEffect* m_gameEffect = nullptr;
 	/// <summary>
 	/// プレイヤーのインスタンス
 	/// </summary>

@@ -14,6 +14,7 @@
 #include "Elevator.h"
 #include "Accessories.h"
 #include "ManagerCrystal.h"
+#include "PlayerInteractableUi.h"
 #include "PlayerScanCrystalUi.h"
 #include "PlayerScoreUi.h"
 #include "PlayerStaminaUi.h"
@@ -22,15 +23,22 @@
 #include "Title.h"
 #include "Result.h"
 #include "Gameover.h"
-#include "Window.h"
+#include "GameInformation.h"
 #include "GameSound.h"
+#include "GameEffect.h"
 
 
 bool Game::Start()
 {
 	InitDirctionaLight();
 
+	NewGO<GameInformation>(2, "gameInformation");
+
 	m_gameSound = NewGO<GameSound>(2, "gameSound");
+
+	NewGO<GameEffect>(0, "gameEffect");
+
+	m_gameWindow = NewGO<GameWindow>(1, "gameWindow");
 
 	m_load = NewGO<Load>(1, "load");
 
@@ -52,6 +60,16 @@ void Game::Update()
 	}
 
 	sunDirectionalLight.VPCamUpdate();
+	if (g_pad[0]->IsTrigger(enButtonX))
+	{
+		m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_stop);
+	}
+
+	if (g_pad[0]->IsTrigger(enButtonY))
+	{
+		m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
+	}
+
 }
 
 void Game::DoInGame()
@@ -132,6 +150,11 @@ void Game::DoInGame()
 
 void Game::TimerProcess()
 {
+	//ウィンドウが開いていたら
+	if (m_gameWindow->IsWindowOpen() == true)
+	{
+		return;
+	}
 
 	m_timerIndex -= g_gameTime->GetFrameDeltaTime();
 
@@ -285,6 +308,7 @@ void Game::OutGameLoadProcess()
 
 	m_player = NewGO<Player>(0, "player");
 	//UIの初期化
+	PlayerInteractableUi* m_interactableUi = NewGO<PlayerInteractableUi>(0,"InteractableUi");
 	PlayerScanCrystalUi* m_scanUi = NewGO<PlayerScanCrystalUi>(0, "ScanUI");
 	PlayerScoreUi* m_scoreUi = NewGO<PlayerScoreUi>(0, "ScoreUI");
 	m_scoreUi->InitMainScorePtr(m_scoreNum);

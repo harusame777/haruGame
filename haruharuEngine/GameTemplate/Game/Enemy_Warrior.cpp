@@ -18,7 +18,6 @@ namespace {
 //コンストラクタ
 Enemy_Warrior::Enemy_Warrior()
 {
-
 }
 
 //デストラクタ
@@ -119,17 +118,19 @@ void Enemy_Warrior::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eve
 		}
 
 		// 線形補間（ここでは t がそのまま最終値）
-		float finalValue = t;
+		float finalValue = pow(t, m_valumePowCalcValue);
 
-		m_gameSound->SoundListInit(
-			GameSound::en_enemyWarriorWalkSound,
-			GameSound::en_priority_high,
-			finalValue
-		);
+		if (m_footStepsFlag == true)
+		{
+			m_gameSound->LocalSoundOrder(
+				GameSound::en_enemyWarriorWalkSound,
+				false,
+				finalValue
+			);
+		}
 	}
 	else if (wcscmp(eventName, L"AttackImpact") == 0)
 	{
-
 		m_gameSound->LocalSoundOrder(GameSound::en_killSound, false, 1.0f);
 
 		SetAttackImpact(true);

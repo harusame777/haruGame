@@ -63,6 +63,10 @@ public:
 		/// </summary>
 		mode_footStep,
 		/// <summary>
+		/// ‘Ò‹@
+		/// </summary>
+		mode_idle,
+		/// <summary>
 		/// ‰Šú‰»—p
 		/// </summary>
 		mode_init,
