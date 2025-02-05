@@ -22,7 +22,7 @@ namespace nsK2EngineLow {
 		const Model& InitShadowMapModelRender(
 			const char* tkmfilePath,
 			EnModelUpAxis enModelUpAxis,
-			AnimationClip* animationClips,
+			AnimationClip& animationClips,
 			const Light& ligPtr
 		);
 	private:

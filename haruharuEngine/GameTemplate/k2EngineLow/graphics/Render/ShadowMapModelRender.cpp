@@ -18,7 +18,7 @@ namespace nsK2EngineLow {
 	const Model& ShadowMapModelRender::InitShadowMapModelRender(
 		const char* tkmfilePath,
 		EnModelUpAxis enModelUpAxis,
-		AnimationClip* animationClips,
+		AnimationClip& animationClips,
 		const Light& ligPtr 
 	)
 	{
