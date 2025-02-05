@@ -11,6 +11,7 @@ namespace {
 	static const Vector4 MAINTEXT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
 	static const Vector4 CLOSETEXT_COLOR = { 0.3f,0.1f,0.1f,1.0f };
 	static const float TIME_N = 0.05f;
+	static const wchar_t TEXT_UNDER_BAR[2] = { L"_" };
 
 }
 
@@ -78,6 +79,8 @@ void GameInformation::InformationStateUpdate()
 
 				return;
 			}
+
+			DisplayTextListUpdate();
 
 			m_nowTextNum = 0;
 
@@ -187,6 +190,13 @@ void GameInformation::DisplayTextListUpdate()
 		m_textDataList[m_listNowNum].m_externalInputTextList,
 		m_nowTextNum
 	);
+
+	if (m_textDataList[m_listNowNum].
+		m_externalInputTextList[m_nowTextNum] == L'\0')
+		return;
+
+	wcsncat_s(m_textDataList[m_listNowNum].m_displayTextList,
+		TEXT_UNDER_BAR, 1);
 
 }
 
