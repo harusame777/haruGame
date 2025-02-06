@@ -2,6 +2,59 @@
  * @brief	シンプルなモデルシェーダー。
  */
 
+static const int NUM_DIRECTIONAL_LIGHT = 4; // ディレクションライトの数
+static const int MAX_POINT_LIGHT = 32; // ポイントライトの最大数
+static const int MAX_SPOT_LIGHT = 32; // スポットライトの最大数
+
+////////////////////////////////////////////////
+// ライトの構造体
+////////////////////////////////////////////////
+struct DirectionLight
+{
+	//ライトの方向
+    float3 direction;
+	//ライトのカラー
+    float3 color;
+    //使用中かどうか
+    int isUse;
+    //
+    float4x4 mLVP;
+    //
+    float3 ligPos;
+};
+
+//ポイントライト
+struct PointLight
+{
+	//座標
+    float3 position;
+	//使用中フラグ
+    int isUse;
+	//ライトのカラー
+    float3 color;
+	//減衰パラメータ
+	//xに影響範囲,yに影響率に累乗するパラメータ
+    float3 attn;
+};
+
+//スポットライト
+struct SpotLight
+{
+    //座標
+    float3 position;
+    //使用中フラグ
+    int isUse;
+    //ライトのカラー
+    float3 color;
+    //影響範囲
+    float range;
+     //射出方向
+    float3 direction;
+    //射出角度
+    float angle;
+    //影響率に累乗するパラメータ
+    float3 pow;
+};
 
 ////////////////////////////////////////////////
 // 定数バッファ。
@@ -17,8 +70,22 @@ cbuffer ModelCb : register(b0)
 //ユーザー拡張
 cbuffer LightCb : register(b1)
 {
-    float4x4 mLVP;
-    float3 ligPos;
+	//ディレクションライトの配列
+    DirectionLight m_directionalLight[NUM_DIRECTIONAL_LIGHT];
+	//ポイントライトの配列
+    PointLight m_pointLights[MAX_POINT_LIGHT];
+    //スポットライトの配列
+    SpotLight m_spotLights[MAX_SPOT_LIGHT];
+	//視点の位置
+    float3 m_eyePos;
+	//使用中のポイントライトの数
+    int m_numPointLight;
+	//環境光
+    float3 m_ambientLight;
+    //使用中のスポットライトの数
+    int m_numSpotLight;
+    //使用中のディレクションライトの数
+    int m_numDirectionLight;
 };
 
 ////////////////////////////////////////////////
@@ -102,7 +169,7 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
 	
     psIn.normal = mul(mSkinWorld, vsIn.normal);
     
-    psIn.depth.x = length(worldPos - ligPos) / 1000.0f;
+    psIn.depth.x = length(worldPos - m_directionalLight[0].ligPos) / 1000.0f;
     psIn.depth.y = psIn.depth.x * psIn.depth.x;
 
     return psIn;

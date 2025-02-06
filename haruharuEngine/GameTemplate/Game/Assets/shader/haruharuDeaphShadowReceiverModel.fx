@@ -381,8 +381,12 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
     //接ベクトルと従ベクトルをワールド空間に変換
     psIn.tangent = normalize(mul(m, vsIn.tangent));
     psIn.biNormal = normalize(mul(m, vsIn.biNormal));
+    
+    float3 mainLigPos = m_directionalLight[0].ligPos;
+    
+    psIn.posInLVP = mul(m_directionalLight[0].mLVP, worldPos);
      
-    psIn.posInLVP = (length(worldPos.xyz - m_directionalLight[0].ligPos) / 1000.0f);
+    psIn.posInLVP.z = length(worldPos.xyz - mainLigPos) / 1000.0f;
                    
     //psIn.posInLVP[0].z = length(worldPos.xyz - m_directionalLight[0].ligPos.xyz) / 1000.0f;
     //psIn.posInLVP[0] = mul(m_directionalLight[0].mLVP, worldPos);

@@ -60,16 +60,16 @@ void Game::Update()
 	}
 
 	sunDirectionalLight.VPCamUpdate();
-	if (g_pad[0]->IsTrigger(enButtonX))
-	{
-		m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_stop);
-	}
 
-	if (g_pad[0]->IsTrigger(enButtonY))
-	{
-		m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
-	}
+	//if (g_pad[0]->IsTrigger(enButtonX))
+	//{
+	//	m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_stop);
+	//}
 
+	//if (g_pad[0]->IsTrigger(enButtonY))
+	//{
+	//	m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
+	//}
 }
 
 void Game::DoInGame()

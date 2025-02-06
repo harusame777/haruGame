@@ -191,12 +191,8 @@ namespace nsK2EngineLow {
 
 		initData.m_fxFilePath = "Assets/shader/haruharuDrawDeaphShadowMap.fx";
 
-		ShadowMapParam shadowMapParam;
-		shadowMapParam.mLVP = m_light.m_directionalLight[0].GetLightVP();
-		shadowMapParam.ligPos = m_light.m_directionalLight[0].GetVPCamPosition();
-
-		initData.m_expandConstantBuffer = (void*)&shadowMapParam;
-		initData.m_expandConstantBufferSize = sizeof(shadowMapParam);
+		initData.m_expandConstantBuffer = &m_light;
+		initData.m_expandConstantBufferSize = sizeof(m_light);
 
 		initData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32_FLOAT;
 
