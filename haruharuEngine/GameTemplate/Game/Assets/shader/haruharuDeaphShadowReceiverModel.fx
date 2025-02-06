@@ -119,7 +119,7 @@ struct SPSIn
     float3 biNormal : BINORMAL; //従ベクトル
     float3 worldPos : TEXCOORD1; //ワールド座標系でのポジション
     float3 normalInView : TEXCOORD2; //カメラ空間の法線
-    float4 posInLVP[4] : TEXCOORD3; //ライトビュースクリーン空間でのピクセルの座標 
+    float4 posInLVP : TEXCOORD3; //ライトビュースクリーン空間でのピクセルの座標 
 };
 
 ////////////////////////////////////////////////
@@ -381,8 +381,10 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
     //接ベクトルと従ベクトルをワールド空間に変換
     psIn.tangent = normalize(mul(m, vsIn.tangent));
     psIn.biNormal = normalize(mul(m, vsIn.biNormal));
-        
-    psIn.posInLVP[0].z = length(worldPos.xyz - m_directionalLight[0].ligPos.xyz) / 1000.0f;
+     
+    psIn.posInLVP = (length(worldPos.xyz - m_directionalLight[0].ligPos) / 1000.0f);
+                   
+    //psIn.posInLVP[0].z = length(worldPos.xyz - m_directionalLight[0].ligPos.xyz) / 1000.0f;
     //psIn.posInLVP[0] = mul(m_directionalLight[0].mLVP, worldPos);
     
     return psIn;
@@ -410,12 +412,12 @@ float4 PSMain(SPSIn psIn) : SV_Target0
     float4 color = g_albedo.Sample(g_sampler, psIn.uv);
 
     // ライトビュースクリーン空間からUV空間に座標変換
-    float2 shadowMapUV = psIn.posInLVP[0].xy / psIn.posInLVP[0].w;
+    float2 shadowMapUV = psIn.posInLVP.xy / psIn.posInLVP.w;
     shadowMapUV *= float2(0.5f, -0.5f);
     shadowMapUV += 0.5f;
 
     // ライトビュースクリーン空間でのZ値を計算する
-    float zInLVP = psIn.posInLVP[0].z;
+    float zInLVP = psIn.posInLVP.z;
 
     if (shadowMapUV.x > 0.0f && shadowMapUV.x < 1.0f
         && shadowMapUV.y > 0.0f && shadowMapUV.y < 1.0f)
