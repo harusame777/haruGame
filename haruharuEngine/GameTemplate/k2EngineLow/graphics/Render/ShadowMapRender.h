@@ -22,7 +22,7 @@ namespace nsK2EngineLow {
 			return &m_shadowMap;
 		}
 
-		const Texture& GetShadowMapBokeTexture()
+		Texture& GetShadowMapBokeTexture()
 		{
 			return m_shadowMapModelGaussianBlur.GetBokeTexture();
 		}

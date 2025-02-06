@@ -14,6 +14,13 @@ cbuffer ModelCb : register(b0)
     float4x4 mProj;
 };
 
+//ユーザー拡張
+cbuffer LightCb : register(b1)
+{
+    float4x4 mLVP;
+    float3 ligPos;
+};
+
 ////////////////////////////////////////////////
 // 構造体
 ////////////////////////////////////////////////
@@ -36,7 +43,8 @@ struct SPSIn
 {
     float4 pos : SV_POSITION; //スクリーン空間でのピクセルの座標。
     float3 normal : NORMAL; // 法線
-    float2 uv : TEXCOORD0; //uv座標。
+    float2 uv : TEXCOORD0; //uv座標
+    float2 depth : TEXCOORD1; // ライト空間での座標。
 };
 
 ////////////////////////////////////////////////
@@ -86,12 +94,16 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
         mSkinWorld = mWorld;
     }
     psIn.pos = mul(mSkinWorld, vsIn.pos);
+    float3 worldPos = psIn.pos;
     psIn.pos = mul(mView, psIn.pos);
     psIn.pos = mul(mProj, psIn.pos);
 
     psIn.uv = vsIn.uv;
 	
     psIn.normal = mul(mSkinWorld, vsIn.normal);
+    
+    psIn.depth.x = length(worldPos - ligPos) / 1000.0f;
+    psIn.depth.y = psIn.depth.x * psIn.depth.x;
 
     return psIn;
 }
@@ -116,5 +128,5 @@ SPSIn VSSkinMain(SVSIn vsIn)
 float4 PSMain(SPSIn psIn) : SV_Target0
 {
     // step-3 シャドウマップにZ値を描き込む
-    return float4(psIn.pos.z, psIn.pos.z, psIn.pos.z, 1.0f);
+    return float4(psIn.depth.x,psIn.depth.y,0.0f, 1.0f);
 }

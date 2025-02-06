@@ -1,6 +1,5 @@
 #include "k2EngineLowPreCompile.h"
 #include "ModelRender.h"
-#include "graphics/Render/ShadowMapModelRender.h"
 #include "graphics/Render/ShadowMapRender.h"
 
 namespace nsK2EngineLow {
@@ -40,9 +39,8 @@ namespace nsK2EngineLow {
 		//基本のモデル初期化
 		InitNormalModel(tkmfilePath, animationClips, numAnimationClips, enModelUpAxis, shader);
 
-		//InitShadowModel(tkmfilePath, enModelUpAxis);
 		//シャドウマップ描画用モデルの初期化
-		m_shadowMapModel = m_shadowMapModelRender.InitShadowMapModelRender(tkmfilePath,enModelUpAxis,*animationClips,m_light);
+		InitShadowModel(tkmfilePath, enModelUpAxis);
 	}
 
 	//GBuffer描画用のモデルを初期化
@@ -76,6 +74,8 @@ namespace nsK2EngineLow {
 		//ファイルパスを登録
 		initData.m_tkmFilePath = tkmfilePath;
 
+		m_light = *g_sceneLight->GetLightData();
+
 		switch (shader)
 		{
 		case ModelRender::en_usuallyShader:
@@ -95,8 +95,8 @@ namespace nsK2EngineLow {
 			initData.m_expandConstantBufferSize = sizeof(m_light);
 
 			//シャドウマップを拡張SRVに設定する
-			initData.m_expandShaderResoruceView[0] = &(g_renderingEngine
-				->GetShadowMapRenderTarget()->GetRenderTargetTexture());
+			initData.m_expandShaderResoruceView[0] = g_renderingEngine
+				->GetShadowMapRenderBokeTexture();
 
 			break;
 		case ModelRender::en_crystalShader:
@@ -107,7 +107,7 @@ namespace nsK2EngineLow {
 
 			//シャドウマップを拡張SRVに設定する
 			initData.m_expandShaderResoruceView[0] = &(g_renderingEngine
-				->GetShadowMapRenderTarget()->GetRenderTargetTexture());
+				->GetShadowMapRenderTarget()->GetRenderTargetTexture());			
 			break;
 		}
 
@@ -133,6 +133,47 @@ namespace nsK2EngineLow {
 	//シャドウマップに表示するモデルの作成
 	void ModelRender::InitShadowModel(const char* tkmFilePath, EnModelUpAxis modelUpAxis)
 	{
+		////スケルトンのデータを読み込み。
+		//std::string skeletonFilePath = tkmFilePath;
+		//int pos = (int)skeletonFilePath.find(".tkm");
+		//skeletonFilePath.replace(pos, 4, ".tks");
+		//m_skeleton.Init(skeletonFilePath.c_str());
+
+		//ModelInitData initData;
+		//initData.m_tkmFilePath = tkmFilePath;
+		//initData.m_modelUpAxis = modelUpAxis;
+
+		//if (m_animationClips != nullptr)
+		//{
+		//	//スケルトン指定
+		//	////initData.m_skeleton = &m_skeleton;
+		//}
+
+		//initData.m_fxFilePath = "Assets/shader/haruharuDrawDeaphShadowMap.fx";
+
+		//ShadowMapParam shadowMapParam;
+		//shadowMapParam.mLVP = m_light.m_directionalLight[0].GetLightVP();
+		//shadowMapParam.ligPos = m_light.m_directionalLight[0].GetVPCamPosition();
+
+		//initData.m_expandConstantBuffer = (void*)&shadowMapParam;
+		//initData.m_expandConstantBufferSize = sizeof(shadowMapParam);
+
+		//initData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32_FLOAT;/*デプスシャドウ用の設定*/
+
+		////ノンスキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
+		//initData.m_vsEntryPointFunc = "VSMain";
+		////スキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
+		//initData.m_vsSkinEntryPointFunc = "VSSkinMain";
+
+		//m_shadowMapModel.Init(initData);
+
+		//m_shadowMapModel.UpdateWorldMatrix(
+		//	m_position,
+		//	m_rotation,
+		//	m_scale
+		//);
+
+
 		ModelInitData initData;
 		initData.m_tkmFilePath = tkmFilePath;
 		initData.m_modelUpAxis = modelUpAxis;
@@ -148,9 +189,16 @@ namespace nsK2EngineLow {
 			initData.m_skeleton = &m_skeleton;
 		}
 
-		initData.m_fxFilePath = "Assets/shader/haruharuDrawShadowMap.fx";
+		initData.m_fxFilePath = "Assets/shader/haruharuDrawDeaphShadowMap.fx";
 
-		//initData.m_colorBufferFormat[0] = DXGI_FORMAT_R32_FLOAT;デプスシャドウ用の設定
+		ShadowMapParam shadowMapParam;
+		shadowMapParam.mLVP = m_light.m_directionalLight[0].GetLightVP();
+		shadowMapParam.ligPos = m_light.m_directionalLight[0].GetVPCamPosition();
+
+		initData.m_expandConstantBuffer = (void*)&shadowMapParam;
+		initData.m_expandConstantBufferSize = sizeof(shadowMapParam);
+
+		initData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32_FLOAT;
 
 		//ノンスキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
 		initData.m_vsEntryPointFunc = "VSMain";

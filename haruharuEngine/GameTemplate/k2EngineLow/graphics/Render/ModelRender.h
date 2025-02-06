@@ -2,7 +2,6 @@
 
 #include "graphics/light/SceneLight.h"
 #include "graphics/Render/ShadowMapRender.h"
-#include "graphics/Render/ShadowMapModelRender.h"
 
 namespace nsK2EngineLow {
 	class ShadowMapModelRender;
@@ -30,6 +29,12 @@ namespace nsK2EngineLow {
 
 		
 		Light m_light;
+
+		struct ShadowMapParam
+		{
+			Matrix mLVP;
+			Vector3 ligPos;
+		};
 
 		/// <summary>
 		/// 初期化処理
@@ -181,8 +186,6 @@ namespace nsK2EngineLow {
 		Quaternion m_rotation = Quaternion::Identity;
 		//モデルレンダーに設定されているモデルの大きさ
 		Vector3 m_scale = Vector3::One;
-
-		ShadowMapModelRender m_shadowMapModelRender;
 
 		Model m_shadowMapModel;
 		
