@@ -386,7 +386,7 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
     
     psIn.posInLVP = mul(m_directionalLight[0].mLVP, worldPos);
      
-    psIn.posInLVP.z = length(worldPos.xyz - mainLigPos) / 1000.0f;
+    psIn.posInLVP.z = length(worldPos.xyz - mainLigPos) / 10000.0f;
                    
     //psIn.posInLVP[0].z = length(worldPos.xyz - m_directionalLight[0].ligPos.xyz) / 1000.0f;
     //psIn.posInLVP[0] = mul(m_directionalLight[0].mLVP, worldPos);

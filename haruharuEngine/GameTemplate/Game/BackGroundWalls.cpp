@@ -41,7 +41,7 @@ bool BackGroundWalls::Start()
 		break;
 	case BackGroundWalls::en_wallOnes:
 		//•Çˆê‘Ì‰»ƒ‚ƒfƒ‹
-		m_mainModel.Init("Assets/modelData/BackGround/laboWal_lOnesModel.tkm", nullptr, 0, enModelUpAxisZ, ModelRender::en_usuallyShader);
+		m_mainModel.Init("Assets/modelData/BackGround/laboWal_lOnesModel.tkm", nullptr, 0, enModelUpAxisZ, ModelRender::en_shadowShader);
 		break;
 	}
 

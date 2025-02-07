@@ -30,9 +30,9 @@ namespace nsK2EngineLow {
 		//é¿çs
 		void Execute(RenderContext& rc);
 
-		Texture* GetShadowMapRenderBokeTexture()
+		Texture& GetShadowMapRenderBokeTexture()
 		{
-			return &m_shadowMapRender.GetShadowMapBokeTexture();
+			return m_shadowMapRender.GetShadowMapBokeTexture();
 		}
 
 		RenderTarget* GetShadowMapRenderTarget()

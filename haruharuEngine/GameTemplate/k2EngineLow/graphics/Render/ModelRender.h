@@ -36,6 +36,8 @@ namespace nsK2EngineLow {
 			Vector3 ligPos;
 		};
 
+		ShadowMapParam shadowparam;
+
 		/// <summary>
 		/// ‰Šú‰»ˆ—
 		/// </summary>

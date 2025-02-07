@@ -61,15 +61,15 @@ void Game::Update()
 
 	sunDirectionalLight.VPCamUpdate();
 
-	//if (g_pad[0]->IsTrigger(enButtonX))
-	//{
-	//	m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_stop);
-	//}
+	if (g_pad[0]->IsTrigger(enButtonX))
+	{
+		m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_stop);
+	}
 
-	//if (g_pad[0]->IsTrigger(enButtonY))
-	//{
-	//	m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
-	//}
+	if (g_pad[0]->IsTrigger(enButtonY))
+	{
+		m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
+	}
 }
 
 void Game::DoInGame()
@@ -269,13 +269,13 @@ void Game::OutGameLoadProcess()
 				floor->SetScale(objData.m_scalse);
 				return true;
 			}
-			else if (objData.ForwardMatchName(L"laboCeiling_MainModel") == true)
-			{
-				BackGroundCeiling* ceiling = NewGO<BackGroundCeiling>(0, "background");
-				ceiling->SetPosition(objData.m_position);
-				ceiling->SetRotation(objData.m_rotation);
-				ceiling->SetScale(objData.m_scalse);
-			}
+			//else if (objData.ForwardMatchName(L"laboCeiling_MainModel") == true)
+			//{
+			//	BackGroundCeiling* ceiling = NewGO<BackGroundCeiling>(0, "background");
+			//	ceiling->SetPosition(objData.m_position);
+			//	ceiling->SetRotation(objData.m_rotation);
+			//	ceiling->SetScale(objData.m_scalse);
+			//}
 			else if (objData.ForwardMatchName(L"youtai") == true)
 			{
 				Enemy_Warrior* enemy_warrior = NewGO<Enemy_Warrior>(0, "enemy");
@@ -330,7 +330,8 @@ void Game::InitDirctionaLight()
 	sunDirectionalLight.LightDirectionNormalize();
 	sunDirectionalLight.CastShadow();
 	sunDirectionalLight.VPCamSetRotation(80.0f);
-	sunDirectionalLight.VPCamSetPosition({ -2000, 2000, 2000 });
+	//sunDirectionalLight.VPCamSetPosition({ -10.0, 2000, 0.0 });
+	sunDirectionalLight.VPCamSetPosition({ -2000.0, 2000, 2000.0 });
 	sunDirectionalLight.VPCamSetTarget({ 0.0f, 0.0f, 0.0f });
 	sunDirectionalLight.VPCamUpdate();
 }

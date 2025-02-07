@@ -169,7 +169,7 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
 	
     psIn.normal = mul(mSkinWorld, vsIn.normal);
     
-    psIn.depth.x = length(worldPos - m_directionalLight[0].ligPos) / 1000.0f;
+    psIn.depth.x = length(worldPos - m_directionalLight[0].ligPos) / 10000.0f;
     psIn.depth.y = psIn.depth.x * psIn.depth.x;
 
     return psIn;

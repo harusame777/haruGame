@@ -95,7 +95,7 @@ namespace nsK2EngineLow {
 			initData.m_expandConstantBufferSize = sizeof(m_light);
 
 			//シャドウマップを拡張SRVに設定する
-			initData.m_expandShaderResoruceView[0] = g_renderingEngine
+			initData.m_expandShaderResoruceView[0] = &g_renderingEngine
 				->GetShadowMapRenderBokeTexture();
 
 			break;
@@ -190,7 +190,7 @@ namespace nsK2EngineLow {
 		}
 
 		initData.m_fxFilePath = "Assets/shader/haruharuDrawDeaphShadowMap.fx";
-
+			
 		initData.m_expandConstantBuffer = &m_light;
 		initData.m_expandConstantBufferSize = sizeof(m_light);
 
@@ -239,6 +239,9 @@ namespace nsK2EngineLow {
 		m_model.UpdateWorldMatrix(m_position,m_rotation, m_scale);
 
 		m_shadowMapModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+
+		//shadowparam.ligPos = m_light.m_directionalLight[0].GetVPCamPosition();
+		//shadowparam.mLVP = m_light.m_directionalLight[0].GetLightVP();
 
 		//スケルトンが初期化済みの場合、スケルトンの更新
 		if (m_skeleton.IsInited())
