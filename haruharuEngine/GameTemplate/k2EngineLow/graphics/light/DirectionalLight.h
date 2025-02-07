@@ -52,10 +52,40 @@ namespace nsK2EngineLow {
 		{
 			m_directionLight->UnCastShadow();
 		}
+		//ビュープロジェクションカメラ位置設定
+		void VPCamSetPosition(const Vector3& pos)
+		{
+			m_vprCam.SetPosition(pos);
+			m_directionLight->SetVPCamPosition(pos);
+		}
+		//ビュープロジェクションカメラ回転設定
+		void VPCamSetRotation(const float& rot)
+		{
+			m_vprCam.SetViewAngle(Math::DegToRad(rot));
+		}
+		//ビュープロジェクションカメラターゲット設定
+		void VPCamSetTarget(const Vector3& target)
+		{
+			m_vprCam.SetTarget(target);
+		}
+		//ビュープロジェクションカメラ上方向設定
+		void VPCamSetUp(const Vector3& up)
+		{
+			m_vprCam.SetUp(up);
+		}
+		//ビュープロジェクションカメラ更新
+		void VPCamUpdate()
+		{
+			m_vprCam.Update();
 
+			m_directionLight->SetLightVP(m_vprCam.GetViewProjectionMatrix());
+			m_directionLight->SetVPCamPosition(m_vprCam.GetPosition());
+		}
 	private:
 		//ディレクションライトの構造体
 		SDirectionLight* m_directionLight = nullptr;
+		//ライトのビュープロジェクション用のカメラ
+		Camera m_vprCam;
 	};
 }
 

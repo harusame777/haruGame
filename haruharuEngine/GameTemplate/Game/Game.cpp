@@ -59,6 +59,8 @@ void Game::Update()
 		DoInGame();
 	}
 
+	sunDirectionalLight.VPCamUpdate();
+
 	if (g_pad[0]->IsTrigger(enButtonX))
 	{
 		m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_stop);
@@ -68,7 +70,6 @@ void Game::Update()
 	{
 		m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
 	}
-
 }
 
 void Game::DoInGame()
@@ -249,48 +250,12 @@ void Game::OutGameLoadProcess()
 	LevelRender levelRender;
 
 	//レベルレンダーのテスト
-	levelRender.Init("Assets/mapLevel/testLevel6.tkl", [&](LevelObjectData_Render& objData)
+	levelRender.Init("Assets/mapLevel/testLevel7.tkl", [&](LevelObjectData_Render& objData)
 		{
-			if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
+			if (objData.ForwardMatchName(L"wallOnes") == true)
 			{
 				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallType1_4);
-				walls->SetPosition(objData.m_position);
-				walls->SetRotation(objData.m_rotation);
-				walls->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"laboWall_2-4Model") == true)
-			{
-				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallType2_4);
-				walls->SetPosition(objData.m_position);
-				walls->SetRotation(objData.m_rotation);
-				walls->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"laboWall_4-4Model") == true)
-			{
-				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallType4_4);
-				walls->SetPosition(objData.m_position);
-				walls->SetRotation(objData.m_rotation);
-				walls->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"laboWall_4-6Model") == true)
-			{
-				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallType4_6);
-				walls->SetPosition(objData.m_position);
-				walls->SetRotation(objData.m_rotation);
-				walls->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"laboDoorWay_4-4Model") == true)
-			{
-				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallTypeDoorWay4_4);
+				walls->SetWallType(BackGroundWalls::en_wallOnes);
 				walls->SetPosition(objData.m_position);
 				walls->SetRotation(objData.m_rotation);
 				walls->SetScale(objData.m_scalse);
@@ -304,13 +269,13 @@ void Game::OutGameLoadProcess()
 				floor->SetScale(objData.m_scalse);
 				return true;
 			}
-			else if (objData.ForwardMatchName(L"laboCeiling_MainModel") == true)
-			{
-				BackGroundCeiling* ceiling = NewGO<BackGroundCeiling>(0, "background");
-				ceiling->SetPosition(objData.m_position);
-				ceiling->SetRotation(objData.m_rotation);
-				ceiling->SetScale(objData.m_scalse);
-			}
+			//else if (objData.ForwardMatchName(L"laboCeiling_MainModel") == true)
+			//{
+			//	BackGroundCeiling* ceiling = NewGO<BackGroundCeiling>(0, "background");
+			//	ceiling->SetPosition(objData.m_position);
+			//	ceiling->SetRotation(objData.m_rotation);
+			//	ceiling->SetScale(objData.m_scalse);
+			//}
 			else if (objData.ForwardMatchName(L"youtai") == true)
 			{
 				Enemy_Warrior* enemy_warrior = NewGO<Enemy_Warrior>(0, "enemy");
@@ -364,6 +329,11 @@ void Game::InitDirctionaLight()
 	sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
 	sunDirectionalLight.LightDirectionNormalize();
 	sunDirectionalLight.CastShadow();
+	sunDirectionalLight.VPCamSetRotation(80.0f);
+	//sunDirectionalLight.VPCamSetPosition({ -10.0, 2000, 0.0 });
+	sunDirectionalLight.VPCamSetPosition({ -2000.0, 2000, 2000.0 });
+	sunDirectionalLight.VPCamSetTarget({ 0.0f, 0.0f, 0.0f });
+	sunDirectionalLight.VPCamUpdate();
 }
 
 //QueryGOs<IEnemy>("summonenemy", [&](IEnemy* ienemy) {

@@ -19,6 +19,8 @@ struct DirectionLight
     float3 color;
     //使用中かどうか
     int isUse;
+    //
+    float4x4 mLVP;
 };
 
 //ポイントライト
@@ -82,8 +84,7 @@ cbuffer LightCb : register(b1)
     //使用中のスポットライトの数
     int m_numSpotLight;
     //使用中のディレクションライトの数
-    int m_numDirectionLight;
-    float4x4 mLVP;
+    int m_numDirectionLight;    
 };
 
 ////////////////////////////////////////////////
@@ -112,7 +113,7 @@ struct SPSIn{
     float3 biNormal     : BINORMAL;     //従ベクトル
     float3 worldPos		: TEXCOORD1;	//ワールド座標系でのポジション
     float3 normalInView : TEXCOORD2;    //カメラ空間の法線
-    float4 posInLVP     : TEXCOORD3;    //ライトビュースクリーン空間でのピクセルの座標 
+    float4 posInLVP[4]     : TEXCOORD3;    //ライトビュースクリーン空間でのピクセルの座標 
 };
 
 ////////////////////////////////////////////////
@@ -372,7 +373,12 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
     psIn.biNormal = normalize(mul(m, vsIn.biNormal));
     
     float4 worldPos = mul(mWorld, vsIn.pos);
-    psIn.posInLVP = mul(mLVP, worldPos);
+    
+    for (int ligNo = 0; ligNo < NUM_DIRECTIONAL_LIGHT; ligNo++)
+    {   
+        psIn.posInLVP[ligNo] = mul(m_directionalLight[ligNo].mLVP, worldPos);
+    }
+    //psIn.posInLVP[0] = mul(m_directionalLight[0].mLVP, worldPos);
     
 	return psIn;
 }
@@ -397,7 +403,7 @@ SPSIn VSSkinMain( SVSIn vsIn )
 float4 PSMain( SPSIn psIn ) : SV_Target0
 {
     //ライトビュースクリーン空間からUV空間に変換している
-    float2 shadowMapUV = psIn.posInLVP.xy / psIn.posInLVP.w;
+    float2 shadowMapUV = psIn.posInLVP[0].xy / psIn.posInLVP[0].w;
     shadowMapUV *= float2(0.5f, -0.5f);
     shadowMapUV += 0.5f;
     
