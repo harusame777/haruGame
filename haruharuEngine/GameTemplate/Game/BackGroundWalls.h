@@ -37,6 +37,10 @@ public:
 		/// </summary>
 		en_wallTypeDoorWay4_4,
 		/// <summary>
+		/// ˆê‘Ì‰»
+		/// </summary>
+		en_wallOnes,
+		/// <summary>
 		/// •Ç‚Ì”
 		/// </summary>
 		en_wallNum,

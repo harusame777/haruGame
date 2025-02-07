@@ -54,7 +54,7 @@ bool Enemy_Warrior::Start()
 	m_gameSound = FindGO<GameSound>("gameSound");
 
 	//シャドウマップに描画するようにする
-	m_modelRender.SetShadowChasterFlag(false);
+	m_modelRender.SetShadowChasterFlag(true);
 
 	m_player = FindGO<Player>("player");
 

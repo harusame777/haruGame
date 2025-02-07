@@ -10,14 +10,18 @@ namespace nsK2EngineLow {
 
 		//シャドウマップ用のレンダリングターゲットを作成
 		m_shadowMap.Create(
-			1024,
-			1024,
+			2048,
+			2048,
 			1,
 			1,
 			//DXGI_FORMAT_R32_FLOAT,デプスシャドウ用の設定
-			DXGI_FORMAT_R8G8B8A8_UNORM,
+			DXGI_FORMAT_R32G32_FLOAT,
 			DXGI_FORMAT_D32_FLOAT,
 			clearColor
+		);
+
+		m_shadowMapModelGaussianBlur.Init(
+			&m_shadowMap.GetRenderTargetTexture()
 		);
 	}
 
@@ -34,30 +38,14 @@ namespace nsK2EngineLow {
 		//レンダリングターゲットをクリア
 		renderContext.ClearRenderTargetView(m_shadowMap);
 
-		Camera lightCamera;
-
-		lightCamera.SetAspectOneFlag(true);
-
-		lightCamera.SetViewAngle(Math::DegToRad(80.0f));
-
-		//カメラの位置を設定。(ライトから考える必要があるのでライトと同じ位置)
-		lightCamera.SetPosition(-2000, 2000, 2000);
-
-		//カメラの注視点を設定。(光の方向)
-		lightCamera.SetTarget(0.0f, 0.0f, 0.0f);
-
-		// 上方向を設定。今回はライトが真下を向いているので、X方向を上にしている
-		//lightCamera.SetUp(1, 0, 0);
-
-		//ライトビュープロジェクション
-		lightCamera.Update();
-
 		for (auto& renderObj : renderObjects)
 		{
-			renderObj->OnRenderShadowMap(renderContext, lightCamera.GetViewProjectionMatrix());
+			renderObj->OnRenderShadowMap(renderContext);
 		}
 
 		renderContext.WaitUntilFinishDrawingToRenderTarget(m_shadowMap);
+
+		ShadouMapBlurExecute(renderContext);
 
 		renderContext.SetRenderTarget(
 			g_graphicsEngine->GetCurrentFrameBuffuerRTV(),

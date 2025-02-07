@@ -63,6 +63,7 @@ void Game::Update()
 		DoInGame();
 	}
 
+
 	//if (g_pad[0]->IsTrigger(enButtonX))
 	//{
 	//	m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_stop);
@@ -72,7 +73,6 @@ void Game::Update()
 	//{
 	//	m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
 	//}
-
 }
 
 void Game::DoInGame()
@@ -273,59 +273,23 @@ void Game::DoOutGame()
 
 void Game::OutGameLoadProcess()
 {
-	//ƒGƒlƒ~[ƒEƒHƒŠƒA[‚Ìƒƒ^AI
+	//ã‚¨ãƒãƒŸãƒ¼ã‚¦ã‚©ãƒªã‚¢ãƒ¼ã®ãƒ¡ã‚¿AI
 	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");
 
 	m_GetCOMSprite = NewGO<CrystalGetCommandSprite>(0, "comSprite");
 
-	////ƒNƒŠƒXƒ^ƒ‹‚Ìƒƒ^AI
+	////ã‚¯ãƒªã‚¹ã‚¿ãƒ«ã®ãƒ¡ã‚¿AI
 	m_managerCrystal = NewGO<ManagerCrystal>(0, "CrystalMetaAI");
 
 	LevelRender levelRender;
 
-	//ƒŒƒxƒ‹ƒŒƒ“ƒ_[‚ÌƒeƒXƒg
-	levelRender.Init("Assets/mapLevel/testLevel6.tkl", [&](LevelObjectData_Render& objData)
+	//ãƒ¬ãƒ™ãƒ«ãƒ¬ãƒ³ãƒ€ãƒ¼ã®ãƒ†ã‚¹ãƒˆ
+	levelRender.Init("Assets/mapLevel/testLevel7.tkl", [&](LevelObjectData_Render& objData)
 		{
-			if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
+			if (objData.ForwardMatchName(L"wallOnes") == true)
 			{
 				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallType1_4);
-				walls->SetPosition(objData.m_position);
-				walls->SetRotation(objData.m_rotation);
-				walls->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"laboWall_2-4Model") == true)
-			{
-				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallType2_4);
-				walls->SetPosition(objData.m_position);
-				walls->SetRotation(objData.m_rotation);
-				walls->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"laboWall_4-4Model") == true)
-			{
-				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallType4_4);
-				walls->SetPosition(objData.m_position);
-				walls->SetRotation(objData.m_rotation);
-				walls->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"laboWall_4-6Model") == true)
-			{
-				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallType4_6);
-				walls->SetPosition(objData.m_position);
-				walls->SetRotation(objData.m_rotation);
-				walls->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"laboDoorWay_4-4Model") == true)
-			{
-				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallTypeDoorWay4_4);
+				walls->SetWallType(BackGroundWalls::en_wallOnes);
 				walls->SetPosition(objData.m_position);
 				walls->SetRotation(objData.m_rotation);
 				walls->SetScale(objData.m_scalse);
@@ -339,13 +303,13 @@ void Game::OutGameLoadProcess()
 				floor->SetScale(objData.m_scalse);
 				return true;
 			}
-			else if (objData.ForwardMatchName(L"laboCeiling_MainModel") == true)
-			{
-				BackGroundCeiling* ceiling = NewGO<BackGroundCeiling>(0, "background");
-				ceiling->SetPosition(objData.m_position);
-				ceiling->SetRotation(objData.m_rotation);
-				ceiling->SetScale(objData.m_scalse);
-			}
+			//else if (objData.ForwardMatchName(L"laboCeiling_MainModel") == true)
+			//{
+			//	BackGroundCeiling* ceiling = NewGO<BackGroundCeiling>(0, "background");
+			//	ceiling->SetPosition(objData.m_position);
+			//	ceiling->SetRotation(objData.m_rotation);
+			//	ceiling->SetScale(objData.m_scalse);
+			//}
 			else if (objData.ForwardMatchName(L"youtai") == true)
 			{
 				Enemy_Warrior* enemy_warrior = NewGO<Enemy_Warrior>(0, "enemy");
@@ -377,7 +341,7 @@ void Game::OutGameLoadProcess()
 		});
 
 	m_player = NewGO<Player>(0, "player");
-	//UI‚Ì‰Šú‰»
+	//UIã®åˆæœŸåŒ–
 	PlayerInteractableUi* m_interactableUi = NewGO<PlayerInteractableUi>(0,"InteractableUi");
 	PlayerScanCrystalUi* m_scanUi = NewGO<PlayerScanCrystalUi>(0, "ScanUI");
 	PlayerScoreUi* m_scoreUi = NewGO<PlayerScoreUi>(0, "ScoreUI");
@@ -399,6 +363,11 @@ void Game::InitDirctionaLight()
 	sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
 	sunDirectionalLight.LightDirectionNormalize();
 	sunDirectionalLight.CastShadow();
+	sunDirectionalLight.VPCamSetRotation(80.0f);
+	//sunDirectionalLight.VPCamSetPosition({ -10.0, 2000, 0.0 });
+	sunDirectionalLight.VPCamSetPosition({ -2000.0, 2000, 2000.0 });
+	sunDirectionalLight.VPCamSetTarget({ 0.0f, 0.0f, 0.0f });
+	sunDirectionalLight.VPCamUpdate();
 }
 
 //QueryGOs<IEnemy>("summonenemy", [&](IEnemy* ienemy) {
@@ -408,17 +377,17 @@ void Game::InitDirctionaLight()
 
 void Game::OutGameObjectDeleteProcces()
 {
-	//•ÇÁ‹
+	//å£æ¶ˆå»
 	QueryGOs<BackGroundWalls>("background", [&](BackGroundWalls* backGround) {
 			DeleteGO(backGround);
 			return true;
 		});
-	//°Á‹
+	//åºŠæ¶ˆå»
 	QueryGOs<BackGroundFloor>("background", [&](BackGroundFloor* backGround) {
 		DeleteGO(backGround);
 		return true;
 		});
-	//“Vˆä
+	//å¤©äº•
 	QueryGOs<BackGroundCeiling>("background", [&](BackGroundCeiling* backGround) {
 		DeleteGO(backGround);
 		return true;

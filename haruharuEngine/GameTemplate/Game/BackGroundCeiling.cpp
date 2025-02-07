@@ -13,14 +13,14 @@ BackGroundCeiling::~BackGroundCeiling()
 
 }
 
-//スタート関数
+//スタート関数,
 bool BackGroundCeiling::Start()
 {
 	//メイン床を設定
 	m_mainModel.Init("Assets/modelData/BackGround/laboCeiling_MainModel.tkm", nullptr, 0, enModelUpAxisZ, ModelRender::en_usuallyShader);
 
 	//シャドウマップに描画しないようにする
-	m_mainModel.SetShadowChasterFlag(true);
+	m_mainModel.SetShadowChasterFlag(false);
 
 	//座標を設定
 	m_mainModel.SetPosition(m_position);
