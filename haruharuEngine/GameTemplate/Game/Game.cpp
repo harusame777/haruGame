@@ -158,10 +158,10 @@ void Game::DoInGame()
 		if (m_isGameMainTutorialEnd == false &&
 			m_gameInformation->IsInformationNow() == false)
 		{
-			m_gameInformation->InitTextData(L"Hello!world!Hello!world!Hello!world!");
-			m_gameInformation->InitTextData(L"Hello!world!Hello!world!Hello!world!");
-			m_gameInformation->InitTextData(L"Hello!world!Hello!world!Hello!world!");
-			m_gameInformation->InitTextData(L"Hello!world!Hello!world!Hello!world!");
+			m_gameInformation->InitTextData(L"Hello!world!");
+			//m_gameInformation->InitTextData(L"Hello!world!Hello!world!Hello!world!");
+			//m_gameInformation->InitTextData(L"Hello!world!Hello!world!Hello!world!");
+			//m_gameInformation->InitTextData(L"Hello!world!Hello!world!Hello!world!");
 
 			m_gameInformation->GoInformation();
 		}
