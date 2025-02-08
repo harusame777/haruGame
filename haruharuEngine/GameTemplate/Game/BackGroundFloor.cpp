@@ -20,7 +20,7 @@ bool BackGroundFloor::Start()
 	m_mainModel.Init("Assets/modelData/BackGround/laboFloor_MainModel.tkm", nullptr, 0, enModelUpAxisZ, ModelRender::en_shadowShader);
 
 	//シャドウマップに描画しないようにする
-	m_mainModel.SetShadowChasterFlag(false);
+	m_mainModel.SetShadowChasterFlag(true);
 
 	//座標を設定
 	m_mainModel.SetPosition(m_position);

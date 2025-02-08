@@ -28,8 +28,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 
 	//シーンライトの初期化
 	SceneLight m_sceneLight;
-	m_sceneLight.Init();
 	g_sceneLight = &m_sceneLight;
+	m_sceneLight.Init();
 
 	//コリジョンマネージャーの初期化
 	CollisionObjectManager m_collisionObjectManager;

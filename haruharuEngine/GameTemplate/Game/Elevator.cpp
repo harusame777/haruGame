@@ -28,11 +28,14 @@ void Elevator::Update()
 {
 	if (IsObjectBootConditions() == true)
 	{
-		if (g_pad[0]->IsTrigger(enButtonB))
+		if (g_pad[0]->IsTrigger(enButtonB) 
+			&& m_game->GetGameInState() == Game::en_gameUpdate)
 		{
 			m_game->PlayerGameClear();
 		}
 	}
+
+	UpdateBootData();
 
 	m_mainModel.Update();
 }

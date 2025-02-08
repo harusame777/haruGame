@@ -20,6 +20,9 @@ class Title;
 class Gameover;
 class Result;
 class GameSound;
+class GameEffect;
+class GameWindow;
+class GameInformation;
 
 //定数等
 namespace {
@@ -51,7 +54,9 @@ public:
 
 		en_gameResultGameOver,
 
-		en_gameResult
+		en_gameResult,
+
+		en_gameTutorial
 	};
 
 	void PlayerGameClear()
@@ -68,6 +73,8 @@ public:
 	{
 		return m_gameInState;
 	}
+
+	bool IsNowGameUpdate() const;
 
 private:
 	GameOutState m_gameOutState = GameOutState::en_gameTitle;
@@ -174,6 +181,10 @@ private:
 	/// </summary>
 	bool m_isGameMainObjectLoadEnd = false;
 	/// <summary>
+	/// チュートリアルが終了しているかどうか
+	/// </summary>
+	bool m_isGameMainTutorialEnd = false;
+	/// <summary>
 	/// ロード画面
 	/// </summary>
 	Load* m_load = nullptr;
@@ -181,5 +192,13 @@ private:
 	/// ゲームサウンド
 	/// </summary>
 	GameSound* m_gameSound = nullptr;
+	/// <summary>
+	/// ゲームウィンドウ
+	/// </summary>
+	GameWindow* m_gameWindow = nullptr;
+	/// <summary>
+	/// ゲームインフォメーション
+	/// </summary>
+	GameInformation* m_gameInformation = nullptr;
 };
 

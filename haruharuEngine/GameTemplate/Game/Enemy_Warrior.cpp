@@ -18,7 +18,6 @@ namespace {
 //コンストラクタ
 Enemy_Warrior::Enemy_Warrior()
 {
-
 }
 
 //デストラクタ
@@ -55,7 +54,7 @@ bool Enemy_Warrior::Start()
 	m_gameSound = FindGO<GameSound>("gameSound");
 
 	//シャドウマップに描画するようにする
-	m_modelRender.SetShadowChasterFlag(false);
+	m_modelRender.SetShadowChasterFlag(true);
 
 	m_player = FindGO<Player>("player");
 
@@ -119,17 +118,19 @@ void Enemy_Warrior::OnAnimationEvent(const wchar_t* clipName, const wchar_t* eve
 		}
 
 		// 線形補間（ここでは t がそのまま最終値）
-		float finalValue = t;
+		float finalValue = pow(t, m_valumePowCalcValue);
 
-		m_gameSound->LocalSoundOrder(
-			GameSound::en_enemyWarriorWalkSound,
-			false,
-			finalValue
-		);
+		if (m_footStepsFlag == true)
+		{
+			m_gameSound->LocalSoundOrder(
+				GameSound::en_enemyWarriorWalkSound,
+				false,
+				finalValue
+			);
+		}
 	}
 	else if (wcscmp(eventName, L"AttackImpact") == 0)
 	{
-
 		m_gameSound->LocalSoundOrder(GameSound::en_killSound, false, 1.0f);
 
 		SetAttackImpact(true);

@@ -1,12 +1,15 @@
 #pragma once
 
 #include "graphics/light/SceneLight.h"
+#include "graphics/Render/ShadowMapRender.h"
 
 namespace nsK2EngineLow {
+	class ShadowMapModelRender;
+
 	/// <summary>
 	/// モデルを描画するためのヤツ
 	/// </summary>
-	class ModelRender : public IRenderer{
+	class ModelRender : public IRenderer, public ShadowMapRender{
 	public:
 		/// <summary>
 		/// コンストラクタ
@@ -24,12 +27,16 @@ namespace nsK2EngineLow {
 			en_crystalShader
 		};
 
-		struct ShadowLightData
+		
+		Light* m_light;
+
+		struct ShadowMapParam
 		{
-		public:
-			Light m_light;
-			Matrix m_mt;
+			Matrix mLVP;
+			Vector3 ligPos;
 		};
+
+		ShadowMapParam shadowparam;
 
 		/// <summary>
 		/// 初期化処理
@@ -149,7 +156,7 @@ namespace nsK2EngineLow {
 		void OnRenderModel(RenderContext& rc) override;
 
 		//シャドウマップへの描画パスから呼ばれる処理
-		void OnRenderShadowMap(RenderContext& rc, const Matrix& lvpMatrix) override;
+		void OnRenderShadowMap(RenderContext& rc) override;
 
 		//G-Buffer描画パスから呼ばれる処理
 		void OnRenderToGBuffer(RenderContext& rc) override;
@@ -160,7 +167,8 @@ namespace nsK2EngineLow {
 			m_isShadowChaster = flag;
 		}
 
-	private:
+
+	protected:
 		//モデルレンダーに設定されているモデル
 		Model m_model;
 		//モデルレンダーに設定されているスケルトン
@@ -180,12 +188,10 @@ namespace nsK2EngineLow {
 		Quaternion m_rotation = Quaternion::Identity;
 		//モデルレンダーに設定されているモデルの大きさ
 		Vector3 m_scale = Vector3::One;
+
+		Model m_shadowMapModel;
 		
-		Model m_shadowModel;
-
 		Model m_gBufferModel;
-
-		ShadowLightData m_shadowLigData;
 
 		//影を落とすか管理するフラグ
 		bool m_isShadowChaster = true;		

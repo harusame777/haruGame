@@ -1,5 +1,6 @@
 #include "k2EngineLowPreCompile.h"
 #include "ModelRender.h"
+#include "graphics/Render/ShadowMapRender.h"
 
 namespace nsK2EngineLow {
 
@@ -86,62 +87,25 @@ namespace nsK2EngineLow {
 
 			break;
 		case ModelRender::en_shadowShader:
-			initData.m_fxFilePath = "Assets/shader/haruharuShadowReceiverModel.fx";
+			initData.m_fxFilePath = "Assets/shader/haruharuDeaphShadowReceiverModel.fx";
 
-			lightCamera.SetAspectOneFlag(true);
-
-			lightCamera.SetViewAngle(Math::DegToRad(80.0f));
-
-			//カメラの位置を設定
-			lightCamera.SetPosition(-2000.0f, 2000.0f, 2000.0f);
-
-			// カメラの注視点を設定。これがライトが照らしている場所
-			lightCamera.SetTarget(0, 0, 0);
-
-			// 上方向を設定。今回はライトが真下を向いているので、X方向を上にしている
-			//lightCamera.SetUp(1, 0, 0);
-
-			//ライトビュープロジェクション行列を計算している
-			lightCamera.Update();
-
-			m_shadowLigData.m_light = *g_sceneLight->GetLightData();
-			m_shadowLigData.m_mt = lightCamera.GetViewProjectionMatrix();
-
-			initData.m_expandConstantBuffer = &m_shadowLigData;
-			initData.m_expandConstantBufferSize = sizeof(m_shadowLigData);
+			initData.m_expandConstantBuffer = g_sceneLight->GetLightData();
+			initData.m_expandConstantBufferSize = sizeof(Light);
 
 			//シャドウマップを拡張SRVに設定する
-			initData.m_expandShaderResoruceView[0] = &(g_renderingEngine
-				->GetShadowMapRenderTarget()->GetRenderTargetTexture());
+			initData.m_expandShaderResoruceView[0] = &g_renderingEngine
+				->GetShadowMapRenderBokeTexture();
+
 			break;
 		case ModelRender::en_crystalShader:
 			initData.m_fxFilePath = "Assets/shader/haruharuCrystalModel.fx";
 
-			lightCamera.SetAspectOneFlag(true);
-
-			lightCamera.SetViewAngle(Math::DegToRad(80.0f));
-
-			//カメラの位置を設定
-			lightCamera.SetPosition(-2000.0f, 2000.0f, 2000.0f);
-
-			// カメラの注視点を設定。これがライトが照らしている場所
-			lightCamera.SetTarget(0, 0, 0);
-
-			// 上方向を設定。今回はライトが真下を向いているので、X方向を上にしている
-			//lightCamera.SetUp(1, 0, 0);
-
-			//ライトビュープロジェクション行列を計算している
-			lightCamera.Update();
-
-			m_shadowLigData.m_light = *g_sceneLight->GetLightData();
-			m_shadowLigData.m_mt = lightCamera.GetViewProjectionMatrix();
-
-			initData.m_expandConstantBuffer = &m_shadowLigData;
-			initData.m_expandConstantBufferSize = sizeof(m_shadowLigData);
+			initData.m_expandConstantBuffer = g_sceneLight->GetLightData();
+			initData.m_expandConstantBufferSize = sizeof(Light);
 
 			//シャドウマップを拡張SRVに設定する
 			initData.m_expandShaderResoruceView[0] = &(g_renderingEngine
-				->GetShadowMapRenderTarget()->GetRenderTargetTexture());
+				->GetShadowMapRenderTarget()->GetRenderTargetTexture());			
 			break;
 		}
 
@@ -167,6 +131,47 @@ namespace nsK2EngineLow {
 	//シャドウマップに表示するモデルの作成
 	void ModelRender::InitShadowModel(const char* tkmFilePath, EnModelUpAxis modelUpAxis)
 	{
+		////スケルトンのデータを読み込み。
+		//std::string skeletonFilePath = tkmFilePath;
+		//int pos = (int)skeletonFilePath.find(".tkm");
+		//skeletonFilePath.replace(pos, 4, ".tks");
+		//m_skeleton.Init(skeletonFilePath.c_str());
+
+		//ModelInitData initData;
+		//initData.m_tkmFilePath = tkmFilePath;
+		//initData.m_modelUpAxis = modelUpAxis;
+
+		//if (m_animationClips != nullptr)
+		//{
+		//	//スケルトン指定
+		//	////initData.m_skeleton = &m_skeleton;
+		//}
+
+		//initData.m_fxFilePath = "Assets/shader/haruharuDrawDeaphShadowMap.fx";
+
+		//ShadowMapParam shadowMapParam;
+		//shadowMapParam.mLVP = m_light.m_directionalLight[0].GetLightVP();
+		//shadowMapParam.ligPos = m_light.m_directionalLight[0].GetVPCamPosition();
+
+		//initData.m_expandConstantBuffer = (void*)&shadowMapParam;
+		//initData.m_expandConstantBufferSize = sizeof(shadowMapParam);
+
+		//initData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32_FLOAT;/*デプスシャドウ用の設定*/
+
+		////ノンスキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
+		//initData.m_vsEntryPointFunc = "VSMain";
+		////スキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
+		//initData.m_vsSkinEntryPointFunc = "VSSkinMain";
+
+		//m_shadowMapModel.Init(initData);
+
+		//m_shadowMapModel.UpdateWorldMatrix(
+		//	m_position,
+		//	m_rotation,
+		//	m_scale
+		//);
+
+
 		ModelInitData initData;
 		initData.m_tkmFilePath = tkmFilePath;
 		initData.m_modelUpAxis = modelUpAxis;
@@ -182,16 +187,19 @@ namespace nsK2EngineLow {
 			initData.m_skeleton = &m_skeleton;
 		}
 
-		initData.m_fxFilePath = "Assets/shader/haruharuDrawShadowMap.fx";
+		initData.m_fxFilePath = "Assets/shader/haruharuDrawDeaphShadowMap.fx";
+			
+		initData.m_expandConstantBuffer = g_sceneLight->GetLightData();
+		initData.m_expandConstantBufferSize = sizeof(Light);
 
-		//initData.m_colorBufferFormat[0] = DXGI_FORMAT_R32_FLOAT;デプスシャドウ用の設定
+		initData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32_FLOAT;
 
 		//ノンスキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
 		initData.m_vsEntryPointFunc = "VSMain";
 		//スキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
 		initData.m_vsSkinEntryPointFunc = "VSSkinMain";
 
-		m_shadowModel.Init(initData);
+		m_shadowMapModel.Init(initData);
 	}
 
 	//スケルトンの登録処理
@@ -225,11 +233,13 @@ namespace nsK2EngineLow {
 	//モデルレンダーの更新処理
 	void ModelRender::Update()
 	{
-		m_shadowLigData.m_light = *g_sceneLight->GetLightData();
 		//ワールド行列更新
 		m_model.UpdateWorldMatrix(m_position,m_rotation, m_scale);
 
-		m_shadowModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+		m_shadowMapModel.UpdateWorldMatrix(m_position, m_rotation, m_scale);
+
+		//shadowparam.ligPos = m_light.m_directionalLight[0].GetVPCamPosition();
+		//shadowparam.mLVP = m_light.m_directionalLight[0].GetLightVP();
 
 		//スケルトンが初期化済みの場合、スケルトンの更新
 		if (m_skeleton.IsInited())
@@ -263,16 +273,25 @@ namespace nsK2EngineLow {
 	}
 
 	//影の描画処理
-	void ModelRender::OnRenderShadowMap(RenderContext& rc, const Matrix& lvpMatrix)
+	void ModelRender::OnRenderShadowMap(RenderContext& rc)
 	{
 		if (m_isShadowChaster)
 		{
-			m_shadowModel.Draw(
-				rc,
-				g_matIdentity,
-				lvpMatrix,
-				1
-			);
+			for(auto& dirLigPtr : g_sceneLight->m_light.m_directionalLight)
+			{
+				if (dirLigPtr.GetUse() == false)
+				{
+					continue;
+				}
+
+				m_shadowMapModel.Draw(
+					rc,
+					g_matIdentity,
+					dirLigPtr.GetLightVP(),
+					1
+				);
+			}
+
 		}
 	}
 }

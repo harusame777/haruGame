@@ -17,6 +17,12 @@ struct DirectionLight
     float3 direction;
 	//ライトのカラー
     float3 color;
+    //使用中かどうか
+    int isUse;
+    //
+    float4x4 mLVP;
+    //
+    float3 ligPos;
 };
 
 //ポイントライト

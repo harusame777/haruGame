@@ -105,6 +105,10 @@ void EnemySM_Warrior::EnemyAIUpdate()
 	//時間更新
 	TimeUpdate();
 
+	//足音を調整
+	m_warriorMetaAI->MetaAIExecution(this, EnemyAIMetaWarrior::mode_footStep);
+
+
 	switch (m_warriorState)
 	{
 		//待機ステート
@@ -246,17 +250,17 @@ void EnemySM_Warrior::ChangeState()
 	}
 
 
-	//もし追跡ステートじゃなくて
-	if (m_warriorState != WarriorState::en_warrior_tracking)
-	{
-		//視界内にプレイヤーがいて尚且つプレイヤーとの間に壁が無かったら
-		if (m_enemyConList[en_enemyAIConSearch]->Execution())
-		{
-			m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_patrolRouteSet, this);
+	////もし追跡ステートじゃなくて
+	//if (m_warriorState != WarriorState::en_warrior_tracking)
+	//{
+	//	//視界内にプレイヤーがいて尚且つプレイヤーとの間に壁が無かったら
+	//	if (m_enemyConList[en_enemyAIConSearch]->Execution())
+	//	{
+	//		m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_patrolRouteSet, this);
 
-			StateTransition_Tracking();
-		}
-	}
+	//		StateTransition_Tracking();
+	//	}
+	//}
 }
 
 void EnemySM_Warrior::StateTransition_Tracking()

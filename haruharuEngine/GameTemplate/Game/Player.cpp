@@ -60,7 +60,8 @@ void Player::Update()
 //ˆÚ“®ŠÖ”
 void Player::Move()
 {
-	if (m_game->GetGameInState() == Game::en_gameOver)
+
+	if (m_game->IsNowGameUpdate() == false)
 	{
 		return;
 	}

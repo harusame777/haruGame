@@ -14,6 +14,7 @@
 #include "Elevator.h"
 #include "Accessories.h"
 #include "ManagerCrystal.h"
+#include "PlayerInteractableUi.h"
 #include "PlayerScanCrystalUi.h"
 #include "PlayerScoreUi.h"
 #include "PlayerStaminaUi.h"
@@ -22,15 +23,26 @@
 #include "Title.h"
 #include "Result.h"
 #include "Gameover.h"
-#include "Window.h"
+#include "GameInformation.h"
+#include "GameInformation.h"
 #include "GameSound.h"
+#include "GameEffect.h"
 
 
 bool Game::Start()
 {
 	InitDirctionaLight();
 
+	NewGO<GameInformation>(2, "gameInformation");
+
 	m_gameSound = NewGO<GameSound>(2, "gameSound");
+
+	NewGO<GameEffect>(0, "gameEffect");
+
+
+	m_gameWindow = NewGO<GameWindow>(1, "gameWindow");
+
+	m_gameInformation = NewGO<GameInformation>(2, "gameInformation");
 
 	m_load = NewGO<Load>(1, "load");
 
@@ -49,8 +61,32 @@ void Game::Update()
 	else
 	{
 		DoInGame();
+
+		sunDirectionalLight.SetColor(1.0f, 1.0f, 1.0f);
+		sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
+		sunDirectionalLight.LightDirectionNormalize();
+		sunDirectionalLight.CastShadow();
+		sunDirectionalLight.VPCamSetRotation(80.0f);
+		//sunDirectionalLight.VPCamSetPosition({ -10.0, 2000, 0.0 });
+
+		Vector3 camPos = m_player->GetPosition();
+
+		camPos += { -2000.0, 2000, 2000.0 };
+
+		sunDirectionalLight.VPCamSetPosition(camPos);
+		sunDirectionalLight.VPCamSetTarget(m_player->GetPosition());
+		sunDirectionalLight.VPCamUpdate();
 	}
 
+	//if (g_pad[0]->IsTrigger(enButtonX))
+	//{
+	//	m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_stop);
+	//}
+
+	//if (g_pad[0]->IsTrigger(enButtonY))
+	//{
+	//	m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
+	//}
 }
 
 void Game::DoInGame()
@@ -61,6 +97,14 @@ void Game::DoInGame()
 	case Game::en_gameUpdate:
 
 		TimerProcess();
+
+		if (m_isGameMainTutorialEnd == false &&
+			m_load->IsLoadCompletion() == true)
+		{
+
+			m_gameInState = GameInState::en_gameTutorial;
+
+		}
 
 		break;
 	case Game::en_gameClear:
@@ -123,6 +167,32 @@ void Game::DoInGame()
 		}
 
 		break;
+	case Game::en_gameTutorial:
+
+		if (m_isGameMainTutorialEnd == false &&
+			m_gameInformation->IsInformationNow() == false)
+		{
+			m_gameInformation->InitTextData(L"Operational Guidelines");
+			m_gameInformation->InitTextData(L"Collect as many crystals as possible.");
+			m_gameInformation->InitTextData(L"Monitor the oxygen level displayed in the top right");
+			m_gameInformation->InitTextData(L"corner, and ensure you escape before it is depleted.");
+			m_gameInformation->InitTextData(L"Beware of the creatures roaming inside.");
+			m_gameInformation->InitTextData(L"Make full use of the scan function, available with");
+			m_gameInformation->InitTextData(L"the RT button,to collect more crystals.");
+
+			m_gameInformation->GoInformation();
+		}
+
+		if (m_gameInformation->IsInformationCloseing() == true)
+		{
+			m_isGameMainTutorialEnd = true;
+
+			m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
+
+			m_gameInState = GameInState::en_gameUpdate;
+		}
+
+		break;
 	default:
 		break;
 	}
@@ -131,6 +201,11 @@ void Game::DoInGame()
 
 void Game::TimerProcess()
 {
+
+	if (IsNowGameUpdate() == false)
+	{
+		return;
+	}
 
 	m_timerIndex -= g_gameTime->GetFrameDeltaTime();
 
@@ -215,59 +290,23 @@ void Game::DoOutGame()
 
 void Game::OutGameLoadProcess()
 {
-	//ÉGÉlÉ~Å[ÉEÉHÉäÉAÅ[ÇÃÉÅÉ^AI
+	//„Ç®„Éç„Éü„Éº„Ç¶„Ç©„É™„Ç¢„Éº„ÅÆ„É°„ÇøAI
 	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");
 
 	m_GetCOMSprite = NewGO<CrystalGetCommandSprite>(0, "comSprite");
 
-	////ÉNÉäÉXÉ^ÉãÇÃÉÅÉ^AI
+	////„ÇØ„É™„Çπ„Çø„É´„ÅÆ„É°„ÇøAI
 	m_managerCrystal = NewGO<ManagerCrystal>(0, "CrystalMetaAI");
 
 	LevelRender levelRender;
 
-	//ÉåÉxÉãÉåÉìÉ_Å[ÇÃÉeÉXÉg
-	levelRender.Init("Assets/mapLevel/testLevel6.tkl", [&](LevelObjectData_Render& objData)
+	//„É¨„Éô„É´„É¨„É≥„ÉÄ„Éº„ÅÆ„ÉÜ„Çπ„Éà
+	levelRender.Init("Assets/mapLevel/testLevel7.tkl", [&](LevelObjectData_Render& objData)
 		{
-			if (objData.ForwardMatchName(L"laboWall_1-4Model") == true)
+			if (objData.ForwardMatchName(L"wallOnes") == true)
 			{
 				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallType1_4);
-				walls->SetPosition(objData.m_position);
-				walls->SetRotation(objData.m_rotation);
-				walls->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"laboWall_2-4Model") == true)
-			{
-				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallType2_4);
-				walls->SetPosition(objData.m_position);
-				walls->SetRotation(objData.m_rotation);
-				walls->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"laboWall_4-4Model") == true)
-			{
-				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallType4_4);
-				walls->SetPosition(objData.m_position);
-				walls->SetRotation(objData.m_rotation);
-				walls->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"laboWall_4-6Model") == true)
-			{
-				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallType4_6);
-				walls->SetPosition(objData.m_position);
-				walls->SetRotation(objData.m_rotation);
-				walls->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"laboDoorWay_4-4Model") == true)
-			{
-				BackGroundWalls* walls = NewGO<BackGroundWalls>(0, "background");
-				walls->SetWallType(BackGroundWalls::en_wallTypeDoorWay4_4);
+				walls->SetWallType(BackGroundWalls::en_wallOnes);
 				walls->SetPosition(objData.m_position);
 				walls->SetRotation(objData.m_rotation);
 				walls->SetScale(objData.m_scalse);
@@ -281,13 +320,13 @@ void Game::OutGameLoadProcess()
 				floor->SetScale(objData.m_scalse);
 				return true;
 			}
-			else if (objData.ForwardMatchName(L"laboCeiling_MainModel") == true)
-			{
-				BackGroundCeiling* ceiling = NewGO<BackGroundCeiling>(0, "background");
-				ceiling->SetPosition(objData.m_position);
-				ceiling->SetRotation(objData.m_rotation);
-				ceiling->SetScale(objData.m_scalse);
-			}
+			//else if (objData.ForwardMatchName(L"laboCeiling_MainModel") == true)
+			//{
+			//	BackGroundCeiling* ceiling = NewGO<BackGroundCeiling>(0, "background");
+			//	ceiling->SetPosition(objData.m_position);
+			//	ceiling->SetRotation(objData.m_rotation);
+			//	ceiling->SetScale(objData.m_scalse);
+			//}
 			else if (objData.ForwardMatchName(L"youtai") == true)
 			{
 				Enemy_Warrior* enemy_warrior = NewGO<Enemy_Warrior>(0, "enemy");
@@ -319,7 +358,8 @@ void Game::OutGameLoadProcess()
 		});
 
 	m_player = NewGO<Player>(0, "player");
-	//UIÇÃèâä˙âª
+	//UI„ÅÆÂàùÊúüÂåñ
+	PlayerInteractableUi* m_interactableUi = NewGO<PlayerInteractableUi>(0,"InteractableUi");
 	PlayerScanCrystalUi* m_scanUi = NewGO<PlayerScanCrystalUi>(0, "ScanUI");
 	PlayerScoreUi* m_scoreUi = NewGO<PlayerScoreUi>(0, "ScoreUI");
 	m_scoreUi->InitMainScorePtr(m_scoreNum);
@@ -340,6 +380,16 @@ void Game::InitDirctionaLight()
 	sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
 	sunDirectionalLight.LightDirectionNormalize();
 	sunDirectionalLight.CastShadow();
+	sunDirectionalLight.VPCamSetRotation(80.0f);
+	//sunDirectionalLight.VPCamSetPosition({ -10.0, 2000, 0.0 });
+
+	//Vector3 camPos = m_player->GetPosition();
+
+	//camPos += { -2000.0, 2000, 2000.0 };
+
+	sunDirectionalLight.VPCamSetPosition({ -2000.0, 2000, 2000.0 });
+	sunDirectionalLight.VPCamSetTarget({0.0,0.0,0.0});
+	sunDirectionalLight.VPCamUpdate();
 }
 
 //QueryGOs<IEnemy>("summonenemy", [&](IEnemy* ienemy) {
@@ -349,17 +399,17 @@ void Game::InitDirctionaLight()
 
 void Game::OutGameObjectDeleteProcces()
 {
-	//ï«è¡ãé
+	//Â£ÅÊ∂àÂéª
 	QueryGOs<BackGroundWalls>("background", [&](BackGroundWalls* backGround) {
 			DeleteGO(backGround);
 			return true;
 		});
-	//è∞è¡ãé
+	//Â∫äÊ∂àÂéª
 	QueryGOs<BackGroundFloor>("background", [&](BackGroundFloor* backGround) {
 		DeleteGO(backGround);
 		return true;
 		});
-	//ìVà‰
+	//Â§©‰∫ï
 	QueryGOs<BackGroundCeiling>("background", [&](BackGroundCeiling* backGround) {
 		DeleteGO(backGround);
 		return true;
@@ -412,4 +462,24 @@ void Game::OutGameObjectDeleteProcces()
 	DeleteGO(m_mainCamera);
 
 	m_isGameMainObjectLoadEnd = false;
+}
+
+bool Game::IsNowGameUpdate() const
+{
+	if (m_isGameMainTutorialEnd == false)
+	{
+		return false;
+	}
+
+	if (m_load->IsLoadCompletion() == false)
+	{
+		return false;
+	}
+
+	if (m_gameInState != GameInState::en_gameUpdate)
+	{
+		return false;
+	}
+
+	return true;
 }
