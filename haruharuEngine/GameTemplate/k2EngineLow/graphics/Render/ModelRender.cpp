@@ -95,9 +95,11 @@ namespace nsK2EngineLow {
 			initData.m_expandConstantBufferSize = sizeof(m_light);
 
 			//シャドウマップを拡張SRVに設定する
-			initData.m_expandShaderResoruceView[0] = &g_renderingEngine
-				->GetShadowMapRenderBokeTexture();
-
+			for (int No = 0; No < NUM_SHADOW_MAP; No++)
+			{
+				initData.m_expandShaderResoruceView[0] = &g_renderingEngine
+					->GetShadowMapRenderBokeTexture(No);
+			}
 			break;
 		case ModelRender::en_crystalShader:
 			initData.m_fxFilePath = "Assets/shader/haruharuCrystalModel.fx";
@@ -107,7 +109,7 @@ namespace nsK2EngineLow {
 
 			//シャドウマップを拡張SRVに設定する
 			initData.m_expandShaderResoruceView[0] = &(g_renderingEngine
-				->GetShadowMapRenderTarget()->GetRenderTargetTexture());			
+				->GetShadowMapRenderTarget(0)->GetRenderTargetTexture());			
 			break;
 		}
 
@@ -133,47 +135,6 @@ namespace nsK2EngineLow {
 	//シャドウマップに表示するモデルの作成
 	void ModelRender::InitShadowModel(const char* tkmFilePath, EnModelUpAxis modelUpAxis)
 	{
-		////スケルトンのデータを読み込み。
-		//std::string skeletonFilePath = tkmFilePath;
-		//int pos = (int)skeletonFilePath.find(".tkm");
-		//skeletonFilePath.replace(pos, 4, ".tks");
-		//m_skeleton.Init(skeletonFilePath.c_str());
-
-		//ModelInitData initData;
-		//initData.m_tkmFilePath = tkmFilePath;
-		//initData.m_modelUpAxis = modelUpAxis;
-
-		//if (m_animationClips != nullptr)
-		//{
-		//	//スケルトン指定
-		//	////initData.m_skeleton = &m_skeleton;
-		//}
-
-		//initData.m_fxFilePath = "Assets/shader/haruharuDrawDeaphShadowMap.fx";
-
-		//ShadowMapParam shadowMapParam;
-		//shadowMapParam.mLVP = m_light.m_directionalLight[0].GetLightVP();
-		//shadowMapParam.ligPos = m_light.m_directionalLight[0].GetVPCamPosition();
-
-		//initData.m_expandConstantBuffer = (void*)&shadowMapParam;
-		//initData.m_expandConstantBufferSize = sizeof(shadowMapParam);
-
-		//initData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32_FLOAT;/*デプスシャドウ用の設定*/
-
-		////ノンスキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
-		//initData.m_vsEntryPointFunc = "VSMain";
-		////スキンメッシュ用の頂点シェーダーのエントリーポイントを指定する
-		//initData.m_vsSkinEntryPointFunc = "VSSkinMain";
-
-		//m_shadowMapModel.Init(initData);
-
-		//m_shadowMapModel.UpdateWorldMatrix(
-		//	m_position,
-		//	m_rotation,
-		//	m_scale
-		//);
-
-
 		ModelInitData initData;
 		initData.m_tkmFilePath = tkmFilePath;
 		initData.m_modelUpAxis = modelUpAxis;

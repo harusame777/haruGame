@@ -325,7 +325,7 @@ void Game::OutGameLoadProcess()
 
 void Game::InitDirctionaLight()
 {
-	sunDirectionalLight.SetColor(1.0f, 1.0f, 1.0f);
+	sunDirectionalLight.SetColor(0.5f, 0.5f, 0.5f);
 	sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
 	sunDirectionalLight.LightDirectionNormalize();
 	sunDirectionalLight.CastShadow();

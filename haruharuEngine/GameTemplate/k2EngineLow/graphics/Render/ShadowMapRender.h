@@ -2,6 +2,13 @@
 #include "graphics/GaussianBlur.h"
 
 namespace nsK2EngineLow {
+
+	namespace {
+
+		static const int NUM_SHADOW_MAP = 3;
+
+	}
+
 	class IRenderer;
 
 	class ShadowMapRender : Noncopyable
@@ -17,14 +24,14 @@ namespace nsK2EngineLow {
 			std::vector<IRenderer*>& renderObjects
 		);
 
-		RenderTarget* GetShadowMapRenderTarget()
+		RenderTarget* GetShadowMapRenderTarget(const int listNum)
 		{
-			return &m_shadowMap;
+			return &m_shadowMap[listNum];
 		}
 
-		Texture& GetShadowMapBokeTexture()
+		Texture& GetShadowMapBokeTexture(const int listNum)
 		{
-			return m_shadowMapModelGaussianBlur.GetBokeTexture();
+			return m_shadowMapModelGaussianBlur[listNum].GetBokeTexture();
 		}
 
 		void ShadouMapBlurExecute(RenderContext& rc)
@@ -34,9 +41,15 @@ namespace nsK2EngineLow {
 
 	protected:
 		//レンダリングターゲット(影)
-		RenderTarget m_shadowMap;
+		RenderTarget m_shadowMap[NUM_SHADOW_MAP];
 		//ガウシアンブラー
-		GaussianBlur m_shadowMapModelGaussianBlur;
+		GaussianBlur m_shadowMapModelGaussianBlur[NUM_SHADOW_MAP];
+		//分割エリア最大深度値
+		float cascadeAreaTbl[NUM_SHADOW_MAP] = {
+			500,
+			2000,
+			g_camera3D->GetFar(),
+		};
 	};
 }
 

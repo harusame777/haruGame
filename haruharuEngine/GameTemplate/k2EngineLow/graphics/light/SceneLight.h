@@ -6,6 +6,13 @@ namespace nsK2EngineLow {
 	static const int MAX_POINT_LIGHT = 32;
 	static const int MAX_SPOT_LIGHT = 32;
 
+	//分割エリア最大深度値
+	float cascadeAreaTbl[NUM_SHADOW_MAP] = {
+		500,
+		2000,
+		g_camera3D->GetFar(),
+	};
+
 	//ディレクションライトの構造体
 	struct SDirectionLight
 	{
@@ -307,7 +314,8 @@ namespace nsK2EngineLow {
 		Vector3 pad;
 		//使用中のディレクションライトの数
 		int m_numDirectionLight;
-		//ディレクションライトのビュープロジェクション
+		//分割エリアのビュープロジェクション
+		Matrix m_lvpcMatrix[NUM_SHADOW_MAP];
 	};
 
 	//シーンライトクラス
@@ -367,7 +375,6 @@ namespace nsK2EngineLow {
 			return &m_light;
 		}
 
-	private:
 		//シーンライト
 		Light m_light;
 	};
