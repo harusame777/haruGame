@@ -61,8 +61,22 @@ void Game::Update()
 	else
 	{
 		DoInGame();
-	}
 
+		sunDirectionalLight.SetColor(1.0f, 1.0f, 1.0f);
+		sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
+		sunDirectionalLight.LightDirectionNormalize();
+		sunDirectionalLight.CastShadow();
+		sunDirectionalLight.VPCamSetRotation(80.0f);
+		//sunDirectionalLight.VPCamSetPosition({ -10.0, 2000, 0.0 });
+
+		Vector3 camPos = m_player->GetPosition();
+
+		camPos += { -2000.0, 2000, 2000.0 };
+
+		sunDirectionalLight.VPCamSetPosition(camPos);
+		sunDirectionalLight.VPCamSetTarget(m_player->GetPosition());
+		sunDirectionalLight.VPCamUpdate();
+	}
 
 	//if (g_pad[0]->IsTrigger(enButtonX))
 	//{
@@ -158,10 +172,13 @@ void Game::DoInGame()
 		if (m_isGameMainTutorialEnd == false &&
 			m_gameInformation->IsInformationNow() == false)
 		{
-			m_gameInformation->InitTextData(L"Hello!world!");
-			//m_gameInformation->InitTextData(L"Hello!world!Hello!world!Hello!world!");
-			//m_gameInformation->InitTextData(L"Hello!world!Hello!world!Hello!world!");
-			//m_gameInformation->InitTextData(L"Hello!world!Hello!world!Hello!world!");
+			m_gameInformation->InitTextData(L"Operational Guidelines");
+			m_gameInformation->InitTextData(L"Collect as many crystals as possible.");
+			m_gameInformation->InitTextData(L"Monitor the oxygen level displayed in the top right");
+			m_gameInformation->InitTextData(L"corner, and ensure you escape before it is depleted.");
+			m_gameInformation->InitTextData(L"Beware of the creatures roaming inside.");
+			m_gameInformation->InitTextData(L"Make full use of the scan function, available with");
+			m_gameInformation->InitTextData(L"the RT button,to collect more crystals.");
 
 			m_gameInformation->GoInformation();
 		}
@@ -365,8 +382,13 @@ void Game::InitDirctionaLight()
 	sunDirectionalLight.CastShadow();
 	sunDirectionalLight.VPCamSetRotation(80.0f);
 	//sunDirectionalLight.VPCamSetPosition({ -10.0, 2000, 0.0 });
+
+	//Vector3 camPos = m_player->GetPosition();
+
+	//camPos += { -2000.0, 2000, 2000.0 };
+
 	sunDirectionalLight.VPCamSetPosition({ -2000.0, 2000, 2000.0 });
-	sunDirectionalLight.VPCamSetTarget({ 0.0f, 0.0f, 0.0f });
+	sunDirectionalLight.VPCamSetTarget({0.0,0.0,0.0});
 	sunDirectionalLight.VPCamUpdate();
 }
 

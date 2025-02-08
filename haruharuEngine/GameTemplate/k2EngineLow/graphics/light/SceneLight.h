@@ -367,7 +367,6 @@ namespace nsK2EngineLow {
 			return &m_light;
 		}
 
-	private:
 		//シーンライト
 		Light m_light;
 	};

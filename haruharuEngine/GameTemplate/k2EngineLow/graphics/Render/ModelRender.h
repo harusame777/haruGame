@@ -28,7 +28,7 @@ namespace nsK2EngineLow {
 		};
 
 		
-		Light m_light;
+		Light* m_light;
 
 		struct ShadowMapParam
 		{
