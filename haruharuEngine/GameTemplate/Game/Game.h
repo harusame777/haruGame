@@ -27,7 +27,7 @@ class GameInformation;
 //定数等
 namespace {
 
-	static const float MAX_GAMETIME = 300.0f;
+	static const float MAX_GAMETIME = 10.0f;
 
 }
 
@@ -50,7 +50,9 @@ public:
 
 		en_gameClear,
 
-		en_gameOver,
+		en_gameOverEnemy,
+
+		en_gameOverOxygen,
 
 		en_gameResultGameOver,
 
@@ -66,7 +68,7 @@ public:
 
 	void PlayerGameOver()
 	{
-		m_gameInState = GameInState::en_gameOver;
+		m_gameInState = GameInState::en_gameOverEnemy;
 	}
 
 	const int& GetGameInState() const 

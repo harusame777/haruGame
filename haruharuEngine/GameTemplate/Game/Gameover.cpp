@@ -68,11 +68,21 @@ void Gameover::GameoverStateUpdate()
 	case Gameover::en_standby:
 		break;
 	case Gameover::en_cameraEasing:
+
+		//ゲームオーバー初期設定ステートが時間切れステートなら
+		if (m_gameoverInitState == Gameover::en_initKillOxygen)
+		{
+			SetFadeOutFlag(true);
+
+			//カメラ設定はしない
+			m_gameoverState = Gameover::en_enemyAnimation;
+
+			return;
+		}
 		
 		cameraToEnemyVec = m_attackEnemy->GetPosition() 
 			- g_camera3D->GetPosition();
 			 
-
 		cameraToEnemyVec.Normalize();
 
 		cameraToEnemyVec.x *= 50.0f;
@@ -93,7 +103,18 @@ void Gameover::GameoverStateUpdate()
 		break;
 	case Gameover::en_enemyAnimation:
 
-		if (m_attackEnemy->GetAnimationEnd() == true)
+		if (m_gameoverInitState == GameoverInitState::en_initKillOxygen &&
+			m_load->IsLoadBlackout())
+		{
+			SetKillEndFlag(true);
+
+			BackSideSpriteDraw(true);
+
+			m_gameoverState = GameoverState::en_gameoverDraw;
+		}
+
+		if (m_gameoverInitState == GameoverInitState::en_initKillEnemy &&
+			m_attackEnemy->GetAnimationEnd() == true)
 		{
 			SetKillEndFlag(true);
 
