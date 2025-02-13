@@ -7,6 +7,7 @@
 static const int NUM_DIRECTIONAL_LIGHT = 4; // ディレクションライトの数
 static const int MAX_POINT_LIGHT = 32; // ポイントライトの最大数
 static const int MAX_SPOT_LIGHT = 32; // スポットライトの最大数
+static const int MAX_SHADOW_MAP = 3;  // シャドウマップの最大数
 
 ////////////////////////////////////////////////
 // ライトの構造体
@@ -88,6 +89,8 @@ cbuffer LightCb : register(b1)
     int m_numSpotLight;
     //使用中のディレクションライトの数
     int m_numDirectionLight;
+    //シャドウマップのビュープロジェクション
+    float4x4 m_shadowVPC[MAX_SHADOW_MAP];
 };
 
 ////////////////////////////////////////////////
@@ -119,7 +122,7 @@ struct SPSIn
     float3 biNormal : BINORMAL; //従ベクトル
     float3 worldPos : TEXCOORD1; //ワールド座標系でのポジション
     float3 normalInView : TEXCOORD2; //カメラ空間の法線
-    float4 posInLVP : TEXCOORD3; //ライトビュースクリーン空間でのピクセルの座標 
+    float4 posInLVP[MAX_SHADOW_MAP] : TEXCOORD3; //ライトビュースクリーン空間でのピクセルの座標 
 };
 
 ////////////////////////////////////////////////
@@ -129,7 +132,9 @@ Texture2D<float4> g_albedo : register(t0); //アルベドマップ
 Texture2D<float4> g_normalMap : register(t1); //法線マップ
 Texture2D<float4> g_speclarMap : register(t2); //スペキュラマップ
 StructuredBuffer<float4x4> g_boneMatrix : register(t3); //ボーン行列。
-Texture2D<float4> g_shadowMap : register(t10); //シャドウマップ  
+Texture2D<float4> g_shadowMap_0 : register(t10); //シャドウマップ  
+Texture2D<float4> g_shadowMap_1 : register(t11); //シャドウマップ 
+Texture2D<float4> g_shadowMap_2 : register(t12); //シャドウマップ  
 sampler g_sampler : register(s0); //サンプラステート。
 
 ////////////////////////////////////////////////
@@ -384,9 +389,11 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
     
     float3 mainLigPos = m_directionalLight[0].ligPos;
     
-    psIn.posInLVP = mul(m_directionalLight[0].mLVP, worldPos);
-     
-    psIn.posInLVP.z = length(worldPos.xyz - mainLigPos) / 10000.0f;
+    for (int listNo = 0; listNo < MAX_SHADOW_MAP; listNo++)
+    {
+        psIn.posInLVP[listNo] = mul(m_shadowVPC[listNo], worldPos);
+        psIn.posInLVP[listNo].z = length(worldPos.xyz - mainLigPos) / 10000.0f;
+    }
                    
     //psIn.posInLVP[0].z = length(worldPos.xyz - m_directionalLight[0].ligPos.xyz) / 1000.0f;
     //psIn.posInLVP[0] = mul(m_directionalLight[0].mLVP, worldPos);
@@ -414,46 +421,55 @@ SPSIn VSSkinMain(SVSIn vsIn)
 float4 PSMain(SPSIn psIn) : SV_Target0
 {
     float4 color = g_albedo.Sample(g_sampler, psIn.uv);
+    Texture2D<float4> shadowMapArray[3];
+    shadowMapArray[0] = g_shadowMap_0;
+    shadowMapArray[1] = g_shadowMap_1;
+    shadowMapArray[2] = g_shadowMap_2;
 
-    // ライトビュースクリーン空間からUV空間に座標変換
-    float2 shadowMapUV = psIn.posInLVP.xy / psIn.posInLVP.w;
-    shadowMapUV *= float2(0.5f, -0.5f);
-    shadowMapUV += 0.5f;
-
-    // ライトビュースクリーン空間でのZ値を計算する
-    float zInLVP = psIn.posInLVP.z;
-
-    if (shadowMapUV.x > 0.0f && shadowMapUV.x < 1.0f
-        && shadowMapUV.y > 0.0f && shadowMapUV.y < 1.0f)
+    for (int cascadeNo = 0; cascadeNo < MAX_SHADOW_MAP; cascadeNo++)
     {
-        // step-13 シャドウレシーバーに影を落とす
-        // シャドウマップから値をサンプリング
-        float2 shadowValue = g_shadowMap.Sample(g_sampler, shadowMapUV).xy;
+        // ライトビュースクリーン空間からUV空間に座標変換
+        float2 shadowMapUV = psIn.posInLVP[cascadeNo].xy / psIn.posInLVP[cascadeNo].w;
+        shadowMapUV *= float2(0.5f, -0.5f);
+        shadowMapUV += 0.5f;
 
-        // まずこのピクセルが遮蔽されているか調べる。これは通常のデプスシャドウと同じ
-        if (zInLVP > shadowValue.r && zInLVP <= 1.0f)
+        // ライトビュースクリーン空間でのZ値を計算する
+        float zInLVP = psIn.posInLVP[cascadeNo].z;
+
+        if (shadowMapUV.x > 0.0f && shadowMapUV.x < 1.0f
+        && shadowMapUV.y > 0.0f && shadowMapUV.y < 1.0f)
         {
-            // 遮蔽されているなら、チェビシェフの不等式を利用して光が当たる確率を求める
-            float depth_sq = shadowValue.x * shadowValue.x;
+            // step-13 シャドウレシーバーに影を落とす
+            // シャドウマップから値をサンプリング
+            float2 shadowValue = shadowMapArray[cascadeNo].Sample(g_sampler, shadowMapUV).xy;
 
-            // このグループの分散具合を求める
-            // 分散が大きいほど、varianceの数値は大きくなる
-            float variance = min(max(shadowValue.y - depth_sq, 0.0001f), 1.0f);
+            // まずこのピクセルが遮蔽されているか調べる。これは通常のデプスシャドウと同じ
+            if (zInLVP > shadowValue.r && zInLVP <= 1.0f)
+            {
+                // 遮蔽されているなら、チェビシェフの不等式を利用して光が当たる確率を求める
+                float depth_sq = shadowValue.x * shadowValue.x;
 
-            // このピクセルのライトから見た深度値とシャドウマップの平均の深度値の差を求める
-            float md = zInLVP - shadowValue.x;
+                // このグループの分散具合を求める
+                // 分散が大きいほど、varianceの数値は大きくなる
+                float variance = min(max(shadowValue.y - depth_sq, 0.0001f), 1.0f);
 
-            // 光が届く確率を求める
-            float lit_factor = variance / (variance + md * md);
+                // このピクセルのライトから見た深度値とシャドウマップの平均の深度値の差を求める
+                float md = zInLVP - shadowValue.x;
 
-            // シャドウカラーを求める
-            float3 shadowColor = color.xyz * 0.5f;
+                // 光が届く確率を求める
+                float lit_factor = variance / (variance + md * md);
 
-            // 光が当たる確率を使って通常カラーとシャドウカラーを線形補完
-            color.xyz = lerp(shadowColor, color.xyz, lit_factor);
+                // シャドウカラーを求める
+                float3 shadowColor = color.xyz * 0.5f;
+
+                // 光が当たる確率を使って通常カラーとシャドウカラーを線形補完
+                color.xyz = lerp(shadowColor, color.xyz, lit_factor);
+                
+                //影が落とせたら終了
+                break;
+            }
         }
     }
-    
     //法線
     //UV座標をサンプリング
     float3 localNormal = g_normalMap.Sample(g_sampler, psIn.uv);

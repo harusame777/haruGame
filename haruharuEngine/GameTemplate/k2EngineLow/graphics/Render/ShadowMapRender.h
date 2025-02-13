@@ -3,13 +3,12 @@
 
 namespace nsK2EngineLow {
 
-	namespace {
-
-		static const int NUM_SHADOW_MAP = 3;
-
-	}
-
 	class IRenderer;
+
+	enum SHADOW_MAP
+	{
+		NUM_SHADOW_MAP = 3
+	};
 
 	class ShadowMapRender : Noncopyable
 	{
@@ -34,9 +33,9 @@ namespace nsK2EngineLow {
 			return m_shadowMapModelGaussianBlur[listNum].GetBokeTexture();
 		}
 
-		void ShadouMapBlurExecute(RenderContext& rc)
+		void ShadouMapBlurExecute(RenderContext& rc,const int listNum)
 		{
-			m_shadowMapModelGaussianBlur.ExecuteOnGPU(rc, 5.0f);
+			m_shadowMapModelGaussianBlur[listNum].ExecuteOnGPU(rc, 5.0f);
 		}
 
 	protected:

@@ -97,7 +97,7 @@ namespace nsK2EngineLow {
 			//シャドウマップを拡張SRVに設定する
 			for (int No = 0; No < NUM_SHADOW_MAP; No++)
 			{
-				initData.m_expandShaderResoruceView[0] = &g_renderingEngine
+				initData.m_expandShaderResoruceView[No] = &g_renderingEngine
 					->GetShadowMapRenderBokeTexture(No);
 			}
 			break;

@@ -144,23 +144,31 @@ namespace nsK2EngineLow {
 			clopMatrix.m[3][0] = xOffset;
 			clopMatrix.m[3][1] = yOffset;
 
-			
+			//ライトビュープロジェクション行列にクロップ行列を乗算する
+			g_sceneLight->m_light.m_lvpcMatrix[areaNo] = lvpMatrix * clopMatrix;
+
+			//シャドウマップ用レンダリングターゲットが使用可能になるまで待機
+			renderContext.WaitUntilToPossibleSetRenderTarget(m_shadowMap[areaNo]);
+			//レンダリングターゲットをシャドウマップに変更
+			renderContext.SetRenderTargetAndViewport(m_shadowMap[areaNo]);
+			//レンダリングターゲットをクリア
+			renderContext.ClearRenderTargetView(m_shadowMap[areaNo]);
+
+			//影モデル描画
+			for (auto& renderObj : renderObjects)
+			{
+				renderObj->OnRenderShadowMap(renderContext);
+			}
+
+			//書き込み終了待ち
+			renderContext.WaitUntilFinishDrawingToRenderTarget(m_shadowMap[areaNo]);
+			//シャドウマップにブラーを入れる
+			ShadouMapBlurExecute(renderContext,areaNo);
+
+			//次のエリアの近平面までの距離を代入する
+			nearDepth = cascadeAreaTbl[areaNo];
 		}
-		//シャドウマップ用レンダリングターゲットが使用可能になるまで待機
-		renderContext.WaitUntilToPossibleSetRenderTarget(m_shadowMap);
-		//レンダリングターゲットをシャドウマップに変更
-		renderContext.SetRenderTargetAndViewport(m_shadowMap);
-		//レンダリングターゲットをクリア
-		renderContext.ClearRenderTargetView(m_shadowMap);
 
-		for (auto& renderObj : renderObjects)
-		{
-			renderObj->OnRenderShadowMap(renderContext);
-		}
-
-		renderContext.WaitUntilFinishDrawingToRenderTarget(m_shadowMap);
-
-		ShadouMapBlurExecute(renderContext);
 
 		renderContext.SetRenderTarget(
 			g_graphicsEngine->GetCurrentFrameBuffuerRTV(),
