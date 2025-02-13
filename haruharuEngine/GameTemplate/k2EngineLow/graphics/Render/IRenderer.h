@@ -37,7 +37,7 @@ namespace nsK2EngineLow {
 		}
 
 		//シャドウマップへの描画処理
-		virtual void OnRenderShadowMap(RenderContext& rc)
+		virtual void OnRenderShadowMap(RenderContext& rc,Matrix& matrix)
 		{
 
 		}

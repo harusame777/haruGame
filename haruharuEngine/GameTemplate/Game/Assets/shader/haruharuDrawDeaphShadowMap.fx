@@ -5,6 +5,7 @@
 static const int NUM_DIRECTIONAL_LIGHT = 4; // ディレクションライトの数
 static const int MAX_POINT_LIGHT = 32; // ポイントライトの最大数
 static const int MAX_SPOT_LIGHT = 32; // スポットライトの最大数
+static const int MAX_SHADOW_MAP = 3; // シャドウマップの最大数
 
 ////////////////////////////////////////////////
 // ライトの構造体
@@ -86,6 +87,8 @@ cbuffer LightCb : register(b1)
     int m_numSpotLight;
     //使用中のディレクションライトの数
     int m_numDirectionLight;
+    //シャドウマップのビュープロジェクション
+    float4x4 m_shadowVPC[MAX_SHADOW_MAP];
 };
 
 ////////////////////////////////////////////////

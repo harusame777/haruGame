@@ -12,10 +12,9 @@ namespace nsK2EngineLow {
 
 
 		//シャドウマップ用のレンダリングターゲットを作成
-		//近影用のシャドウマップ
 		m_shadowMap[0].Create(
-			2048,
-			2048,
+			4096,
+			4096,
 			1,
 			1,
 			//DXGI_FORMAT_R32_FLOAT,デプスシャドウ用の設定
@@ -157,7 +156,7 @@ namespace nsK2EngineLow {
 			//影モデル描画
 			for (auto& renderObj : renderObjects)
 			{
-				renderObj->OnRenderShadowMap(renderContext);
+				renderObj->OnRenderShadowMap(renderContext, g_sceneLight->m_light.m_lvpcMatrix[areaNo]);
 			}
 
 			//書き込み終了待ち

@@ -28,7 +28,7 @@ namespace nsK2EngineLow {
 		};
 
 		
-		Light m_light;
+		Light* m_light;
 
 		struct ShadowMapParam
 		{
@@ -156,7 +156,7 @@ namespace nsK2EngineLow {
 		void OnRenderModel(RenderContext& rc) override;
 
 		//シャドウマップへの描画パスから呼ばれる処理
-		void OnRenderShadowMap(RenderContext& rc) override;
+		void OnRenderShadowMap(RenderContext& rc, Matrix& matrix) override;
 
 		//G-Buffer描画パスから呼ばれる処理
 		void OnRenderToGBuffer(RenderContext& rc) override;

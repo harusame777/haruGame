@@ -74,8 +74,6 @@ namespace nsK2EngineLow {
 		//ファイルパスを登録
 		initData.m_tkmFilePath = tkmfilePath;
 
-		m_light = *g_sceneLight->GetLightData();
-
 		switch (shader)
 		{
 		case ModelRender::en_usuallyShader:
@@ -92,7 +90,7 @@ namespace nsK2EngineLow {
 			initData.m_fxFilePath = "Assets/shader/haruharuDeaphShadowReceiverModel.fx";
 
 			initData.m_expandConstantBuffer = g_sceneLight->GetLightData();
-			initData.m_expandConstantBufferSize = sizeof(m_light);
+			initData.m_expandConstantBufferSize = sizeof(Light);
 
 			//シャドウマップを拡張SRVに設定する
 			for (int No = 0; No < NUM_SHADOW_MAP; No++)
@@ -104,8 +102,8 @@ namespace nsK2EngineLow {
 		case ModelRender::en_crystalShader:
 			initData.m_fxFilePath = "Assets/shader/haruharuCrystalModel.fx";
 
-			initData.m_expandConstantBuffer = &m_light;
-			initData.m_expandConstantBufferSize = sizeof(m_light);
+			initData.m_expandConstantBuffer = g_sceneLight->GetLightData();
+			initData.m_expandConstantBufferSize = sizeof(Light);
 
 			//シャドウマップを拡張SRVに設定する
 			initData.m_expandShaderResoruceView[0] = &(g_renderingEngine
@@ -152,8 +150,8 @@ namespace nsK2EngineLow {
 
 		initData.m_fxFilePath = "Assets/shader/haruharuDrawDeaphShadowMap.fx";
 			
-		initData.m_expandConstantBuffer = &m_light;
-		initData.m_expandConstantBufferSize = sizeof(m_light);
+		initData.m_expandConstantBuffer = g_sceneLight->GetLightData();
+		initData.m_expandConstantBufferSize = sizeof(Light);
 
 		initData.m_colorBufferFormat[0] = DXGI_FORMAT_R32G32_FLOAT;
 
@@ -236,25 +234,16 @@ namespace nsK2EngineLow {
 	}
 
 	//影の描画処理
-	void ModelRender::OnRenderShadowMap(RenderContext& rc)
+	void ModelRender::OnRenderShadowMap(RenderContext& rc, Matrix& matrix)
 	{
 		if (m_isShadowChaster)
 		{
-			for(auto& dirLigPtr : m_light.m_directionalLight)
-			{
-				if (dirLigPtr.GetUse() == false)
-				{
-					continue;
-				}
-
-				m_shadowMapModel.Draw(
-					rc,
-					g_matIdentity,
-					dirLigPtr.GetLightVP(),
-					1
-				);
-			}
-
+			m_shadowMapModel.Draw(
+				rc,
+				g_matIdentity,
+				matrix,
+				1
+			);
 		}
 	}
 }

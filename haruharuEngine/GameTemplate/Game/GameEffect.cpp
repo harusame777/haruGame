@@ -56,7 +56,7 @@ void GameEffect::LocalEffectOrder(
 
 	//localEffectEmitter->SetRotation(rot);
 
-	localEffectEmitter->SetScale(Vector3::One * 5);
+	localEffectEmitter->SetScale(Vector3::One * 10);
 
 	localEffectEmitter->Play();
 }

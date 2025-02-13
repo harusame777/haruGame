@@ -24,6 +24,7 @@
 #include "Result.h"
 #include "Gameover.h"
 #include "GameInformation.h"
+#include "GameInformation.h"
 #include "GameSound.h"
 #include "GameEffect.h"
 
@@ -38,7 +39,10 @@ bool Game::Start()
 
 	NewGO<GameEffect>(0, "gameEffect");
 
+
 	m_gameWindow = NewGO<GameWindow>(1, "gameWindow");
+
+	m_gameInformation = NewGO<GameInformation>(2, "gameInformation");
 
 	m_load = NewGO<Load>(1, "load");
 
@@ -57,19 +61,32 @@ void Game::Update()
 	else
 	{
 		DoInGame();
+
+		sunDirectionalLight.SetColor(1.0f, 1.0f, 1.0f);
+		sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
+		sunDirectionalLight.LightDirectionNormalize();
+		sunDirectionalLight.CastShadow();
+		sunDirectionalLight.VPCamSetRotation(80.0f);
+		//sunDirectionalLight.VPCamSetPosition({ -10.0, 2000, 0.0 });
+
+		Vector3 camPos = m_player->GetPosition();
+
+		camPos += { -2000.0, 2000, 2000.0 };
+
+		sunDirectionalLight.VPCamSetPosition(camPos);
+		sunDirectionalLight.VPCamSetTarget(m_player->GetPosition());
+		sunDirectionalLight.VPCamUpdate();
 	}
 
-	sunDirectionalLight.VPCamUpdate();
+	//if (g_pad[0]->IsTrigger(enButtonX))
+	//{
+	//	m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_stop);
+	//}
 
-	if (g_pad[0]->IsTrigger(enButtonX))
-	{
-		m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_stop);
-	}
-
-	if (g_pad[0]->IsTrigger(enButtonY))
-	{
-		m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
-	}
+	//if (g_pad[0]->IsTrigger(enButtonY))
+	//{
+	//	m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
+	//}
 }
 
 void Game::DoInGame()
@@ -80,6 +97,14 @@ void Game::DoInGame()
 	case Game::en_gameUpdate:
 
 		TimerProcess();
+
+		if (m_isGameMainTutorialEnd == false &&
+			m_load->IsLoadCompletion() == true)
+		{
+
+			m_gameInState = GameInState::en_gameTutorial;
+
+		}
 
 		break;
 	case Game::en_gameClear:
@@ -142,6 +167,32 @@ void Game::DoInGame()
 		}
 
 		break;
+	case Game::en_gameTutorial:
+
+		if (m_isGameMainTutorialEnd == false &&
+			m_gameInformation->IsInformationNow() == false)
+		{
+			m_gameInformation->InitTextData(L"Operational Guidelines");
+			m_gameInformation->InitTextData(L"Collect as many crystals as possible.");
+			m_gameInformation->InitTextData(L"Monitor the oxygen level displayed in the top right");
+			m_gameInformation->InitTextData(L"corner, and ensure you escape before it is depleted.");
+			m_gameInformation->InitTextData(L"Beware of the creatures roaming inside.");
+			m_gameInformation->InitTextData(L"Make full use of the scan function, available with");
+			m_gameInformation->InitTextData(L"the RT button,to collect more crystals.");
+
+			m_gameInformation->GoInformation();
+		}
+
+		if (m_gameInformation->IsInformationCloseing() == true)
+		{
+			m_isGameMainTutorialEnd = true;
+
+			m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
+
+			m_gameInState = GameInState::en_gameUpdate;
+		}
+
+		break;
 	default:
 		break;
 	}
@@ -150,8 +201,8 @@ void Game::DoInGame()
 
 void Game::TimerProcess()
 {
-	//ƒEƒBƒ“ƒhƒE‚ªŠJ‚¢‚Ä‚¢‚½‚ç
-	if (m_gameWindow->IsWindowOpen() == true)
+
+	if (IsNowGameUpdate() == false)
 	{
 		return;
 	}
@@ -239,17 +290,17 @@ void Game::DoOutGame()
 
 void Game::OutGameLoadProcess()
 {
-	//ƒGƒlƒ~[ƒEƒHƒŠƒA[‚Ìƒƒ^AI
+	//ã‚¨ãƒãƒŸãƒ¼ã‚¦ã‚©ãƒªã‚¢ãƒ¼ã®ãƒ¡ã‚¿AI
 	m_warriorMetaAI = NewGO<EnemyAIMetaWarrior>(0, "MetaAI");
 
 	m_GetCOMSprite = NewGO<CrystalGetCommandSprite>(0, "comSprite");
 
-	////ƒNƒŠƒXƒ^ƒ‹‚Ìƒƒ^AI
+	////ã‚¯ãƒªã‚¹ã‚¿ãƒ«ã®ãƒ¡ã‚¿AI
 	m_managerCrystal = NewGO<ManagerCrystal>(0, "CrystalMetaAI");
 
 	LevelRender levelRender;
 
-	//ƒŒƒxƒ‹ƒŒƒ“ƒ_[‚ÌƒeƒXƒg
+	//ãƒ¬ãƒ™ãƒ«ãƒ¬ãƒ³ãƒ€ãƒ¼ã®ãƒ†ã‚¹ãƒˆ
 	levelRender.Init("Assets/mapLevel/testLevel7.tkl", [&](LevelObjectData_Render& objData)
 		{
 			if (objData.ForwardMatchName(L"wallOnes") == true)
@@ -307,7 +358,7 @@ void Game::OutGameLoadProcess()
 		});
 
 	m_player = NewGO<Player>(0, "player");
-	//UI‚Ì‰Šú‰»
+	//UIã®åˆæœŸåŒ–
 	PlayerInteractableUi* m_interactableUi = NewGO<PlayerInteractableUi>(0,"InteractableUi");
 	PlayerScanCrystalUi* m_scanUi = NewGO<PlayerScanCrystalUi>(0, "ScanUI");
 	PlayerScoreUi* m_scoreUi = NewGO<PlayerScoreUi>(0, "ScoreUI");
@@ -331,8 +382,13 @@ void Game::InitDirctionaLight()
 	sunDirectionalLight.CastShadow();
 	sunDirectionalLight.VPCamSetRotation(80.0f);
 	//sunDirectionalLight.VPCamSetPosition({ -10.0, 2000, 0.0 });
+
+	//Vector3 camPos = m_player->GetPosition();
+
+	//camPos += { -2000.0, 2000, 2000.0 };
+
 	sunDirectionalLight.VPCamSetPosition({ -2000.0, 2000, 2000.0 });
-	sunDirectionalLight.VPCamSetTarget({ 0.0f, 0.0f, 0.0f });
+	sunDirectionalLight.VPCamSetTarget({0.0,0.0,0.0});
 	sunDirectionalLight.VPCamUpdate();
 }
 
@@ -343,17 +399,17 @@ void Game::InitDirctionaLight()
 
 void Game::OutGameObjectDeleteProcces()
 {
-	//•ÇÁ‹
+	//å£æ¶ˆå»
 	QueryGOs<BackGroundWalls>("background", [&](BackGroundWalls* backGround) {
 			DeleteGO(backGround);
 			return true;
 		});
-	//°Á‹
+	//åºŠæ¶ˆå»
 	QueryGOs<BackGroundFloor>("background", [&](BackGroundFloor* backGround) {
 		DeleteGO(backGround);
 		return true;
 		});
-	//“Vˆä
+	//å¤©äº•
 	QueryGOs<BackGroundCeiling>("background", [&](BackGroundCeiling* backGround) {
 		DeleteGO(backGround);
 		return true;
@@ -406,4 +462,24 @@ void Game::OutGameObjectDeleteProcces()
 	DeleteGO(m_mainCamera);
 
 	m_isGameMainObjectLoadEnd = false;
+}
+
+bool Game::IsNowGameUpdate() const
+{
+	if (m_isGameMainTutorialEnd == false)
+	{
+		return false;
+	}
+
+	if (m_load->IsLoadCompletion() == false)
+	{
+		return false;
+	}
+
+	if (m_gameInState != GameInState::en_gameUpdate)
+	{
+		return false;
+	}
+
+	return true;
 }
