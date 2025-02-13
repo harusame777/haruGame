@@ -91,7 +91,7 @@ namespace nsK2EngineLow {
 		case ModelRender::en_shadowShader:
 			initData.m_fxFilePath = "Assets/shader/haruharuDeaphShadowReceiverModel.fx";
 
-			initData.m_expandConstantBuffer = &m_light;
+			initData.m_expandConstantBuffer = g_sceneLight->GetLightData();
 			initData.m_expandConstantBufferSize = sizeof(m_light);
 
 			//シャドウマップを拡張SRVに設定する

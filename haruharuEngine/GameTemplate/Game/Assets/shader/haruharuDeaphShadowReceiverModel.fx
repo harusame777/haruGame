@@ -421,6 +421,7 @@ SPSIn VSSkinMain(SVSIn vsIn)
 float4 PSMain(SPSIn psIn) : SV_Target0
 {
     float4 color = g_albedo.Sample(g_sampler, psIn.uv);
+    
     Texture2D<float4> shadowMapArray[3];
     shadowMapArray[0] = g_shadowMap_0;
     shadowMapArray[1] = g_shadowMap_1;
