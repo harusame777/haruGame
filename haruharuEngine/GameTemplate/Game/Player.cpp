@@ -175,6 +175,6 @@ void Player::FootSteps()
 		//タイマーを初期化
 		m_footStepsTimer = TIMER_MAX;
 		//足音を鳴らす
-		m_gameSound->SoundListInit(GameSound::en_playerWalkSound,GameSound::en_priority_middle, 0.5f);
+		m_gameSound->LocalSoundOrder(GameSound::en_playerWalkSound,false,0.5f);
 	}
 }

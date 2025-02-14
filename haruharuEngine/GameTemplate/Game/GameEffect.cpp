@@ -52,9 +52,9 @@ void GameEffect::LocalEffectOrder(
 
 	Quaternion rot;
 
-	rot.SetRotation(Vector3::AxisY, angle);
+	rot.SetRotationY(angle);
 
-	//localEffectEmitter->SetRotation(rot);
+	localEffectEmitter->SetRotation(rot);
 
 	localEffectEmitter->SetScale(Vector3::One * 10);
 
