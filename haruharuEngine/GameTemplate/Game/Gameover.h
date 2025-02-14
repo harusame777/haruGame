@@ -6,7 +6,17 @@ class GameSound;
 
 class Gameover : public IGameObject
 {
+public:
+	enum GameoverInitState
+	{
+		en_initKillEnemy,
+
+		en_initKillOxygen,
+
+		en_null
+	};
 private:
+	GameoverInitState m_gameoverInitState = GameoverInitState::en_null;
 	/// <summary>
 	/// ゲームオーバーステート
 	/// </summary>
@@ -32,6 +42,12 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~Gameover(){}
+
+	void InitGameoverInitState(const GameoverInitState initState)
+	{
+		m_gameoverInitState = initState;
+	}
+
 private:
 	/// <summary>
 	/// スタート関数

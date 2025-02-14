@@ -123,16 +123,35 @@ void Game::DoInGame()
 			m_gameInState = GameInState::en_gameResult;
 		}
 		break;
-	case Game::en_gameOver:
+	case Game::en_gameOverEnemy:
 
 		if (m_gameover == nullptr)
 		{
 			m_gameover = NewGO<Gameover>(0, "gameover");
+
+			m_gameover->InitGameoverInitState(Gameover::en_initKillEnemy);
 		}
 
 		if (m_gameover->GetFadeOutFlag() == true)
 		{
 			m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadOrdinary });
+
+			m_gameInState = GameInState::en_gameResultGameOver;
+		}
+
+		break;
+	case Game::en_gameOverOxygen:
+
+		if (m_gameover == nullptr)
+		{
+			m_gameover = NewGO<Gameover>(0, "gameover");
+
+			m_gameover->InitGameoverInitState(Gameover::en_initKillOxygen);
+		}
+
+		if (m_gameover->GetFadeOutFlag() == true)
+		{
+			m_load->LoadExecutionFadeOut({ Load::en_loadCircular,Load::en_loadOrdinary });
 
 			m_gameInState = GameInState::en_gameResultGameOver;
 		}
@@ -212,7 +231,7 @@ void Game::TimerProcess()
 	if (m_timerIndex <= 0)
 	{
 
-		m_gameInState = GameInState::en_gameOver;
+		m_gameInState = GameInState::en_gameOverOxygen;
 
 	}
 
