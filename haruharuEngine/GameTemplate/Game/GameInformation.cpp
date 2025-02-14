@@ -10,7 +10,7 @@ namespace {
 	static const Vector4 FONT_COLOR = { 0.3f,0.3f,1.0f,1.0f };
 	static const Vector4 MAINTEXT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
 	static const Vector4 CLOSETEXT_COLOR = { 0.3f,0.1f,0.1f,1.0f };
-	static const float TIME_N = 0.05f;
+	static const float TIME_N = 0.02f;
 	static const wchar_t TEXT_UNDER_BAR[2] = { L"_" };
 
 }
@@ -68,6 +68,31 @@ void GameInformation::InformationStateUpdate()
 		break;
 	case GameInformation::en_textDraw:
 
+		//文字送り
+		if (g_pad[0]->IsTrigger(enButtonB))
+		{
+			for (int listNo = m_listNowNum;
+				listNo < MAX_TEXTDATALIST_EXP - 1;
+				listNo++)
+			{
+				m_nowTextNum = (wcslen(m_textDataList[listNo]
+					.m_externalInputTextList) - 1);
+
+				DisplayTextListUpdate();
+
+				DisplayTextUpdate();
+
+				m_listNowNum++;
+			}
+
+			m_closeButtonTextDrawFlag = true;
+
+			StateChange(GameInformationState::en_openWait);
+
+			return;
+		}
+
+		//文字リスト更新
 		if (m_textDataList[m_listNowNum].
 			m_externalInputTextList[m_nowTextNum] == L'\0')
 		{
@@ -87,6 +112,7 @@ void GameInformation::InformationStateUpdate()
 			m_listNowNum++;
 		}
 
+		//表示文字更新
 		if (Delay(TIME_N))
 		{
 			DisplayTextListUpdate();
