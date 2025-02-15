@@ -27,7 +27,7 @@ class GameInformation;
 //定数等
 namespace {
 
-	static const float MAX_GAMETIME = 10.0f;
+	static const float MAX_GAMETIME = 300.0f;
 
 }
 
