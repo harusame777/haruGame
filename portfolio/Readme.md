@@ -343,6 +343,12 @@
 ><dd>・一度採取した場合は5秒後に別の場所にリスポーンする</dd>
 ><dt>採取方法</dt>
 ><dd>視点を合わせ、Bボタンを押すと、採取コマンドが出現する、採取コマンドの真ん中にはA、B、X、Yのうちどれかが表示されており、対応しているボタンを時間内に押すと、次のコマンドが表示される、これを5回繰り返すと採取成功となり、スコアが加算される。
+>
+> ![alt text](image9.png)
+>
+>
+> ![alt text](gif_image6.gif)
+>
 ><dt>工夫した点</dt>
 ><dt>設置プログラム</dt>
 ><dd>クリスタル全体を管理するプログラムを作成し、マップの設置場所をレベルから取得し初期設置を行ったり、常に取得されたかどうかを監視し、取得されたら再設置タイマーを設定、再設置まで行うように設計しました。</dd>
@@ -419,110 +425,13 @@
 >実装理由:暗がりでの光をよりリアルに見せるため
 >
 ><dl>
+><dt>クリスタル等の光をもっときれいに見せるために実装しました。</dt>
 ><dt>実装方式</dt>
-><dt>1.輝度抽出用のレンダリングターゲットを作成する。</dt>
-><dd>本書や、サンプルプログラムでは、同じくレンダリングエンジンのプログラムファイルに記載されているが</dd>
-><dd>今回はプログラム量の多さから、分かりにくくなってしまうためプログラムをクラスにして別に実装した。
-><dd>説明上の分かりやすさのため輝度抽出クラスと呼びます。</dd>
-><dd>この輝度抽出クラスをレンダリングエンジン側でメンバ変数として宣言、レンダリングエンジンの
-><dd>初期化の際共に初期化し、その初期化のタイミングでレンダリングターゲットが作成される。
-><dd>この初期化の際には、ほかにも</dd>
-><dd>・輝度抽出用のスプライトの初期化</dd>
-><dd>・ガウシアンブラークラスの初期化、ぼかすテクスチャのアドレスの設定</dd>
-><dd>・生成したボケ画像を合成するスプライトの初期化
-><dd>などが行われている。</dd>
-><dt>2.輝度抽出をするタイミングでレンダリングターゲットを作成したものに変更する。</dt>
-><dd>レンダリングターゲットをモデルの描画やライトの処理をしたレンダリングターゲットから変更する。
-><dd>輝度抽出クラスの関数に変更からその後の処理までがプログラムされているため</dd>
-><dd>関数から抜ける頃には輝度抽出の処理は終わっている。</dd>
-><dt>3.ガウシアンブラーの実行</dt>
-><dd>通常のBloomとは違い複数回ガウシアンブラーを実行します。こうすることで、光のあふれテクスチャを</dd>
-><dd>生成することができます。</dd>
-><dt>4.ボケ画像を合成しメインレンダリングターゲットに加算する</dt>
-><dd>シェーダー側でボケ画像を合成し、メインレンダリングターゲットにレンダリングターゲットを変更</dd>
-><dd>合成します。</dd>
-><dd>この合成スプライトは輝度抽出クラスで宣言、初期化されているため、レンダリングエンジンのプログラム</dd>
-><dd>から、輝度抽出クラスのメンバ変数を使ってクラスにあるドローコール関数を実行します。
-><dd>これにより、川瀬式Bloomフィルターを使用した輝度抽出から合成描画までが完了します。</dd>
+><dt>1.輝度抽出用のレンダリングターゲットの作成</dt>
+><dd>川瀬式Bloomフィルターでは、輝度抽出をシェーダーによって行い、その描画をテクスチャとして抽出しそれをガウシアンブラーでぼかす必要があるため、新しくレンダリングターゲットを作成します。
+><dt>2.輝度抽出用のレンダリングターゲットにて輝度抽出を行う</dt>
+><dd>
 ></dl>
-
->以下輝度抽出_合成描画用のシェーダーのプログラム
-> ```ruby : shader
->
-> cbuffer cb : register(b0)
-> {
->     float4x4 mvp;       // MVP行列
->     float4 mulColor;    // 乗算カラー
-> };
-> 
-> struct VSInput
-> {
->     float4 pos : POSITION;
->     float2 uv  : TEXCOORD0;
-> };
-> 
-> struct PSInput
-> {
->     float4 pos : SV_POSITION;
->     float2 uv  : TEXCOORD0;
-> };
-> 
-> /*!
->  * @brief 頂点シェーダー
->  */
-> PSInput VSMain(VSInput In)
-> {
->     PSInput psIn;
->     psIn.pos = mul(mvp, In.pos);
->     psIn.uv = In.uv;
->     return psIn;
-> }
-> 
-> Texture2D<float4> mainRenderTargetTexture : register(t0); // メインレンダリングターゲットのテクスチャ
-> sampler Sampler : register(s0);
-> 
-> /////////////////////////////////////////////////////////
-> // 輝度抽出用
-> /////////////////////////////////////////////////////////
-> /*!
->  * @brief 輝度抽出用のピクセルシェーダー
->  */
-> float4 PSLuminance(PSInput In) : SV_Target0
-> {
->     // 輝度を抽出するピクセルシェーダーを実装
->     float4 color = mainRenderTargetTexture.Sample(Sampler, In.uv);
->     
->     // サンプリングされたカラーの明るさを計算
->     float t = dot(color.xyz, float3(0.2125f, 0.7154f, 0.0721f));
->     
->     // clip関数は引数の値がマイナスになると以降の処理をスキップする
->     // なので、マイナスになるとピクセルカラーは出力されない
->     // 今回の実装はカラーの明るさが1以下ならピクセルキルする
->     clip(t - 0.9f);
->     
->     return color;
-> }
-> 
-> // ボケ画にアクセスする為の変数
-> Texture2D<float4> g_bokeTexture_0 : register(t0);
-> Texture2D<float4> g_bokeTexture_1 : register(t1);
-> Texture2D<float4> g_bokeTexture_2 : register(t2);
-> Texture2D<float4> g_bokeTexture_3 : register(t3);
-> 
-> // ボケ画像合成用のピクセルシェーダー
-> float4 PSBloomFinal(PSInput In) : SV_Target0
-> {
->     // ボケ画像を合成
->     float4 combineColor = g_bokeTexture_0.Sample(Sampler, In.uv);
->     combineColor += g_bokeTexture_1.Sample(Sampler, In.uv);
->     combineColor += g_bokeTexture_2.Sample(Sampler, In.uv);
->     combineColor += g_bokeTexture_3.Sample(Sampler, In.uv);
->     combineColor /= 4.0f;
->     combineColor.a = 1.0f;
->     return combineColor;
-> }
->
-> ```
 
 <br />
 

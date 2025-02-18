@@ -40,7 +40,7 @@ bool PlayerScoreUi::Start()
 //アップデート関数
 void PlayerScoreUi::Update()
 {
-#ifdef DEBUG_MODE
+#ifdef _DEBUG
 	if (g_pad[0]->IsTrigger(enButtonA))
 	{
 		ScoreAdd(60);

@@ -206,7 +206,7 @@ void Game::DoInGame()
 		{
 			m_isGameMainTutorialEnd = true;
 
-			m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
+			//m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_idle);
 
 			m_gameInState = GameInState::en_gameUpdate;
 		}
