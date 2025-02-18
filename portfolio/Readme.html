@@ -689,6 +689,9 @@ code {
 <dd>追跡状態では、プレイヤーの座標を取得し、その座標を目的地としてナビメッシュを使用したパス移動、またはキャラクターコントローラーを使用した移動を行う、プレイヤーと自身の間に、壁があるかないかで、パス移動をするかキャラクターコントローラー移動をするかを切り替え、自然な移動、追跡をすることができる。こちらは、プレイヤーに自身が接触するか、プレイヤーを見失うまで繰り返す。
 </dd>
 <dd>待機状態では、３秒待ってから、次の巡回位置の決定をし、巡回へと行動を切り替える処理を行う。</dd>
+<dt>以下はエネミーの画像です</dt>
+<p><img src="image15.png" alt="alt text"></p>
+</dl>
 </blockquote>
 <br />
 <p><a id = "anchor5-6"></a></p>
@@ -770,110 +773,28 @@ code {
 <blockquote>
 <p>実装理由:暗がりでの光をよりリアルに見せるため</p>
 <dl>
+<dt>クリスタル等の光をもっときれいに見せるために実装しました。</dt>
 <dt>実装方式</dt>
-<dt>1.輝度抽出用のレンダリングターゲットを作成する。</dt>
-<dd>本書や、サンプルプログラムでは、同じくレンダリングエンジンのプログラムファイルに記載されているが</dd>
-<dd>今回はプログラム量の多さから、分かりにくくなってしまうためプログラムをクラスにして別に実装した。
-<dd>説明上の分かりやすさのため輝度抽出クラスと呼びます。</dd>
-<dd>この輝度抽出クラスをレンダリングエンジン側でメンバ変数として宣言、レンダリングエンジンの
-<dd>初期化の際共に初期化し、その初期化のタイミングでレンダリングターゲットが作成される。
-<dd>この初期化の際には、ほかにも</dd>
-<dd>・輝度抽出用のスプライトの初期化</dd>
-<dd>・ガウシアンブラークラスの初期化、ぼかすテクスチャのアドレスの設定</dd>
-<dd>・生成したボケ画像を合成するスプライトの初期化
-<dd>などが行われている。</dd>
-<dt>2.輝度抽出をするタイミングでレンダリングターゲットを作成したものに変更する。</dt>
-<dd>レンダリングターゲットをモデルの描画やライトの処理をしたレンダリングターゲットから変更する。
-<dd>輝度抽出クラスの関数に変更からその後の処理までがプログラムされているため</dd>
-<dd>関数から抜ける頃には輝度抽出の処理は終わっている。</dd>
-<dt>3.ガウシアンブラーの実行</dt>
-<dd>通常のBloomとは違い複数回ガウシアンブラーを実行します。こうすることで、光のあふれテクスチャを</dd>
-<dd>生成することができます。</dd>
-<dt>4.ボケ画像を合成しメインレンダリングターゲットに加算する</dt>
-<dd>シェーダー側でボケ画像を合成し、メインレンダリングターゲットにレンダリングターゲットを変更</dd>
-<dd>合成します。</dd>
-<dd>この合成スプライトは輝度抽出クラスで宣言、初期化されているため、レンダリングエンジンのプログラム</dd>
-<dd>から、輝度抽出クラスのメンバ変数を使ってクラスにあるドローコール関数を実行します。
-<dd>これにより、川瀬式Bloomフィルターを使用した輝度抽出から合成描画までが完了します。</dd>
+<dt>1.輝度抽出用のレンダリングターゲットの作成</dt>
+<dd>川瀬式Bloomフィルターでは、輝度抽出をシェーダーによって行い、その描画をテクスチャとして抽出しそれをガウシアンブラーでぼかす必要があるため、新しくレンダリングターゲットを作成します。
+<dt>2.輝度抽出用のレンダリングターゲットにて輝度抽出を行う</dt>
+<dd>次に輝度抽出用のレンダリングターゲットで輝度抽出を行います。メインレンダリングターゲットからカラーバッファーを取得、そこから輝度抽出を行います。具体的にはカラーの明るいピクセル以外をキルして描画します。
+<dt>3.ガウシアンブラークラスを使用してぼかす</dt>
+<dd>学校側であらかじめ用意されたガウシアンブラーを使用して、抽出したテクスチャをぼかします。今回は川瀬式Bloomフィルターを実装したいので4回ほどに分けて段階的にぼかしていきます。
+<dt>4.完成したボケ画像をメインレンダリングターゲットに加算合成する</dt>
+<dd>メインレンダリングターゲットに完成したボケ画像を加算合成して完成です。</dd>
+<dt>以下は実際の輝度抽出からぼかし、加算合成までの画像です</dt>
+<dt>bloom適用前</dt>
+<p><img src="image10.png" alt="alt text"></p>
+<dt>輝度抽出後</dt>
+<p><img src="image11.png" alt="alt text"></p>
+<dt>ぼかし一段階目</dt>
+<p><img src="image12.png" alt="alt text"></p>
+<dt>ぼかし最終段階</dt>
+<p><img src="image13.png" alt="alt text"></p>
+<dt>加算合成後</dt>
+<p><img src="image14.png" alt="alt text"></p>
 </dl>
-</blockquote>
-<blockquote>
-<p>以下輝度抽出_合成描画用のシェーダーのプログラム</p>
-<pre class="hljs"><code><div>
-cbuffer cb : register(b<span class="hljs-number">0</span>)
-{
-    float4x4 mvp;       <span class="hljs-regexp">//</span> MVP行列
-    float4 mulColor;    <span class="hljs-regexp">//</span> 乗算カラー
-};
-
-struct VSInput
-{
-    float4 pos : POSITION;
-    float2 uv  : TEXCOORD<span class="hljs-number">0</span>;
-};
-
-struct PSInput
-{
-    float4 pos : SV_POSITION;
-    float2 uv  : TEXCOORD<span class="hljs-number">0</span>;
-};
-
-<span class="hljs-regexp">/*!
- * @brief 頂点シェーダー
- */</span>
-PSInput VSMain(VSInput In)
-{
-    PSInput psIn;
-    psIn.pos = mul(mvp, In.pos);
-    psIn.uv = In.uv;
-    <span class="hljs-keyword">return</span> psIn;
-}
-
-Texture2D&lt;float4&gt; mainRenderTargetTexture : register(t<span class="hljs-number">0</span>); <span class="hljs-regexp">//</span> メインレンダリングターゲットのテクスチャ
-sampler Sampler : register(s<span class="hljs-number">0</span>);
-
-<span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">/
-/</span><span class="hljs-regexp">/ 輝度抽出用
-/</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span><span class="hljs-regexp">//</span>
-/*!
- * @brief 輝度抽出用のピクセルシェーダー
- *<span class="hljs-regexp">/
-float4 PSLuminance(PSInput In) : SV_Target0
-{
-    /</span><span class="hljs-regexp">/ 輝度を抽出するピクセルシェーダーを実装
-    float4 color = mainRenderTargetTexture.Sample(Sampler, In.uv);
-    
-    /</span><span class="hljs-regexp">/ サンプリングされたカラーの明るさを計算
-    float t = dot(color.xyz, float3(0.2125f, 0.7154f, 0.0721f));
-    
-    /</span><span class="hljs-regexp">/ clip関数は引数の値がマイナスになると以降の処理をスキップする
-    /</span><span class="hljs-regexp">/ なので、マイナスになるとピクセルカラーは出力されない
-    /</span><span class="hljs-regexp">/ 今回の実装はカラーの明るさが1以下ならピクセルキルする
-    clip(t - 0.9f);
-    
-    return color;
-}
-
-/</span><span class="hljs-regexp">/ ボケ画にアクセスする為の変数
-Texture2D&lt;float4&gt; g_bokeTexture_0 : register(t0);
-Texture2D&lt;float4&gt; g_bokeTexture_1 : register(t1);
-Texture2D&lt;float4&gt; g_bokeTexture_2 : register(t2);
-Texture2D&lt;float4&gt; g_bokeTexture_3 : register(t3);
-
-/</span><span class="hljs-regexp">/ ボケ画像合成用のピクセルシェーダー
-float4 PSBloomFinal(PSInput In) : SV_Target0
-{
-    /</span><span class="hljs-regexp">/ ボケ画像を合成
-    float4 combineColor = g_bokeTexture_0.Sample(Sampler, In.uv);
-    combineColor += g_bokeTexture_1.Sample(Sampler, In.uv);
-    combineColor += g_bokeTexture_2.Sample(Sampler, In.uv);
-    combineColor += g_bokeTexture_3.Sample(Sampler, In.uv);
-    combineColor /</span>= <span class="hljs-number">4.0</span>f;
-    combineColor.a = <span class="hljs-number">1.0</span>f;
-    <span class="hljs-keyword">return</span> combineColor;
-}
-
-</div></code></pre>
 </blockquote>
 <br />
 <p><a id = "anchor11"></a></p>
