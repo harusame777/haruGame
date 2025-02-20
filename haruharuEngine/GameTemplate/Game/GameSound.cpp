@@ -27,6 +27,9 @@ bool GameSound::Start()
 	g_soundEngine->ResistWaveFileBank(SoundListNum::en_playerWalkSound,
 		"Assets/sound/playerWalkSound.wav");
 
+	g_soundEngine->ResistWaveFileBank(SoundListNum::en_fontIn,
+		"Assets/sound/fontIn.wav");
+
 	return true;
 }
 

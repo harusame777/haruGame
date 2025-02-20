@@ -2,6 +2,7 @@
 #include "GameWindow.h"
 
 class GameWindow;
+class GameSound;
 
 //定数等
 namespace {
@@ -237,5 +238,9 @@ private:
 	/// ウィンドウのインスタンス
 	/// </summary>
 	GameWindow* m_gameWindow = nullptr;
+	/// <summary>
+	/// ゲームサウンドのインスタンス
+	/// </summary>
+	GameSound* m_gameSound = nullptr;
 };
 

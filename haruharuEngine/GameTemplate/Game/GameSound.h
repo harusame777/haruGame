@@ -26,6 +26,8 @@ public:
 		en_killSound,
 		//エネミーウォリアー走行音
 		en_playerWalkSound,
+		//フォントを打つ音
+		en_fontIn,
 		//タイトルBGM
 		en_TitleBgm,
 		//サウンド数
