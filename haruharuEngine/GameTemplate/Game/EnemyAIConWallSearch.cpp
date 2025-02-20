@@ -55,7 +55,7 @@ bool EnemyAIConWallSearch::RayTestWall()
 	start.setOrigin(btVector3(startPos.x, startPos.y, startPos.z));
 
 	//I“_ˆÊ’uŒˆ’è
-	Vector3 endPos = m_player->GetPosition();
+	Vector3 endPos = GetEnemyPtr().GetMoveTargetPosition();
 	endPos.y += 75.0f;
 	end.setOrigin(btVector3(endPos.x, endPos.y, endPos.z));
 

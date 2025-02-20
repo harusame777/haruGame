@@ -61,21 +61,6 @@ void Game::Update()
 	else
 	{
 		DoInGame();
-
-		sunDirectionalLight.SetColor(1.0f, 1.0f, 1.0f);
-		sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
-		sunDirectionalLight.LightDirectionNormalize();
-		sunDirectionalLight.CastShadow();
-		sunDirectionalLight.VPCamSetRotation(80.0f);
-		//sunDirectionalLight.VPCamSetPosition({ -10.0, 2000, 0.0 });
-
-		Vector3 camPos = m_player->GetPosition();
-
-		camPos += { -2000.0, 2000, 2000.0 };
-
-		sunDirectionalLight.VPCamSetPosition(camPos);
-		sunDirectionalLight.VPCamSetTarget(m_player->GetPosition());
-		sunDirectionalLight.VPCamUpdate();
 	}
 
 	//if (g_pad[0]->IsTrigger(enButtonX))
@@ -92,6 +77,8 @@ void Game::Update()
 void Game::DoInGame()
 {
 
+	Vector3 camPos = m_player->GetPosition();
+
 	switch (m_gameInState)
 	{
 	case Game::en_gameUpdate:
@@ -105,6 +92,19 @@ void Game::DoInGame()
 			m_gameInState = GameInState::en_gameTutorial;
 
 		}
+
+		sunDirectionalLight.SetColor(1.0f, 1.0f, 1.0f);
+		sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
+		sunDirectionalLight.LightDirectionNormalize();
+		sunDirectionalLight.CastShadow();
+		sunDirectionalLight.VPCamSetRotation(80.0f);
+		//sunDirectionalLight.VPCamSetPosition({ -10.0, 2000, 0.0 });
+
+		camPos += { -2000.0, 2000, 2000.0 };
+
+		sunDirectionalLight.VPCamSetPosition(camPos);
+		sunDirectionalLight.VPCamSetTarget(m_player->GetPosition());
+		sunDirectionalLight.VPCamUpdate();
 
 		break;
 	case Game::en_gameClear:
@@ -434,7 +434,7 @@ void Game::OutGameObjectDeleteProcces()
 		return true;
 		});
 
-	QueryGOs<Elevator>("elevator", [&](Elevator* object) {
+	QueryGOs<Elevator>("object", [&](Elevator* object) {
 		DeleteGO(object);
 		return true;
 		});
@@ -481,6 +481,8 @@ void Game::OutGameObjectDeleteProcces()
 	DeleteGO(m_mainCamera);
 
 	m_isGameMainObjectLoadEnd = false;
+
+	m_isGameMainTutorialEnd = false;
 }
 
 bool Game::IsNowGameUpdate() const

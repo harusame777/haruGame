@@ -8,6 +8,7 @@
 class EnemyBase;
 class WarriorDataHolder;
 class Player;
+class EnemySM_Warrior;
 class EnemyAIConBase;
 
 class EnemyAIMoveAstar : public EnemyAIBase 
@@ -30,9 +31,22 @@ public:
 	void EnemyAIUpdate() override;
 private:
 	/// <summary>
+	/// パス探索実行
+	/// </summary>
+	void PathFidingExecute();
+	/// <summary>
+	/// エースター移動
+	/// </summary>
+	void MoveAstar();
+	/// <summary>
+	/// 通常移動
+	/// </summary>
+	void MoveUsually();
+	/// <summary>
 	/// 回転地計算
 	/// </summary>
-	void RotationValueCalc(const Vector3& direction);
+	void AstarRotationValueCalc(const Vector3& direction);
+	void UsuallyRotationValueCalc(const Vector3& direction);
 	/// <summary>
 	/// ナビメッシュファイル
 	/// </summary>
@@ -61,5 +75,15 @@ private:
 	/// 
 	/// </summary>
 	EnemyAIConBase* m_timer;
+	/// <summary>
+/// 
+/// </summary>
+	EnemyAIConBase* m_wallChack;
+
+	EnemySM_Warrior* chaseEnemyPtr = nullptr;
+
+	EnemySM_Warrior* aroundEnemyPtr = nullptr;
+
+
 };
 
