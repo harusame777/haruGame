@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameInformation.h"
 #include "GameWindow.h"
+#include "GameSound.h"
 
 //íËêîìô
 namespace {
@@ -19,6 +20,8 @@ namespace {
 bool GameInformation::Start()
 {
 	m_gameWindow = NewGO<GameWindow>(1, "gameWindow");
+
+	m_gameSound = FindGO<GameSound>("gameSound");
 
 	return true;
 }
@@ -210,6 +213,10 @@ void GameInformation::DisplayTextListUpdate()
 {
 
 	m_nowTextNum++;
+
+	if (m_textDataList[m_listNowNum].
+		m_externalInputTextList[m_nowTextNum] != L' ')
+		m_gameSound->LocalSoundOrder(GameSound::en_fontIn, false, 0.5f);
 
 	wcsncpy_s(m_textDataList[m_listNowNum].m_displayTextList,
 		_countof(m_textDataList[m_listNowNum].m_displayTextList),
