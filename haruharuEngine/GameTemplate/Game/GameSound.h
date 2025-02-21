@@ -16,6 +16,8 @@ public:
 	{
 		//石を掘る音
 		en_rockDigSound,
+		//石を壊す音
+		en_breakDigSound,
 		//決定音１
 		en_decisionSound,
 		//鉄に弾かれる音
@@ -28,6 +30,8 @@ public:
 		en_playerWalkSound,
 		//フォントを打つ音
 		en_fontIn,
+		//シュウィンって音
+		en_syuwin,
 		//タイトルBGM
 		en_TitleBgm,
 		//サウンド数

@@ -26,6 +26,37 @@ bool GameInformation::Start()
 	return true;
 }
 
+//起動関数
+void GameInformation::GoInformation()
+{
+	if (m_gameInformationState != GameInformationState::en_standby)
+	{
+		return;
+	}
+
+	for (int listNo = 0;
+		listNo < MAX_TEXTDATALIST_EXP;
+		listNo++)
+	{
+
+		m_listEndNum = listNo - 1;
+
+		if (m_textDataList[listNo].m_isUse == false)
+		{
+			break;
+		}
+
+	}
+
+	m_gameSound->LocalSoundOrder(GameSound::en_syuwin, false, 0.5f);
+
+	//ウィンドウを開ける
+	m_gameWindow->WindowOpen();
+	//ステートをwindowOpenに変更
+	StateChange(GameInformationState::en_windowOpen);
+}
+
+
 //アップデート関数
 void GameInformation::Update()
 {
@@ -126,6 +157,8 @@ void GameInformation::InformationStateUpdate()
 
 		if (g_pad[0]->IsTrigger(enButtonB))
 		{
+			m_gameSound->LocalSoundOrder(GameSound::en_syuwin, false, 0.5f);
+
 			m_gameWindow->WindowClose();
 
 			m_isInformationCloseing = true;
