@@ -10,7 +10,7 @@ namespace nsK2EngineLow {
 	{
 
 	}
-	//テスト
+	
 	//デストラクタ
 	ModelRender::~ModelRender()
 	{
