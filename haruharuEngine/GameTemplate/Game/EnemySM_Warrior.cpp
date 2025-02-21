@@ -137,17 +137,8 @@ void EnemySM_Warrior::EnemyAIUpdate()
 			m_warriorMetaAI->MetaAIExecution(this, EnemyAIMetaWarrior::mode_retreat);
 		}
 
-		if (m_isRetreat == true || 
-			m_enemyConList[6]->Execution() == true)
-		{
-			//追跡処理を更新
-			m_enemyAIList[en_enemyAIMoveAstar]->EnemyAIUpdate();
-		}
-		else
-		{
-			//通常移動処理を更新
-			m_enemyAIList[1]->EnemyAIUpdate();
-		}
+		//追跡処理を更新
+		m_enemyAIList[en_enemyAIMoveAstar]->EnemyAIUpdate();
 
 		ChangeState();
 		break;
@@ -286,6 +277,8 @@ void EnemySM_Warrior::TimeUpdate()
 		{
 			//[テスト]メタAIから指示をもらう
 			m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_retreat, this);
+
+			StateTransition_Tracking();
 
 			m_isRetreat = false;
 		}
