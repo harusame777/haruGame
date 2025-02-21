@@ -82,6 +82,9 @@ void EnemySM_Warrior::EnemyAIStart()
 	//壁を探索
 	m_enemyConList.push_back(new EnemyAIConWallSearch);
 
+	//20秒タイマー
+	m_enemyConList.push_back(new EnemyAIConWaitTime(25.0f));
+
 	//紐づいているエネミーのインスタンスをConListのプログラムに渡す
 	for (auto& listPtr : m_enemyConList)
 	{
@@ -239,6 +242,8 @@ void EnemySM_Warrior::ChangeState()
 			//巡回ステートにする
 			SetState(WarriorState::en_warrior_patrol);
 
+			m_enemyConList[7]->InitData();
+
 			m_isWaitIdle = false;
 		}
 	}
@@ -292,6 +297,21 @@ void EnemySM_Warrior::TimeUpdate()
 	{
 		//追跡時間を初期化
 		m_enemyConList[5]->InitData();
+	}
+
+	if (m_warriorState == WarriorState::en_warrior_patrol)
+	{
+		//待機タイマーを更新して
+		//残り秒数が0.0だったら
+		if (m_enemyConList[7]->Execution())
+		{
+			//待機ステートにする
+			SetState(WarriorState::en_warrior_idle);
+
+			m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_patrolRouteSet, this);
+
+			m_isWaitIdle = false;
+		}
 	}
 
 	//現在のステートが待機状態だったら
