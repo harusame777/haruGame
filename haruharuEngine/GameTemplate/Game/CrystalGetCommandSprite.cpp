@@ -248,6 +248,8 @@ void CrystalGetCommandSprite::CommandUpdate()
 		//取得フラグをfalseに
 		m_isCollectFlag = false;
 
+		m_gameSound->LocalSoundOrder(GameSound::en_breakDigSound, false, 0.5f);
+
 		//クリスタル本体にこのクリスタルは採取されたと伝える
 		m_crystal->CrystalCollected();
 
