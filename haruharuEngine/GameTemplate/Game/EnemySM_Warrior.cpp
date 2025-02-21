@@ -9,6 +9,7 @@
 #include "EnemyAIMetaWarrior.h"
 #include "Player.h"
 #include "Game.h"
+#include "GameSound.h"
 
 //エネミー全体を管理するメタAIを作成して、追跡を管理したい
 //
@@ -31,6 +32,8 @@ void EnemySM_Warrior::EnemyAIStart()
 	m_warriorMetaAI = FindGO<EnemyAIMetaWarrior>("MetaAI");
 	//メタAIにエネミーのインスタンスを送る
 	m_warriorMetaAI->ListInitEnemy(this);
+
+	m_gameSound = FindGO<GameSound>("gameSound");
 
 	//ゲームのインスタンス
 	m_game = FindGO<Game>("game");
@@ -256,6 +259,8 @@ void EnemySM_Warrior::ChangeState()
 
 void EnemySM_Warrior::StateTransition_Tracking()
 {
+
+	m_gameSound->LocalSoundOrder(GameSound::en_enemyWarriorRoar, false, 0.5f);
 	//今の状態だと、一度待機状態になった後にもう一度追跡状態になると、役割を何も持てないので、対策を検討する。
 	//[テスト]メタAIから指示をもらう
 	m_warriorMetaAI->MetaAIExecution(this,EnemyAIMetaWarrior::mode_trackingStateChange);

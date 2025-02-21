@@ -24,6 +24,8 @@ public:
 		en_hitByIronSound,
 		//エネミーウォリアー走行音
 		en_enemyWarriorWalkSound,
+		//エネミーウォリアー咆哮
+		en_enemyWarriorRoar,
 		//キルサウンド
 		en_killSound,
 		//エネミーウォリアー走行音

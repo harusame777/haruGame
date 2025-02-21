@@ -24,6 +24,9 @@ bool GameSound::Start()
 	g_soundEngine->ResistWaveFileBank(SoundListNum::en_enemyWarriorWalkSound,
 		"Assets/sound/enemyWarriorWalkSound_2.wav");
 
+	g_soundEngine->ResistWaveFileBank(SoundListNum::en_enemyWarriorRoar,
+		"Assets/sound/enemyWarriorRoar.wav");
+
 	g_soundEngine->ResistWaveFileBank(SoundListNum::en_killSound,
 		"Assets/sound/killSound.wav");
 
