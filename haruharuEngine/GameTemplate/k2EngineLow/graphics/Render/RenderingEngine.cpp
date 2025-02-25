@@ -55,6 +55,8 @@ namespace nsK2EngineLow {
 		m_luminnceRender.Init(&mainRenderTargert);
 		//シャドウマップの初期化
 		m_shadowMapRender.Init();
+		//Z値抽出レンダーの初期化
+		m_depthMapRender.Init(mainRenderTargert);
 	}
 
 	void RenderingEngine::Execute(RenderContext& rc)

@@ -2,6 +2,7 @@
 #include "graphics/GaussianBlur.h"
 
 namespace nsK2EngineLow {
+
 	class LuminnceRender
 	{
 	public:

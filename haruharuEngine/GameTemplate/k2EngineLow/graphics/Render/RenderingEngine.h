@@ -2,6 +2,7 @@
 #include "graphics/Render/ShadowMapRender.h"
 #include "graphics/Render/GBufferRender.h"
 #include "graphics/Render/LuminnceRender.h"
+#include "graphics/Render/DepthMapRender.h"
 
 namespace nsK2EngineLow {
 	class RenderingEngine : Noncopyable //コピー不可のクラス
@@ -51,6 +52,8 @@ namespace nsK2EngineLow {
 		GBufferRender m_gBufferRender;
 		//輝度抽出レンダー
 		LuminnceRender m_luminnceRender;
+		//Z値抽出レンダー
+		DepthMapRender m_depthMapRender;
 		//テクスチャを張り付けるためのスプライト
 		Sprite m_copyToFrameBufferSprite;
 	};

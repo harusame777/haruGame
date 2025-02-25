@@ -258,6 +258,7 @@
     <ClCompile Include="graphics\light\DirectionalLight.cpp" />
     <ClCompile Include="gameObject\Gameobjectmanager.cpp" />
     <ClCompile Include="gameObject\IGameObject.cpp" />
+    <ClCompile Include="graphics\Render\DepthMapRender.cpp" />
     <ClCompile Include="graphics\Render\FontRender.cpp" />
     <ClCompile Include="graphics\Render\GBufferRender.cpp" />
     <ClCompile Include="geometry\AABB.cpp" />
@@ -355,6 +356,7 @@
     <ClInclude Include="graphics\light\DirectionalLight.h" />
     <ClInclude Include="gameObject\GameObjectManager.h" />
     <ClInclude Include="gameObject\IGameobject.h" />
+    <ClInclude Include="graphics\Render\DepthMapRender.h" />
     <ClInclude Include="graphics\Render\FontRender.h" />
     <ClInclude Include="graphics\Render\GBufferRender.h" />
     <ClInclude Include="geometry\AABB.h" />

@@ -240,6 +240,7 @@
       <Filter>physics</Filter>
     </ClCompile>
     <ClCompile Include="graphics\Render\FontRender.cpp" />
+    <ClCompile Include="graphics\Render\DepthMapRender.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="k2EngineLowPreCompile.h" />
@@ -530,6 +531,7 @@
       <Filter>physics</Filter>
     </ClInclude>
     <ClInclude Include="graphics\Render\FontRender.h" />
+    <ClInclude Include="graphics\Render\DepthMapRender.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="graphics">

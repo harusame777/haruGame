@@ -84,6 +84,7 @@ using namespace Microsoft::WRL;
 #include "graphics/light/PointLight.h"
 #include "graphics/light/SpotLight.h"
 #include "graphics/Render/ShadowMapRender.h"
+#include "graphics/Render/DepthMapRender.h"
 #include "graphics/Render/GBufferRender.h"
 #include "graphics/Render/LuminnceRender.h"
 #include "graphics/light/DirectionalLight.h"
