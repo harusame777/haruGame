@@ -107,6 +107,24 @@ namespace nsK2EngineLow {
 		//レンダリングターゲットの書き込み終了待ち
 		rc.WaitUntilFinishDrawingToRenderTarget(mainRenderTargert);
 
+		//ここから深度値抽出～ボケ画像を作成
+		m_depthMapRender.DepthExtraction(
+			rc,
+			m_renderObjects
+		);
+
+		//レンダリングターゲットとして利用できるまで待つ
+		rc.WaitUntilToPossibleSetRenderTarget(mainRenderTargert);
+
+		//レンダリングターゲットを設定
+		rc.SetRenderTargetAndViewport(mainRenderTargert);
+
+		//最終合成
+		m_depthMapRender.AddSynthesisSpriteDraw(rc);
+
+		//レンダリングターゲットの書き込み終了待ち
+		rc.WaitUntilFinishDrawingToRenderTarget(mainRenderTargert);
+
 		//メインレンダリングターゲットの絵をフレームバッファーにコピー
 		rc.SetRenderTarget(
 			g_graphicsEngine->GetCurrentFrameBuffuerRTV(),

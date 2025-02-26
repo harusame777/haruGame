@@ -70,7 +70,7 @@ namespace nsK2EngineLow {
 
 		for (auto& renderObj : renderObjects)
 		{
-			renderObj->OnRenderShadowMap(rc);
+			renderObj->OnRenderModel(rc);
 		}
 
 		rc.WaitUntilFinishDrawingToRenderTargets(MAX_MRT, m_depthMapMRT);

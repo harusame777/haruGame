@@ -120,6 +120,13 @@ struct SPSIn
     float3 worldPos : TEXCOORD1; //ワールド座標系でのポジション
     float3 normalInView : TEXCOORD2; //カメラ空間の法線
     float4 posInLVP : TEXCOORD3; //ライトビュースクリーン空間でのピクセルの座標 
+    float3 depthInView : TEXCOORD4; //深度値記録用
+};
+
+struct SPSOut
+{
+    float4 color : SV_Target0; //レンダリングターゲット0に書き込む
+    float  depth : SV_Target1; //レンダリングターゲット1に書き込む
 };
 
 ////////////////////////////////////////////////
@@ -368,6 +375,9 @@ SPSIn VSMainCore(SVSIn vsIn, uniform bool hasSkin)
     psIn.worldPos = psIn.pos;
     // ワールド座標系からカメラ座標系に変換
     psIn.pos = mul(mView, psIn.pos);
+    
+    psIn.depthInView = psIn.pos.z;
+    
     // カメラ座標系からスクリーン座標系に変換
     psIn.pos = mul(mProj, psIn.pos);
 	//法線を回転させる
@@ -411,8 +421,13 @@ SPSIn VSSkinMain(SVSIn vsIn)
 /// <summary>
 /// ピクセルシェーダーのエントリー関数。
 /// </summary>
-float4 PSMain(SPSIn psIn) : SV_Target0
+SPSOut PSMain(SPSIn psIn) : SV_Target0
 {
+    SPSOut spsOut;
+    
+    //深度値
+    spsOut.depth = psIn.depthInView;
+    
     float4 color = g_albedo.Sample(g_sampler, psIn.uv);
 
     // ライトビュースクリーン空間からUV空間に座標変換
@@ -560,5 +575,7 @@ float4 PSMain(SPSIn psIn) : SV_Target0
     //光
     color.xyz *= finalLig;
     
-    return color;
+    spsOut.color = color;
+        
+    return spsOut;
 }

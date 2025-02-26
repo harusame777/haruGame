@@ -1,5 +1,5 @@
 /*!
- * @brief ブルーム
+ * @brief 被写界深度
  */
 
 cbuffer cb : register(b0)
@@ -31,46 +31,33 @@ PSInput VSMain(VSInput In)
     return psIn;
 }
 
-Texture2D<float4> mainRenderTargetTexture : register(t0); // メインレンダリングターゲットのテクスチャ
+Texture2D<float4> bokeTexture : register(t0); // ボケ画像
+Texture2D<float4> depthTexture : register(t1); // 深度テクスチャ
+
 sampler Sampler : register(s0);
 
 /////////////////////////////////////////////////////////
-// 輝度抽出用
+// ボケ画像書き込み用
 /////////////////////////////////////////////////////////
-/*!
- * @brief 輝度抽出用のピクセルシェーダー
- */
-float4 PSLuminance(PSInput In) : SV_Target0
-{
-    //輝度を抽出するピクセルシェーダーを実装
-    float4 color = mainRenderTargetTexture.Sample(Sampler, In.uv);
-    
-    //サンプリングされたカラーの明るさを計算
-    float t = dot(color.xyz, float3(0.2125f, 0.7154f, 0.0721f));
-    
-    //clip関数は引数の値がマイナスになると移行の処理をスキップする
-    //なので、マイナスになるとピクセルカラーは出力されない
-    //今回の実装はカラーの明るさが1以下ならピクセルキルする
-    clip(t - 0.9f);
-    
-    return color;
-}
-
-//ボケ画にアクセスする為の変数
-Texture2D<float4> g_bokeTexture_0 : register(t0);
-Texture2D<float4> g_bokeTexture_1 : register(t1);
-Texture2D<float4> g_bokeTexture_2 : register(t2);
-Texture2D<float4> g_bokeTexture_3 : register(t3);
 
 //ボケ画像合成用のピクセルシェーダー
-float4 PSBloomFinal(PSInput In) : SV_Target0
+float4 PSMain(PSInput In) : SV_Target0
 {
-    //ボケ画像を合成
-    float4 combineColor = g_bokeTexture_0.Sample(Sampler, In.uv);
-    combineColor += g_bokeTexture_1.Sample(Sampler, In.uv);
-    combineColor += g_bokeTexture_2.Sample(Sampler, In.uv);
-    combineColor += g_bokeTexture_3.Sample(Sampler, In.uv);
-    combineColor /= 4.0f;
-    combineColor.a = 1.0f;
-    return combineColor;
+    
+    //カメラ空間の深度値をサンプリング
+    float depth = depthTexture.Sample(Sampler, In.uv);
+    
+    // カメラ空間での深度値が200以下ならピクセルキル
+    // ボケ画像を書き込まないため
+    clip(depth - 100.0f);
+    
+    //ボケ画像をサンプリング
+    float4 boke = bokeTexture.Sample(Sampler, In.uv);
+    
+    // 深度値から不透明度を計算
+    // 深度値800からボケが始まり、深度値2000で最大のボケ具合になる
+    // つまり、深度値2000で不透明度が1になるように計算
+    boke.a = min(1.0f, (depth - 200.0f) / 300.0f);
+    
+    return boke;
 }
