@@ -95,6 +95,8 @@ void ManagerCrystal::RelocationPosDecision(CrystalManageData* crystalData)
 	//最終乱数
 	int rand = 0;
 
+	int crystalColorRandNum = 0;
+
 	//配置位置決定中にする
 	crystalData->SetCrystalRelocationState(
 		CrystalRelocationState::en_relocationPosDecision_State);
@@ -125,6 +127,24 @@ void ManagerCrystal::RelocationPosDecision(CrystalManageData* crystalData)
 
 			crystalData->GetCrystalAddress()->SetRotation(
 				m_crystalArrangementDatas[rand]->GetRotation());
+
+			//クリスタルカラーを設定
+			// 乱数生成器のシード設定
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			// 0 から 100
+			std::uniform_int_distribution<int> dist(0, 100);
+			// ランダムな数値を生成して出力
+			crystalColorRandNum = dist(gen);
+
+			if (crystalColorRandNum <= 5)
+				crystalData->GetCrystalAddress()->CrystalSetColor(Crystal::en_crystal_Y);
+
+			if (crystalColorRandNum > 5 && crystalColorRandNum <= 25)
+				crystalData->GetCrystalAddress()->CrystalSetColor(Crystal::en_crystal_R);
+
+			if (crystalColorRandNum > 25 && crystalColorRandNum <= 100)
+				crystalData->GetCrystalAddress()->CrystalSetColor(Crystal::en_crystal_M);
 
 			//設置タイマーを初期化する
 			crystalData->InitCrystalRelocationTimer();
@@ -163,6 +183,7 @@ void ManagerCrystal::RelocationTimerProcess()
 		{
 			//再配置処理を行う
 			m_crystalManageDatas[CryNo]->GetCrystalAddress()->CrystalArrangement();
+
 			//ステートを設置中に
 			m_crystalManageDatas[CryNo]->SetCrystalRelocationState(
 				CrystalRelocationState::en_arrangement_State);

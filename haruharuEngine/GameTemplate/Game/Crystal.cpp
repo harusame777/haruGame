@@ -51,21 +51,35 @@ bool Crystal::Start()
 {
 
 	//クリスタル01をモデルに設定
-	m_mainModel.Init("Assets/modelData/objects/crystal/crystal01_Model.tkm", nullptr, 0, enModelUpAxisZ, ModelRender::en_crystalShader);
+	m_crystal_M_Model.Init("Assets/modelData/objects/crystal/crystal01_Model.tkm", nullptr, 0, enModelUpAxisZ, ModelRender::en_crystalShader);
+
+	m_crystal_R_Model.Init("Assets/modelData/objects/crystal/crystal01_Model_R.tkm", nullptr, 0, enModelUpAxisZ, ModelRender::en_crystalShader);
+
+	m_crystal_Y_Model.Init("Assets/modelData/objects/crystal/crystal01_Model_Y.tkm", nullptr, 0, enModelUpAxisZ, ModelRender::en_crystalShader);
 
 	m_managerCrystalPtr = FindGO<ManagerCrystal>("CrystalMetaAI");
 
 	//シャドウマップに描画するようにする
-	m_mainModel.SetShadowChasterFlag(true);
+	m_crystal_M_Model.SetShadowChasterFlag(true);
+	m_crystal_R_Model.SetShadowChasterFlag(true);
+	m_crystal_Y_Model.SetShadowChasterFlag(true);
 
 	//座標を設定
-	m_mainModel.SetPosition(m_position);
+	m_crystal_M_Model.SetPosition(m_position);
+	m_crystal_R_Model.SetPosition(m_position);
+	m_crystal_Y_Model.SetPosition(m_position);
 	//回転を設定
-	m_mainModel.SetRotation(m_rotation);
+	m_crystal_M_Model.SetRotation(m_rotation);
+	m_crystal_R_Model.SetRotation(m_rotation);
+	m_crystal_Y_Model.SetRotation(m_rotation);
 	//拡大率を設定
-	m_mainModel.SetScale(m_scale);
+	m_crystal_M_Model.SetScale(m_scale);
+	m_crystal_R_Model.SetScale(m_scale);
+	m_crystal_Y_Model.SetScale(m_scale);
 	//初期設定を確定
-	m_mainModel.Update();
+	m_crystal_M_Model.Update();
+	m_crystal_R_Model.Update();
+	m_crystal_Y_Model.Update();
 
 	//プレイヤーのインスタンスを取得する
 	m_player = FindGO<Player>("player");
@@ -89,15 +103,21 @@ void Crystal::Update()
 	//クリスタル取得処理
 	GetCrystal();
 	//座標を設定
-	m_mainModel.SetPosition(m_position);
+	m_crystal_M_Model.SetPosition(m_position);
+	m_crystal_R_Model.SetPosition(m_position);
+	m_crystal_Y_Model.SetPosition(m_position);
 	//回転を設定
-	m_mainModel.SetRotation(m_rotation);
+	m_crystal_M_Model.SetRotation(m_rotation);
+	m_crystal_R_Model.SetRotation(m_rotation);
+	m_crystal_Y_Model.SetRotation(m_rotation);
 	if (m_GetCOMSprite->GetCollectFlag() == false)
 	{
 		UpdateBootData();
 	}
 	//描画更新
-	m_mainModel.Update();
+	m_crystal_M_Model.Update();
+	m_crystal_R_Model.Update();
+	m_crystal_Y_Model.Update();
 }
 
 //レンダー関数
@@ -107,7 +127,26 @@ void Crystal::Render(RenderContext& rc)
 	if (!m_isGetObject)
 	{
 		//描画する
-		m_mainModel.Draw(rc);
+		switch (m_crystalColorState)
+		{
+		case Crystal::en_crystal_M:
+
+			m_crystal_M_Model.Draw(rc);
+
+			break;
+		case Crystal::en_crystal_R:
+
+			m_crystal_R_Model.Draw(rc);
+
+			break;
+		case Crystal::en_crystal_Y:
+
+			m_crystal_Y_Model.Draw(rc);
+
+			break;
+		default:
+			break;
+		}
 	}
 
 #ifdef _DEBUG
@@ -221,7 +260,26 @@ void Crystal::CrystalCollected()
 {
 	m_isGetObject = true;
 
-	m_scoreUi->ScoreAdd(m_score);
+	switch (m_crystalColorState)
+	{
+	case Crystal::en_crystal_M:
+
+		m_scoreUi->ScoreAdd(m_scoreM);
+
+		break;
+	case Crystal::en_crystal_R:
+
+		m_scoreUi->ScoreAdd(m_scoreR);
+
+		break;
+	case Crystal::en_crystal_Y:
+
+		m_scoreUi->ScoreAdd(m_scoreY);
+
+		break;
+	default:
+		break;
+	}
 
 	m_managerCrystalPtr->ArrangementDataRefresh(this);
 }
