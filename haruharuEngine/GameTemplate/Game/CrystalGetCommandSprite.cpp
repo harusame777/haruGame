@@ -272,9 +272,6 @@ void CrystalGetCommandSprite::CommandUpdate()
 	if (IsTriggerButton() &&
 		m_isCorrectButton == true)
 	{
-
-		//タイムリミットを初期化
-		m_timeLimit = 2.0f;
 		//commandListを次に進める
 		m_nowCommandNum++;
 	}

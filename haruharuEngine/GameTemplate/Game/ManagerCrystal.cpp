@@ -94,7 +94,7 @@ void ManagerCrystal::RelocationPosDecision(CrystalManageData* crystalData)
 	bool isRegistered = true;
 	//最終乱数
 	int rand = 0;
-
+	
 	int crystalColorRandNum = 0;
 
 	//配置位置決定中にする
