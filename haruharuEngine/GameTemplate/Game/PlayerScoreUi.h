@@ -70,6 +70,10 @@ private:
 	/// </summary>
 	FontRender m_scoreNum;
 	/// <summary>
+	/// スコア
+	/// </summary>
+	FontRender m_socore;
+	/// <summary>
 	/// メインスコア
 	/// </summary>
 	float m_mainScore = 0;
