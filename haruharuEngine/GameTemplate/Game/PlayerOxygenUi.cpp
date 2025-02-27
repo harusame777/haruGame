@@ -69,6 +69,8 @@ bool PlayerOxygenUi::Start()
 
 	m_game = FindGO<Game>("game");
 
+	m_playerPointerUi = NewGO<PlayerPointerUi>(0, "pointerUi");
+
 	return true;
 }
 
@@ -118,9 +120,12 @@ const PlayerOxygenUi::OxygenGaugeState& PlayerOxygenUi::OxygenGaugeStateUpdate()
 {
 	const float nowGameTimer = m_mainOxygenIndex;
 
-	if (m_mainOxygenIndex <= OXYGEN_MIN_LINE) 
-		return OxygenGaugeState::en_oxygenMin;
+	if (m_mainOxygenIndex <= OXYGEN_MIN_LINE)
+	{
+		m_playerPointerUi->SetPointerDraw(true);
 
+		return OxygenGaugeState::en_oxygenMin;
+	}
 	if (m_mainOxygenIndex > OXYGEN_MIN_LINE &&
 		m_mainOxygenIndex <= OXYGEN_LOW_LINE)
 		return OxygenGaugeState::en_oxygenLow;

@@ -362,7 +362,7 @@ void Game::OutGameLoadProcess()
 			//}
 			else if (objData.ForwardMatchName(L"elevator") == true)
 			{
-				Elevator* elevator = NewGO<Elevator>(0, "object");
+				Elevator* elevator = NewGO<Elevator>(0, "elevator");
 				elevator->SetPosition(objData.m_position);
 				return true;
 			}
@@ -434,7 +434,7 @@ void Game::OutGameObjectDeleteProcces()
 		return true;
 		});
 
-	QueryGOs<Elevator>("object", [&](Elevator* object) {
+	QueryGOs<Elevator>("elevator", [&](Elevator* object) {
 		DeleteGO(object);
 		return true;
 		});
