@@ -61,6 +61,10 @@ private:
 	/// </summary>
 	const float& AlphaEasing(const float& speed);
 	/// <summary>
+	/// 警告描画
+	/// </summary>
+	void CaveatDraw();
+	/// <summary>
 	/// レンダー関数
 	/// </summary>
 	/// <param name="rc"></param>
@@ -197,6 +201,26 @@ private:
 	/// ゲームのインスタンス
 	/// </summary>
 	Game* m_game = nullptr;
+	/// <summary>
+	/// 表示
+	/// </summary>
+	FontRender m_oxygen;
+	/// <summary>
+	/// 警告スプライト
+	/// </summary>
+	FontRender m_caveat;
+	/// <summary>
+	/// 描画するかしないか
+	/// </summary>
+	bool m_isCaveatDraw = false;
+	/// <summary>
+	/// 割合
+	/// </summary>
+	float m_caveatRatio = 0.0f;
+	/// <summary>
+	/// 点滅
+	/// </summary>
+	bool m_isSwapCaveatRatio = false;
 	/// <summary>
 	/// デバック用のフォントレンダー
 	/// </summary>
