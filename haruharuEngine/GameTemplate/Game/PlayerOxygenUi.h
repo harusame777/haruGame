@@ -1,5 +1,6 @@
 #pragma once
 #include "PlayerUIBase.h"
+#include "PlayerPointerUi.h"
 
 class Game;
 
@@ -13,7 +14,10 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~PlayerOxygenUi(){}
+	~PlayerOxygenUi()
+	{
+		DeleteGO(m_playerPointerUi);
+	}
 	/// <summary>
 	/// 外部からタイマーのポインタを格納する関数
 	/// </summary>
@@ -221,6 +225,10 @@ private:
 	/// 点滅
 	/// </summary>
 	bool m_isSwapCaveatRatio = false;
+	/// <summary>
+	/// プレイヤーポインターUiのインスタンス
+	/// </summary>
+	PlayerPointerUi* m_playerPointerUi = nullptr;
 	/// <summary>
 	/// デバック用のフォントレンダー
 	/// </summary>

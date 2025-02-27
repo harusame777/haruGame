@@ -130,6 +130,7 @@
     <ClCompile Include="GameInformation.cpp" />
     <ClCompile Include="GameEffect.cpp" />
     <ClCompile Include="WarriorAIMetaIdle.cpp" />
+    <ClCompile Include="PlayerPointerUi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -276,6 +277,7 @@
     <ClInclude Include="GameInformation.h" />
     <ClInclude Include="GameEffect.h" />
     <ClInclude Include="WarriorAIMetaIdle.h" />
+    <ClInclude Include="PlayerPointerUi.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bg">
