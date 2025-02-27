@@ -39,6 +39,9 @@ bool GameSound::Start()
 	g_soundEngine->ResistWaveFileBank(SoundListNum::en_syuwin,
 		"Assets/sound/syuwinSound.wav");
 
+	g_soundEngine->ResistWaveFileBank(SoundListNum::en_chaseBGM,
+		"Assets/sound/enemyChaseSound.wav");
+
 	return true;
 }
 
@@ -131,6 +134,21 @@ void GameSound::LocalSoundOrder(const SoundListNum& listNum,
 
 	orderSound->Play(loop);
 
+}
+
+SoundSource& GameSound::ReturnPointerLocalSoundOrder(
+	const SoundListNum& listNum,
+	const float& volume)
+{
+
+	//ƒTƒEƒ“ƒh‚ğì¬
+	SoundSource* orderSound = NewGO<SoundSource>(0);
+
+	orderSound->Init(listNum);
+
+	orderSound->SetVolume(volume);
+
+	return *orderSound;
 }
 
 const SoundSource& GameSound::SoundListInit(
