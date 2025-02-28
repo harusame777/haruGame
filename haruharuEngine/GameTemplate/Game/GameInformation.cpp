@@ -19,7 +19,7 @@ namespace {
 //スタート関数
 bool GameInformation::Start()
 {
-	m_gameWindow = NewGO<GameWindow>(1, "gameWindow");
+	m_gameWindow = NewGO<GameWindow>(1, "informationGameWindow");
 
 	m_gameSound = FindGO<GameSound>("gameSound");
 

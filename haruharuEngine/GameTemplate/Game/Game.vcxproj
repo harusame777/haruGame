@@ -253,6 +253,7 @@
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameInformation.cpp" />
     <ClCompile Include="GameEffect.cpp" />
+    <ClCompile Include="GameMenu.cpp" />
     <ClCompile Include="Gameover.cpp" />
     <ClCompile Include="GameSound.cpp" />
     <ClCompile Include="Load.cpp" />
@@ -313,6 +314,7 @@
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameInformation.h" />
     <ClInclude Include="GameEffect.h" />
+    <ClInclude Include="GameMenu.h" />
     <ClInclude Include="Gameover.h" />
     <ClInclude Include="GameSound.h" />
     <ClInclude Include="Load.h" />
