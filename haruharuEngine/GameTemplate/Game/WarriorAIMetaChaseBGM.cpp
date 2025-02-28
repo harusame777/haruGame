@@ -16,20 +16,25 @@ void WarriorAIMetaChaseBGM::MetaAIInit()
 //実行関数
 void WarriorAIMetaChaseBGM::MetaAIExecution(EnemySMBase* initEnemy)
 {
-
+	//追跡状態のエネミーを探す
 	SearchTrackingStateEnemy();
 
+	//もしBGMが鳴ってたら
 	if (m_isBGMPlayBack == true)
 	{
+		//もし追跡中のエネミーが居なかったら
 		if (m_isTrackingStateEnemy == false)
 		{
+			//BGMを止める
 			BGMEnd();
 		}
 	}
 	else
 	{
+		//もし追跡中のエネミーが居たら
 		if (m_isTrackingStateEnemy == true)
 		{
+			//BGMを始める
 			BGMStart();
 		}
 	}
