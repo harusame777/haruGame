@@ -10,7 +10,7 @@ namespace {
 
 	static const int MAX_TEXT_SIZE = 256;
 
-	static const Vector3 TEXT_FIXED_POS = { -850.0f,400.0f,0.0f };
+	static const Vector3 TEXT_FIXED_POS = { -200.0f,400.0f,0.0f };
 
 }
 
@@ -24,8 +24,13 @@ public:
 		en_standby,
 		//ウィンドウを開く
 		en_windowOpen,
+		//文字表示
+		en_textDraw,
+		//メニュー選択
+		en_menuSelection,
+		//ウィンドウクローズ
+		en_windowClose,
 	};
-
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
@@ -71,10 +76,25 @@ public:
 				//関数を設定
 				m_menuDatas->SetMenuFunction(menuFunc);
 
+				//メニューの最大数を記録
+				m_maxMenuNum++;
+
 				break;
 			}
 
 		}
+	}
+	/// <summary>
+	/// メニューを開いて起動する
+	/// </summary>
+	void GoMenuOpen();
+	/// <summary>
+	/// ステート変更
+	/// </summary>
+	/// <param name="changeState"></param>
+	void StateChange(const GameMenuState changeState)
+	{
+		m_gameMenuState = changeState;
 	}
 private:
 	/// <summary>
@@ -143,6 +163,43 @@ private:
 	/// </summary>
 	void Update();
 	/// <summary>
+	/// 文字描画更新
+	/// </summary>
+	void TextDrawUpdate();
+	/// <summary>
+	/// 遅延関数
+	/// </summary>
+	/// <returns></returns>
+	bool Delay(const float delayTime);
+	/// <summary>
+	/// 表示文字更新
+	/// </summary>
+	void DisplayTextUpdate();
+	/// <summary>
+	/// 表示文字配列更新
+	/// </summary>
+	void DisplayTextListUpdate();
+	/// <summary>
+	/// 現在の文字表示数
+	/// </summary>
+	int m_nowTextNum = 0;
+	/// <summary>
+	/// 文字表示遅延
+	/// </summary>
+	float m_textDelayTime = 0.0f;
+	/// <summary>
+	/// textDataListの設定されていない要素番号
+	/// </summary>
+	int m_listEndNum = 0;
+	/// <summary>
+	/// 現在のtextDataListの要素番号
+	/// </summary>
+	int m_listNowNum = 0;
+	/// <summary>
+	/// メニューセレクトアップデート
+	/// </summary>
+	void MenuSelectionUpdate();
+	/// <summary>
 	/// ステート更新
 	/// </summary>
 	void MenuStateUpdate();
@@ -151,6 +208,18 @@ private:
 	/// </summary>
 	/// <param name="rc"></param>
 	void Render(RenderContext& rc);
+	/// <summary>
+	/// 今メニュー選択している番号
+	/// </summary>
+	int m_nowMenuSelectionNum = 0;
+	/// <summary>
+	/// メニューの最大数
+	/// </summary>
+	int m_maxMenuNum = -1;
+	/// <summary>
+	/// どのメニューを起動するかを確定する
+	/// </summary>
+	int m_confirmedMenuSelectionNum = 0;
 	/// <summary>
 	/// ゲームサウンドのインスタンス
 	/// </summary>

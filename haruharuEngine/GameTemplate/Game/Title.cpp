@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Title.h"
 #include "Load.h"
+#include "GameMenu.h"
 
 namespace {
 	static const float BACKSIDE_SPRITE_W_SIZE = 1600.0f;
@@ -21,6 +22,26 @@ bool Title::Start()
 		BACKSIDE_SPRITE_W_SIZE,
 		BACKSIDE_SPRITE_H_SIZE);
 
+	m_gameMenu = NewGO<GameMenu>(2, "titleGameMenu");
+
+	m_gameMenu->InitMenuDatas(
+		L"gameStart",
+		L"Game Start",
+		std::bind(&Title::GameStart, this)
+	);
+
+	m_gameMenu->InitMenuDatas(
+		L"tutorial",
+		L"Tutorial",
+		std::bind(&Title::GameStart, this)
+	);
+
+	m_gameMenu->InitMenuDatas(
+		L"setting",
+		L"Setting",
+		std::bind(&Title::GameStart, this)
+	);
+
 	//ロード画面のインスタンスを取得
 	m_load = FindGO<Load>("load");
 
@@ -32,7 +53,7 @@ void Title::Update()
 {
 	if (g_pad[0]->IsTrigger(enButtonB))
 	{
-		m_isGameIn = true;
+		m_gameMenu->GoMenuOpen();
 	}
 
 	//フォントのアップデート
