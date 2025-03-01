@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Title.h"
 #include "Load.h"
-#include "GameMenu.h"
 
 namespace {
 	static const float BACKSIDE_SPRITE_W_SIZE = 1600.0f;

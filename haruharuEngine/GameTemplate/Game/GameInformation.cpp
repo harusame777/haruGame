@@ -4,7 +4,7 @@
 #include "GameSound.h"
 
 //定数等
-namespace {
+namespace GameInfoNS_CPP{
 	/// <summary>
 	/// フォントのカラー
 	/// </summary>
@@ -35,7 +35,7 @@ void GameInformation::GoInformation()
 	}
 
 	for (int listNo = 0;
-		listNo < MAX_TEXTDATALIST_EXP;
+		listNo < GameInfoNS_H::MAX_TEXTDATALIST_EXP;
 		listNo++)
 	{
 
@@ -106,7 +106,7 @@ void GameInformation::InformationStateUpdate()
 		if (g_pad[0]->IsTrigger(enButtonB))
 		{
 			for (int listNo = m_listNowNum;
-				listNo < MAX_TEXTDATALIST_EXP - 1;
+				listNo < GameInfoNS_H::MAX_TEXTDATALIST_EXP - 1;
 				listNo++)
 			{
 				m_nowTextNum = (wcslen(m_textDataList[listNo]
@@ -147,7 +147,7 @@ void GameInformation::InformationStateUpdate()
 		}
 
 		//表示文字更新
-		if (Delay(TIME_TEXT_DELAY))
+		if (Delay(GameInfoNS_CPP::TIME_TEXT_DELAY))
 		{
 			DisplayTextListUpdate();
 		}
@@ -178,7 +178,7 @@ void GameInformation::InformationStateUpdate()
 	case GameInformation::en_end:
 
 		for (int listNo = 0;
-			listNo < MAX_TEXTDATALIST_EXP;
+			listNo < GameInfoNS_H::MAX_TEXTDATALIST_EXP;
 			listNo++)
 		{
 
@@ -230,7 +230,7 @@ bool GameInformation::Delay(const float delayTime)
 
 void GameInformation::DisplayTextUpdate()
 {
-	m_textDataList[m_listNowNum].m_mainFontRender.SetColor(MAINTEXT_COLOR);
+	m_textDataList[m_listNowNum].m_mainFontRender.SetColor(GameInfoNS_CPP::MAINTEXT_COLOR);
 
 	m_textDataList[m_listNowNum].m_mainFontRender.SetPivot({ 0.5f,0.5f });
 
@@ -262,7 +262,7 @@ void GameInformation::DisplayTextListUpdate()
 		return;
 
 	wcsncat_s(m_textDataList[m_listNowNum].m_displayTextList,
-		TEXT_UNDER_BAR, 1);
+		GameInfoNS_CPP::TEXT_UNDER_BAR, 1);
 
 }
 
@@ -285,13 +285,13 @@ void GameInformation::Render(RenderContext& rc)
 
 		m_closeButtonText.SetPosition({ 230.0f,-400.0f,0.0f });
 
-		m_closeButtonText.SetColor(CLOSETEXT_COLOR);
+		m_closeButtonText.SetColor(GameInfoNS_CPP::CLOSETEXT_COLOR);
 
 		m_closeButtonText.Draw(rc);
 	}
 
 	for (int listNo = 0;
-		listNo < MAX_TEXTDATALIST_EXP;
+		listNo < GameInfoNS_H::MAX_TEXTDATALIST_EXP;
 		listNo++)
 	{
 		m_textDataList[listNo].m_mainFontRender.Draw(rc);

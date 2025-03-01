@@ -4,7 +4,7 @@
 #include "GameSound.h"
 
 //定数等
-namespace {
+namespace GameMenuNS_CPP{
 	/// <summary>
 	/// フォントのカラー
 	/// </summary>
@@ -25,8 +25,8 @@ bool GameMenu::Start()
 	m_gameSound = FindGO<GameSound>("gameSound");
 
 	m_mouseCursor.Init("Assets/modelData/window/mouse_cursor.DDS",
-		MOUSECORSOR_SPRITE_W_SIZE,
-		MOUSECORSOR_SPRITE_H_SIZE
+		GameMenuNS_CPP::MOUSECORSOR_SPRITE_W_SIZE,
+		GameMenuNS_CPP::MOUSECORSOR_SPRITE_H_SIZE
 	);
 
 	m_mouseCursor.SetPivot({ 1.0f,1.0f });
@@ -42,7 +42,7 @@ void GameMenu::GoMenuOpen()
 	}
 
 	for (int listNo = 0;
-		listNo < MAX_TEXTDATALIST_EXP;
+		listNo < GameMenuNS_H::MAX_TEXTDATALIST_EXP;
 		listNo++)
 	{
 
@@ -73,6 +73,7 @@ void GameMenu::Update()
 
 void GameMenu::MenuStateUpdate()
 {
+	bool func = false;
 
 	switch (m_gameMenuState)
 	{
@@ -101,6 +102,19 @@ void GameMenu::MenuStateUpdate()
 		MenuSelectionUpdate();
 
 		break;
+	case GameMenu::en_windowClose:
+
+		if (m_gameWindow->IsWindowClose())
+		{
+			StateChange(GameMenuState::en_selectionMenuFunctionGo);
+		}
+
+		break;
+	case GameMenu::en_selectionMenuFunctionGo:
+
+		func = m_menuDatas[m_confirmedMenuSelectionNum].m_menuFunction();
+			
+		break;
 	default:
 		break;
 	}
@@ -113,7 +127,7 @@ void GameMenu::TextDrawUpdate()
 	if (g_pad[0]->IsTrigger(enButtonB))
 	{
 		for (int listNo = m_listNowNum;
-			listNo < MAX_TEXTDATALIST_EXP - 1;
+			listNo < GameMenuNS_H::MAX_TEXTDATALIST_EXP - 1;
 			listNo++)
 		{
 			m_nowTextNum = (wcslen(m_menuDatas[listNo]
@@ -154,7 +168,7 @@ void GameMenu::TextDrawUpdate()
 	}
 
 	//表示文字更新
-	if (Delay(TIME_TEXT_DELAY))
+	if (Delay(GameMenuNS_CPP::TIME_TEXT_DELAY))
 	{
 		DisplayTextListUpdate();
 	}
@@ -177,7 +191,7 @@ bool GameMenu::Delay(const float delayTime)
 
 void GameMenu::DisplayTextUpdate()
 {
-	m_menuDatas[m_listNowNum].m_fontRender.SetColor(MAINTEXT_COLOR);
+	m_menuDatas[m_listNowNum].m_fontRender.SetColor(GameMenuNS_CPP::MAINTEXT_COLOR);
 
 	m_menuDatas[m_listNowNum].m_fontRender.SetPivot({ 0.5f,0.5f });
 
@@ -210,7 +224,7 @@ void GameMenu::DisplayTextListUpdate()
 		return;
 
 	wcsncat_s(m_menuDatas[m_listNowNum].m_displayTextList,
-		TEXT_UNDER_BAR, 1);
+		GameMenuNS_CPP::TEXT_UNDER_BAR, 1);
 
 }
 
@@ -242,6 +256,8 @@ void GameMenu::MenuSelectionUpdate()
 	{
 		//起動するものを確定
 		m_confirmedMenuSelectionNum = m_nowMenuSelectionNum;
+
+		m_gameWindow->WindowClose();
 		
 		StateChange(GameMenuState::en_windowClose);
 	}
@@ -267,7 +283,7 @@ void GameMenu::MouseCursorSpriteUpdate()
 
 void GameMenu::TextSelectionUpdate()
 {
-	if (Delay(TIME_TEXT_SELECTION_DELAY))
+	if (Delay(GameMenuNS_CPP::TIME_TEXT_SELECTION_DELAY))
 	{
 		//反転
 		m_menuDatas[m_nowMenuSelectionNum].m_isTextSelectionDraw
@@ -277,8 +293,14 @@ void GameMenu::TextSelectionUpdate()
 
 void GameMenu::Render(RenderContext& rc)
 {
+	if (m_gameMenuState != GameMenuState::en_textDraw &&
+		m_gameMenuState != GameMenuState::en_menuSelection)
+	{
+		return;
+	}
+
 	for (int listNo = 0;
-		listNo < MAX_TEXTDATALIST_EXP;
+		listNo < GameMenuNS_H::MAX_TEXTDATALIST_EXP;
 		listNo++)
 	{
 		if (m_menuDatas[listNo].m_isTextSelectionDraw == true)

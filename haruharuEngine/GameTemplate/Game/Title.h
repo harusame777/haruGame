@@ -1,7 +1,7 @@
 #pragma once
+#include "GameMenu.h"
 
 class Load;
-class GameMenu;
 
 class Title : public IGameObject
 {
@@ -13,7 +13,10 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~Title() {}
+	~Title() 
+	{
+		DeleteGO(m_gameMenu);
+	}
 	/// <summary>
 	/// ゲームタイトルが終了したか
 	/// </summary>

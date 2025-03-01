@@ -4,7 +4,7 @@ class GameWindow;
 class GameSound;
 
 //定数等
-namespace {
+namespace GameMenuNS_H{
 
 	static const int MAX_TEXTDATALIST_EXP = 8;
 
@@ -30,6 +30,8 @@ public:
 		en_menuSelection,
 		//ウィンドウクローズ
 		en_windowClose,
+		//決定したメニューの関数を起動
+		en_selectionMenuFunctionGo,
 	};
 	/// <summary>
 	/// コンストラクタ
@@ -55,7 +57,7 @@ public:
 	{
 
 		for (int listNo = 0;
-			listNo < MAX_TEXTDATALIST_EXP;
+			listNo < GameMenuNS_H::MAX_TEXTDATALIST_EXP;
 			listNo++)
 		{
 
@@ -63,7 +65,7 @@ public:
 			{
 				m_menuDatas[listNo].m_isUse = true;
 
-				m_menuDatas[listNo].m_textPos = TEXT_FIXED_POS;
+				m_menuDatas[listNo].m_textPos = GameMenuNS_H::TEXT_FIXED_POS;
 
 				m_menuDatas[listNo].m_textPos.y -= 100 * listNo;
 
@@ -118,15 +120,15 @@ private:
 		/// <summary>
 		/// メニュー識別子
 		/// </summary>
-		wchar_t m_menuName[MAX_TEXT_SIZE] = {};
+		wchar_t m_menuName[GameMenuNS_H::MAX_TEXT_SIZE] = {};
 		/// <summary>
 		/// 外部入力文字配列
 		/// </summary>
-		wchar_t m_externalInputTextList[MAX_TEXT_SIZE] = {};
+		wchar_t m_externalInputTextList[GameMenuNS_H::MAX_TEXT_SIZE] = {};
 		/// <summary>
 		/// メインフォントの配列
 		/// </summary>
-		wchar_t m_displayTextList[MAX_TEXT_SIZE] = {};
+		wchar_t m_displayTextList[GameMenuNS_H::MAX_TEXT_SIZE] = {};
 		/// <summary>
 		/// このコンテナを使用中かどうか
 		/// </summary>
@@ -156,7 +158,7 @@ private:
 	/// <summary>
 	/// 構造体変数
 	/// </summary>
-	MenuDatas m_menuDatas[MAX_TEXTDATALIST_EXP];
+	MenuDatas m_menuDatas[GameMenuNS_H::MAX_TEXTDATALIST_EXP];
 	/// <summary>
 	/// スタート関数
 	/// </summary>
