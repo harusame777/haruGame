@@ -11,7 +11,7 @@ namespace {
 	static const Vector4 FONT_COLOR = { 0.3f,0.3f,1.0f,1.0f };
 	static const Vector4 MAINTEXT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
 	static const Vector4 CLOSETEXT_COLOR = { 0.3f,0.1f,0.1f,1.0f };
-	static const float TIME_N = 0.02f;
+	static const float TIME_TEXT_DELAY = 0.02f;
 	static const wchar_t TEXT_UNDER_BAR[2] = { L"_" };
 
 }
@@ -147,7 +147,7 @@ void GameInformation::InformationStateUpdate()
 		}
 
 		//ï\é¶ï∂éöçXêV
-		if (Delay(TIME_N))
+		if (Delay(TIME_TEXT_DELAY))
 		{
 			DisplayTextListUpdate();
 		}

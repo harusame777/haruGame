@@ -139,6 +139,10 @@ private:
 		/// テキストの位置
 		/// </summary>
 		Vector3 m_textPos = Vector3::Zero;
+		/// <summary>
+		/// セレクト時に表示するかしないか
+		/// </summary>
+		bool m_isTextSelectionDraw = false;
 	public:
 		/// <summary>
 		/// 関数をセット
@@ -200,6 +204,10 @@ private:
 	/// </summary>
 	void MenuSelectionUpdate();
 	/// <summary>
+	/// 文字選択時の更新
+	/// </summary>
+	void TextSelectionUpdate();
+	/// <summary>
 	/// ステート更新
 	/// </summary>
 	void MenuStateUpdate();
@@ -220,6 +228,18 @@ private:
 	/// どのメニューを起動するかを確定する
 	/// </summary>
 	int m_confirmedMenuSelectionNum = 0;
+	/// <summary>
+	/// マウスカーソルスプライトの更新
+	/// </summary>
+	void MouseCursorSpriteUpdate();
+	/// <summary>
+	/// マウスカーソル
+	/// </summary>
+	SpriteRender m_mouseCursor;
+	/// <summary>
+	/// マウスカーソルを描画するか
+	/// </summary>
+	bool m_isMouseCorsorDraw = false;
 	/// <summary>
 	/// ゲームサウンドのインスタンス
 	/// </summary>

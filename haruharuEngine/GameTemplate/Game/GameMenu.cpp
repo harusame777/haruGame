@@ -10,9 +10,12 @@ namespace {
 	/// </summary>
 	static const Vector4 FONT_COLOR = { 0.3f,0.3f,1.0f,1.0f };
 	static const Vector4 MAINTEXT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
-	static const float TIME_N = 0.02f;
+	static const float TIME_TEXT_DELAY = 0.02f;
+	static const float TIME_TEXT_SELECTION_DELAY = 1.0f;
 	static const wchar_t TEXT_UNDER_BAR[2] = { L"_" };
 
+	static const float MOUSECORSOR_SPRITE_W_SIZE = 34.0f;
+	static const float MOUSECORSOR_SPRITE_H_SIZE = 38.0f;
 }
 
 bool GameMenu::Start()
@@ -20,6 +23,13 @@ bool GameMenu::Start()
 	m_gameWindow = NewGO<GameWindow>(1,"menuGameWindow");
 
 	m_gameSound = FindGO<GameSound>("gameSound");
+
+	m_mouseCursor.Init("Assets/modelData/window/mouse_cursor.DDS",
+		MOUSECORSOR_SPRITE_W_SIZE,
+		MOUSECORSOR_SPRITE_H_SIZE
+	);
+
+	m_mouseCursor.SetPivot({ 1.0f,1.0f });
 
 	return true;
 }
@@ -58,6 +68,7 @@ void GameMenu::Update()
 
 	DisplayTextUpdate();
 
+	m_mouseCursor.Update();
 }
 
 void GameMenu::MenuStateUpdate()
@@ -115,6 +126,8 @@ void GameMenu::TextDrawUpdate()
 			m_listNowNum++;
 		}
 
+		m_isMouseCorsorDraw = true;
+
 		StateChange(GameMenu::en_menuSelection);
 
 		return;
@@ -126,6 +139,7 @@ void GameMenu::TextDrawUpdate()
 	{
 		if (m_listNowNum > m_listEndNum)
 		{
+			m_isMouseCorsorDraw = true;
 
 			StateChange(GameMenu::en_menuSelection);
 
@@ -140,7 +154,7 @@ void GameMenu::TextDrawUpdate()
 	}
 
 	//表示文字更新
-	if (Delay(TIME_N))
+	if (Delay(TIME_TEXT_DELAY))
 	{
 		DisplayTextListUpdate();
 	}
@@ -205,8 +219,11 @@ void GameMenu::MenuSelectionUpdate()
 	//メニュー選択で上を選択する処理
 	if (g_pad[0]->IsTrigger(enButtonUp))
 	{
-		if (m_maxMenuNum <= 0)
+		if (m_nowMenuSelectionNum <= 0)
 			return;
+
+		m_menuDatas[m_nowMenuSelectionNum].m_isTextSelectionDraw
+			= false;
 
 		m_nowMenuSelectionNum--;
 	}
@@ -215,6 +232,9 @@ void GameMenu::MenuSelectionUpdate()
 	{
 		if (m_maxMenuNum <= m_nowMenuSelectionNum)
 			return;
+
+		m_menuDatas[m_nowMenuSelectionNum].m_isTextSelectionDraw
+			= false;
 
 		m_nowMenuSelectionNum++;
 	}
@@ -225,6 +245,34 @@ void GameMenu::MenuSelectionUpdate()
 		
 		StateChange(GameMenuState::en_windowClose);
 	}
+
+	//マウスカーソルのアップデート
+	MouseCursorSpriteUpdate();
+	//選択文字表示更新
+	TextSelectionUpdate();
+}
+
+void GameMenu::MouseCursorSpriteUpdate()
+{
+	Vector3 mouseCurSorPos;
+
+	//補正値計算
+	mouseCurSorPos.x = m_menuDatas[m_nowMenuSelectionNum].m_textPos.x + 20.0f;
+
+	mouseCurSorPos.y = m_menuDatas[m_nowMenuSelectionNum].m_textPos.y 
+		+ -80.0f + (m_nowMenuSelectionNum * 15.0f);
+
+	m_mouseCursor.SetPosition(mouseCurSorPos);
+}
+
+void GameMenu::TextSelectionUpdate()
+{
+	if (Delay(TIME_TEXT_SELECTION_DELAY))
+	{
+		//反転
+		m_menuDatas[m_nowMenuSelectionNum].m_isTextSelectionDraw
+			= !m_menuDatas[m_nowMenuSelectionNum].m_isTextSelectionDraw;
+	}
 }
 
 void GameMenu::Render(RenderContext& rc)
@@ -233,6 +281,14 @@ void GameMenu::Render(RenderContext& rc)
 		listNo < MAX_TEXTDATALIST_EXP;
 		listNo++)
 	{
+		if (m_menuDatas[listNo].m_isTextSelectionDraw == true)
+			continue;
+
 		m_menuDatas[listNo].m_fontRender.Draw(rc);
+	}
+
+	if (m_isMouseCorsorDraw == true)
+	{
+		m_mouseCursor.Draw(rc);
 	}
 }

@@ -42,6 +42,12 @@ bool Title::Start()
 		std::bind(&Title::GameStart, this)
 	);
 
+	m_gameMenu->InitMenuDatas(
+		L"test",
+		L"Test",
+		std::bind(&Title::GameStart, this)
+	);
+
 	//ロード画面のインスタンスを取得
 	m_load = FindGO<Load>("load");
 
