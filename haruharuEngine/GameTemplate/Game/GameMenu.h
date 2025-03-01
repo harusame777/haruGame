@@ -17,7 +17,6 @@ namespace GameMenuNS_H{
 class GameMenu : public IGameObject
 {
 public:
-
 	enum GameMenuState
 	{
 		//待機
@@ -32,6 +31,8 @@ public:
 		en_windowClose,
 		//決定したメニューの関数を起動
 		en_selectionMenuFunctionGo,
+		//終了
+		en_end
 	};
 	/// <summary>
 	/// コンストラクタ
@@ -44,13 +45,13 @@ public:
 	/// <summary>
 	/// 命名定義、関数入れ物
 	/// </summary>
-	using MenuFunction = std::function<bool()>;
+	using MenuFunction = std::function<bool(bool*)>;
 	/// <summary>
 	/// メニュー作成
 	/// </summary>
 	/// <param name="func"></param>
 	void InitMenuDatas(
-		const wchar_t* menuName,
+		bool setWindowClose,
 		const wchar_t* menuText,
 		const MenuFunction& menuFunc
 	)
@@ -72,11 +73,11 @@ public:
 				//文字列textをm_externalInputFontListにコピー
 				swprintf_s(m_menuDatas[listNo].m_externalInputTextList, menuText);
 
-				//メニューの名前を設定
-				swprintf_s(m_menuDatas[listNo].m_menuName, menuName);
+				//ウィンドウを閉じるかどうか設定
+				m_menuDatas[listNo].m_isFuncEndWindowClose = setWindowClose;
 
 				//関数を設定
-				m_menuDatas->SetMenuFunction(menuFunc);
+				m_menuDatas[listNo].SetMenuFunction(menuFunc);
 
 				//メニューの最大数を記録
 				m_maxMenuNum++;
@@ -98,6 +99,27 @@ public:
 	{
 		m_gameMenuState = changeState;
 	}
+	/// <summary>
+	/// インフォメーションが起動中かどうか
+	/// </summary>
+	/// <returns></returns>
+	bool IsMenuOpenNow()const
+	{
+		if (m_gameMenuState != GameMenuState::en_standby)
+		{
+			return true;
+		}
+
+		return false;
+	}
+	/// <summary>
+	/// インフォメーションが閉まりだした時にtrue
+	/// </summary>
+	/// <returns></returns>
+	bool IsMenuCloseing()const
+	{
+		return m_isMenuClose;
+	}
 private:
 	/// <summary>
 	/// ゲームメニューのステート
@@ -118,9 +140,13 @@ private:
 		/// </summary>
 		MenuFunction m_menuFunction;
 		/// <summary>
-		/// メニュー識別子
+		/// 実行関数終了した時にウィンドウを閉じるか
 		/// </summary>
-		wchar_t m_menuName[GameMenuNS_H::MAX_TEXT_SIZE] = {};
+		bool m_isFuncEndWindowClose = false;
+		/// <summary>
+		/// 前のメニューを開くかどうか
+		/// </summary>
+		bool m_isOpenPreviousMenu = false;
 		/// <summary>
 		/// 外部入力文字配列
 		/// </summary>
@@ -242,6 +268,14 @@ private:
 	/// マウスカーソルを描画するか
 	/// </summary>
 	bool m_isMouseCorsorDraw = false;
+	/// <summary>
+	/// メニューが閉まっているかどうか
+	/// </summary>
+	bool m_isMenuClose = false;
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	void InitMenuDetasList();
 	/// <summary>
 	/// ゲームサウンドのインスタンス
 	/// </summary>

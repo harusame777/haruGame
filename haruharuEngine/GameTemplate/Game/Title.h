@@ -41,6 +41,10 @@ private:
 		return true;
 	}
 	/// <summary>
+	/// ゲームスタート
+	/// </summary>
+	bool Test();
+	/// <summary>
 	/// アップデート関数
 	/// </summary>
 	void Update();
@@ -77,6 +81,7 @@ private:
 	/// ゲームメニュー
 	/// </summary>
 	GameMenu* m_gameMenu = nullptr;
+	GameMenu* m_gameMenuTest = nullptr;
 	/// <summary>
 	/// タイトル終了してゲームインに入る
 	/// </summary>

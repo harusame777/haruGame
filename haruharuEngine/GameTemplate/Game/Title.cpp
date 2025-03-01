@@ -14,6 +14,13 @@ namespace {
 
 }
 
+bool Title::Test()
+{
+	m_gameMenuTest->GoMenuOpen();
+	
+	return true;
+}
+
 //スタート関数
 bool Title::Start()
 {
@@ -23,28 +30,23 @@ bool Title::Start()
 
 	m_gameMenu = NewGO<GameMenu>(2, "titleGameMenu");
 
+	m_gameMenuTest = NewGO<GameMenu>(2, "titleGameMenuTest");
+
 	m_gameMenu->InitMenuDatas(
-		L"gameStart",
+		true,
 		L"Game Start",
 		std::bind(&Title::GameStart, this)
 	);
 
 	m_gameMenu->InitMenuDatas(
-		L"tutorial",
-		L"Tutorial",
-		std::bind(&Title::GameStart, this)
-	);
-
-	m_gameMenu->InitMenuDatas(
-		L"setting",
-		L"Setting",
-		std::bind(&Title::GameStart, this)
-	);
-
-	m_gameMenu->InitMenuDatas(
-		L"test",
+		false,
 		L"Test",
-		std::bind(&Title::GameStart, this)
+		[&]() -> bool 
+		{
+			m_gameMenuTest->GoMenuOpen();
+
+			return true;
+		}
 	);
 
 	//ロード画面のインスタンスを取得

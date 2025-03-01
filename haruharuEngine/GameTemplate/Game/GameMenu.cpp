@@ -63,11 +63,11 @@ void GameMenu::GoMenuOpen()
 
 void GameMenu::Update()
 {
-
+	//メニューのステートのアップデート
 	MenuStateUpdate();
-
+	//表示テキストのアップデート
 	DisplayTextUpdate();
-
+	//マウスカーソルのアップデート
 	m_mouseCursor.Update();
 }
 
@@ -112,8 +112,30 @@ void GameMenu::MenuStateUpdate()
 		break;
 	case GameMenu::en_selectionMenuFunctionGo:
 
-		func = m_menuDatas[m_confirmedMenuSelectionNum].m_menuFunction();
+		func = m_menuDatas[m_confirmedMenuSelectionNum].m_menuFunction(
+			&m_menuDatas[m_confirmedMenuSelectionNum].m_isOpenPreviousMenu);
+
+		if (m_menuDatas[m_confirmedMenuSelectionNum].m_isFuncEndWindowClose
+			== true)
+		{
+			m_isMenuClose = true;
+
+			StateChange(GameMenu::en_end);
+		}
+		else
+		{
+			StateChange(GameMenu::en_end);
+		}
 			
+		break;
+	case GameMenu::en_end:
+
+		m_isMenuClose = false;
+
+		InitMenuDetasList();
+
+		StateChange(GameMenuState::en_standby);
+
 		break;
 	default:
 		break;
@@ -261,6 +283,14 @@ void GameMenu::MenuSelectionUpdate()
 		
 		StateChange(GameMenuState::en_windowClose);
 	}
+	else if(g_pad[0]->IsTrigger(enButtonA))
+	{
+
+		m_gameWindow->WindowClose();
+
+		StateChange(GameMenuState::en_end);
+
+	}
 
 	//マウスカーソルのアップデート
 	MouseCursorSpriteUpdate();
@@ -289,6 +319,35 @@ void GameMenu::TextSelectionUpdate()
 		m_menuDatas[m_nowMenuSelectionNum].m_isTextSelectionDraw
 			= !m_menuDatas[m_nowMenuSelectionNum].m_isTextSelectionDraw;
 	}
+}
+
+void GameMenu::InitMenuDetasList()
+{
+	for (int listNo = 0;
+		listNo < GameMenuNS_H::MAX_TEXTDATALIST_EXP;
+		listNo++)
+	{
+
+		m_menuDatas[listNo].m_fontRender.SetText(L"");
+
+		std::memset(m_menuDatas[listNo].m_displayTextList,
+			0,
+			sizeof(m_menuDatas[listNo].m_displayTextList));
+
+		m_menuDatas[listNo].m_isTextSelectionDraw = false;
+
+		m_nowTextNum = 0;
+
+		m_listEndNum = 0;
+
+		m_listNowNum = 0;
+		//メニュー選択番号
+		m_nowMenuSelectionNum = 0;
+		//メニュー決定番号
+		m_confirmedMenuSelectionNum = 0;
+	}
+
+	m_isMouseCorsorDraw = false;
 }
 
 void GameMenu::Render(RenderContext& rc)
