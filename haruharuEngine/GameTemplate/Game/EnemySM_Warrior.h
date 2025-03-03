@@ -8,6 +8,7 @@ class EnemyAIMetaWarrior;
 class WarriorDataHolder;
 class Player;
 class Game;
+class GameSound;
 
 class EnemySM_Warrior : public EnemySMBase, public virtual EnemyAIBase
 {
@@ -192,5 +193,9 @@ private:
 	/// ゲームのインスタンス
 	/// </summary>
 	Game* m_game = nullptr;
+	/// <summary>
+	/// ゲームサウンドのインスタンス
+	/// </summary>
+	GameSound* m_gameSound = nullptr;
 };
 

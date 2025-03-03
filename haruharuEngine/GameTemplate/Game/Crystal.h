@@ -9,6 +9,11 @@ class PlayerScoreUi;
 class Crystal : public BootObjectBase
 {
 public:
+	enum CrystalColor{
+		en_crystal_M,
+		en_crystal_R,
+		en_crystal_Y,
+	};
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
@@ -41,6 +46,14 @@ public:
 	const bool GetCollected() const
 	{
 		return m_isGetObject;
+	}
+	/// <summary>
+	/// クリスタルのカラーを決定
+	/// </summary>
+	/// <param name="color"></param>
+	void CrystalSetColor(const CrystalColor color)
+	{
+		m_crystalColorState = color;
 	}
 private:
 	/// <summary>
@@ -102,8 +115,20 @@ private:
 	/// </summary>
 	PlayerScoreUi* m_scoreUi = nullptr;
 	/// <summary>
+	/// クリスタルのモデル
+	/// </summary>
+	ModelRender m_crystal_M_Model;
+	ModelRender m_crystal_R_Model;
+	ModelRender m_crystal_Y_Model;
+	/// <summary>
+	/// クリスタルの色ステート
+	/// </summary>
+	CrystalColor m_crystalColorState = CrystalColor::en_crystal_M;
+	/// <summary>
 	/// スコア
 	/// </summary>
-	float m_score = 160.0f;
+	float m_scoreM = 150.0f;
+	float m_scoreR = 400.0f;
+	float m_scoreY = 1500.0f;
 };
 

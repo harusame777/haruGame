@@ -263,6 +263,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerInteractableUi.cpp" />
     <ClCompile Include="PlayerOxygenUi.cpp" />
+    <ClCompile Include="PlayerPointerUi.cpp" />
     <ClCompile Include="PlayerScanCrystalUi.cpp" />
     <ClCompile Include="PlayerScoreUi.cpp" />
     <ClCompile Include="PlayerStaminaUi.cpp" />
@@ -322,6 +323,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerInteractableUi.h" />
     <ClInclude Include="PlayerOxygenUi.h" />
+    <ClInclude Include="PlayerPointerUi.h" />
     <ClInclude Include="PlayerScanCrystalUi.h" />
     <ClInclude Include="PlayerScoreUi.h" />
     <ClInclude Include="PlayerStaminaUi.h" />

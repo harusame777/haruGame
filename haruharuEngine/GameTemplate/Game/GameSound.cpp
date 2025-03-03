@@ -12,6 +12,9 @@ bool GameSound::Start()
 	g_soundEngine->ResistWaveFileBank(SoundListNum::en_rockDigSound,
 		"Assets/sound/rockDigSound.wav");
 
+	g_soundEngine->ResistWaveFileBank(SoundListNum::en_breakDigSound,
+		"Assets/sound/breakDigSound.wav");
+
 	g_soundEngine->ResistWaveFileBank(SoundListNum::en_decisionSound,
 		"Assets/sound/decisionSound.wav");
 
@@ -21,11 +24,20 @@ bool GameSound::Start()
 	g_soundEngine->ResistWaveFileBank(SoundListNum::en_enemyWarriorWalkSound,
 		"Assets/sound/enemyWarriorWalkSound_2.wav");
 
+	g_soundEngine->ResistWaveFileBank(SoundListNum::en_enemyWarriorRoar,
+		"Assets/sound/enemyWarriorRoar.wav");
+
 	g_soundEngine->ResistWaveFileBank(SoundListNum::en_killSound,
 		"Assets/sound/killSound.wav");
 
 	g_soundEngine->ResistWaveFileBank(SoundListNum::en_playerWalkSound,
 		"Assets/sound/playerWalkSound.wav");
+
+	g_soundEngine->ResistWaveFileBank(SoundListNum::en_fontIn,
+		"Assets/sound/fontIn.wav");
+
+	g_soundEngine->ResistWaveFileBank(SoundListNum::en_syuwin,
+		"Assets/sound/syuwinSound.wav");
 
 	return true;
 }

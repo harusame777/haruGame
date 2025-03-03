@@ -2,6 +2,7 @@
 #include "GameWindow.h"
 
 class GameWindow;
+class GameSound;
 
 //定数等
 namespace {
@@ -61,32 +62,7 @@ public:
 	/// 起動関数
 	/// </summary>
 	/// <param name="text"></param>
-	void GoInformation()
-	{
-		if (m_gameInformationState != GameInformationState::en_standby)
-		{
-			return;
-		}
-
-		for (int listNo = 0;
-			listNo < MAX_TEXTDATALIST_EXP;
-			listNo++)
-		{
-
-			m_listEndNum = listNo - 1;
-
-			if (m_textDataList[listNo].m_isUse == false)
-			{
-				break;
-			}
-
-		}
-
-		//ウィンドウを開ける
-		m_gameWindow->WindowOpen();
-		//ステートをwindowOpenに変更
-		StateChange(GameInformationState::en_windowOpen);
-	}
+	void GoInformation();
 	/// <summary>
 	/// インフォメーションが起動中かどうか
 	/// </summary>
@@ -237,5 +213,9 @@ private:
 	/// ウィンドウのインスタンス
 	/// </summary>
 	GameWindow* m_gameWindow = nullptr;
+	/// <summary>
+	/// ゲームサウンドのインスタンス
+	/// </summary>
+	GameSound* m_gameSound = nullptr;
 };
 

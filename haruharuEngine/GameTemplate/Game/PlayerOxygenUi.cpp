@@ -21,6 +21,12 @@ namespace {
 
 	static const float OXYGENGAUGE_ALPHA_EASING_MAX = 0.7f;
 	static const float OXYGENGAUGE_ALPHA_EASING_MIN = 0.3f;
+
+	static const Vector3 OXYGEN_FONT_POSITION = { 720.0f,190.0f,0.0f };
+
+	static const Vector4 FONT_COLOR = { 0.3f,0.3f,1.0f,1.0f };
+
+	static const Vector3 CAVEAT_FONT_POSITION = { -650.0f, 300.0f, 0.0f };
 }
 
 //スタート関数
@@ -63,6 +69,8 @@ bool PlayerOxygenUi::Start()
 
 	m_game = FindGO<Game>("game");
 
+	m_playerPointerUi = NewGO<PlayerPointerUi>(0, "pointerUi");
+
 	return true;
 }
 
@@ -83,13 +91,25 @@ void PlayerOxygenUi::Update()
 	//ワイプ更新
 	m_oxygenGaugeSpriteData.SetDegree(WipeCalc());
 
-#ifdef _DEBUG
 	wchar_t wcsbuf[256];
+
+#ifdef _DEBUG
+	wcsbuf[256];
 
 	swprintf_s(wcsbuf, 256, L"%06.1ftime",float(m_mainOxygenIndex));
 
 	m_debugFontRender.SetText(wcsbuf);
 #endif
+
+	swprintf_s(wcsbuf, 256, L"oxygen");
+
+	m_oxygen.SetText(wcsbuf);
+
+	m_oxygen.SetPosition(OXYGEN_FONT_POSITION);
+
+	m_oxygen.SetColor(FONT_COLOR);
+
+	CaveatDraw();
 
 	m_oxygenUiBase.Update();
 
@@ -100,9 +120,12 @@ const PlayerOxygenUi::OxygenGaugeState& PlayerOxygenUi::OxygenGaugeStateUpdate()
 {
 	const float nowGameTimer = m_mainOxygenIndex;
 
-	if (m_mainOxygenIndex <= OXYGEN_MIN_LINE) 
-		return OxygenGaugeState::en_oxygenMin;
+	if (m_mainOxygenIndex <= OXYGEN_MIN_LINE)
+	{
+		m_playerPointerUi->SetPointerDraw(true);
 
+		return OxygenGaugeState::en_oxygenMin;
+	}
 	if (m_mainOxygenIndex > OXYGEN_MIN_LINE &&
 		m_mainOxygenIndex <= OXYGEN_LOW_LINE)
 		return OxygenGaugeState::en_oxygenLow;
@@ -205,12 +228,78 @@ const float& PlayerOxygenUi::AlphaEasing(const float& speed)
 		m_alphaRatio);
 }
 
+void PlayerOxygenUi::CaveatDraw()
+{
+	if (m_oxygenGaugeState != en_oxygenMin)
+		return;
+
+	Vector4 fontColor = { 1.0f,0.6f,0.6f,1.0f };
+
+	//もしアルファ値イージング割合が1.0f以下だったら
+	if (m_caveatRatio >= 1.0f)
+	{
+		//アルファ値イージング割合を0.0fに
+		m_caveatRatio = 0.0f;
+	}
+
+	//イージングのAとBの変数
+	float easingStart = 0.0f;
+	float easingEnd = 0.0f;
+
+	//イージングが完了すたびにAとBを入れ替える
+	if (m_isSwapCaveatRatio == true)
+	{
+		easingStart = 0.0f;
+
+		easingEnd = 1.0f;
+	}
+	else
+	{
+		easingStart = 1.0f;
+
+		easingEnd = 0.0f;
+	}
+
+	//アルファ値イージング割合を加算
+	m_caveatRatio += g_gameTime->GetFrameDeltaTime();
+
+	//アルファ値イージング割合が1.0fより多かったら
+	if (m_caveatRatio > 1.0f)
+	{
+		//アルファ値イージング割合を1.0fにして
+		m_caveatRatio = 1.0f;
+		//AとBを反転させる
+		m_isSwapCaveatRatio = !m_isSwapCaveatRatio;
+	}
+
+	fontColor.a = Leap(easingStart,
+		easingEnd,
+		m_caveatRatio);
+
+	wchar_t wcsbuf[256];
+
+	swprintf_s(wcsbuf, 256, L"caveat! Oxygen level is low! Escape now!");
+
+	m_caveat.SetText(wcsbuf);
+
+	m_caveat.SetPosition(CAVEAT_FONT_POSITION);
+
+	m_caveat.SetColor(fontColor);
+}
+
 //レンダー関数
 void PlayerOxygenUi::Render(RenderContext& rc)
 {
 	m_oxygenUiGauge.Draw(rc);
 
 	m_oxygenUiBase.Draw(rc);
+
+	m_oxygen.Draw(rc);
+
+	if (m_oxygenGaugeState == en_oxygenMin)
+	{
+		m_caveat.Draw(rc);
+	}
 
 #ifdef _DEBUG
 	m_debugFontRender.Draw(rc);

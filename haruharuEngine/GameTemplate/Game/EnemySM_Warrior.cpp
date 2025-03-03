@@ -9,6 +9,7 @@
 #include "EnemyAIMetaWarrior.h"
 #include "Player.h"
 #include "Game.h"
+#include "GameSound.h"
 
 //エネミー全体を管理するメタAIを作成して、追跡を管理したい
 //
@@ -31,6 +32,8 @@ void EnemySM_Warrior::EnemyAIStart()
 	m_warriorMetaAI = FindGO<EnemyAIMetaWarrior>("MetaAI");
 	//メタAIにエネミーのインスタンスを送る
 	m_warriorMetaAI->ListInitEnemy(this);
+
+	m_gameSound = FindGO<GameSound>("gameSound");
 
 	//ゲームのインスタンス
 	m_game = FindGO<Game>("game");
@@ -78,6 +81,9 @@ void EnemySM_Warrior::EnemyAIStart()
 
 	//壁を探索
 	m_enemyConList.push_back(new EnemyAIConWallSearch);
+
+	//20秒タイマー
+	m_enemyConList.push_back(new EnemyAIConWaitTime(25.0f));
 
 	//紐づいているエネミーのインスタンスをConListのプログラムに渡す
 	for (auto& listPtr : m_enemyConList)
@@ -236,6 +242,8 @@ void EnemySM_Warrior::ChangeState()
 			//巡回ステートにする
 			SetState(WarriorState::en_warrior_patrol);
 
+			m_enemyConList[7]->InitData();
+
 			m_isWaitIdle = false;
 		}
 	}
@@ -256,6 +264,8 @@ void EnemySM_Warrior::ChangeState()
 
 void EnemySM_Warrior::StateTransition_Tracking()
 {
+
+	m_gameSound->LocalSoundOrder(GameSound::en_enemyWarriorRoar, false, 0.5f);
 	//今の状態だと、一度待機状態になった後にもう一度追跡状態になると、役割を何も持てないので、対策を検討する。
 	//[テスト]メタAIから指示をもらう
 	m_warriorMetaAI->MetaAIExecution(this,EnemyAIMetaWarrior::mode_trackingStateChange);
@@ -287,6 +297,21 @@ void EnemySM_Warrior::TimeUpdate()
 	{
 		//追跡時間を初期化
 		m_enemyConList[5]->InitData();
+	}
+
+	if (m_warriorState == WarriorState::en_warrior_patrol)
+	{
+		//待機タイマーを更新して
+		//残り秒数が0.0だったら
+		if (m_enemyConList[7]->Execution())
+		{
+			//待機ステートにする
+			SetState(WarriorState::en_warrior_idle);
+
+			m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_patrolRouteSet, this);
+
+			m_isWaitIdle = false;
+		}
 	}
 
 	//現在のステートが待機状態だったら
