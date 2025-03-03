@@ -34,6 +34,8 @@ public:
 		en_fontIn,
 		//シュウィンって音
 		en_syuwin,
+		//ゲームメニュー選択音
+		en_gameMenuSelectionSound,
 		//タイトルBGM
 		en_TitleBgm,
 		//サウンド数

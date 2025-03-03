@@ -1,6 +1,7 @@
 #pragma once
 #include "GameMenu.h"
 
+class GameSound;
 class Load;
 
 class Title : public IGameObject
@@ -73,6 +74,10 @@ private:
 	/// ロード画面のインスタンス
 	/// </summary>
 	Load* m_load;
+	/// <summary>
+	/// ゲームサウンドのインスタンス
+	/// </summary>
+	GameSound* m_gameSound;
 	/// <summary>
 	/// ゲームメニュー
 	/// </summary>

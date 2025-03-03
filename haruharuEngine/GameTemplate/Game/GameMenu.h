@@ -288,6 +288,10 @@ private:
 	/// </summary>
 	void InitMenuDetasList();
 	/// <summary>
+	/// 閉じるテキスト
+	/// </summary>
+	FontRender m_closeButtonText;
+	/// <summary>
 	/// ゲームサウンドのインスタンス
 	/// </summary>
 	GameSound* m_gameSound = nullptr;

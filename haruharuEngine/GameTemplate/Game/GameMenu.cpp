@@ -10,6 +10,7 @@ namespace GameMenuNS_CPP{
 	/// </summary>
 	static const Vector4 FONT_COLOR = { 0.3f,0.3f,1.0f,1.0f };
 	static const Vector4 MAINTEXT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
+	static const Vector4 CLOSETEXT_COLOR = { 0.3f,0.1f,0.1f,1.0f };
 	static const float TIME_TEXT_DELAY = 0.02f;
 	static const float TIME_TEXT_SELECTION_DELAY = 0.5f;
 	static const wchar_t TEXT_UNDER_BAR[2] = { L"_" };
@@ -273,6 +274,8 @@ void GameMenu::MenuSelectionUpdate()
 		m_menuDatas[m_nowMenuSelectionNum].m_isTextSelectionDraw
 			= false;
 
+		m_gameSound->LocalSoundOrder(GameSound::en_gameMenuSelectionSound, false, 0.5f);
+
 		m_nowMenuSelectionNum--;
 	}
 	//メニュー選択で下を選択する処理
@@ -284,6 +287,8 @@ void GameMenu::MenuSelectionUpdate()
 		m_menuDatas[m_nowMenuSelectionNum].m_isTextSelectionDraw
 			= false;
 
+		m_gameSound->LocalSoundOrder(GameSound::en_gameMenuSelectionSound, false, 0.5f);
+
 		m_nowMenuSelectionNum++;
 	}
 	else if(g_pad[0]->IsTrigger(enButtonB))
@@ -294,6 +299,8 @@ void GameMenu::MenuSelectionUpdate()
 		m_isFuncBoot = true;
 
 		m_gameWindow->WindowClose();
+
+		m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
 		
 		StateChange(GameMenuState::en_windowClose);
 	}
@@ -387,5 +394,17 @@ void GameMenu::Render(RenderContext& rc)
 	if (m_isMouseCorsorDraw == true)
 	{
 		m_mouseCursor.Draw(rc);
+
+		wchar_t wcsbuf[256] = {};
+
+		swprintf_s(wcsbuf, 256, L"Close Push Button B");
+
+		m_closeButtonText.SetText(wcsbuf);
+
+		m_closeButtonText.SetPosition({ 230.0f,-400.0f,0.0f });
+
+		m_closeButtonText.SetColor(GameMenuNS_CPP::CLOSETEXT_COLOR);
+
+		m_closeButtonText.Draw(rc);
 	}
 }

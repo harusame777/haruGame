@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Title.h"
 #include "Load.h"
+#include "GameSound.h"
 
 namespace {
 	static const float BACKSIDE_SPRITE_W_SIZE = 1600.0f;
@@ -57,6 +58,8 @@ bool Title::Start()
 	//ロード画面のインスタンスを取得
 	m_load = FindGO<Load>("load");
 
+	m_gameSound = FindGO<GameSound>("gameSound");
+
 	return true;
 }
 
@@ -65,6 +68,8 @@ void Title::Update()
 {
 	if (g_pad[0]->IsTrigger(enButtonB))
 	{
+		m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
 		m_gameMenu->GoMenuOpen();
 	}
 

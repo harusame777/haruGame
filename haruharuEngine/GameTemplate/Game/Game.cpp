@@ -269,8 +269,6 @@ void Game::DoOutGame()
 			m_title->IsEndGameTitle() &&
 			m_load->IsLoadCompletion())
 		{
-			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 1.0f);
-
 			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadCircular });
 
 			m_gameOutState = GameOutState::en_gameLoad;

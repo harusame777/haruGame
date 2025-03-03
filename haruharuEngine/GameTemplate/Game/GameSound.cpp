@@ -39,6 +39,9 @@ bool GameSound::Start()
 	g_soundEngine->ResistWaveFileBank(SoundListNum::en_syuwin,
 		"Assets/sound/syuwinSound.wav");
 
+	g_soundEngine->ResistWaveFileBank(SoundListNum::en_gameMenuSelectionSound,
+		"Assets/sound/gameMenuSelectionSound.wav");
+
 	return true;
 }
 
