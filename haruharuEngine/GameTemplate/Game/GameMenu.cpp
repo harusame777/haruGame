@@ -11,7 +11,7 @@ namespace GameMenuNS_CPP{
 	static const Vector4 FONT_COLOR = { 0.3f,0.3f,1.0f,1.0f };
 	static const Vector4 MAINTEXT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
 	static const float TIME_TEXT_DELAY = 0.02f;
-	static const float TIME_TEXT_SELECTION_DELAY = 1.0f;
+	static const float TIME_TEXT_SELECTION_DELAY = 0.5f;
 	static const wchar_t TEXT_UNDER_BAR[2] = { L"_" };
 
 	static const float MOUSECORSOR_SPRITE_W_SIZE = 34.0f;
