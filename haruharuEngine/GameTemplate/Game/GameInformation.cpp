@@ -48,8 +48,6 @@ void GameInformation::GoInformation()
 
 	}
 
-	m_gameSound->LocalSoundOrder(GameSound::en_syuwin, false, 0.5f);
-
 	//ウィンドウを開ける
 	m_gameWindow->WindowOpen();
 	//ステートをwindowOpenに変更
@@ -157,8 +155,6 @@ void GameInformation::InformationStateUpdate()
 
 		if (g_pad[0]->IsTrigger(enButtonB))
 		{
-			m_gameSound->LocalSoundOrder(GameSound::en_syuwin, false, 0.5f);
-
 			m_gameWindow->WindowClose();
 
 			m_isInformationCloseing = true;
