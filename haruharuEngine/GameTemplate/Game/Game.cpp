@@ -434,7 +434,7 @@ void Game::OutGameObjectDeleteProcces()
 		return true;
 		});
 
-	QueryGOs<Elevator>("elevator", [&](Elevator* object) {
+	QueryGOs<Elevator>("object", [&](Elevator* object) {
 		DeleteGO(object);
 		return true;
 		});
