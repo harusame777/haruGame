@@ -112,6 +112,8 @@ void Game::DoInGame()
 
 		if (m_load->IsLoadBlackout())
 		{
+			m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_BGM, nullptr);
+
 			OutGameObjectDeleteProcces();
 
 			m_result = NewGO<Result>(0, "result");
@@ -162,6 +164,8 @@ void Game::DoInGame()
 		if (m_gameover->GetKillEndFlag() == true &&
 			m_load->IsLoadBlackout())
 		{
+			m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_BGM, nullptr);
+
 			OutGameObjectDeleteProcces();
 
 			m_load->LoadExecutionFadeIn();
@@ -225,6 +229,8 @@ void Game::TimerProcess()
 	{
 		return;
 	}
+
+	m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_BGM);
 
 	m_timerIndex -= g_gameTime->GetFrameDeltaTime();
 

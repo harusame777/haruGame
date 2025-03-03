@@ -14,6 +14,7 @@
 #include "Player.h"
 #include "DebugEnemyTrackingState.h"
 #include "WarriorAIMetaRetreat.h"
+#include "WarriorAIMetaChaseBGM.h"
 
 //処理順
 //
@@ -82,6 +83,9 @@ bool EnemyAIMetaWarrior::Start()
 
 	//メタAIの処理プログラムを初期化
 	ListInitAIMeta(new WarriorAIMetaIdle(m_warriorDataHolder), true);
+
+	//メタAIの処理プログラムを初期化
+	ListInitAIMeta(new WarriorAIMetaChaseBGM(m_warriorDataHolder), false);
 
 	for (auto& metaAIs : m_AIMetaList)
 	{
