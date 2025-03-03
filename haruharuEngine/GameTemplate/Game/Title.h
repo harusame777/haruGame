@@ -41,10 +41,6 @@ private:
 		return true;
 	}
 	/// <summary>
-	/// ゲームスタート
-	/// </summary>
-	bool Test();
-	/// <summary>
 	/// アップデート関数
 	/// </summary>
 	void Update();

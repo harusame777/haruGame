@@ -29,6 +29,8 @@ public:
 		en_menuSelection,
 		//ウィンドウクローズ
 		en_windowClose,
+		//メニュー閉じる時の関数を起動
+		en_closeMenuFuntionGo,
 		//決定したメニューの関数を起動
 		en_selectionMenuFunctionGo,
 		//終了
@@ -45,13 +47,12 @@ public:
 	/// <summary>
 	/// 命名定義、関数入れ物
 	/// </summary>
-	using MenuFunction = std::function<bool(bool*)>;
+	using MenuFunction = std::function<bool()>;
 	/// <summary>
 	/// メニュー作成
 	/// </summary>
 	/// <param name="func"></param>
 	void InitMenuDatas(
-		bool setWindowClose,
 		const wchar_t* menuText,
 		const MenuFunction& menuFunc
 	)
@@ -73,9 +74,6 @@ public:
 				//文字列textをm_externalInputFontListにコピー
 				swprintf_s(m_menuDatas[listNo].m_externalInputTextList, menuText);
 
-				//ウィンドウを閉じるかどうか設定
-				m_menuDatas[listNo].m_isFuncEndWindowClose = setWindowClose;
-
 				//関数を設定
 				m_menuDatas[listNo].SetMenuFunction(menuFunc);
 
@@ -86,6 +84,15 @@ public:
 			}
 
 		}
+	}
+	/// <summary>
+	/// メニュー閉じる時に実行する関数
+	/// </summary>
+	void InitMenuEndFunc(const MenuFunction& menuFunc)
+	{
+		m_isInitCloseFunc = true;
+
+		m_menuCloseFunction = menuFunc;
 	}
 	/// <summary>
 	/// メニューを開いて起動する
@@ -138,15 +145,7 @@ private:
 		/// <summary>
 		/// メニュー実行関数入れ物
 		/// </summary>
-		MenuFunction m_menuFunction;
-		/// <summary>
-		/// 実行関数終了した時にウィンドウを閉じるか
-		/// </summary>
-		bool m_isFuncEndWindowClose = false;
-		/// <summary>
-		/// 前のメニューを開くかどうか
-		/// </summary>
-		bool m_isOpenPreviousMenu = false;
+		MenuFunction m_menuBootFunction;
 		/// <summary>
 		/// 外部入力文字配列
 		/// </summary>
@@ -178,13 +177,25 @@ private:
 		/// <param name="func"></param>
 		void SetMenuFunction(const MenuFunction& func)
 		{
-			m_menuFunction = func;
+			m_menuBootFunction = func;
 		}
 	};
 	/// <summary>
 	/// 構造体変数
 	/// </summary>
 	MenuDatas m_menuDatas[GameMenuNS_H::MAX_TEXTDATALIST_EXP];
+	/// <summary>
+	/// メニュー終了時実行関数
+	/// </summary>
+	MenuFunction m_menuCloseFunction;
+	/// <summary>
+	/// メニュー終了時実行関数が初期化されているかどうか
+	/// </summary>
+	bool m_isInitCloseFunc = false;
+	/// <summary>
+	/// 関数を起動するかどうか
+	/// </summary>
+	bool m_isFuncBoot = false;
 	/// <summary>
 	/// スタート関数
 	/// </summary>
@@ -255,7 +266,7 @@ private:
 	/// <summary>
 	/// どのメニューを起動するかを確定する
 	/// </summary>
-	int m_confirmedMenuSelectionNum = 0;
+	int m_confirmedMenuSelectionNum = -1;
 	/// <summary>
 	/// マウスカーソルスプライトの更新
 	/// </summary>

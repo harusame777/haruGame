@@ -105,32 +105,44 @@ void GameMenu::MenuStateUpdate()
 	case GameMenu::en_windowClose:
 
 		if (m_gameWindow->IsWindowClose())
-		{
-			StateChange(GameMenuState::en_selectionMenuFunctionGo);
+		{			
+			if (m_isFuncBoot == false)
+			{
+				StateChange(GameMenu::en_end);
+
+				return;
+			}
+
+			if (m_isInitCloseFunc == true)
+				StateChange(GameMenuState::en_closeMenuFuntionGo);
+			else
+				StateChange(GameMenuState::en_selectionMenuFunctionGo);
 		}
+
+		break;
+	case GameMenu::en_closeMenuFuntionGo:
+
+		func = m_menuCloseFunction();
+
+		m_isMenuClose = true;
+
+		StateChange(GameMenu::en_end);
 
 		break;
 	case GameMenu::en_selectionMenuFunctionGo:
 
-		func = m_menuDatas[m_confirmedMenuSelectionNum].m_menuFunction(
-			&m_menuDatas[m_confirmedMenuSelectionNum].m_isOpenPreviousMenu);
+		func = m_menuDatas[m_confirmedMenuSelectionNum].m_menuBootFunction();
 
-		if (m_menuDatas[m_confirmedMenuSelectionNum].m_isFuncEndWindowClose
-			== true)
-		{
-			m_isMenuClose = true;
+		m_isMenuClose = true;
 
-			StateChange(GameMenu::en_end);
-		}
-		else
-		{
-			StateChange(GameMenu::en_end);
-		}
+		StateChange(GameMenu::en_end);
 			
 		break;
 	case GameMenu::en_end:
 
 		m_isMenuClose = false;
+
+		m_isFuncBoot = false;
 
 		InitMenuDetasList();
 
@@ -279,16 +291,20 @@ void GameMenu::MenuSelectionUpdate()
 		//起動するものを確定
 		m_confirmedMenuSelectionNum = m_nowMenuSelectionNum;
 
+		m_isFuncBoot = true;
+
 		m_gameWindow->WindowClose();
 		
 		StateChange(GameMenuState::en_windowClose);
 	}
 	else if(g_pad[0]->IsTrigger(enButtonA))
 	{
+		if (m_isInitCloseFunc == true)
+			m_isFuncBoot = true;
 
 		m_gameWindow->WindowClose();
 
-		StateChange(GameMenuState::en_end);
+		StateChange(GameMenuState::en_windowClose);
 
 	}
 
@@ -344,7 +360,7 @@ void GameMenu::InitMenuDetasList()
 		//メニュー選択番号
 		m_nowMenuSelectionNum = 0;
 		//メニュー決定番号
-		m_confirmedMenuSelectionNum = 0;
+		m_confirmedMenuSelectionNum = -1;
 	}
 
 	m_isMouseCorsorDraw = false;

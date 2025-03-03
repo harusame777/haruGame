@@ -14,13 +14,6 @@ namespace {
 
 }
 
-bool Title::Test()
-{
-	m_gameMenuTest->GoMenuOpen();
-	
-	return true;
-}
-
 //スタート関数
 bool Title::Start()
 {
@@ -33,17 +26,29 @@ bool Title::Start()
 	m_gameMenuTest = NewGO<GameMenu>(2, "titleGameMenuTest");
 
 	m_gameMenu->InitMenuDatas(
-		true,
 		L"Game Start",
-		std::bind(&Title::GameStart, this)
+		[&]() -> bool
+		{
+			GameStart();
+
+			return true;
+		}
 	);
 
 	m_gameMenu->InitMenuDatas(
-		false,
 		L"Test",
 		[&]() -> bool 
 		{
 			m_gameMenuTest->GoMenuOpen();
+
+			return true;
+		}
+	);
+
+	m_gameMenuTest->InitMenuEndFunc(
+		[&]() -> bool
+		{
+			m_gameMenu->GoMenuOpen();
 
 			return true;
 		}
