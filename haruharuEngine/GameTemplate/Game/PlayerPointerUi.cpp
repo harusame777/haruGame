@@ -20,6 +20,7 @@ bool PlayerPointerUi::Start()
 
 	m_elevator = FindGO<Elevator>("elevator");
 
+	return true;
 }
 
 void PlayerPointerUi::Update()
