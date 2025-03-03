@@ -14,6 +14,9 @@ namespace {
 
 	static const Vector3 SCORENUM_SPRITE_POSITION = { -920.0f,460.0f,0.0f };
 	static const float SCORENUM_SPRITE_SIZE = 2.0f;
+
+	static const Vector4 FONT_COLOR = { 0.3f,0.3f,1.0f,1.0f };
+	static const Vector3 SCOREFONT_POSITION = { -900.0f,300.0f,0.0f };
 }
 
 //スタート関数
@@ -51,6 +54,16 @@ void PlayerScoreUi::Update()
 	ScoreNumUpdate();
 
 	*m_gameScore = m_mainScore;
+
+	wchar_t scoreFont[256];
+
+	swprintf_s(scoreFont, 256, L"score");
+
+	m_socore.SetText(scoreFont);
+
+	m_socore.SetPosition(SCOREFONT_POSITION);
+
+	m_socore.SetColor(FONT_COLOR);
 
 	m_scoreBase.Update();
 }
@@ -104,4 +117,6 @@ void PlayerScoreUi::Render(RenderContext& rc)
 	m_scoreBase.Draw(rc);
 
 	m_scoreNum.Draw(rc);
+
+	m_socore.Draw(rc);
 }

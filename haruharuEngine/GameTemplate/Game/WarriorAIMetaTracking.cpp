@@ -11,7 +11,7 @@ namespace {
 	/// <summary>
 	/// ”¼ŒaŒvZ—p‚Ì‚â‚Â
 	/// </summary>
-	static const float CALL_RANGE_CALC = 100000.0f;
+	static const float CALL_RANGE_CALC = 750.0f;
 }
 
 //ƒƒ^AI‰Šú‰»

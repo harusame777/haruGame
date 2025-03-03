@@ -1,5 +1,6 @@
 #pragma once
 #include "PlayerUIBase.h"
+#include "PlayerPointerUi.h"
 
 class Game;
 
@@ -13,7 +14,10 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~PlayerOxygenUi(){}
+	~PlayerOxygenUi()
+	{
+		DeleteGO(m_playerPointerUi);
+	}
 	/// <summary>
 	/// 外部からタイマーのポインタを格納する関数
 	/// </summary>
@@ -60,6 +64,10 @@ private:
 	/// アルファ値イージング関数
 	/// </summary>
 	const float& AlphaEasing(const float& speed);
+	/// <summary>
+	/// 警告描画
+	/// </summary>
+	void CaveatDraw();
 	/// <summary>
 	/// レンダー関数
 	/// </summary>
@@ -197,6 +205,30 @@ private:
 	/// ゲームのインスタンス
 	/// </summary>
 	Game* m_game = nullptr;
+	/// <summary>
+	/// 表示
+	/// </summary>
+	FontRender m_oxygen;
+	/// <summary>
+	/// 警告スプライト
+	/// </summary>
+	FontRender m_caveat;
+	/// <summary>
+	/// 描画するかしないか
+	/// </summary>
+	bool m_isCaveatDraw = false;
+	/// <summary>
+	/// 割合
+	/// </summary>
+	float m_caveatRatio = 0.0f;
+	/// <summary>
+	/// 点滅
+	/// </summary>
+	bool m_isSwapCaveatRatio = false;
+	/// <summary>
+	/// プレイヤーポインターUiのインスタンス
+	/// </summary>
+	PlayerPointerUi* m_playerPointerUi = nullptr;
 	/// <summary>
 	/// デバック用のフォントレンダー
 	/// </summary>

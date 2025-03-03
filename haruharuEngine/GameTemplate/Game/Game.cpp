@@ -368,7 +368,7 @@ void Game::OutGameLoadProcess()
 			//}
 			else if (objData.ForwardMatchName(L"elevator") == true)
 			{
-				Elevator* elevator = NewGO<Elevator>(0, "object");
+				Elevator* elevator = NewGO<Elevator>(0, "elevator");
 				elevator->SetPosition(objData.m_position);
 				return true;
 			}
