@@ -21,6 +21,39 @@ bool Title::Start()
 		BACKSIDE_SPRITE_W_SIZE,
 		BACKSIDE_SPRITE_H_SIZE);
 
+	m_gameMenu = NewGO<GameMenu>(2, "titleGameMenu");
+
+	m_gameMenuTest = NewGO<GameMenu>(2, "titleGameMenuTest");
+
+	m_gameMenu->InitMenuDatas(
+		L"Game Start",
+		[&]() -> bool
+		{
+			GameStart();
+
+			return true;
+		}
+	);
+
+	m_gameMenu->InitMenuDatas(
+		L"Test",
+		[&]() -> bool 
+		{
+			m_gameMenuTest->GoMenuOpen();
+
+			return true;
+		}
+	);
+
+	m_gameMenuTest->InitMenuEndFunc(
+		[&]() -> bool
+		{
+			m_gameMenu->GoMenuOpen();
+
+			return true;
+		}
+	);
+
 	//ロード画面のインスタンスを取得
 	m_load = FindGO<Load>("load");
 
@@ -32,7 +65,7 @@ void Title::Update()
 {
 	if (g_pad[0]->IsTrigger(enButtonB))
 	{
-		m_isGameIn = true;
+		m_gameMenu->GoMenuOpen();
 	}
 
 	//フォントのアップデート

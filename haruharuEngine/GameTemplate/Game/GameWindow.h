@@ -8,6 +8,8 @@ namespace WindowConstants_H {
 	static const Vector3 WINDOWBOTTOM_CLOSE_POSITION = { 0.0f,-20.0f,0.0f };
 }
 
+class GameSound;
+
 class GameWindow : public IGameObject
 {
 private:
@@ -40,49 +42,11 @@ public:
 	/// <summary>
 	/// ウィンドウオープン
 	/// </summary>
-	void WindowOpen()
-	{
-		if (m_windowState != WindowState::en_state_standby)
-		{
-			return;
-		}
-
-		m_windowTopPos = Vector3::Zero;
-
-		m_windowBottomPos = Vector3::Zero;
-
-		m_windowDatas.SetWipeRatio(0.0);
-
-		m_windowState = WindowState::en_state_windowOpen;
-
-		m_windowFrameEasingMax = WindowConstants_H::WINDOWTOP_OPEN_POSITION.y;
-
-		m_windowFrameEasingMin = WindowConstants_H::WINDOWTOP_CLOSE_POSITION.y;
-
-		m_windowFrameRatio = 0.0f;
-
-		m_isWindowCloseCompletion = false;
-
-		m_isWindowDraw = true;
-	}
+	void WindowOpen();
 	/// <summary>
 	/// ウィンドウクローズ
 	/// </summary>
-	void WindowClose()
-	{
-		if (m_windowState != WindowState::en_state_openWait)
-		{
-			return;
-		}
-
-		m_windowState = WindowState::en_state_windowClose;
-
-		m_windowFrameEasingMax = WindowConstants_H::WINDOWTOP_CLOSE_POSITION.y;
-
-		m_windowFrameEasingMin = WindowConstants_H::WINDOWTOP_OPEN_POSITION.y;
-
-		m_windowFrameRatio = 0.0f;
-	}
+	void WindowClose();
 
 	bool IsWindowOpen()const 
 	{
@@ -215,5 +179,10 @@ private:
 	/// </summary>
 	FontRender m_debugFontRender_C;
 	wchar_t m_debugFontValue_C[256] = {};
+	/// <summary>
+	/// ゲームサウンドのインスタンス
+	/// </summary>
+	GameSound* m_gameSound = nullptr;
+
 };
 

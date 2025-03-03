@@ -4,14 +4,14 @@
 #include "GameSound.h"
 
 //定数等
-namespace {
+namespace GameInfoNS_CPP{
 	/// <summary>
 	/// フォントのカラー
 	/// </summary>
 	static const Vector4 FONT_COLOR = { 0.3f,0.3f,1.0f,1.0f };
 	static const Vector4 MAINTEXT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
 	static const Vector4 CLOSETEXT_COLOR = { 0.3f,0.1f,0.1f,1.0f };
-	static const float TIME_N = 0.02f;
+	static const float TIME_TEXT_DELAY = 0.02f;
 	static const wchar_t TEXT_UNDER_BAR[2] = { L"_" };
 
 }
@@ -19,7 +19,7 @@ namespace {
 //スタート関数
 bool GameInformation::Start()
 {
-	m_gameWindow = NewGO<GameWindow>(1, "gameWindow");
+	m_gameWindow = NewGO<GameWindow>(1, "informationGameWindow");
 
 	m_gameSound = FindGO<GameSound>("gameSound");
 
@@ -35,7 +35,7 @@ void GameInformation::GoInformation()
 	}
 
 	for (int listNo = 0;
-		listNo < MAX_TEXTDATALIST_EXP;
+		listNo < GameInfoNS_H::MAX_TEXTDATALIST_EXP;
 		listNo++)
 	{
 
@@ -47,8 +47,6 @@ void GameInformation::GoInformation()
 		}
 
 	}
-
-	m_gameSound->LocalSoundOrder(GameSound::en_syuwin, false, 0.5f);
 
 	//ウィンドウを開ける
 	m_gameWindow->WindowOpen();
@@ -106,7 +104,7 @@ void GameInformation::InformationStateUpdate()
 		if (g_pad[0]->IsTrigger(enButtonB))
 		{
 			for (int listNo = m_listNowNum;
-				listNo < MAX_TEXTDATALIST_EXP - 1;
+				listNo < GameInfoNS_H::MAX_TEXTDATALIST_EXP - 1;
 				listNo++)
 			{
 				m_nowTextNum = (wcslen(m_textDataList[listNo]
@@ -147,7 +145,7 @@ void GameInformation::InformationStateUpdate()
 		}
 
 		//表示文字更新
-		if (Delay(TIME_N))
+		if (Delay(GameInfoNS_CPP::TIME_TEXT_DELAY))
 		{
 			DisplayTextListUpdate();
 		}
@@ -157,8 +155,6 @@ void GameInformation::InformationStateUpdate()
 
 		if (g_pad[0]->IsTrigger(enButtonB))
 		{
-			m_gameSound->LocalSoundOrder(GameSound::en_syuwin, false, 0.5f);
-
 			m_gameWindow->WindowClose();
 
 			m_isInformationCloseing = true;
@@ -178,7 +174,7 @@ void GameInformation::InformationStateUpdate()
 	case GameInformation::en_end:
 
 		for (int listNo = 0;
-			listNo < MAX_TEXTDATALIST_EXP;
+			listNo < GameInfoNS_H::MAX_TEXTDATALIST_EXP;
 			listNo++)
 		{
 
@@ -230,7 +226,7 @@ bool GameInformation::Delay(const float delayTime)
 
 void GameInformation::DisplayTextUpdate()
 {
-	m_textDataList[m_listNowNum].m_mainFontRender.SetColor(MAINTEXT_COLOR);
+	m_textDataList[m_listNowNum].m_mainFontRender.SetColor(GameInfoNS_CPP::MAINTEXT_COLOR);
 
 	m_textDataList[m_listNowNum].m_mainFontRender.SetPivot({ 0.5f,0.5f });
 
@@ -262,7 +258,7 @@ void GameInformation::DisplayTextListUpdate()
 		return;
 
 	wcsncat_s(m_textDataList[m_listNowNum].m_displayTextList,
-		TEXT_UNDER_BAR, 1);
+		GameInfoNS_CPP::TEXT_UNDER_BAR, 1);
 
 }
 
@@ -285,13 +281,13 @@ void GameInformation::Render(RenderContext& rc)
 
 		m_closeButtonText.SetPosition({ 230.0f,-400.0f,0.0f });
 
-		m_closeButtonText.SetColor(CLOSETEXT_COLOR);
+		m_closeButtonText.SetColor(GameInfoNS_CPP::CLOSETEXT_COLOR);
 
 		m_closeButtonText.Draw(rc);
 	}
 
 	for (int listNo = 0;
-		listNo < MAX_TEXTDATALIST_EXP;
+		listNo < GameInfoNS_H::MAX_TEXTDATALIST_EXP;
 		listNo++)
 	{
 		m_textDataList[listNo].m_mainFontRender.Draw(rc);

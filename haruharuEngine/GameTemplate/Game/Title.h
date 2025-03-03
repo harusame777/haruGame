@@ -1,4 +1,5 @@
 #pragma once
+#include "GameMenu.h"
 
 class Load;
 
@@ -12,7 +13,10 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~Title(){}
+	~Title() 
+	{
+		DeleteGO(m_gameMenu);
+	}
 	/// <summary>
 	/// ゲームタイトルが終了したか
 	/// </summary>
@@ -27,6 +31,15 @@ private:
 	/// </summary>
 	/// <returns></returns>
 	bool Start();
+	/// <summary>
+	/// ゲームスタート
+	/// </summary>
+	bool GameStart()
+	{
+		m_isGameIn = true;
+
+		return true;
+	}
 	/// <summary>
 	/// アップデート関数
 	/// </summary>
@@ -60,6 +73,11 @@ private:
 	/// ロード画面のインスタンス
 	/// </summary>
 	Load* m_load;
+	/// <summary>
+	/// ゲームメニュー
+	/// </summary>
+	GameMenu* m_gameMenu = nullptr;
+	GameMenu* m_gameMenuTest = nullptr;
 	/// <summary>
 	/// タイトル終了してゲームインに入る
 	/// </summary>
