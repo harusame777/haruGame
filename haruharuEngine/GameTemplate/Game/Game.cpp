@@ -326,7 +326,7 @@ void Game::OutGameLoadProcess()
 	LevelRender levelRender;
 
 	//レベルレンダーのテスト
-	levelRender.Init("Assets/mapLevel/testLevel7.tkl", [&](LevelObjectData_Render& objData)
+	levelRender.Init("Assets/mapLevel/testLevel8.tkl", [&](LevelObjectData_Render& objData)
 		{
 			if (objData.ForwardMatchName(L"wallOnes") == true)
 			{
@@ -360,12 +360,13 @@ void Game::OutGameLoadProcess()
 				enemy_warrior->SetScale(objData.m_scalse);
 				return true;
 			}
-			//else if (objData.ForwardMatchName(L"locker") == true)
-			//{
-			//	Locker* locker = NewGO<Locker>(0, "object");
-			//	locker->SetPosition(objData.m_position);
-			//	return true;
-			//}
+			else if (objData.ForwardMatchName(L"locker") == true)
+			{
+				Locker* locker = NewGO<Locker>(0, "object");
+				locker->SetPosition(objData.m_position);
+				locker->SetRotation(objData.m_rotation);
+				return true;
+			}
 			else if (objData.ForwardMatchName(L"elevator") == true)
 			{
 				Elevator* elevator = NewGO<Elevator>(0, "elevator");
