@@ -12,7 +12,9 @@ bool Locker::Start()
 	m_mainModel.Init("Assets/modelData/objects/locker/lockerV2.tkm",m_animationClip, en_animationNum,
 		enModelUpAxisZ, ModelRender::en_usuallyShader);
 
+	//ˆÊ’uİ’è
 	m_mainModel.SetPosition(m_position);
+	//‰ñ“]’lİ’è
 	m_mainModel.SetRotation(m_rotation);
 
 	//“–‚½‚è”»’è‚ğì¬
