@@ -11,6 +11,7 @@
 #include "Enemy_Warrior.h"
 #include "DebugEnemyTrackingState.h"
 #include "Locker.h"
+#include "ManagerLocker.h"
 #include "Elevator.h"
 #include "Accessories.h"
 #include "ManagerCrystal.h"
@@ -323,6 +324,9 @@ void Game::OutGameLoadProcess()
 	////クリスタルのメタAI
 	m_managerCrystal = NewGO<ManagerCrystal>(0, "CrystalMetaAI");
 
+	//ロッカーのメタAI
+	m_managerLocker = NewGO<ManagerLocker>(0, "LockerMetaAI");
+
 	LevelRender levelRender;
 
 	//レベルレンダーのテスト
@@ -358,13 +362,6 @@ void Game::OutGameLoadProcess()
 				enemy_warrior->SetPosition(objData.m_position);
 				enemy_warrior->SetRotation(objData.m_rotation);
 				enemy_warrior->SetScale(objData.m_scalse);
-				return true;
-			}
-			else if (objData.ForwardMatchName(L"locker") == true)
-			{
-				Locker* locker = NewGO<Locker>(0, "object");
-				locker->SetPosition(objData.m_position);
-				locker->SetRotation(objData.m_rotation);
 				return true;
 			}
 			else if (objData.ForwardMatchName(L"elevator") == true)

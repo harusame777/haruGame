@@ -1,7 +1,7 @@
 #pragma once
-#include "ObjectBase.h"
+#include "BootObjectBase.h"
 
-class Locker : public ObjectBase
+class Locker : public BootObjectBase
 {
 public:
 	Locker() {};

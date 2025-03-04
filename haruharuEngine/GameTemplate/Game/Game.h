@@ -16,6 +16,7 @@ class PlayerScoreUi;
 class PlayerStaminaUi;
 class PlayerOxygenUi;
 class Load;
+class ManagerLocker;
 class Title;
 class Gameover;
 class Result;
@@ -154,6 +155,10 @@ private:
 	/// クリスタルマネージャー
 	/// </summary>
 	ManagerCrystal* m_managerCrystal;
+	/// <summary>
+	/// ロッカーマネージャー
+	/// </summary>
+	ManagerLocker* m_managerLocker;
 	///// <summary>
 	///// プレイヤーのスキャンUI
 	///// </summary>
