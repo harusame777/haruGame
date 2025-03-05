@@ -33,6 +33,11 @@ public:
 	{
 		return m_lockerDataHolder;
 	}
+	/// <summary>
+	/// 全体の中でロッカーが一つでも使用中かどうか
+	/// </summary>
+	/// <returns></returns>
+	const bool IsWholeLockersInUse();
 private:
 	/// <summary>
 	/// スタート関数
@@ -74,7 +79,7 @@ private:
 		/// クリスタルのアドレスを返す
 		/// </summary>
 		/// <returns></returns>
-		Locker* GetCrystalAddress() const
+		Locker* GetLockerAddress() const
 		{
 			return m_lockerAddress;
 		}
@@ -90,7 +95,7 @@ private:
 		/// クリスタルの管理ステートを取得
 		/// </summary>
 		/// <returns></returns>
-		const LockerManageState GetCrystalRelocationState() const
+		const LockerManageState GetLockerRelocationState() const
 		{
 			return m_lockerManageState;
 		}
@@ -130,6 +135,12 @@ private:
 		{
 			m_arrangementPos = pos;
 		}
+		void LockerPosAndRotUpdate()
+		{
+			m_lockerAddress->SetPosition(m_arrangementPos);
+
+			m_lockerAddress->SetRotation(m_arrangementRot);
+		}
 		/// <summary>
 		/// 位置取得
 		/// </summary>
@@ -158,9 +169,9 @@ private:
 		/// アドレス初期化
 		/// </summary>
 		/// <param name="crystal"></param>
-		void InitAddress(Locker* crystal)
+		void InitAddress(Locker* locker)
 		{
-			m_lockerAddress = crystal;
+			m_lockerAddress = locker;
 		}
 		/// <summary>
 		/// アドレス取得
@@ -174,7 +185,7 @@ private:
 		/// 配置中かどうかを設定
 		/// </summary>
 		/// <param name="is"></param>
-		void SetIsCrystalUnderInstallation(const bool is)
+		void SetIsLockerUnderInstallation(const bool is)
 		{
 			m_isLockerUnderInstallation = is;
 		}

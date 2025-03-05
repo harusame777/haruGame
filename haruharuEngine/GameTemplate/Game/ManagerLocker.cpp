@@ -15,6 +15,8 @@ bool ManagerLocker::Start()
 	{
 		Locker* newLocker = NewGO<Locker>(0, "locker");
 
+		newLocker->SetManegerInstance(*this);
+
 		m_lockerDataHolder->InitCrystalDataHolder(LocNo, newLocker);
 
 		m_lockerManageDatas[LocNo].SetLockerAddress(newLocker);
@@ -33,7 +35,7 @@ bool ManagerLocker::Start()
 
 			newArrangementData->SetRotation(objData.m_rotation);
 
-			newArrangementData->SetIsCrystalUnderInstallation(false);
+			newArrangementData->SetIsLockerUnderInstallation(false);
 
 			m_lockerArrangementDatas.push_back(newArrangementData);
 
@@ -42,6 +44,7 @@ bool ManagerLocker::Start()
 		return true;
 	});
 
+	//初期設定配列
 	InitArrangement();
 
 	return true;
@@ -56,43 +59,74 @@ void ManagerLocker::Update()
 //配置関数
 void ManagerLocker::InitArrangement()
 {
-	Locker* arrangementLocker = nullptr;
 
-	int maxArrangementPointNum;
+	for (int LocNo = 0; LocNo < MAX_LOCKER_NUM; LocNo++)
+	{
+		Locker* arrangementLocker = nullptr;
 
-	int arrengementPointListNum;
+		int maxArrangementPointNum;
 
-	bool arrengementConflict = true;
+		int arrengementPointListNum;
 
-	do {
-	
-		for (auto& locAddress : m_lockerManageDatas)
-		{
+		bool arrengementConflict = true;
 
-			if (locAddress.GetCrystalRelocationState()
-				== LockerManageState::en_standby)
+		do {
+
+			for (auto& locAddress : m_lockerManageDatas)
 			{
-				arrangementLocker = locAddress.GetCrystalAddress();
 
-				break;
+				if (locAddress.GetLockerRelocationState()
+					== LockerManageState::en_standby)
+				{
+					arrangementLocker = locAddress.GetLockerAddress();
+
+					break;
+				}
+
 			}
 
-		}
+			maxArrangementPointNum = m_lockerArrangementDatas.size();
 
-		maxArrangementPointNum = m_lockerArrangementDatas.size();
+			std::random_device rd;
+			std::mt19937 gen(rd());
 
-		std::random_device rd;  
-		std::mt19937 gen(rd());
+			std::uniform_int_distribution<int> dist(0, maxArrangementPointNum - 1);
+			
+			arrengementPointListNum = dist(gen);
 
-		std::uniform_int_distribution<int> dist(0, maxArrangementPointNum);
+			if (m_lockerArrangementDatas[arrengementPointListNum]
+				->GetIsCrystalUnderInstallation() == false)
+			{
+				arrengementConflict = false;
+			}
 
-		arrengementPointListNum = dist(gen);
+		} while (arrengementConflict);
 
-		if (m_lockerArrangementDatas[arrengementPointListNum]
-			->GetIsCrystalUnderInstallation() == false)
+		m_lockerArrangementDatas[arrengementPointListNum]->InitAddress(arrangementLocker);
+
+		//位置回転更新
+		m_lockerArrangementDatas[arrengementPointListNum]->LockerPosAndRotUpdate();
+
+		//ステータスを設置中に
+		m_lockerArrangementDatas[arrengementPointListNum]->SetIsLockerUnderInstallation(true);
+
+		m_lockerManageDatas[LocNo].SetLockerRelocationState(LockerManageState::en_underplacement);
+	}
+}
+
+const bool ManagerLocker::IsWholeLockersInUse()
+{
+	for (auto& locNo : m_lockerManageDatas)
+	{
+		if (locNo.GetLockerRelocationState()
+			!= LockerManageState::en_underplacement)
+			continue;
+
+		if (locNo.GetLockerAddress()->IsLockerInUse() == true)
 		{
-			arrengementConflict = false;
+			return true;
 		}
+	}
 
-	} while (arrengementConflict);
+	return false;
 }

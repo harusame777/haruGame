@@ -2,6 +2,8 @@
 #include "BootObjectBase.h"
 #include "PlayerInteractableUi.h"
 #include "Player.h"
+#include <iostream>
+#include <cmath>
 
 //íËêîìô
 namespace {
@@ -33,12 +35,44 @@ void BootObjectBase::InitBootObject(const char* filePath)
 			return true;
 		});
 
-	m_bootPosition = m_levelPosition + m_position;
+	//ê≥ñ ï˚å¸åvéZ
+	m_forward = Vector3::AxisZ;
+	m_rotation.Apply(m_forward);
+
+	float angle = atan2(m_forward.x, m_forward.z);
+
+	Vector3 radoisCalcVec = { m_levelPosition.x,0.0f,m_levelPosition.z };
+
+	float radius = radoisCalcVec.Length();
+
+	m_bootPosition = {
+		m_position.x + sin(angle) * radius,
+		m_position.y,
+		m_position.z + cos(angle) * radius,
+	};
+
+	m_bootPosition.y = m_levelPosition.y;
 }
 
 void BootObjectBase::UpdateBootData()
 {
-	m_bootPosition = m_levelPosition + m_position;
+	//ê≥ñ ï˚å¸åvéZ
+	m_forward = Vector3::AxisZ;
+	m_rotation.Apply(m_forward);
+
+	float angle = atan2(m_forward.x, m_forward.z);
+
+	Vector3 radoisCalcVec = {m_levelPosition.x,0.0f,m_levelPosition.z};
+
+	float radius = radoisCalcVec.Length();
+
+	m_bootPosition = {
+		m_position.x + sin(angle) * radius,
+		m_position.y,
+		m_position.z + cos(angle) * radius,
+	};
+
+	m_bootPosition.y = m_levelPosition.y;
 
 	if (IsObjectBootConditions() == true)
 	{
@@ -83,8 +117,8 @@ struct SweepResultWall : public btCollisionWorld::ConvexResultCallback
 const bool BootObjectBase::IsObjectBootConditions()
 {
 	if (IsObjectBootingRange() == true &&
-		IsObjectBootingCameraVector() == true/* &&
-		IsRayTestWall() == false*/)
+		IsObjectBootingCameraVector() == true &&
+		IsRayTestWall() == false)
 	{
 		return true;
 	}
