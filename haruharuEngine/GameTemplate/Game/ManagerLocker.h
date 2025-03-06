@@ -2,6 +2,8 @@
 #include "Locker.h"
 #include "LockerDataHolder.h"
 
+class Player;
+
 class ManagerLocker : public IGameObject
 {
 public:
@@ -38,6 +40,14 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	const bool IsWholeLockersInUse();
+	/// <summary>
+	/// プレイヤーがロッカーに入った時の処理
+	/// </summary>
+	void SetPlayerInLocker();
+	/// <summary>
+	/// プレイヤーがロッカーから出た時の処理
+	/// </summary>
+	void SetPlayerOutLocker();
 private:
 	/// <summary>
 	/// スタート関数
@@ -68,7 +78,7 @@ private:
 		LockerManageState m_lockerManageState = LockerManageState::en_standby;
 	public:
 		/// <summary>
-		/// クリスタルのアドレスを設定
+		/// ロッカーのアドレスを設定
 		/// </summary>
 		/// <param name="address"></param>
 		void SetLockerAddress(Locker* address)
@@ -76,7 +86,7 @@ private:
 			m_lockerAddress = address;
 		}
 		/// <summary>
-		/// クリスタルのアドレスを返す
+		/// ロッカーのアドレスを返す
 		/// </summary>
 		/// <returns></returns>
 		Locker* GetLockerAddress() const
@@ -84,7 +94,7 @@ private:
 			return m_lockerAddress;
 		}
 		/// <summary>
-		/// クリスタルの管理ステートを設定
+		/// ロッカーの管理ステートを設定
 		/// </summary>
 		/// <param name="state"></param>
 		void SetLockerRelocationState(const LockerManageState state)
@@ -92,7 +102,7 @@ private:
 			m_lockerManageState = state;
 		}
 		/// <summary>
-		/// クリスタルの管理ステートを取得
+		/// ロッカーの管理ステートを取得
 		/// </summary>
 		/// <returns></returns>
 		const LockerManageState GetLockerRelocationState() const
@@ -210,5 +220,9 @@ private:
 	/// ロッカーの配置位置を取得するためのレベルレンダー
 	/// </summary>
 	LevelRender m_lockerArrangementLevelRender;
+	/// <summary>
+	/// プレイヤーのインスタンス
+	/// </summary>
+	Player* m_player = nullptr;
 };
 

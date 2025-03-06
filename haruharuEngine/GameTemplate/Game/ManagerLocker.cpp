@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ManagerLocker.h"
+#include "Player.h"
 #include <iostream>
 #include <random>
 
@@ -47,7 +48,19 @@ bool ManagerLocker::Start()
 	//初期設定配列
 	InitArrangement();
 
+	m_player = FindGO<Player>("player");
+
 	return true;
+}
+
+void ManagerLocker::SetPlayerInLocker()
+{
+	m_player->SetPlayerState(Player::en_lockerIn);
+}
+
+void ManagerLocker::SetPlayerOutLocker()
+{
+	m_player->SetPlayerState(Player::en_move);
 }
 
 //アップデート関数

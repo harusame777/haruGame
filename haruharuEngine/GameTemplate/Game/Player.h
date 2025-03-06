@@ -7,6 +7,13 @@ class GameSound;
 class Player : public IGameObject
 {
 public:
+
+	enum PlayerState {
+
+		en_move,
+
+		en_lockerIn,
+	};
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
@@ -88,6 +95,22 @@ public:
 	{
 		return m_CController;
 	}
+	/// <summary>
+	/// プレイヤーのステートを設定
+	/// </summary>
+	/// <param name="state"></param>
+	void SetPlayerState(const PlayerState& state)
+	{
+		m_playerState = state;
+	}
+	/// <summary>
+	/// プレイヤーのステートを取得
+	/// </summary>
+	/// <returns></returns>
+	const PlayerState GetPlayerState() const
+	{
+		return m_playerState;
+	}
 private:
 	/// <summary>
 	/// スタート関数
@@ -98,6 +121,10 @@ private:
 	/// アップデート関数
 	/// </summary>
 	void Update();
+	/// <summary>
+	/// プレイヤーのステートアップデート
+	/// </summary>
+	void PlayerStateUpdate();
 	/// <summary>
 	/// 移動関数
 	/// </summary>
@@ -154,6 +181,10 @@ private:
 	/// キャラコン
 	/// </summary>
 	CharacterController m_CController;
+	/// <summary>
+	/// プレイヤーステート
+	/// </summary>
+	PlayerState m_playerState = PlayerState::en_move;
 	/// <summary>
 	/// プレイヤーのスタミナUI
 	/// </summary>

@@ -49,26 +49,21 @@ bool Player::Start()
 //アップデート関数
 void Player::Update()
 {
-	//移動関数
-	Move();
+	if (m_game->IsNowGameUpdate() == false)
+		return;
+
+	PlayerStateUpdate();
+
 	//正面値を設定
 	SetForward(g_camera3D->GetForward());
-	//足音を鳴らす
-	FootSteps();
+
+	m_CController.SetPosition(m_position);
 }
 
 //移動関数
 void Player::Move()
 {
-
-	if (m_game->IsNowGameUpdate() == false)
-	{
-		return;
-	}
-
 	//プレイヤーが歩き状態か走り状態化を調べて
-	//速度を選択する
-	IsWalkOrRun();
 
 	//移動速度を初期化
 	m_moveVector.x = 0.0f;
@@ -91,6 +86,32 @@ void Player::Move()
 	m_moveVector += cameraRight * lStick_x * m_moveSpeed;		//右方向への移動速度を加算。
 	//キャラクターコントローラーを使用して、座標を更新。
 	m_position = m_CController.Execute(m_moveVector, g_gameTime->GetFrameDeltaTime());
+}
+
+void Player::PlayerStateUpdate()
+{
+
+	switch (m_playerState)
+	{
+	case Player::en_move:
+		//移動関数
+		Move();
+
+		//速度を選択する
+		IsWalkOrRun();
+
+		//足音を鳴らす
+		FootSteps();
+		break;
+	case Player::en_lockerIn:
+
+
+
+		break;
+	default:
+		break;
+	}
+
 }
 
 //プレイヤーが走り状態か歩き状態化を調べる関数
@@ -147,6 +168,7 @@ void Player::IsWalkOrRun()
 //足音処理
 void Player::FootSteps()
 {
+
 	//スティックの入力値を取得
 	float lStick_x = g_pad[0]->GetLStickXF();
 	float lStick_y = g_pad[0]->GetLStickYF();

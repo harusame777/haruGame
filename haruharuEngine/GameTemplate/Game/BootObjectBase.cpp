@@ -41,17 +41,16 @@ void BootObjectBase::InitBootObject(const char* filePath)
 
 	float angle = atan2(m_forward.x, m_forward.z);
 
-	Vector3 radoisCalcVec = { m_levelPosition.x,0.0f,m_levelPosition.z };
-
-	float radius = radoisCalcVec.Length();
+	float cosNum = cos(angle);
+	float sinNum = sin(angle);
 
 	m_bootPosition = {
-		m_position.x + sin(angle) * radius,
-		m_position.y,
-		m_position.z + cos(angle) * radius,
+		m_levelPosition.x * cosNum + m_levelPosition.z * sinNum,
+		m_levelPosition.y,
+		-m_levelPosition.x * sinNum + m_levelPosition.z * cosNum
 	};
 
-	m_bootPosition.y = m_levelPosition.y;
+	m_bootPosition += m_position;
 }
 
 void BootObjectBase::UpdateBootData()

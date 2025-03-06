@@ -6,6 +6,17 @@ class ManagerLocker;
 class Locker : public BootObjectBase
 {
 public:
+	enum LockerState 
+	{
+		en_standby,
+
+		en_lockerInCameraEasing,
+
+		en_playerInUse,
+
+		en_lockerOutCameraEasing,
+
+	};
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
@@ -37,13 +48,25 @@ private:
 	/// <returns></returns>
 	bool Start();
 	/// <summary>
+	/// アニメーションイベント関数
+	/// </summary>
+	void OnAnimationEvent(const wchar_t* clipName, const wchar_t* eventName);
+	/// <summary>
 	/// アップデート関数
 	/// </summary>
 	void Update();
 	/// <summary>
 	/// ロッカー実行
 	/// </summary>
-	void LockerExecution();
+	void LockerStateUpdate();
+	/// <summary>
+	/// ロッカーのステート
+	/// </summary>
+	LockerState m_lockerState = LockerState::en_standby;
+	/// <summary>
+	/// ロッカー入る時のカメライージング処理
+	/// </summary>
+	const bool LockerInCameraEasing(const bool swap);
 	/// <summary>
 	/// レンダー関数
 	/// </summary>
@@ -69,6 +92,12 @@ private:
 	/// </summary>
 	bool m_isLockerInUse = false;
 	/// <summary>
+	/// カメライージング用変数
+	/// </summary>
+	Vector3 m_cameraEasingStart = Vector3::Zero;
+	Vector3 m_cameraEasingEnd = Vector3::Zero;
+	float m_cameraEasingRatio = 0.0f;
+	/// <summary>
 	/// アニメーションステート
 	/// </summary>
 	EnAnimationClip m_animationClipState = EnAnimationClip::en_idle;
@@ -76,5 +105,13 @@ private:
 	/// ロッカーのマネージャーのインスタンス
 	/// </summary>
 	ManagerLocker* m_lockerManager = nullptr;
+	/// <summary>
+	/// カメラ座標取得用
+	/// </summary>
+	LevelRender m_cameraPosInLevel;
+	/// <summary>
+	/// カメラのターゲットポジション
+	/// </summary>
+	Vector3 m_cameraTargetPos = Vector3::Zero;
 };
 
