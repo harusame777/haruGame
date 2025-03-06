@@ -443,6 +443,13 @@ void Game::OutGameObjectDeleteProcces()
 		return true;
 		});
 
+	DeleteGO(m_managerLocker);
+
+	QueryGOs<Locker>("locker", [&](Locker* object) {
+		DeleteGO(object);
+		return true;
+		});
+
 	DeleteGO(m_warriorMetaAI);
 
 	QueryGOs<Enemy_Warrior>("enemy", [&](Enemy_Warrior* UI) {

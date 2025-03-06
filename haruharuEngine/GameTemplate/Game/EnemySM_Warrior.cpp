@@ -190,7 +190,8 @@ void EnemySM_Warrior::ChangeState()
 {
 
 	//プレイヤーとの接触判定
-	if (m_enemyConList[en_enemyAIConColPlayer]->Execution())
+	if (m_enemyConList[en_enemyAIConColPlayer]->Execution() && 
+		m_player->GetPlayerState() != Player::en_lockerIn)
 	{
 		if (GetEnemyPtr().GetAttackFlag())
 		{
@@ -253,7 +254,8 @@ void EnemySM_Warrior::ChangeState()
 	if (m_warriorState != WarriorState::en_warrior_tracking)
 	{
 		//視界内にプレイヤーがいて尚且つプレイヤーとの間に壁が無かったら
-		if (m_enemyConList[en_enemyAIConSearch]->Execution())
+		if (m_enemyConList[en_enemyAIConSearch]->Execution() &&
+			m_player->GetPlayerState() != Player::en_lockerIn)
 		{
 			m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_patrolRouteSet, this);
 
@@ -356,6 +358,19 @@ void EnemySM_Warrior::TimeUpdate()
 		{
 			//追跡時間を初期化
 			m_enemyConList[en_enemyAIConWaitTime10f]->InitData();
+		}
+
+		if (m_player->GetPlayerState() == Player::en_lockerIn)
+		{
+			//追跡から別のステートにするようにして
+			m_isTrackingTimeOver = false;
+			//追跡時間を初期化
+			m_enemyConList[en_enemyAIConWaitTime10f]->InitData();
+
+			SetState(WarriorState::en_warrior_idle);
+
+			//メタAIのプロセスを終了する
+			m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_trackingStateChange, this);
 		}
 	}
 }

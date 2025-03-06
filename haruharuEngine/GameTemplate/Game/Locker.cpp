@@ -152,8 +152,6 @@ void Locker::LockerStateUpdate()
 			{
 				m_animationClipState = EnAnimationClip::en_OpenLocker;
 
-				m_isLockerInUse = false;
-
 				m_lockerManager->SetPlayerOutLocker();
 			}
 		}
@@ -168,6 +166,8 @@ void Locker::LockerStateUpdate()
 			m_animationClipState = EnAnimationClip::en_idle;
 
 			m_lockerState = LockerState::en_standby;
+
+			m_isLockerInUse = false;
 		}
 
 		break;
