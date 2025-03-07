@@ -2,12 +2,6 @@
 #include "GameSetting.h"
 #include "GameWindow.h"
 
-namespace GameSettingConstant {
-
-	
-
-};
-
 bool GameSetting::Start()
 {
 
