@@ -11,6 +11,7 @@
 #include "Enemy_Warrior.h"
 #include "DebugEnemyTrackingState.h"
 #include "Locker.h"
+#include "ManagerLocker.h"
 #include "Elevator.h"
 #include "Accessories.h"
 #include "ManagerCrystal.h"
@@ -323,10 +324,13 @@ void Game::OutGameLoadProcess()
 	////クリスタルのメタAI
 	m_managerCrystal = NewGO<ManagerCrystal>(0, "CrystalMetaAI");
 
+	//ロッカーのメタAI
+	m_managerLocker = NewGO<ManagerLocker>(0, "LockerMetaAI");
+
 	LevelRender levelRender;
 
 	//レベルレンダーのテスト
-	levelRender.Init("Assets/mapLevel/testLevel7.tkl", [&](LevelObjectData_Render& objData)
+	levelRender.Init("Assets/mapLevel/testLevel8.tkl", [&](LevelObjectData_Render& objData)
 		{
 			if (objData.ForwardMatchName(L"wallOnes") == true)
 			{
@@ -360,12 +364,6 @@ void Game::OutGameLoadProcess()
 				enemy_warrior->SetScale(objData.m_scalse);
 				return true;
 			}
-			//else if (objData.ForwardMatchName(L"locker") == true)
-			//{
-			//	Locker* locker = NewGO<Locker>(0, "object");
-			//	locker->SetPosition(objData.m_position);
-			//	return true;
-			//}
 			else if (objData.ForwardMatchName(L"elevator") == true)
 			{
 				Elevator* elevator = NewGO<Elevator>(0, "elevator");
@@ -441,6 +439,13 @@ void Game::OutGameObjectDeleteProcces()
 		});
 
 	QueryGOs<Elevator>("object", [&](Elevator* object) {
+		DeleteGO(object);
+		return true;
+		});
+
+	DeleteGO(m_managerLocker);
+
+	QueryGOs<Locker>("locker", [&](Locker* object) {
 		DeleteGO(object);
 		return true;
 		});

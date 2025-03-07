@@ -259,6 +259,7 @@
     <ClCompile Include="Locker.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManagerCrystal.cpp" />
+    <ClCompile Include="ManagerLocker.cpp" />
     <ClCompile Include="ObjectBase.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerInteractableUi.cpp" />
@@ -318,7 +319,9 @@
     <ClInclude Include="GameSound.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Locker.h" />
+    <ClInclude Include="LockerDataHolder.h" />
     <ClInclude Include="ManagerCrystal.h" />
+    <ClInclude Include="ManagerLocker.h" />
     <ClInclude Include="ObjectBase.h" />
     <ClInclude Include="PatrolRuteDataHolder.h" />
     <ClInclude Include="Player.h" />

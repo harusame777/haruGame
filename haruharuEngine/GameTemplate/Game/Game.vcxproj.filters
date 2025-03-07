@@ -60,9 +60,6 @@
     <ClCompile Include="DebugEnemyTrackingState.cpp">
       <Filter>debug</Filter>
     </ClCompile>
-    <ClCompile Include="Locker.cpp">
-      <Filter>obj</Filter>
-    </ClCompile>
     <ClCompile Include="Accessories.cpp">
       <Filter>obj</Filter>
     </ClCompile>
@@ -99,9 +96,6 @@
     <ClCompile Include="BackGroundCeiling.cpp">
       <Filter>bg</Filter>
     </ClCompile>
-    <ClCompile Include="BootObjectBase.cpp">
-      <Filter>obj</Filter>
-    </ClCompile>
     <ClCompile Include="Elevator.cpp">
       <Filter>obj</Filter>
     </ClCompile>
@@ -132,6 +126,15 @@
     <ClCompile Include="WarriorAIMetaIdle.cpp" />
     <ClCompile Include="WarriorAIMetaChaseBGM.cpp" />
     <ClCompile Include="PlayerPointerUi.cpp" />
+    <ClCompile Include="Locker.cpp">
+      <Filter>obj\Locker</Filter>
+    </ClCompile>
+    <ClCompile Include="ManagerLocker.cpp">
+      <Filter>obj\Locker</Filter>
+    </ClCompile>
+    <ClCompile Include="BootObjectBase.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -202,9 +205,6 @@
     <ClInclude Include="PatrolRuteDataHolder.h">
       <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
     </ClInclude>
-    <ClInclude Include="Locker.h">
-      <Filter>obj</Filter>
-    </ClInclude>
     <ClInclude Include="Accessories.h">
       <Filter>obj</Filter>
     </ClInclude>
@@ -247,9 +247,6 @@
     <ClInclude Include="BackGroundCeiling.h">
       <Filter>bg</Filter>
     </ClInclude>
-    <ClInclude Include="BootObjectBase.h">
-      <Filter>obj</Filter>
-    </ClInclude>
     <ClInclude Include="Elevator.h">
       <Filter>obj</Filter>
     </ClInclude>
@@ -280,6 +277,18 @@
     <ClInclude Include="WarriorAIMetaIdle.h" />
     <ClInclude Include="WarriorAIMetaChaseBGM.h" />
     <ClInclude Include="PlayerPointerUi.h" />
+    <ClInclude Include="Locker.h">
+      <Filter>obj\Locker</Filter>
+    </ClInclude>
+    <ClInclude Include="ManagerLocker.h">
+      <Filter>obj\Locker</Filter>
+    </ClInclude>
+    <ClInclude Include="LockerDataHolder.h">
+      <Filter>obj\Locker</Filter>
+    </ClInclude>
+    <ClInclude Include="BootObjectBase.h">
+      <Filter>obj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bg">
@@ -323,6 +332,9 @@
     </Filter>
     <Filter Include="OutGame">
       <UniqueIdentifier>{168767dd-ae1a-4e16-b782-1b1e3204f55a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="obj\Locker">
+      <UniqueIdentifier>{0a7a685a-2345-49a9-9a33-c3f4c1f29066}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
