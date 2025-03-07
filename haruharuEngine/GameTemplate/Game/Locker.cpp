@@ -136,6 +136,10 @@ void Locker::LockerStateUpdate()
 			m_animationClipState = EnAnimationClip::en_idle;
 
 			m_lockerState = LockerState::en_playerInUse;
+
+			Vector3 targetPos = (m_forward * 20.0f) + m_position;
+
+			m_lockerManager->SetCameraTarget(targetPos);
 		}
 
 		break;
@@ -168,6 +172,8 @@ void Locker::LockerStateUpdate()
 			m_lockerState = LockerState::en_standby;
 
 			m_isLockerInUse = false;
+
+			m_lockerManager->SetCameraTarget(m_position);
 		}
 
 		break;

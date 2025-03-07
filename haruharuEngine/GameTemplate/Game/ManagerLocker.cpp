@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ManagerLocker.h"
 #include "Player.h"
+#include "GameCamera.h"
 #include <iostream>
 #include <random>
 
@@ -50,6 +51,8 @@ bool ManagerLocker::Start()
 
 	m_player = FindGO<Player>("player");
 
+	m_gameCamera = FindGO<GameCamera>("camera");
+
 	return true;
 }
 
@@ -61,6 +64,13 @@ void ManagerLocker::SetPlayerInLocker()
 void ManagerLocker::SetPlayerOutLocker()
 {
 	m_player->SetPlayerState(Player::en_move);
+}
+
+void ManagerLocker::SetCameraTarget(const Vector3& pos)
+{
+
+	m_gameCamera->SetCameraTarget(pos);
+
 }
 
 //アップデート関数

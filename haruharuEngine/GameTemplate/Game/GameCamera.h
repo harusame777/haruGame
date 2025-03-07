@@ -13,6 +13,10 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~GameCamera();
+	/// <summary>
+	/// カメラのターゲットを設定
+	/// </summary>
+	void SetCameraTarget(const Vector3& position);
 private:
 	/// <summary>
 	/// デバッグ時のカメラのモード
@@ -44,6 +48,56 @@ private:
 	/// カメラのモード切替をする関数
 	/// </summary>
 	void CamFPSorTPS();
+	/// <summary>
+	/// 新しいFPSカメラの処理
+	/// </summary>
+	void NewFPSCam();
+	/// <summary>
+	/// カメラの速度
+	/// </summary>
+	float m_velocityX;
+	float m_velocityY;
+	/// <summary>
+	/// カメラの角度
+	/// </summary>
+	Quaternion m_camRotation;
+	/// <summary>
+	/// 
+	/// </summary>
+	float m_oldFramePadX = 0.0f;
+	float m_oldFramePadY = 0.0f;
+	/// <summary>
+	/// flaot用線形補間
+	/// </summary>
+	/// <param name="a"></param>
+	/// <param name="b"></param>
+	/// <param name="t"></param>
+	/// <returns></returns>
+	const float Leap(const float a, const float b, const float t)
+	{
+		return (1.0f - t) * a + t * b;
+	}
+	/// <summary>
+	/// 速度可変線形保管
+	/// </summary>
+	/// <param name="currentValue"></param>
+	/// <param name="targetValue"></param>
+	/// <param name="velocity"></param>
+	/// <param name="smoothTime"></param>
+	const float SmoothDamp(
+		float currentValue,
+		float targetValue,
+		float& velocity,
+		float smoothTime
+	)
+	{
+		velocity += (targetValue - currentValue) 
+			/ smoothTime * g_gameTime->GetFrameDeltaTime();
+
+		currentValue += velocity * g_gameTime->GetFrameDeltaTime();
+
+		return currentValue;
+	}
 	/// <summary>
 	/// 注視点から視点までのベクトル
 	/// </summary>

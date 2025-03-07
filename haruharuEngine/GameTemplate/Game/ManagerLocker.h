@@ -3,6 +3,7 @@
 #include "LockerDataHolder.h"
 
 class Player;
+class GameCamera;
 
 class ManagerLocker : public IGameObject
 {
@@ -48,6 +49,10 @@ public:
 	/// プレイヤーがロッカーから出た時の処理
 	/// </summary>
 	void SetPlayerOutLocker();
+	/// <summary>
+	/// カメラのターゲットを設定
+	/// </summary>
+	void SetCameraTarget(const Vector3& pos);
 private:
 	/// <summary>
 	/// スタート関数
@@ -224,5 +229,9 @@ private:
 	/// プレイヤーのインスタンス
 	/// </summary>
 	Player* m_player = nullptr;
+	/// <summary>
+	/// プレイヤーカメラのインスタンス
+	/// </summary>
+	GameCamera* m_gameCamera = nullptr;
 };
 
