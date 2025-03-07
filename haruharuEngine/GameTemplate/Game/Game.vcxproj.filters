@@ -122,10 +122,8 @@
     </ClCompile>
     <ClCompile Include="GameSound.cpp" />
     <ClCompile Include="PlayerInteractableUi.cpp" />
-    <ClCompile Include="GameInformation.cpp" />
     <ClCompile Include="GameEffect.cpp" />
     <ClCompile Include="PlayerPointerUi.cpp" />
-    <ClCompile Include="GameMenu.cpp" />
     <ClCompile Include="EnemyAIMetaWarrior.cpp">
       <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
     </ClCompile>
@@ -137,6 +135,15 @@
     </ClCompile>
     <ClCompile Include="WarriorAIMetaStop.cpp">
       <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMenu.cpp">
+      <Filter>OutGame</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSetting.cpp">
+      <Filter>OutGame</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInformation.cpp">
+      <Filter>OutGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -276,10 +283,8 @@
       <Filter>OutGame</Filter>
     </ClInclude>
     <ClInclude Include="PlayerInteractableUi.h" />
-    <ClInclude Include="GameInformation.h" />
     <ClInclude Include="GameEffect.h" />
     <ClInclude Include="PlayerPointerUi.h" />
-    <ClInclude Include="GameMenu.h" />
     <ClInclude Include="WarriorAIMetaStop.h">
       <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
     </ClInclude>
@@ -291,6 +296,15 @@
     </ClInclude>
     <ClInclude Include="WarriorAIMetaIdle.h">
       <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMenu.h">
+      <Filter>OutGame</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSetting.h">
+      <Filter>OutGame</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInformation.h">
+      <Filter>OutGame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

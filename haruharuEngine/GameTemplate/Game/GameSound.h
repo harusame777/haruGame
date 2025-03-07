@@ -10,6 +10,16 @@ class GameSound : public IGameObject
 {
 public:
 	/// <summary>
+	/// ゲームサウンドのステート
+	/// </summary>
+	enum GameSoundState
+	{
+		//アップデート
+		en_soundUpdate,
+		//設定
+		en_soundSetting,
+	};
+	/// <summary>
 	/// サウンドリスト
 	/// </summary>
 	enum SoundListNum

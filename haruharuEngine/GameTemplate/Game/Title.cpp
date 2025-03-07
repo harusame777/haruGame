@@ -37,7 +37,7 @@ bool Title::Start()
 	);
 
 	m_gameMenu->InitMenuDatas(
-		L"Test",
+		L"Setting",
 		[&]() -> bool 
 		{
 			m_gameMenuTest->GoMenuOpen();
@@ -68,6 +68,12 @@ void Title::Update()
 {
 	if (g_pad[0]->IsTrigger(enButtonB))
 	{
+		if (m_isGameIn == true)
+			return;
+
+		if (m_gameMenu->IsMenuOpenNow() == true)
+			return;
+
 		m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
 
 		m_gameMenu->GoMenuOpen();

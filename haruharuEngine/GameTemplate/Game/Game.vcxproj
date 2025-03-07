@@ -255,6 +255,7 @@
     <ClCompile Include="GameEffect.cpp" />
     <ClCompile Include="GameMenu.cpp" />
     <ClCompile Include="Gameover.cpp" />
+    <ClCompile Include="GameSetting.cpp" />
     <ClCompile Include="GameSound.cpp" />
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="Locker.cpp" />
@@ -316,6 +317,7 @@
     <ClInclude Include="GameEffect.h" />
     <ClInclude Include="GameMenu.h" />
     <ClInclude Include="Gameover.h" />
+    <ClInclude Include="GameSetting.h" />
     <ClInclude Include="GameSound.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Locker.h" />

@@ -105,7 +105,7 @@ void GameMenu::MenuStateUpdate()
 		break;
 	case GameMenu::en_windowClose:
 
-		if (m_gameWindow->IsWindowClose())
+		if (m_gameWindow->IsWindowClose() == true)
 		{			
 			if (m_isFuncBoot == false)
 			{
@@ -265,6 +265,9 @@ void GameMenu::DisplayTextListUpdate()
 
 void GameMenu::MenuSelectionUpdate()
 {
+	if (m_gameWindow->IsWindowOpen() == false)
+		return;
+
 	//メニュー選択で上を選択する処理
 	if (g_pad[0]->IsTrigger(enButtonUp))
 	{
@@ -397,7 +400,7 @@ void GameMenu::Render(RenderContext& rc)
 
 		wchar_t wcsbuf[256] = {};
 
-		swprintf_s(wcsbuf, 256, L"Close Push Button B");
+		swprintf_s(wcsbuf, 256, L"Close Push Button A");
 
 		m_closeButtonText.SetText(wcsbuf);
 
