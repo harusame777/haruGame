@@ -122,23 +122,34 @@
 >- Game.h
 >- GameCamera.cpp
 >- GameCamera.h
+>- GameInformation.cpp
+>- GameInformation.h
 >- Gameover.cpp
 >- Gameover.h
 >- GameSound.cpp
 >- GameSound.h
+>- GameWindow.cpp
+>- GameWindow.h
 >- Load.cpp
 >- Load.h
 >- Locker.cpp
 >- Locker.h
+>- LockerDataHolder.h
 >- ManagerCrystal.cpp
 >- ManagerCrystal.h
+>- ManagerLocker.cpp
+>- ManagerLocker.h
 >- ObjectBase.cpp
 >- ObjectBase.h
 >- PatrolRuteDataHolder.h
 >- Player.cpp
 >- Player.h
+>- PlayerInteractableUi.cpp
+>- PlayerInteractableUi.h
 >- PlayerOxygenUi.cpp
 >- PlayerOxygenUi.h
+>- PlayerPointerUi.cpp
+>- PlayerPointerUi.h 
 >- PlayerScanCrystalUi.cpp
 >- PlayerScanCrystalUi.h
 >- PlayerScoreUi.cpp
@@ -150,12 +161,16 @@
 >- Result.h
 >- Title.cpp
 >- Title.h
+>- WarriorAIMetaChaseBGM.cpp
+>- WarriorAIMetaChaseBGM.h
 >- WarriorAIMetaFootSteps.cpp
 >- WarriorAIMetaFootSteps.h
 >- WarriorAIMetapPatrol.cpp
 >- WarriorAIMetapPatrol.h
 >- WarriorAIMetaRetreat.cpp
 >- WarriorAIMetaRetreat.h
+>- WarriorAIMetaIdle.cpp
+>- WarriorAIMetaIdle.h
 >- WarriorAIMetaStop.cpp
 >- WarriorAIMetaStop.h
 >- WarriorAIMetaTracking.cpp
@@ -426,7 +441,7 @@
 > ## 次にメタAIの実行プログラムを用途によって複数作りました、停止、起動、巡回、追跡、等のクリーチャー全体に影響を及ぼすプログラムを作成しました。そしてこれらのプログラムのインスタンスをメインプログラムの配列に設定、メインプログラムの外部から列挙型を使い実行プログラムを指定、起動、実行できるように設計しました。
 > ### 以下は実際のメタAIの形式です
 >
-> ![alt text](image5.png)
+> <img src="image5.png" width="800"><br></p>
 >
 
 <br />
@@ -448,23 +463,23 @@
 > ### 以下は実際の輝度抽出からぼかし、加算合成までの画像です
 > ### bloom適用前
 >
-> ![alt text](image10.png)
+> <img src="image10.png" width="800"><br></p>
 >
 > ### 輝度抽出後
 >
-> ![alt text](image11.png)
+> <img src="image11.png" width="800"><br></p>
 >
 > ### ぼかし一段階目
 >
-> ![alt text](image12.png)
+> <img src="image12.png" width="800"><br></p>
 >
 > ### ぼかし最終段階
 >
-> ![alt text](image13.png)
+> <img src="image13.png" width="800"><br></p>
 >
 > ### 加算合成後
 >
-> ![alt text](image14.png)
+> <img src="image14.png" width="800"><br></p>
 >
 
 <br />
@@ -482,13 +497,13 @@
 > ## 次にシャドウマップに描画するモデルを描画します。モデルは、メインレンダリングターゲット用の描画モデルを作る際に作成してあるので、それを、ライトからみたビュープロジェクション行列を使用して描画します。
 > ## 以下は実際に描画したシャドウマップの画像です。
 >
-> ![alt text](image6.png)
+> <img src="image6.png" width="800"><br></p>
 > 
 > ## 3.作成されたシャドウマップ、ライトのデータ等から影を描画する
 > ## 最後に、作成されたシャドウマップ等のデータから影を描画します。ライトのデータは元々一か所にまとめて、影描画用シェーダーのユーザー定数バッファーにデータを設定しているのでそれを使います。
 > ### 以下は実際に描画された影の画像です。
 >
-> ![alt text](image7.png)
+> <img src="image7.png" width="800"><br></p>
 >
 > - # 工夫した点
 > - ## シャドウマップの描画限界の問題
@@ -509,7 +524,7 @@
 > ## 次に、状況に応じた累乗数値の変更プログラムを作成しました。こちらはクリーチャーのメタAIとして作成し、エネミーの位置とプレイヤーの位置を参照し、その間に壁があるか、視点がクリーチャーをとらえているか、を判定し、累乗数値の変更する事で、状況に応じた音の増減を表現することができました。そして様々な条件で聞こえる音が変化するので、ユーザーの注意が音へ向かいやすくなりより緊張感が増すようにしました。
 > ### 以下は累乗数値を変更する条件の画像です
 >
-> ![alt text](image8.png)
+> <img src="image8.png" width="800"><br></p>
 >
 > - # 工夫した点
 > - ## 足音を鳴らすクリーチャーの選定
@@ -530,7 +545,6 @@
 > - ## 現在のエネミーのステートを色分けで画面に表示
 > - ## カメラを一人称から三人称に切り替えるボタンを有効化(LB)
 > - ## 残り酸素量を時間で画面に表示
-></dl>
 
 <br />
 
@@ -539,8 +553,10 @@
 >
 > - ## 雰囲気をさらに暗くする
 >  ## 今のままでは、まだ雰囲気が明るすぎると思うので、そちらを改善したいです。
-> - ## 屋外ゾーンを追加
->  ## 上記の雰囲気を暗くする際におそらく天井をつけることになるので、影の描画が無駄になってしまうことも考え、屋外マップを追加したいです。
+> - ## チュートリアルの追加
+>  ## 現在の状態では、説明書や操作方法を見たりしないと、プレイした際にやることが分からなかったりしてプレイしずらいので、追加したいと考えています。
+> - ## 設定の追加
+>　## 現在設定がなく、音量や難易度の調整がユーザー側からできないので、そこを追加したいです。
 > - ## クリーチャーのAIの改良
->  ## 今のクリーチャーのAIではまだまだ粗削りのような動きなので、さらに動きをリアルに近づけたいです、具体的には、急に追跡をやめるのではなく、見失った地点まで移動し、プレイヤーが見つからなかったら、追跡をやめる、といった、リアル寄りのAIにしていたいです。
+>  ## 今のクリーチャーのAIではまだまだ粗削りのような動きなので、さらに動きをリアルに近づけたいです、具体的には、急に追跡をやめるのではなく、見失った地点まで移動し、プレイヤーが見つからなかったら、追跡をやめる、といった、リアル寄りのAIにしていきたいです。
 > # 上記の課題を3月中の実装を目指し、今後は行動していきたいと考えています。
