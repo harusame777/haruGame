@@ -157,6 +157,10 @@ void EnemyAIMoveAstar::MoveAstar()
 
 	GetEnemyPtr().SetPosition(pathMovePos);
 
+	//ÉLÉÉÉâÉRÉìÇ‡ìÆÇ©Ç∑
+	Vector3 finalPos = GetEnemyPtr().GetCController()
+		->Execute(pathMovePos, g_gameTime->GetFrameDeltaTime());
+
 	//ê≥ñ íl
 	Vector3 newForward = Vector3::AxisZ;
 

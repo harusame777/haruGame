@@ -45,9 +45,6 @@ void EnemySM_Warrior::EnemyAIStart()
 	//経路探索
 	m_enemyAIList.push_back(new EnemyAIMoveAstar(m_warriorDataHolder));
 
-	//通常移動
-	m_enemyAIList.push_back(new EnemyAIMove);
-
 	//紐づいているエネミーのインスタンスをAIListのプログラムに渡す
 	for (auto& listPtr : m_enemyAIList)
 	{
