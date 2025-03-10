@@ -138,6 +138,18 @@ private:
 	/// </summary>
 	void FootSteps();
 	/// <summary>
+	/// 時間処理
+	/// </summary>
+	const bool WaitTime(const float& time);
+	/// <summary>
+	/// タイマー
+	/// </summary>
+	float m_timer = 0.0f;
+	/// <summary>
+	/// タイマー最大値
+	/// </summary>
+	float m_timerMax = 0.0f;
+	/// <summary>
 	/// 現在座標
 	/// </summary>
 	Vector3 m_position = Vector3::Zero;

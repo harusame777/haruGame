@@ -139,6 +139,8 @@ void Player::IsWalkOrRun()
 
 		m_stamina--;
 
+		m_timerMax = 0.5f;
+
 		if (0 >= m_stamina)
 		{
 			m_stamina = 0;
@@ -151,17 +153,21 @@ void Player::IsWalkOrRun()
 		m_moveSpeed = playerSpeedWalk;
 		m_isPlayerRun = false;
 
-		if (m_isStaminaOut == true)
-			m_stamina += 0.5f;
-		else
-			m_stamina++;
-
 		if (100 <= m_stamina)
 		{
 			m_stamina = 100;
 
 			m_isStaminaOut = false;
 		}
+
+		if (WaitTime(0.5f) == false)
+			return;
+		
+
+		if (m_isStaminaOut == true)
+			m_stamina += 0.5f;
+		else
+			m_stamina++;
 	}
 }
 
@@ -199,4 +205,20 @@ void Player::FootSteps()
 		//‘«‰¹‚ð–Â‚ç‚·
 		m_gameSound->LocalSoundOrder(GameSound::en_playerWalkSound,false,0.5f);
 	}
+}
+
+const bool Player::WaitTime(const float& time)
+{	
+	m_timer += g_gameTime->GetFrameDeltaTime();
+
+	if (m_timer >= m_timerMax)
+	{
+		m_timerMax = 0.0f;
+
+		m_timer = 0.0f;
+
+		return true;
+	}
+
+	return false;
 }
