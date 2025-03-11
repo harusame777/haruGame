@@ -216,6 +216,7 @@
 >- haruharuDeaphShadowReceiverModel.fx
 >- haruharuDrawDeaphShadowMap.fx
 >- haruharuDrawShadowMap.fx
+>- haruharuDrawVSMShadowMap.fx
 >- haruharuLoadSpriteShader.fx
 >- haruharuModel.fx
 >- haruharuOxygenGaugeSpriteShader.fx
@@ -242,7 +243,7 @@
 # 5.ゲーム説明
 > ## このゲームは廃研究所に侵入した主人公が研究所内部にある鉱石を残り酸素が続く限り採取して、内部にいるモンスターに襲われないように研究所から脱出するホラー採取ゲームです。酸素ゲージがなくなる前に、できるだけ多くの鉱石を採取するのが目的のゲームです。
 >
-> - ## メインゲーム画面
+> - # メインゲーム画面
 > 
 > <img src="image1.png" width="800"><br></p>
 >
