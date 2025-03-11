@@ -148,6 +148,10 @@ private:
 	/// </summary>
 	Player* m_player = nullptr;
 	/// <summary>
+	/// 太陽光位置
+	/// </summary>
+	Vector3 m_sunPos = Vector3::Zero;
+	/// <summary>
 	/// クリスタルコマンドスプライト
 	/// </summary>
 	CrystalGetCommandSprite* m_GetCOMSprite = nullptr;
