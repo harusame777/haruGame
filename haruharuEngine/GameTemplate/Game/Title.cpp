@@ -24,7 +24,7 @@ bool Title::Start()
 
 	m_gameMenu = NewGO<GameMenu>(2, "titleGameMenu");
 
-	m_gameMenuTest = NewGO<GameMenu>(2, "titleGameMenuTest");
+	m_gameSetting = NewGO<GameSetting>(2, "titleGameSetting");
 
 	m_gameMenu->InitMenuDatas(
 		L"Game Start",
@@ -40,16 +40,28 @@ bool Title::Start()
 		L"Setting",
 		[&]() -> bool 
 		{
-			m_gameMenuTest->GoMenuOpen();
+			m_gameSetting->GoSettingMenuOpen();
 
 			return true;
 		}
 	);
 
-	m_gameMenuTest->InitMenuEndFunc(
-		[&]() -> bool
+	m_gameSetting->InitMenuEndFunc(
+		[&](bool isBoot) -> bool
 		{
+
 			m_gameMenu->GoMenuOpen();
+			
+			return true;
+		}
+	);
+
+	m_gameSetting->InitSetting(
+		L"SoundSize",
+		test,
+		[&](bool isBoot) -> bool
+		{
+
 
 			return true;
 		}

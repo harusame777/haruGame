@@ -13,9 +13,12 @@ namespace GameSettingConstant {
 
 	static const float SETTING_BAR_SLIDER_SPRITE_W_SIZE = 26.0f;
 	static const float SETTING_BAR_SLIDER_SPRITE_H_SIZE = 117.0f;
+
+	static const Vector3 SETTING_SPRITE_POS = { 0.0f,0.0f,0.0f };
 };
 
 class GameWindow;
+class GameSound;
 
 class GameSetting : public IGameObject
 {
@@ -79,6 +82,14 @@ public:
 	/// 設定メニューを開く
 	/// </summary>
 	void GoSettingMenuOpen();
+	/// <summary>
+	/// ステート変更
+	/// </summary>
+	/// <param name="changeState"></param>
+	void StateChange(const SettingState changeState)
+	{
+		m_settingState = changeState;
+	}
 private:
 	/// <summary>
 	/// 設定データ構造体
@@ -195,6 +206,10 @@ private:
 	/// </summary>
 	int m_settingItemNum = 0;
 	/// <summary>
+	/// 現在選択中の設定項目
+	/// </summary>
+	int m_settingItemSelectionNum = 0;
+	/// <summary>
 	/// スタート関数
 	/// </summary>
 	/// <returns></returns>
@@ -208,6 +223,14 @@ private:
 	/// </summary>
 	void SettingStateUpdate();
 	/// <summary>
+	/// 設定スプライト更新
+	/// </summary>
+	void SettingSpriteUpdate();
+	/// <summary>
+	/// セッティング選ぶ関数
+	/// </summary>
+	void SettingSelection();
+	/// <summary>
 	/// レンダー関数
 	/// </summary>
 	/// <param name="rc"></param>
@@ -216,5 +239,9 @@ private:
 	/// ゲームウィンドウのインスタンス
 	/// </summary>
 	GameWindow* m_gameWindow = nullptr;
+	/// <summary>
+	/// ゲームサウンドのインスタンス
+	/// </summary>
+	GameSound* m_gameSound = nullptr;
 };
 

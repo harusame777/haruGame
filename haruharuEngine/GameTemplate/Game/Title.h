@@ -1,5 +1,6 @@
 #pragma once
 #include "GameMenu.h"
+#include "GameSetting.h"
 
 class GameSound;
 class Load;
@@ -82,10 +83,15 @@ private:
 	/// ゲームメニュー
 	/// </summary>
 	GameMenu* m_gameMenu = nullptr;
-	GameMenu* m_gameMenuTest = nullptr;
+	/// <summary>
+	/// ゲーム設定
+	/// </summary>
+	GameSetting* m_gameSetting = nullptr;
 	/// <summary>
 	/// タイトル終了してゲームインに入る
 	/// </summary>
 	bool m_isGameIn = false;
+
+	int test;
 };
 
