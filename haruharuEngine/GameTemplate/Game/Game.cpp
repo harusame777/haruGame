@@ -47,7 +47,7 @@ bool Game::Start()
 
 	m_load = NewGO<Load>(1, "load");
 
-	m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadImmediately });
+	m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadImmediately },0.0f);
 
 	return true;
 }
@@ -77,9 +77,6 @@ void Game::Update()
 
 void Game::DoInGame()
 {
-
-	Vector3 camPos = m_player->GetPosition();
-
 	switch (m_gameInState)
 	{
 	case Game::en_gameUpdate:
@@ -94,6 +91,8 @@ void Game::DoInGame()
 
 		}
 
+		m_sunPos = m_player->GetPosition();
+
 		sunDirectionalLight.SetColor(1.0f, 1.0f, 1.0f);
 		sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
 		sunDirectionalLight.LightDirectionNormalize();
@@ -101,15 +100,15 @@ void Game::DoInGame()
 		sunDirectionalLight.VPCamSetRotation(80.0f);
 		//sunDirectionalLight.VPCamSetPosition({ -10.0, 2000, 0.0 });
 
-		camPos += { -2000.0, 2000, 2000.0 };
+		m_sunPos += { -2000.0, 2000, 2000.0 };
 
-		sunDirectionalLight.VPCamSetPosition(camPos);
+		sunDirectionalLight.VPCamSetPosition(m_sunPos);
 		sunDirectionalLight.VPCamSetTarget(m_player->GetPosition());
 		sunDirectionalLight.VPCamUpdate();
 
 		break;
 	case Game::en_gameClear:
-		m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadOrdinary });
+		m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadOrdinary },3.0f);
 
 		if (m_load->IsLoadBlackout())
 		{
@@ -137,7 +136,7 @@ void Game::DoInGame()
 
 		if (m_gameover->GetFadeOutFlag() == true)
 		{
-			m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadOrdinary });
+			m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadOrdinary },3.0f);
 
 			m_gameInState = GameInState::en_gameResultGameOver;
 		}
@@ -154,7 +153,7 @@ void Game::DoInGame()
 
 		if (m_gameover->GetFadeOutFlag() == true)
 		{
-			m_load->LoadExecutionFadeOut({ Load::en_loadCircular,Load::en_loadOrdinary });
+			m_load->LoadExecutionFadeOut({ Load::en_loadCircular,Load::en_loadOrdinary },3.0f);
 
 			m_gameInState = GameInState::en_gameResultGameOver;
 		}
@@ -175,7 +174,7 @@ void Game::DoInGame()
 		if (m_load->IsLoadCompletion() == true &&
 			m_gameover->GetGameoverEnd() == true)
 		{
-			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary, Load::en_loadOrdinary });
+			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary, Load::en_loadOrdinary },3.0f);
 
 			m_gameOutState = GameOutState::en_gameTitle;
 		}
@@ -185,7 +184,7 @@ void Game::DoInGame()
 
 		if (m_result->IsResultEnd())
 		{
-			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary, Load::en_loadOrdinary });
+			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary, Load::en_loadOrdinary },3.0f);
 
 			m_gameOutState = GameOutState::en_gameTitle;
 		}
@@ -278,7 +277,7 @@ void Game::DoOutGame()
 		{
 			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 1.0f);
 
-			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadCircular });
+			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadCircular },3.0f);
 
 			m_gameOutState = GameOutState::en_gameLoad;
 

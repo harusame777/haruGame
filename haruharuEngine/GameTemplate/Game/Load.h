@@ -69,6 +69,8 @@ private:
 		en_loadExecutionTimeLapse,
 		//ロード暗転待機
 		en_loadBlackoutStandby,
+		//ロード時間待機
+		en_loadWaitTime,
 		//ロード完了
 		en_loadCompletion
 	};
@@ -89,17 +91,11 @@ public:
 	/// フェードアウトを実行する
 	/// </summary>
 	/// <param name="loadType"></param>
-	void LoadExecutionFadeOut(const LoadOrderData& loadType);
+	void LoadExecutionFadeOut(const LoadOrderData& loadType,const float loadTime);
 	/// <summary>
 	/// フェードインを実行する
 	/// </summary>
 	void LoadExecutionFadeIn();
-	/// <summary>
-	/// 時間経過でフェードインするロードを実行する
-	/// </summary>
-	/// <param name="loadType"></param>
-	/// <param name="time"></param>
-	void LoadExecutionFadeOut(const LoadOrderData& loadType, const float& time);
 private:
 	/// <summary>
 	/// ロードのデータ
@@ -159,18 +155,23 @@ private:
 	/// </summary>
 	/// <returns></returns>
 	const float& LoadCalc(const float& index);
-
 	void LoadOptionSpriteUpdate();
-
+	/// <summary>
+	/// ロード待ち時間
+	/// </summary>
+	/// <param name="time"></param>
+	/// <returns></returns>
+	const bool LoadWaitTime();
+	/// <summary>
+	/// 時間関係
+	/// </summary>
+	float m_loadTime = 0.0f;
+	float m_timer = 0.0f;
 	/// <summary>
 	/// レンダー関数
 	/// </summary>
 	/// <param name="rc"></param>
 	void Render(RenderContext& rc);
-	/// <summary>
-	/// ロード時間
-	/// </summary>
-	float m_loadTimer = 0.0f;
 	/// <summary>
 	/// ロード割合
 	/// </summary>
