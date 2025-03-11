@@ -120,12 +120,10 @@
     <ClCompile Include="WarriorAIMetaStop.cpp" />
     <ClCompile Include="GameSound.cpp" />
     <ClCompile Include="WarriorAIMetaFootSteps.cpp" />
-    <ClCompile Include="PlayerInteractableUi.cpp" />
     <ClCompile Include="GameInformation.cpp" />
     <ClCompile Include="GameEffect.cpp" />
     <ClCompile Include="WarriorAIMetaIdle.cpp" />
     <ClCompile Include="WarriorAIMetaChaseBGM.cpp" />
-    <ClCompile Include="PlayerPointerUi.cpp" />
     <ClCompile Include="Locker.cpp">
       <Filter>obj\Locker</Filter>
     </ClCompile>
@@ -134,6 +132,12 @@
     </ClCompile>
     <ClCompile Include="BootObjectBase.cpp">
       <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerInteractableUi.cpp">
+      <Filter>Player\PlayerUi</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerPointerUi.cpp">
+      <Filter>Player\PlayerUi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -271,12 +275,10 @@
     </ClInclude>
     <ClInclude Include="WarriorAIMetaStop.h" />
     <ClInclude Include="WarriorAIMetaFootSteps.h" />
-    <ClInclude Include="PlayerInteractableUi.h" />
     <ClInclude Include="GameInformation.h" />
     <ClInclude Include="GameEffect.h" />
     <ClInclude Include="WarriorAIMetaIdle.h" />
     <ClInclude Include="WarriorAIMetaChaseBGM.h" />
-    <ClInclude Include="PlayerPointerUi.h" />
     <ClInclude Include="Locker.h">
       <Filter>obj\Locker</Filter>
     </ClInclude>
@@ -288,6 +290,12 @@
     </ClInclude>
     <ClInclude Include="BootObjectBase.h">
       <Filter>obj</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerInteractableUi.h">
+      <Filter>Player\PlayerUi</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerPointerUi.h">
+      <Filter>Player\PlayerUi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

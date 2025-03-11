@@ -147,14 +147,14 @@ void GameCamera::NewFPSCam()
 	if (PadY == 0.0f)
 	{
 		//速度をリセット
-		m_velocityY = 0.0f;
+		m_oldFramePadY = 0.0f;
 	}
 
 	//パッドXの入力がなければ
 	if (PadX == 0.0f)
 	{
 		//速度をリセット
-		m_velocityX = 0.0f;
+		m_oldFramePadX = 0.0f;
 	}
 
 	//Y軸回りの回転
@@ -171,7 +171,7 @@ void GameCamera::NewFPSCam()
 	Quaternion rotX;
 	Quaternion rotY;
 
-	m_oldFramePadX = Leap(PadX, m_oldFramePadX, 0.5f);
+	m_oldFramePadX = Leap(PadX, m_oldFramePadX, 0.8f);
 
 	rotX.SetRotationDeg(Vector3::AxisY, 3.0f * m_oldFramePadX);
 
@@ -194,7 +194,7 @@ void GameCamera::NewFPSCam()
 		//	m_velocityY,
 		//	1.0f));
 
-		m_oldFramePadY = Leap(-PadY, m_oldFramePadY, 0.5f);
+		m_oldFramePadY = Leap(-PadY, m_oldFramePadY, 0.7f);
 
 		rotY.SetRotationDeg(axisX, 3.0f * m_oldFramePadY);
 	}
