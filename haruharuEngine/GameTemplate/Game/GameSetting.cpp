@@ -12,6 +12,11 @@ bool GameSetting::Start()
 	//ゲームサウンドのインスタンスを取得
 	m_gameSound = FindGO<GameSound>("gameSound");
 
+	m_mouseCursor.Init("Assets/modelData/window/mouse_cursor.DDS",
+		GameSettingConstant::MOUSECORSOR_SPRITE_W_SIZE,
+		GameSettingConstant::MOUSECORSOR_SPRITE_H_SIZE
+	);
+
 	return true;
 }
 
@@ -78,9 +83,13 @@ void GameSetting::GoSettingMenuOpen()
 		return;
 	}
 
-	m_settingItemNum = m_settingDatasList.size();
+	m_settingItemNum = m_settingDatasList.size() - 1;
+
+	m_settingItemSelectionNum = 0;
 
 	m_gameWindow->WindowOpen();
+
+	UpdateDrawSettingData(m_settingItemSelectionNum);
 
 	StateChange(SettingState::en_windowOpen);
 }
@@ -154,8 +163,16 @@ void GameSetting::SettingSelection()
 			//戻す
 			return;
 
+		//もしm_settingItemSelectionNumの数が
+		// MAX_SETTING_SPRITE_DRAW_NUMの倍数なら
+		if (m_settingItemSelectionNum % GameSettingConstant::
+			MAX_SETTING_SPRITE_DRAW_NUM == 0)
+			//描画データを更新する
+			UpdateDrawSettingData(m_settingItemSelectionNum 
+				- GameSettingConstant::MAX_SETTING_SPRITE_DRAW_NUM);
+
 		//変数を1減らす
-		m_settingItemSelectionNum--;
+		m_settingItemSelectionNum--;	
 	}
 	//もし十字下ボタンが押されたら
 	else if(g_pad[0]->IsTrigger(enButtonDown))
@@ -167,6 +184,13 @@ void GameSetting::SettingSelection()
 
 		//変数を1増やす
 		m_settingItemSelectionNum++;
+
+		//もしm_settingItemSelectionNumの数が
+		// MAX_SETTING_SPRITE_DRAW_NUMの倍数なら
+		if (m_settingItemSelectionNum % GameSettingConstant::
+			MAX_SETTING_SPRITE_DRAW_NUM == 0)
+			//描画データを更新する
+			UpdateDrawSettingData(m_settingItemSelectionNum);
 	}
 
 }
@@ -177,21 +201,117 @@ void GameSetting::SettingSpriteUpdate()
 	if (m_settingState != SettingState::en_settingSelection &&
 		m_settingState != SettingState::en_setting)
 		//戻す
-		return;
+		return;	
 
-	m_settingDatasList[m_settingItemSelectionNum]
-		->m_settingSlider.SetPosition(GameSettingConstant::SETTING_SPRITE_POS);
+	//位置更新
+	for (int drawDataNo = 0;
+		drawDataNo < GameSettingConstant::MAX_SETTING_SPRITE_DRAW_NUM;
+		drawDataNo++)
+	{
+		//アドレスがヌルだったら
+		if (m_settingDrawDatasList[drawDataNo].m_settingDataAddress
+			== nullptr)
+			//飛ばす
+			continue;
 
+		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
+			->m_settingBar.SetPosition(
+				m_settingDrawDatasList[drawDataNo].m_spriteOriginPos);
+
+		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
+			->m_settingSlider.SetPosition(
+				m_settingDrawDatasList[drawDataNo].m_spriteOriginPos);
+
+		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
+			->m_settingBar.Update();
+	
+		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
+			->m_settingSlider.Update();
+
+		wchar_t fontBuf[256] = {};
+
+		swprintf_s(fontBuf, 256, m_settingDrawDatasList[drawDataNo]
+			.m_settingDataAddress->GetSettingName());
+
+		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
+			->m_settingItemNameFontRender.SetText(fontBuf);
+
+		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
+			->m_settingItemNameFontRender.SetPosition(
+				m_settingDrawDatasList[drawDataNo].m_spriteFontPos);
+
+		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
+			->m_settingItemNameFontRender.SetColor(
+				GameSettingConstant::MAINTEXT_COLOR);
+	}
+}
+
+void GameSetting::UpdateDrawSettingData(const int initNum)
+{
+	//設定指定項目数
+	int itemDataNo = initNum;
+
+	//MAX_SETTING_SPRITE_DRAW_NUMの数ぶん繰り返す
+	for (int drawDataNo = 0;
+		drawDataNo < GameSettingConstant::MAX_SETTING_SPRITE_DRAW_NUM;
+		drawDataNo++)
+	{
+		//もし設定指定項目数が設定項目数より多かったら
+		if (m_settingItemNum < itemDataNo)
+		{
+			//ヌルにして
+			m_settingDrawDatasList[drawDataNo].m_settingDataAddress
+				= nullptr;
+
+			//繰り返しから抜ける
+			break;
+		}
+
+		//描画する設定項目データのアドレスを代入
+		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
+			= m_settingDatasList[itemDataNo];
+
+		//設定項目の原点位置を設定
+		m_settingDrawDatasList[drawDataNo].m_spriteOriginPos = GameSettingConstant
+			::SETTING_SPRITE_POS;
+
+		m_settingDrawDatasList[drawDataNo].m_spriteOriginPos.y -= 400 * drawDataNo;
+
+		//文字位置を設定
+		m_settingDrawDatasList[drawDataNo].m_spriteFontPos
+			= m_settingDrawDatasList[drawDataNo].m_spriteOriginPos;
+
+		m_settingDrawDatasList[drawDataNo].m_spriteFontPos.y += 200.0f
+			- (drawDataNo * 100.0f);
+		m_settingDrawDatasList[drawDataNo].m_spriteFontPos.x -= 800.0f;
+
+		//設定指定項目数を一増やす
+		itemDataNo++;
+	}
 }
 
 void GameSetting::Render(RenderContext& rc)
 {
-	if(m_settingState == SettingState::en_settingSelection ||
-		m_settingState == SettingState::en_setting)
-	{
+	if (m_settingState != SettingState::en_settingSelection &&
+		m_settingState != SettingState::en_setting)
+		return;
 
-		m_settingDatasList[m_settingItemSelectionNum]->m_settingSlider.Draw(rc);
-		m_settingDatasList[m_settingItemSelectionNum]->m_settingBar.Draw(rc);
+	for (int drawDataNo = 0;
+		drawDataNo < GameSettingConstant::MAX_SETTING_SPRITE_DRAW_NUM;
+		drawDataNo++)
+	{
+		if (m_settingDrawDatasList[drawDataNo].m_settingDataAddress
+			== nullptr)
+			continue;
+
+		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
+			->m_settingBar.Draw(rc);
+
+		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
+			->m_settingSlider.Draw(rc);
+
+		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
+			->m_settingItemNameFontRender.Draw(rc);
 
 	}
 }

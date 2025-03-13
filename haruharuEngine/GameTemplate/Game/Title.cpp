@@ -67,6 +67,29 @@ bool Title::Start()
 		}
 	);
 
+
+	m_gameSetting->InitSetting(
+		L"Test",
+		test,
+		[&](bool isBoot) -> bool
+		{
+
+
+			return true;
+		}
+	);
+
+	m_gameSetting->InitSetting(
+		L"Test",
+		test,
+		[&](bool isBoot) -> bool
+		{
+
+
+			return true;
+		}
+	);
+
 	//ロード画面のインスタンスを取得
 	m_load = FindGO<Load>("load");
 
@@ -85,6 +108,10 @@ void Title::Update()
 
 		if (m_gameMenu->IsMenuOpenNow() == true)
 			return;
+
+		if (m_gameSetting->IsSettingOpenNow() == true)
+			return;
+		
 
 		m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
 

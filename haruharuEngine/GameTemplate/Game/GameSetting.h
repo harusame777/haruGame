@@ -6,7 +6,7 @@ namespace GameSettingConstant {
 
 	static const int MAX_TEXT_NUM = 256; 
 
-	static const int MAX_SETTING_SPRITE_POSITION_LIST_NUM = 3;
+	static const int MAX_SETTING_SPRITE_DRAW_NUM = 2;
 
 	static const float SETTING_BAR_SPRITE_W_SIZE = 1002.0f;
 	static const float SETTING_BAR_SPRITE_H_SIZE = 12.0f;
@@ -14,7 +14,12 @@ namespace GameSettingConstant {
 	static const float SETTING_BAR_SLIDER_SPRITE_W_SIZE = 26.0f;
 	static const float SETTING_BAR_SLIDER_SPRITE_H_SIZE = 117.0f;
 
-	static const Vector3 SETTING_SPRITE_POS = { 0.0f,0.0f,0.0f };
+	static const Vector3 SETTING_SPRITE_POS = { 0.0f,200.0f,0.0f };
+
+	static const float MOUSECORSOR_SPRITE_W_SIZE = 34.0f;
+	static const float MOUSECORSOR_SPRITE_H_SIZE = 38.0f;
+
+	static const Vector4 MAINTEXT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
 };
 
 class GameWindow;
@@ -90,6 +95,19 @@ public:
 	{
 		m_settingState = changeState;
 	}
+	/// <summary>
+	/// 設定が起動中かどうか
+	/// </summary>
+	/// <returns></returns>
+	bool IsSettingOpenNow()const
+	{
+		if (m_settingState != SettingState::en_standby)
+		{
+			return true;
+		}
+
+		return false;
+	}
 private:
 	/// <summary>
 	/// 設定データ構造体
@@ -101,10 +119,6 @@ private:
 		/// 設定項目名
 		/// </summary>
 		wchar_t m_settingItemName[GameSettingConstant::MAX_TEXT_NUM] = {};
-		/// <summary>
-		/// 設定項目名描画要フォントレンダー
-		/// </summary>
-		FontRender m_settingItemNameFont;
 		/// <summary>
 		/// 設定値アドレス保存要変数
 		/// </summary>
@@ -122,6 +136,10 @@ private:
 		/// セッティングスライダー
 		/// </summary>
 		SpriteRender m_settingSlider;
+		/// <summary>
+		/// 設定項目名描画要フォントレンダー
+		/// </summary>
+		FontRender m_settingItemNameFontRender;
 		/// <summary>
 		/// 設定値アドレス保存要変数、Int保存
 		/// </summary>
@@ -171,6 +189,10 @@ private:
 		{
 			swprintf_s(m_settingItemName,settingName);
 		}
+		wchar_t* GetSettingName()
+		{
+			return m_settingItemName;
+		}
 		/// <summary>
 		/// 関数を設定
 		/// </summary>
@@ -185,10 +207,29 @@ private:
 	/// </summary>
 	std::vector<SettingDatas*> m_settingDatasList;
 	/// <summary>
-	/// 設定スプライト位置
+	/// 描画設定データ
 	/// </summary>
-	Vector3 m_settingSpritePositionList[GameSettingConstant::
-		MAX_SETTING_SPRITE_POSITION_LIST_NUM];
+	struct DrawSettingData
+	{
+	public:
+		/// <summary>
+		/// 設定データアドレス
+		/// </summary>
+		SettingDatas* m_settingDataAddress = nullptr;
+		/// <summary>
+		/// スプライト原点位置
+		/// </summary>
+		Vector3 m_spriteOriginPos = Vector3::Zero;
+		/// <summary>
+		/// スプライトフォント位置
+		/// </summary>
+		Vector3 m_spriteFontPos = Vector3::Zero;
+	};
+	/// <summary>
+	/// 描画設定データ変数
+	/// </summary>
+	DrawSettingData m_settingDrawDatasList[GameSettingConstant
+		::MAX_SETTING_SPRITE_DRAW_NUM];
 	/// <summary>
 	/// 設定ステート
 	/// </summary>
@@ -227,6 +268,10 @@ private:
 	/// </summary>
 	void SettingSpriteUpdate();
 	/// <summary>
+	/// 描画データの更新
+	/// </summary>
+	void UpdateDrawSettingData(const int initNum);
+	/// <summary>
 	/// セッティング選ぶ関数
 	/// </summary>
 	void SettingSelection();
@@ -235,6 +280,10 @@ private:
 	/// </summary>
 	/// <param name="rc"></param>
 	void Render(RenderContext& rc);
+	/// <summary>
+	/// マウスカーソル
+	/// </summary>
+	SpriteRender m_mouseCursor;
 	/// <summary>
 	/// ゲームウィンドウのインスタンス
 	/// </summary>
