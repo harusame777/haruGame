@@ -20,6 +20,9 @@ namespace GameSettingConstant {
 	static const float MOUSECORSOR_SPRITE_H_SIZE = 38.0f;
 
 	static const Vector4 MAINTEXT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
+
+	static const float SLIDER_SPRITE_MOVE_MAX = 485.0f;
+	static const float SLIDER_SPRITE_MOVE_MIN = -485.0f;
 };
 
 class GameWindow;
@@ -67,11 +70,15 @@ public:
 	void InitSetting(
 		const wchar_t* settingName,
 		int& address,
+		int maxValue,
+		int minValue,
 		const SettingFunction& settingEndFunc
 	);
 	void InitSetting(
 		const wchar_t* settingName,
 		float& address,
+		float maxValue,
+		float minValue,
 		const SettingFunction& settingEndFunc
 	);
 	/// <summary>
@@ -124,6 +131,14 @@ private:
 		/// </summary>
 		std::variant<int*, float*> m_settingValue;
 		/// <summary>
+		/// 設定値の最大値
+		/// </summary>
+		float m_maxSettingValue;
+		/// <summary>
+		/// 設定値の最小値
+		/// </summary>
+		float m_minSettingValue;
+		/// <summary>
 		/// 設定をした時に起動する関数
 		/// </summary>
 		SettingFunction m_settingEndBootFunc;
@@ -141,6 +156,10 @@ private:
 		/// </summary>
 		FontRender m_settingItemNameFontRender;
 		/// <summary>
+		/// セッティングスライダーの位置
+		/// </summary>
+		Vector3 m_settingSliderPos = Vector3::Zero;
+		/// <summary>
 		/// 設定値アドレス保存要変数、Int保存
 		/// </summary>
 		/// <param name="valueInt"></param>
@@ -151,6 +170,23 @@ private:
 		void SetSettingAddress(float& valueInt)
 		{
 			m_settingValue = &valueInt;
+		}
+		/// <summary>
+		/// 設定値の最大値と最小値を設定
+		/// </summary>
+		void SetSettingValueMaxAndMin(float const maxValue,float const minValue)
+		{
+			m_maxSettingValue = maxValue;
+
+			m_minSettingValue = minValue;
+		}
+		const float GetSettingValueMax() const
+		{
+			return m_maxSettingValue;
+		}
+		const float GetSettingValueMin() const
+		{
+			return m_minSettingValue;
 		}
 		/// <summary>
 		/// 設定値変更
@@ -276,6 +312,19 @@ private:
 	/// </summary>
 	void SettingSelection();
 	/// <summary>
+	/// マウスカーソルスプライトの更新
+	/// </summary>
+	void MouseCursorSpriteUpdate();
+	/// <summary>
+	/// 設定実行
+	/// </summary>
+	void SettingExecute();
+	/// <summary>
+	/// 
+	/// </summary>
+	void SettingValueCalc();
+
+	/// <summary>
 	/// レンダー関数
 	/// </summary>
 	/// <param name="rc"></param>
@@ -292,5 +341,8 @@ private:
 	/// ゲームサウンドのインスタンス
 	/// </summary>
 	GameSound* m_gameSound = nullptr;
+
+
+	FontRender m_debugFont;
 };
 

@@ -57,31 +57,10 @@ bool Title::Start()
 	);
 
 	m_gameSetting->InitSetting(
-		L"SoundSize",
+		L"Test1",
 		test,
-		[&](bool isBoot) -> bool
-		{
-
-
-			return true;
-		}
-	);
-
-
-	m_gameSetting->InitSetting(
-		L"Test",
-		test,
-		[&](bool isBoot) -> bool
-		{
-
-
-			return true;
-		}
-	);
-
-	m_gameSetting->InitSetting(
-		L"Test",
-		test,
+		5,
+		1,
 		[&](bool isBoot) -> bool
 		{
 
