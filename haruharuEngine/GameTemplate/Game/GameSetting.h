@@ -84,37 +84,37 @@ public:
 	/// <summary>
 	/// 設定メニュー閉じる時に実行する関数
 	/// </summary>
-	void InitMenuEndFunc(const SettingFunction& menuFunc)
-	{
-		m_isInitCloseFunc = true;
+void InitMenuEndFunc(const SettingFunction& menuFunc)
+{
+	m_isInitCloseFunc = true;
 
-		m_settingCloseFunction = menuFunc;
-	}
-	/// <summary>
-	/// 設定メニューを開く
-	/// </summary>
-	void GoSettingMenuOpen();
-	/// <summary>
-	/// ステート変更
-	/// </summary>
-	/// <param name="changeState"></param>
-	void StateChange(const SettingState changeState)
+	m_settingCloseFunction = menuFunc;
+}
+/// <summary>
+/// 設定メニューを開く
+/// </summary>
+void GoSettingMenuOpen();
+/// <summary>
+/// ステート変更
+/// </summary>
+/// <param name="changeState"></param>
+void StateChange(const SettingState changeState)
+{
+	m_settingState = changeState;
+}
+/// <summary>
+/// 設定が起動中かどうか
+/// </summary>
+/// <returns></returns>
+bool IsSettingOpenNow()const
+{
+	if (m_settingState != SettingState::en_standby)
 	{
-		m_settingState = changeState;
+		return true;
 	}
-	/// <summary>
-	/// 設定が起動中かどうか
-	/// </summary>
-	/// <returns></returns>
-	bool IsSettingOpenNow()const
-	{
-		if (m_settingState != SettingState::en_standby)
-		{
-			return true;
-		}
 
-		return false;
-	}
+	return false;
+}
 private:
 	/// <summary>
 	/// 設定データ構造体
@@ -170,6 +170,20 @@ private:
 		void SetSettingAddress(float& valueInt)
 		{
 			m_settingValue = &valueInt;
+		}
+		/// <summary>
+		/// 設定値アドレスがint型かfloat型かを判定する関数
+		/// int型だったらtrueを、float型だったらfalseを返す
+		/// </summary>
+		/// <returns></returns>
+		const bool IsSettingAddressIntOrFloat()
+		{
+			if (std::get_if<int*>(&m_settingValue))
+				return true;
+			if (std::get_if<float*>(&m_settingValue))
+				return false;
+
+			return true;
 		}
 		/// <summary>
 		/// 設定値の最大値と最小値を設定
@@ -260,6 +274,14 @@ private:
 		/// スプライトフォント位置
 		/// </summary>
 		Vector3 m_spriteFontPos = Vector3::Zero;
+		/// <summary>
+		/// 設定値出力
+		/// </summary>
+		FontRender m_settingValueDrawFont;
+		/// <summary>
+		/// 設定値出力位置
+		/// </summary>
+		Vector3 m_settingValueFontPos = Vector3::Zero;
 	};
 	/// <summary>
 	/// 描画設定データ変数
@@ -320,10 +342,9 @@ private:
 	/// </summary>
 	void SettingExecute();
 	/// <summary>
-	/// 
+	/// 設定値計算
 	/// </summary>
-	void SettingValueCalc();
-
+	void SettingValueCalc(const int listNo);
 	/// <summary>
 	/// レンダー関数
 	/// </summary>
@@ -341,7 +362,17 @@ private:
 	/// ゲームサウンドのインスタンス
 	/// </summary>
 	GameSound* m_gameSound = nullptr;
-
+	/// <summary>
+	/// flaot用線形補間
+	/// </summary>
+	/// <param name="a"></param>
+	/// <param name="b"></param>
+	/// <param name="t"></param>
+	/// <returns></returns>
+	const float Leap(const float a, const float b, const float t)
+	{
+		return (1.0f - t) * a + t * b;
+	}
 
 	FontRender m_debugFont;
 };

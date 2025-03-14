@@ -59,8 +59,8 @@ bool Title::Start()
 	m_gameSetting->InitSetting(
 		L"Test1",
 		test,
-		5,
-		1,
+		100,
+		0,
 		[&](bool isBoot) -> bool
 		{
 

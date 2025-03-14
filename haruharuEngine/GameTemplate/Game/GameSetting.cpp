@@ -2,6 +2,9 @@
 #include "GameSetting.h"
 #include "GameWindow.h"
 #include "GameSound.h"
+#include <iostream>
+#include <variant>
+
 
 bool GameSetting::Start()
 {
@@ -29,6 +32,8 @@ void GameSetting::InitSetting(
 	const SettingFunction& settingEndFunc
 )
 {
+	int size = m_settingDatasList.size();
+
 	//int用設定
 	SettingDatas* newData = new SettingDatas;
 
@@ -37,6 +42,8 @@ void GameSetting::InitSetting(
 	newData->SettingName(settingName);
 
 	newData->SetSettingEndFunction(settingEndFunc);
+
+	newData->SetSettingValueMaxAndMin(maxValue, minValue);
 
 	newData->m_settingBar.Init("Assets/modelData/window/settingBar_sprite_1.DDS",
 		GameSettingConstant::SETTING_BAR_SPRITE_W_SIZE,
@@ -49,6 +56,8 @@ void GameSetting::InitSetting(
 	);
 
 	m_settingDatasList.push_back(newData);
+
+	SettingValueCalc(size);
 }
 
 void GameSetting::InitSetting(
@@ -59,6 +68,9 @@ void GameSetting::InitSetting(
 	const SettingFunction& settingEndFunc
 )
 {
+
+	int size = m_settingDatasList.size();
+
 	//float用設定
 	SettingDatas* newData = new SettingDatas;
 
@@ -67,6 +79,8 @@ void GameSetting::InitSetting(
 	newData->SettingName(settingName);
 
 	newData->SetSettingEndFunction(settingEndFunc);
+
+	newData->SetSettingValueMaxAndMin(maxValue, minValue);
 
 	newData->m_settingBar.Init("Assets/modelData/window/settingBar_sprite_1.DDS",
 		GameSettingConstant::SETTING_BAR_SPRITE_W_SIZE,
@@ -79,6 +93,8 @@ void GameSetting::InitSetting(
 	);
 
 	m_settingDatasList.push_back(newData);
+
+	SettingValueCalc(size);
 }
 
 void GameSetting::GoSettingMenuOpen()
@@ -287,6 +303,8 @@ void GameSetting::SettingSpriteUpdate()
 		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
 			->m_settingSlider.Update();
 
+		//表示文字設定
+
 		wchar_t fontBuf[256] = {};
 
 		swprintf_s(fontBuf, 256, m_settingDrawDatasList[drawDataNo]
@@ -302,6 +320,20 @@ void GameSetting::SettingSpriteUpdate()
 		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
 			->m_settingItemNameFontRender.SetColor(
 				GameSettingConstant::MAINTEXT_COLOR);
+
+		//設定値文字設定
+
+		swprintf_s(fontBuf, 256, L"( %.2f )", m_settingDrawDatasList[drawDataNo]
+			.m_settingDataAddress->GetAddressNum());
+
+		m_settingDrawDatasList[drawDataNo].m_settingValueDrawFont
+			.SetText(fontBuf);
+
+		m_settingDrawDatasList[drawDataNo].m_settingValueDrawFont
+			.SetPosition(m_settingDrawDatasList[drawDataNo].m_settingValueFontPos);
+
+		m_settingDrawDatasList[drawDataNo].m_settingValueDrawFont
+			.SetColor(GameSettingConstant::MAINTEXT_COLOR);
 	}
 
 	m_mouseCursor.Update();
@@ -350,6 +382,13 @@ void GameSetting::UpdateDrawSettingData(const int initNum)
 			- (drawDataNo * 100.0f);
 		m_settingDrawDatasList[drawDataNo].m_spriteFontPos.x -= 800.0f;
 
+		//設定値出力位置を設定
+
+		m_settingDrawDatasList[drawDataNo].m_settingValueFontPos 
+			= m_settingDrawDatasList[drawDataNo].m_spriteOriginPos;
+
+		m_settingDrawDatasList[drawDataNo].m_settingValueFontPos.x += 500.0f;
+
 		//設定指定項目数を一増やす
 		itemDataNo++;
 	}
@@ -385,7 +424,58 @@ void GameSetting::SettingExecute()
 
 	}
 
+	SettingValueCalc(m_settingItemSelectionNum);
+}
+
+void GameSetting::SettingValueCalc(const int listNo)
+{
+	//まずはスライダーの値を1から0の値に正規化を行う
+
+		//現在数値取得
+	float nowValue = m_settingDatasList[listNo]
+		->m_settingSliderPos.x;
+
+	//正規化計算最大値最小値設定
+	float normalizeMaxValue = GameSettingConstant::SLIDER_SPRITE_MOVE_MAX;
+	float normalizeMinValue = GameSettingConstant::SLIDER_SPRITE_MOVE_MIN;
+
+	//数値調整
+	if (nowValue > normalizeMaxValue)
+		nowValue = normalizeMaxValue;
+
+	if (nowValue < normalizeMinValue)
+		nowValue = normalizeMinValue;
+
+	//正規化計算
+	float normalize = 1.0 - (nowValue + normalizeMinValue) 
+		/ (normalizeMinValue - normalizeMaxValue);
+
+	//線形保管計算最大値最小値設定
+	float leapMaxValue = m_settingDatasList[listNo]->GetSettingValueMax();
+	float leapMinValue = m_settingDatasList[listNo]->GetSettingValueMin();
+
+	//線形保管を使用して正規化された割合から数値を出す
+	float leapValue = Leap(leapMinValue, leapMaxValue, normalize);
 	
+	float floatFinalValue = 0.0f;
+	int	intFinalValue = 0.0f;
+
+	//データ変数の設定値アドレスの方によって処理を変更
+	if (m_settingDatasList[listNo]
+		->IsSettingAddressIntOrFloat() == true)
+	{
+		intFinalValue = static_cast<int>(std::round(leapValue));
+
+		m_settingDatasList[listNo]
+			->SetSettingValue(intFinalValue);
+	}
+	else
+	{
+		floatFinalValue = std::floor(leapValue * 100) / 100;
+
+		m_settingDatasList[listNo]
+			->SetSettingValue(floatFinalValue);
+	}
 }
 
 void GameSetting::Render(RenderContext& rc)
@@ -410,6 +500,8 @@ void GameSetting::Render(RenderContext& rc)
 
 		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
 			->m_settingItemNameFontRender.Draw(rc);
+
+		m_settingDrawDatasList[drawDataNo].m_settingValueDrawFont.Draw(rc);
 
 	}
 
