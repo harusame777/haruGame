@@ -23,6 +23,9 @@ namespace GameSettingConstant {
 
 	static const float SLIDER_SPRITE_MOVE_MAX = 485.0f;
 	static const float SLIDER_SPRITE_MOVE_MIN = -485.0f;
+
+	static const float SETTING_ARROW_SPRITE_W_SIZE = 80.0f;
+	static const float SETTING_ARROW_SPRITE_H_SIZE = 37.0f;
 };
 
 class GameWindow;
@@ -408,6 +411,14 @@ private:
 	/// </summary>
 	int m_settingItemSelectionNum = 0;
 	/// <summary>
+	///　設定ページ数
+	/// </summary>
+	int m_settingPageNum = 0;
+	/// <summary>
+	/// 現在設定ページ数
+	/// </summary>
+	int m_nowSettingPageNum = 0;
+	/// <summary>
 	/// スタート関数
 	/// </summary>
 	/// <returns></returns>
@@ -471,6 +482,11 @@ private:
 	/// </summary>
 	SpriteRender m_mouseCursor;
 	/// <summary>
+	/// ウィンドウやじるし
+	/// </summary>
+	SpriteRender m_windowArrowUp;
+	SpriteRender m_windowArrowDown;
+	/// <summary>
 	/// ゲームウィンドウのインスタンス
 	/// </summary>
 	GameWindow* m_gameWindow = nullptr;
@@ -489,7 +505,9 @@ private:
 	{
 		return (1.0f - t) * a + t * b;
 	}
-
+	/// <summary>
+	/// デバック用
+	/// </summary>
 	FontRender m_debugFont;
 };
 

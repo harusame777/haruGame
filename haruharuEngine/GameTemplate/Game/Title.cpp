@@ -81,6 +81,126 @@ bool Title::Start()
 			return true;
 		}
 	);
+	m_gameSetting->InitSetting(
+		L"Test2",
+		test2,
+		1.0f,
+		0.0f,
+		[&]() -> bool
+		{
+			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+			return true;
+		}
+	);
+	m_gameSetting->InitSetting(
+		L"Test2",
+		test2,
+		1.0f,
+		0.0f,
+		[&]() -> bool
+		{
+			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+			return true;
+		}
+	);
+	m_gameSetting->InitSetting(
+		L"Test2",
+		test2,
+		1.0f,
+		0.0f,
+		[&]() -> bool
+		{
+			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+			return true;
+		}
+	);
+	m_gameSetting->InitSetting(
+		L"Test2",
+		test2,
+		1.0f,
+		0.0f,
+		[&]() -> bool
+		{
+			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+			return true;
+		}
+	);
+	m_gameSetting->InitSetting(
+		L"Test2",
+		test2,
+		1.0f,
+		0.0f,
+		[&]() -> bool
+		{
+			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+			return true;
+		}
+	);
+	m_gameSetting->InitSetting(
+		L"Test2",
+		test2,
+		1.0f,
+		0.0f,
+		[&]() -> bool
+		{
+			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+			return true;
+		}
+	);
+	m_gameSetting->InitSetting(
+		L"Test2",
+		test2,
+		1.0f,
+		0.0f,
+		[&]() -> bool
+		{
+			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+			return true;
+		}
+	);
+	m_gameSetting->InitSetting(
+		L"Test2",
+		test2,
+		1.0f,
+		0.0f,
+		[&]() -> bool
+		{
+			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+			return true;
+		}
+	);
+	m_gameSetting->InitSetting(
+		L"Test2",
+		test2,
+		1.0f,
+		0.0f,
+		[&]() -> bool
+		{
+			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+			return true;
+		}
+	);
+	m_gameSetting->InitSetting(
+		L"Test2",
+		test2,
+		1.0f,
+		0.0f,
+		[&]() -> bool
+		{
+			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+			return true;
+		}
+	);
 
 	//ロード画面のインスタンスを取得
 	m_load = FindGO<Load>("load");

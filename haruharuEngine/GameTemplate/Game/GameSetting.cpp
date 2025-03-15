@@ -16,10 +16,30 @@ bool GameSetting::Start()
 	m_gameSound = FindGO<GameSound>("gameSound");
 
 	//マウスカーソル
-	m_mouseCursor.Init("Assets/modelData/window/mouse_cursor.DDS",
+	m_mouseCursor.Init(
+		"Assets/modelData/window/mouse_cursor.DDS",
 		GameSettingConstant::MOUSECORSOR_SPRITE_W_SIZE,
 		GameSettingConstant::MOUSECORSOR_SPRITE_H_SIZE
 	);
+
+	//ウィンドウやじるし
+	m_windowArrowDown.Init(
+		"Assets/modelData/window/settingArrow_sprite.DDS",
+		GameSettingConstant::SETTING_ARROW_SPRITE_W_SIZE,
+		GameSettingConstant::SETTING_ARROW_SPRITE_H_SIZE
+	);
+
+	m_windowArrowUp.Init(
+		"Assets/modelData/window/settingArrow_sprite.DDS",
+		GameSettingConstant::SETTING_ARROW_SPRITE_W_SIZE,
+		GameSettingConstant::SETTING_ARROW_SPRITE_H_SIZE
+	);
+
+	Quaternion rot;
+
+	rot.SetRotationDegZ(180.0f);
+
+	m_windowArrowUp.SetRotation(rot);
 
 	for (int drawDataNo = 0;
 		drawDataNo < GameSettingConstant::MAX_SETTING_SPRITE_DRAW_NUM;
@@ -37,7 +57,6 @@ bool GameSetting::Start()
 			GameSettingConstant::SETTING_BAR_SLIDER_SPRITE_H_SIZE
 		);
 	}
-
 
 	return true;
 }
@@ -103,6 +122,14 @@ void GameSetting::GoSettingMenuOpen()
 	}
 
 	m_settingItemNum = m_settingDatasList.size() - 1;
+
+	for (int listNo = 0;
+		listNo < m_settingItemNum ; 
+		listNo++)
+	{
+		if ((listNo + 1) % GameSettingConstant::MAX_SETTING_SPRITE_DRAW_NUM == 0)
+			m_settingPageNum++;
+	}
 
 	m_settingItemSelectionNum = 0;
 
@@ -177,6 +204,8 @@ void GameSetting::SettingStateUpdate()
 
 		m_settingItemSelectionNum = 0;
 
+		m_nowSettingPageNum = 0;
+
 		StateChange(SettingState::en_standby);
 
 		break;
@@ -190,26 +219,31 @@ void GameSetting::SettingSelection()
 {
 	//ウィンドウ開いてなかったら
 	if (m_gameWindow->IsWindowOpen() == false)
-		//戻す
+	{
 		return;
+	}
 
 	//もし十字上ボタンが押されたら
 	if (g_pad[0]->IsTrigger(enButtonUp))
 	{
 		//現在選択中の項目番号が0以下なら
 		if (m_settingItemSelectionNum <= 0)
-			//戻す
+		{
 			return;
+		}
 
 		//もしm_settingItemSelectionNumの数が
 		// MAX_SETTING_SPRITE_DRAW_NUMの倍数なら
 		if (m_settingItemSelectionNum % GameSettingConstant::
 			MAX_SETTING_SPRITE_DRAW_NUM == 0)
-			//描画データを更新する
-			UpdateDrawSettingData(m_settingItemSelectionNum 
-				- GameSettingConstant::MAX_SETTING_SPRITE_DRAW_NUM);
+		{
+			m_nowSettingPageNum--;
 
-		//変数を1減らす
+			//描画データを更新する
+			UpdateDrawSettingData(m_settingItemSelectionNum
+				- GameSettingConstant::MAX_SETTING_SPRITE_DRAW_NUM);
+		}
+
 		m_settingItemSelectionNum--;	
 	}
 	//もし十字下ボタンが押されたら
@@ -217,24 +251,31 @@ void GameSetting::SettingSelection()
 	{
 		//現在選択中の項目番号が設定最大数以上なら
 		if (m_settingItemNum <= m_settingItemSelectionNum)
-			//戻す
+		{
 			return;
+		}
 
-		//変数を1増やす
 		m_settingItemSelectionNum++;
 
 		//もしm_settingItemSelectionNumの数が
 		// MAX_SETTING_SPRITE_DRAW_NUMの倍数なら
 		if (m_settingItemSelectionNum % GameSettingConstant::
 			MAX_SETTING_SPRITE_DRAW_NUM == 0)
-			//描画データを更新する
+		{
+			m_nowSettingPageNum++;
+
 			UpdateDrawSettingData(m_settingItemSelectionNum);
+		}
 	}
 	else if (g_pad[0]->IsTrigger(enButtonB))
 	{
+		//設定項目数が0以下なら
+		if (m_settingItemNum < 0)
+		{
+			return;
+		}
 		
 		StateChange(SettingState::en_setting);
-
 	}
 	else if(g_pad[0]->IsTrigger(enButtonA))
 	{
@@ -266,14 +307,18 @@ void GameSetting::MouseCursorSpriteUpdate()
 
 	m_mouseCursor.SetPosition(mousePos);
 
+	m_windowArrowDown.SetPosition({ 0.0f,-350.0f,0.0f });
+
+	m_windowArrowUp.SetPosition({ 0.0f,350.0f,0.0f });
 }
 
 void GameSetting::SettingSpriteUpdate()
 {
 	//設定ステートが下記以外だったら
 	if (IsSettingSpriteDraw() == false)
-		//戻す
-		return;	
+	{
+		return;
+	}
 
 	//位置更新
 	for (int drawDataNo = 0;
@@ -283,8 +328,9 @@ void GameSetting::SettingSpriteUpdate()
 		//アドレスがヌルだったら
 		if (m_settingDrawDatasList[drawDataNo].m_settingDataAddress
 			== nullptr)
-			//飛ばす
+		{
 			continue;
+		}
 
 		//設定バー位置更新
 		m_settingDrawDatasList[drawDataNo].SetSettingBarPosUpdate();
@@ -303,6 +349,10 @@ void GameSetting::SettingSpriteUpdate()
 		
 		//設定値文字設定
 		m_settingDrawDatasList[drawDataNo].SettingValueFontUpdate();
+
+		//ウィンドウやじるし更新
+		m_windowArrowUp.Update();
+		m_windowArrowDown.Update();
 	}
 
 	m_mouseCursor.Update();
@@ -481,6 +531,21 @@ void GameSetting::Render(RenderContext& rc)
 
 	}
 
+	if (m_nowSettingPageNum > 0)
+	{
+		m_windowArrowUp.Draw(rc);
+	}
+
+	if (m_nowSettingPageNum < m_settingPageNum)
+	{
+		m_windowArrowDown.Draw(rc);
+	}
+
+
+#ifdef _DEBUG
+	if (m_settingItemNum < 0)
+		return;
+
 	wchar_t debugFont[256] = {};
 
 	swprintf_s(debugFont, 256, L"settingSlider_X : %.2f", m_settingDatasList[0]->m_settingSliderPos.x);
@@ -492,4 +557,5 @@ void GameSetting::Render(RenderContext& rc)
 	m_debugFont.Draw(rc);
 
 	m_mouseCursor.Draw(rc);
+#endif
 }
