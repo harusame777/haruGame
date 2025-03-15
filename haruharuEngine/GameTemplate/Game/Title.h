@@ -92,6 +92,8 @@ private:
 	/// </summary>
 	bool m_isGameIn = false;
 
-	int test;
+	int test1;
+
+	float test2;
 };
 

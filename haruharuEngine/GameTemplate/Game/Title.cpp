@@ -47,7 +47,7 @@ bool Title::Start()
 	);
 
 	m_gameSetting->InitMenuEndFunc(
-		[&](bool isBoot) -> bool
+		[&]() -> bool
 		{
 
 			m_gameMenu->GoMenuOpen();
@@ -58,12 +58,25 @@ bool Title::Start()
 
 	m_gameSetting->InitSetting(
 		L"Test1",
-		test,
+		test1,
 		100,
 		0,
-		[&](bool isBoot) -> bool
+		[&]() -> bool
 		{
+			
 
+			return true;
+		}
+	);
+
+	m_gameSetting->InitSetting(
+		L"Test2",
+		test2,
+		1.0f,
+		0.0f,
+		[&]() -> bool
+		{
+			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
 
 			return true;
 		}

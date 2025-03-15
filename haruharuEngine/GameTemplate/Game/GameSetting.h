@@ -45,8 +45,6 @@ public:
 		en_setting,
 		//ウィンドウクローズ
 		en_windowClose,
-		//メニュー閉じる時の関数を起動
-		en_closeMenuFuntionGo,
 		//終了
 		en_end
 	};
@@ -61,7 +59,7 @@ public:
 	/// <summary>
 	/// 命名定義、関数入れ物
 	/// </summary>
-	using SettingFunction = std::function<bool(bool)>;
+	using SettingFunction = std::function<bool()>;
 	/// <summary>
 	/// 設定作成
 	/// </summary>
@@ -144,21 +142,13 @@ private:
 		SettingFunction m_settingEndBootFunc;
 	public:
 		/// <summary>
-		/// セッティングバー
-		/// </summary>
-		SpriteRender m_settingBar;
-		/// <summary>
-		/// セッティングスライダー
-		/// </summary>
-		SpriteRender m_settingSlider;
-		/// <summary>
-		/// 設定項目名描画要フォントレンダー
-		/// </summary>
-		FontRender m_settingItemNameFontRender;
-		/// <summary>
 		/// セッティングスライダーの位置
 		/// </summary>
 		Vector3 m_settingSliderPos = Vector3::Zero;
+		/// <summary>
+		/// 設定値出力数字
+		/// </summary>
+		int m_settingValueDrawFontInt = 0;
 		/// <summary>
 		/// 設定値アドレス保存要変数、Int保存
 		/// </summary>
@@ -222,7 +212,7 @@ private:
 		/// アドレス値を取得
 		/// </summary>
 		/// <returns></returns>
-		std::variant<int, double> GetAddressNum()
+		std::variant<int, float> GetAddressNum()
 		{
 			if (auto valuePtr = std::get_if<int*>(&m_settingValue)){
 				return **valuePtr;
@@ -251,6 +241,14 @@ private:
 		{
 			m_settingEndBootFunc = func;
 		}
+		/// <summary>
+		/// 関数を起動
+		/// </summary>
+		/// <returns></returns>
+		const bool FuncExecute()
+		{
+			return m_settingEndBootFunc();
+		}
 	};
 	/// <summary>
 	/// 設定データ構造体変数
@@ -262,6 +260,18 @@ private:
 	struct DrawSettingData
 	{
 	public:
+		/// <summary>
+		/// 設定項目名描画要フォントレンダー
+		/// </summary>
+		FontRender m_settingItemNameFontRender;
+		/// <summary>
+		/// セッティングバー
+		/// </summary>
+		SpriteRender m_settingBar;
+		/// <summary>
+		/// セッティングスライダー
+		/// </summary>
+		SpriteRender m_settingSlider;
 		/// <summary>
 		/// 設定データアドレス
 		/// </summary>
@@ -282,6 +292,95 @@ private:
 		/// 設定値出力位置
 		/// </summary>
 		Vector3 m_settingValueFontPos = Vector3::Zero;
+	public:
+		/// <summary>
+		/// 原点設定
+		/// </summary>
+		void SetOriginPos(const int dataNo)
+		{
+			m_spriteOriginPos = GameSettingConstant::SETTING_SPRITE_POS;
+
+			m_spriteOriginPos.y -= 400 * dataNo;
+		}
+		/// <summary>
+		/// スライダー設定
+		/// </summary>
+		void SetSliderPos()
+		{
+
+			m_settingDataAddress->m_settingSliderPos.y = m_spriteOriginPos.y;
+
+		}
+		/// <summary>
+		/// 設定名設定
+		/// </summary>
+		/// <param name="dataNo"></param>
+		void SetSettingNameFontPos(const int dataNo)
+		{
+			m_spriteFontPos = m_spriteOriginPos;
+
+			m_spriteFontPos.y += 200.0f - (dataNo * 100.0f);
+
+			m_spriteFontPos.x -= 800.0f;
+		}
+		/// <summary>
+		/// 設定値表示設定
+		/// </summary>
+		/// <param name="dataNo"></param>
+		void SetSettingValueFontPos(const int dataNo)
+		{
+			m_settingValueFontPos = m_spriteOriginPos;
+
+			m_settingValueFontPos.y += 60 - (dataNo * 80.0f);
+
+			m_settingValueFontPos.x += 600.0f;
+		}
+		/// <summary>
+		/// 設定名描画更新
+		/// </summary>
+		void SettingItemNameFontUpdate()
+		{
+			wchar_t fontBuf[256] = {};
+
+			swprintf_s(fontBuf, 256, m_settingDataAddress->GetSettingName());
+
+			m_settingItemNameFontRender.SetText(fontBuf);
+
+			m_settingItemNameFontRender.SetPosition(m_spriteFontPos);
+
+			m_settingItemNameFontRender.SetColor(GameSettingConstant::MAINTEXT_COLOR);
+		}
+		/// <summary>
+		/// 設定値描画更新
+		/// </summary>
+		void SettingValueFontUpdate()
+		{
+			wchar_t fontBuf[256] = {};
+
+			swprintf_s(fontBuf, 256,L"( %d )", m_settingDataAddress
+				->m_settingValueDrawFontInt);
+
+			m_settingValueDrawFont.SetText(fontBuf);
+
+			m_settingValueDrawFont.SetPosition(m_settingValueFontPos);
+
+			m_settingValueDrawFont.SetColor(GameSettingConstant::MAINTEXT_COLOR);
+		}
+		/// <summary>
+		/// 設定バー位置設定
+		/// </summary>
+		void SetSettingBarPosUpdate()
+		{
+			m_settingBar.SetPosition(m_spriteOriginPos);
+		}
+		/// <summary>
+		/// 設定スライダー位置更新
+		/// </summary>
+		void SetSettingSliderPosUpdate()
+		{
+			m_settingSlider.SetPosition(
+				m_settingDataAddress->m_settingSliderPos);
+		}
 	};
 	/// <summary>
 	/// 描画設定データ変数
@@ -342,6 +441,10 @@ private:
 	/// </summary>
 	void SettingExecute();
 	/// <summary>
+	/// 設定関数実行
+	/// </summary>
+	const bool SettingEndFuncExecute();
+	/// <summary>
 	/// 設定値計算
 	/// </summary>
 	void SettingValueCalc(const int listNo);
@@ -350,6 +453,19 @@ private:
 	/// </summary>
 	/// <param name="rc"></param>
 	void Render(RenderContext& rc);
+	/// <summary>
+	/// 設定スプライトが描画できるかどうか
+	/// </summary>	
+	/// <returns></returns>
+	const bool IsSettingSpriteDraw() const
+	{
+		if (m_settingState != SettingState::en_settingSelection &&
+			m_settingState != SettingState::en_setting &&
+			m_settingState != SettingState::en_settingEndFuncBoot)
+			return false;
+		else
+			return true;
+	}
 	/// <summary>
 	/// マウスカーソル
 	/// </summary>

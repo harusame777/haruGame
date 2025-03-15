@@ -21,6 +21,24 @@ bool GameSetting::Start()
 		GameSettingConstant::MOUSECORSOR_SPRITE_H_SIZE
 	);
 
+	for (int drawDataNo = 0;
+		drawDataNo < GameSettingConstant::MAX_SETTING_SPRITE_DRAW_NUM;
+		drawDataNo++)
+	{
+		m_settingDrawDatasList[drawDataNo].m_settingBar.Init(
+			"Assets/modelData/window/settingBar_sprite_1.DDS",
+			GameSettingConstant::SETTING_BAR_SPRITE_W_SIZE,
+			GameSettingConstant::SETTING_BAR_SPRITE_H_SIZE
+		);
+
+		m_settingDrawDatasList[drawDataNo].m_settingSlider.Init(
+			"Assets/modelData/window/settingBar_sprite_2.DDS",
+			GameSettingConstant::SETTING_BAR_SLIDER_SPRITE_W_SIZE,
+			GameSettingConstant::SETTING_BAR_SLIDER_SPRITE_H_SIZE
+		);
+	}
+
+
 	return true;
 }
 
@@ -44,16 +62,6 @@ void GameSetting::InitSetting(
 	newData->SetSettingEndFunction(settingEndFunc);
 
 	newData->SetSettingValueMaxAndMin(maxValue, minValue);
-
-	newData->m_settingBar.Init("Assets/modelData/window/settingBar_sprite_1.DDS",
-		GameSettingConstant::SETTING_BAR_SPRITE_W_SIZE,
-		GameSettingConstant::SETTING_BAR_SPRITE_H_SIZE
-	);
-
-	newData->m_settingSlider.Init("Assets/modelData/window/settingBar_sprite_2.DDS",
-		GameSettingConstant::SETTING_BAR_SLIDER_SPRITE_W_SIZE,
-		GameSettingConstant::SETTING_BAR_SLIDER_SPRITE_H_SIZE
-	);
 
 	m_settingDatasList.push_back(newData);
 
@@ -81,16 +89,6 @@ void GameSetting::InitSetting(
 	newData->SetSettingEndFunction(settingEndFunc);
 
 	newData->SetSettingValueMaxAndMin(maxValue, minValue);
-
-	newData->m_settingBar.Init("Assets/modelData/window/settingBar_sprite_1.DDS",
-		GameSettingConstant::SETTING_BAR_SPRITE_W_SIZE,
-		GameSettingConstant::SETTING_BAR_SPRITE_H_SIZE
-	);
-
-	newData->m_settingSlider.Init("Assets/modelData/window/settingBar_sprite_2.DDS",
-		GameSettingConstant::SETTING_BAR_SLIDER_SPRITE_W_SIZE,
-		GameSettingConstant::SETTING_BAR_SLIDER_SPRITE_H_SIZE
-	);
 
 	m_settingDatasList.push_back(newData);
 
@@ -146,7 +144,10 @@ void GameSetting::SettingStateUpdate()
 		break;
 	case GameSetting::en_settingEndFuncBoot:
 
-
+		if (SettingEndFuncExecute() == true)
+		{
+			StateChange(SettingState::en_settingSelection);
+		}
 
 		break;
 	case GameSetting::en_settingSelection:
@@ -157,6 +158,7 @@ void GameSetting::SettingStateUpdate()
 		break;
 	case GameSetting::en_setting:
 
+		//設定実行
 		SettingExecute();
 
 		break;
@@ -164,16 +166,12 @@ void GameSetting::SettingStateUpdate()
 
 		if (m_gameWindow->IsWindowClose() == true)
 		{
-
 			if (m_isInitCloseFunc == true)
-				m_settingCloseFunction(true);
+				m_settingCloseFunction();
 
 			StateChange(SettingState::en_end);
-
 		}
 
-		break;
-	case GameSetting::en_closeMenuFuntionGo:
 		break;
 	case GameSetting::en_end:
 
@@ -273,8 +271,7 @@ void GameSetting::MouseCursorSpriteUpdate()
 void GameSetting::SettingSpriteUpdate()
 {
 	//設定ステートが下記以外だったら
-	if (m_settingState != SettingState::en_settingSelection &&
-		m_settingState != SettingState::en_setting)
+	if (IsSettingSpriteDraw() == false)
 		//戻す
 		return;	
 
@@ -289,51 +286,23 @@ void GameSetting::SettingSpriteUpdate()
 			//飛ばす
 			continue;
 
-		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
-			->m_settingBar.SetPosition(
-				m_settingDrawDatasList[drawDataNo].m_spriteOriginPos);
+		//設定バー位置更新
+		m_settingDrawDatasList[drawDataNo].SetSettingBarPosUpdate();
 
-		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
-			->m_settingSlider.SetPosition(
-				m_settingDrawDatasList[drawDataNo].m_settingDataAddress->m_settingSliderPos);
+		//スライダー位置更新
+		m_settingDrawDatasList[drawDataNo].SetSettingSliderPosUpdate();
 
-		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
-			->m_settingBar.Update();
+		//設定バースプライト更新
+		m_settingDrawDatasList[drawDataNo].m_settingBar.Update();
 	
-		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
-			->m_settingSlider.Update();
+		//スライダースプライト更新
+		m_settingDrawDatasList[drawDataNo].m_settingSlider.Update();
 
 		//表示文字設定
-
-		wchar_t fontBuf[256] = {};
-
-		swprintf_s(fontBuf, 256, m_settingDrawDatasList[drawDataNo]
-			.m_settingDataAddress->GetSettingName());
-
-		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
-			->m_settingItemNameFontRender.SetText(fontBuf);
-
-		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
-			->m_settingItemNameFontRender.SetPosition(
-				m_settingDrawDatasList[drawDataNo].m_spriteFontPos);
-
-		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
-			->m_settingItemNameFontRender.SetColor(
-				GameSettingConstant::MAINTEXT_COLOR);
-
+		m_settingDrawDatasList[drawDataNo].SettingItemNameFontUpdate();
+		
 		//設定値文字設定
-
-		swprintf_s(fontBuf, 256, L"( %.2f )", m_settingDrawDatasList[drawDataNo]
-			.m_settingDataAddress->GetAddressNum());
-
-		m_settingDrawDatasList[drawDataNo].m_settingValueDrawFont
-			.SetText(fontBuf);
-
-		m_settingDrawDatasList[drawDataNo].m_settingValueDrawFont
-			.SetPosition(m_settingDrawDatasList[drawDataNo].m_settingValueFontPos);
-
-		m_settingDrawDatasList[drawDataNo].m_settingValueDrawFont
-			.SetColor(GameSettingConstant::MAINTEXT_COLOR);
+		m_settingDrawDatasList[drawDataNo].SettingValueFontUpdate();
 	}
 
 	m_mouseCursor.Update();
@@ -365,29 +334,16 @@ void GameSetting::UpdateDrawSettingData(const int initNum)
 			= m_settingDatasList[itemDataNo];
 
 		//設定項目の原点位置を設定
-		m_settingDrawDatasList[drawDataNo].m_spriteOriginPos = GameSettingConstant
-			::SETTING_SPRITE_POS;
-
-		m_settingDrawDatasList[drawDataNo].m_spriteOriginPos.y -= 400 * drawDataNo;
-
-		//セッティングスライダーの位置を設定
-		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
-			->m_settingSliderPos = m_settingDrawDatasList[drawDataNo].m_spriteOriginPos;
+		m_settingDrawDatasList[drawDataNo].SetOriginPos(drawDataNo);
 
 		//文字位置を設定
-		m_settingDrawDatasList[drawDataNo].m_spriteFontPos
-			= m_settingDrawDatasList[drawDataNo].m_spriteOriginPos;
-
-		m_settingDrawDatasList[drawDataNo].m_spriteFontPos.y += 200.0f
-			- (drawDataNo * 100.0f);
-		m_settingDrawDatasList[drawDataNo].m_spriteFontPos.x -= 800.0f;
+		m_settingDrawDatasList[drawDataNo].SetSettingNameFontPos(drawDataNo);
 
 		//設定値出力位置を設定
+		m_settingDrawDatasList[drawDataNo].SetSettingValueFontPos(drawDataNo);
 
-		m_settingDrawDatasList[drawDataNo].m_settingValueFontPos 
-			= m_settingDrawDatasList[drawDataNo].m_spriteOriginPos;
-
-		m_settingDrawDatasList[drawDataNo].m_settingValueFontPos.x += 500.0f;
+		//セッティングスライダーの位置を設定
+		m_settingDrawDatasList[drawDataNo].SetSliderPos();
 
 		//設定指定項目数を一増やす
 		itemDataNo++;
@@ -401,26 +357,36 @@ void GameSetting::SettingExecute()
 	{
 		if (GameSettingConstant::SLIDER_SPRITE_MOVE_MIN
 			>= m_settingDatasList[m_settingItemSelectionNum]->m_settingSliderPos.x)
+		{
+			m_settingDatasList[m_settingItemSelectionNum]
+				->m_settingSliderPos.x = GameSettingConstant::SLIDER_SPRITE_MOVE_MIN;
+
 			return;
+		}
 
 		m_settingDatasList[m_settingItemSelectionNum]
-			->m_settingSliderPos.x -= g_gameTime->GetFrameDeltaTime() * 20.0f;
+			->m_settingSliderPos.x -= g_gameTime->GetFrameDeltaTime() * 200.0f;
 
 	}
 	else if(g_pad[0]->IsPress(enButtonRight))
 	{
 		if (GameSettingConstant::SLIDER_SPRITE_MOVE_MAX
 			<= m_settingDatasList[m_settingItemSelectionNum]->m_settingSliderPos.x)
+		{
+			m_settingDatasList[m_settingItemSelectionNum]
+				->m_settingSliderPos.x = GameSettingConstant::SLIDER_SPRITE_MOVE_MAX;
+
 			return;
+		}
 
 		m_settingDatasList[m_settingItemSelectionNum]
-			->m_settingSliderPos.x += g_gameTime->GetFrameDeltaTime() * 20.0f;
+			->m_settingSliderPos.x += g_gameTime->GetFrameDeltaTime() * 200.0f;
 
 	}
 	else if(g_pad[0]->IsTrigger(enButtonA))
 	{
 
-		StateChange(SettingState::en_settingSelection);
+		StateChange(SettingState::en_settingEndFuncBoot);
 
 	}
 
@@ -468,6 +434,9 @@ void GameSetting::SettingValueCalc(const int listNo)
 
 		m_settingDatasList[listNo]
 			->SetSettingValue(intFinalValue);
+
+		m_settingDatasList[listNo]
+			->m_settingValueDrawFontInt = intFinalValue;
 	}
 	else
 	{
@@ -475,13 +444,23 @@ void GameSetting::SettingValueCalc(const int listNo)
 
 		m_settingDatasList[listNo]
 			->SetSettingValue(floatFinalValue);
+
+		m_settingDatasList[listNo]
+			->m_settingValueDrawFontInt = normalize * 100;
 	}
+}
+
+const bool GameSetting::SettingEndFuncExecute()
+{
+	bool executeResult 
+		= m_settingDatasList[m_settingItemSelectionNum]->FuncExecute();
+
+	return executeResult;
 }
 
 void GameSetting::Render(RenderContext& rc)
 {
-	if (m_settingState != SettingState::en_settingSelection &&
-		m_settingState != SettingState::en_setting)
+	if (IsSettingSpriteDraw() == false)
 		return;
 
 	for (int drawDataNo = 0;
@@ -492,14 +471,11 @@ void GameSetting::Render(RenderContext& rc)
 			== nullptr)
 			continue;
 
-		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
-			->m_settingBar.Draw(rc);
+		m_settingDrawDatasList[drawDataNo].m_settingBar.Draw(rc);
 
-		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
-			->m_settingSlider.Draw(rc);
+		m_settingDrawDatasList[drawDataNo].m_settingSlider.Draw(rc);
 
-		m_settingDrawDatasList[drawDataNo].m_settingDataAddress
-			->m_settingItemNameFontRender.Draw(rc);
+		m_settingDrawDatasList[drawDataNo].m_settingItemNameFontRender.Draw(rc);
 
 		m_settingDrawDatasList[drawDataNo].m_settingValueDrawFont.Draw(rc);
 
