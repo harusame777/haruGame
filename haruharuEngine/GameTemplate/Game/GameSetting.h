@@ -20,6 +20,7 @@ namespace GameSettingConstant {
 	static const float MOUSECORSOR_SPRITE_H_SIZE = 38.0f;
 
 	static const Vector4 MAINTEXT_COLOR = { 1.0f,1.0f,1.0f,1.0f };
+	static const Vector4 SELECTTEXT_COLOR = { 0.3f,0.1f,0.1f,1.0f };
 
 	static const float SLIDER_SPRITE_MOVE_MAX = 485.0f;
 	static const float SLIDER_SPRITE_MOVE_MIN = -485.0f;
@@ -264,6 +265,10 @@ private:
 	{
 	public:
 		/// <summary>
+		/// この描画データの設定項目数
+		/// </summary>
+		int m_drawSettingItemNum = 0;
+		/// <summary>
 		/// 設定項目名描画要フォントレンダー
 		/// </summary>
 		FontRender m_settingItemNameFontRender;
@@ -296,6 +301,14 @@ private:
 		/// </summary>
 		Vector3 m_settingValueFontPos = Vector3::Zero;
 	public:
+		/// <summary>
+		/// 設定項目
+		/// </summary>
+		/// <param name="num"></param>
+		void SetItemNum(const int num)
+		{
+			m_drawSettingItemNum = num;
+		}
 		/// <summary>
 		/// 原点設定
 		/// </summary>
@@ -341,7 +354,7 @@ private:
 		/// <summary>
 		/// 設定名描画更新
 		/// </summary>
-		void SettingItemNameFontUpdate()
+		void SettingItemNameFontUpdate(const int selectNum, const SettingState state)
 		{
 			wchar_t fontBuf[256] = {};
 
@@ -351,12 +364,20 @@ private:
 
 			m_settingItemNameFontRender.SetPosition(m_spriteFontPos);
 
-			m_settingItemNameFontRender.SetColor(GameSettingConstant::MAINTEXT_COLOR);
+			if (selectNum == m_drawSettingItemNum &&
+				state == SettingState::en_setting)
+			{
+				m_settingItemNameFontRender.SetColor(GameSettingConstant::SELECTTEXT_COLOR);
+			}
+			else
+			{
+				m_settingItemNameFontRender.SetColor(GameSettingConstant::MAINTEXT_COLOR);
+			}
 		}
 		/// <summary>
 		/// 設定値描画更新
 		/// </summary>
-		void SettingValueFontUpdate()
+		void SettingValueFontUpdate(const int selectNum,const SettingState state)
 		{
 			wchar_t fontBuf[256] = {};
 
@@ -367,7 +388,15 @@ private:
 
 			m_settingValueDrawFont.SetPosition(m_settingValueFontPos);
 
-			m_settingValueDrawFont.SetColor(GameSettingConstant::MAINTEXT_COLOR);
+			if (selectNum == m_drawSettingItemNum &&
+				state == SettingState::en_setting)
+			{
+				m_settingValueDrawFont.SetColor(GameSettingConstant::SELECTTEXT_COLOR);
+			}
+			else
+			{
+				m_settingValueDrawFont.SetColor(GameSettingConstant::MAINTEXT_COLOR);
+			}
 		}
 		/// <summary>
 		/// 設定バー位置設定

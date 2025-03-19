@@ -274,7 +274,7 @@ void GameSetting::SettingSelection()
 		{
 			return;
 		}
-		
+
 		StateChange(SettingState::en_setting);
 	}
 	else if(g_pad[0]->IsTrigger(enButtonA))
@@ -345,10 +345,14 @@ void GameSetting::SettingSpriteUpdate()
 		m_settingDrawDatasList[drawDataNo].m_settingSlider.Update();
 
 		//表示文字設定
-		m_settingDrawDatasList[drawDataNo].SettingItemNameFontUpdate();
+		m_settingDrawDatasList[drawDataNo].SettingItemNameFontUpdate(
+			m_settingItemSelectionNum,
+			m_settingState);
 		
 		//設定値文字設定
-		m_settingDrawDatasList[drawDataNo].SettingValueFontUpdate();
+		m_settingDrawDatasList[drawDataNo].SettingValueFontUpdate(
+			m_settingItemSelectionNum,
+			m_settingState);
 
 		//ウィンドウやじるし更新
 		m_windowArrowUp.Update();
@@ -394,6 +398,8 @@ void GameSetting::UpdateDrawSettingData(const int initNum)
 
 		//セッティングスライダーの位置を設定
 		m_settingDrawDatasList[drawDataNo].SetSliderPos();
+
+		m_settingDrawDatasList[drawDataNo].SetItemNum(itemDataNo);
 
 		//設定指定項目数を一増やす
 		itemDataNo++;
