@@ -516,6 +516,28 @@ private:
 	SpriteRender m_windowArrowUp;
 	SpriteRender m_windowArrowDown;
 	/// <summary>
+	/// ウィンドウ上部に表示する
+	/// </summary>
+	FontRender m_windowNameFont;
+	/// <summary>
+	/// ウィンドウ名更新
+	/// </summary>
+	void WindowNameUpdate(const int pageNum)
+	{
+
+		wchar_t windowNameWchar[256] = {};
+
+		swprintf_s(windowNameWchar,
+			256,
+			L" Setting   [Page%d] ",
+			pageNum + 1
+		);
+
+		m_windowNameFont.SetText(windowNameWchar);
+
+		m_windowNameFont.SetPosition({ -900.0f,500.0f,0.0f });
+	}
+	/// <summary>
 	/// ゲームウィンドウのインスタンス
 	/// </summary>
 	GameWindow* m_gameWindow = nullptr;

@@ -137,6 +137,8 @@ void GameSetting::GoSettingMenuOpen()
 
 	UpdateDrawSettingData(m_settingItemSelectionNum);
 
+	WindowNameUpdate(m_nowSettingPageNum);
+
 	StateChange(SettingState::en_windowOpen);
 }
 
@@ -404,6 +406,8 @@ void GameSetting::UpdateDrawSettingData(const int initNum)
 		//İ’èw’è€–Ú”‚ğˆê‘‚â‚·
 		itemDataNo++;
 	}
+
+	WindowNameUpdate(m_nowSettingPageNum);
 }
 
 void GameSetting::SettingExecute()
@@ -547,6 +551,7 @@ void GameSetting::Render(RenderContext& rc)
 		m_windowArrowDown.Draw(rc);
 	}
 
+	m_windowNameFont.Draw(rc);
 
 #ifdef _DEBUG
 	if (m_settingItemNum < 0)
