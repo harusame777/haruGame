@@ -2,6 +2,7 @@
 #include "GameMenu.h"
 #include "GameSetting.h"
 
+class Game;
 class GameSound;
 class Load;
 
@@ -26,6 +27,13 @@ public:
 	const bool& IsEndGameTitle()
 	{
 		return m_isGameIn;
+	}
+	/// <summary>
+	/// タイトルメニューを開く
+	/// </summary>
+	void TitleMenuOpen()
+	{
+		m_gameMenu->GoMenuOpen();
 	}
 private:
 	/// <summary>
@@ -84,16 +92,12 @@ private:
 	/// </summary>
 	GameMenu* m_gameMenu = nullptr;
 	/// <summary>
-	/// ゲーム設定
+	/// ゲーム
 	/// </summary>
-	GameSetting* m_gameSetting = nullptr;
+	Game* m_game = nullptr;
 	/// <summary>
 	/// タイトル終了してゲームインに入る
 	/// </summary>
 	bool m_isGameIn = false;
-
-	int test1;
-
-	float test2;
 };
 

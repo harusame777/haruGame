@@ -27,6 +27,7 @@
 #include "GameInformation.h"
 #include "GameSound.h"
 #include "GameEffect.h"
+#include "GameSetting.h"
 
 
 bool Game::Start()
@@ -38,6 +39,42 @@ bool Game::Start()
 	m_gameSound = NewGO<GameSound>(2, "gameSound");
 
 	NewGO<GameEffect>(0, "gameEffect");
+
+	m_gameSetting = NewGO<GameSetting>(2, "gameSetting");
+
+	m_gameSetting->InitSettingMenuEndFunc(
+		[&]() -> bool
+		{
+			if (m_gameOutState == GameOutState::en_gameTitle)
+			{
+				if (m_title == nullptr)
+				{
+					return true;
+				}
+
+				m_title->TitleMenuOpen();
+			}
+			else if(m_gameInState == GameInState::en_gameUpdate)
+			{
+
+			}
+
+			return true;
+		}
+	);
+
+	m_gameSetting->InitSetting(
+		L"SoundValume",
+		m_gameSoundValume,
+		1,
+		0,
+		[&]() -> bool
+		{
+			
+	
+			return true;
+		}
+	);
 
 
 	m_gameWindow = NewGO<GameWindow>(1, "gameWindow");
@@ -90,6 +127,12 @@ void Game::DoInGame()
 		{
 
 			m_gameInState = GameInState::en_gameTutorial;
+
+		}
+
+		//ポーズメニュー
+		if (g_pad[0]->IsTrigger(enButtonDown))
+		{
 
 		}
 
@@ -501,4 +544,14 @@ bool Game::IsNowGameUpdate() const
 	}
 
 	return true;
+}
+
+void Game::GameSettingOpen()
+{
+	m_gameSetting->GoSettingMenuOpen();
+}
+
+const bool Game::IsGameTitleSettingOpen()
+{
+	return m_gameSetting->IsSettingOpenNow();
 }

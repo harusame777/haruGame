@@ -23,6 +23,7 @@ class GameSound;
 class GameEffect;
 class GameWindow;
 class GameInformation;
+class GameSetting;
 
 //定数等
 namespace {
@@ -78,6 +79,9 @@ public:
 
 	bool IsNowGameUpdate() const;
 
+	void GameSettingOpen();
+
+	const bool IsGameTitleSettingOpen();
 private:
 	GameOutState m_gameOutState = GameOutState::en_gameTitle;
 	GameInState m_gameInState = GameInState::en_gameUpdate;
@@ -139,6 +143,10 @@ private:
 	/// </summary>
 	Result* m_result = nullptr;
 	/// <summary>
+	/// ゲーム設定
+	/// </summary>
+	GameSetting* m_gameSetting = nullptr;
+	/// <summary>
 	/// ゲームオーバー
 	/// </summary>
 	Gameover* m_gameover = nullptr;
@@ -178,6 +186,10 @@ private:
 	/// タイマー
 	/// </summary>
 	float m_timerIndex = 0.0f;
+	/// <summary>
+	/// ゲーム音量変更変数
+	/// </summary>
+	float m_gameSoundValume = 0.0f;
 	/// <summary>
 	/// ロードが終了しているかどうか
 	/// </summary>

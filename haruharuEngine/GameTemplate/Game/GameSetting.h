@@ -86,7 +86,7 @@ public:
 	/// <summary>
 	/// İ’èƒƒjƒ…[•Â‚¶‚é‚ÉÀs‚·‚éŠÖ”
 	/// </summary>
-void InitMenuEndFunc(const SettingFunction& menuFunc)
+void InitSettingMenuEndFunc(const SettingFunction& menuFunc)
 {
 	m_isInitCloseFunc = true;
 
