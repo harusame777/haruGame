@@ -117,5 +117,8 @@ private:
 	/// ロードのインスタンス
 	/// </summary>
 	Load* m_load = nullptr;
+
+
+
 };
 
