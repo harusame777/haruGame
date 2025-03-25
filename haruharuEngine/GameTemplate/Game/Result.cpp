@@ -42,6 +42,11 @@ void Result::ResultStateUpdate()
 	{
 	case Result::en_standby:
 
+		if (m_load->IsLoadCompletion() == false)
+		{
+			return;
+		}
+
 		if (WaitTime(2.0f))
 		{
 			m_resultState = ResultState::en_infoDrowTop;
