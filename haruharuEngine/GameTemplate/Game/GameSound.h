@@ -75,6 +75,14 @@ public:
 	/// </summary>
 	~GameSound(){}
 	/// <summary>
+	/// サウンドのポインタを指定
+	/// </summary>
+	/// <param name="floatPtr"></param>
+	void SetMainValumePtr(float& floatPtr)
+	{
+		m_soundMainValume = &floatPtr;
+	}
+	/// <summary>
 	/// サウンドを指定して鳴らす
 	/// </summary>
 	void LocalSoundOrder(
@@ -196,6 +204,10 @@ private:
 	/// サウンドリストを初期化する
 	/// </summary>
 	void SoundListReset();
+	/// <summary>
+	/// メインボリューム
+	/// </summary>
+	float* m_soundMainValume = nullptr;
 	/// <summary>
 	/// 音再生リスト
 	/// </summary>

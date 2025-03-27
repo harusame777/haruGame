@@ -113,7 +113,9 @@ void GameSound::LocalSoundOrder(const SoundListNum& listNum,
 
 	orderSound->Init(listNum);
 
-	orderSound->SetVolume(volume);
+	float finalValume = volume * *m_soundMainValume;
+
+	orderSound->SetVolume(finalValume);
 
 	orderSound->Play(loop);
 

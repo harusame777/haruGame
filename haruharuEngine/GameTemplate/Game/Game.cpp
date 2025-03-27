@@ -38,6 +38,7 @@ bool Game::Start()
 	NewGO<GameInformation>(2, "gameInformation");
 
 	m_gameSound = NewGO<GameSound>(2, "gameSound");
+	m_gameSound->SetMainValumePtr(m_gameSoundValume);
 
 	NewGO<GameEffect>(0, "gameEffect");
 
@@ -72,7 +73,7 @@ bool Game::Start()
 		[&]() -> bool
 		{
 			
-	
+			
 			return true;
 		}
 	);
