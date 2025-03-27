@@ -42,6 +42,11 @@ void Result::ResultStateUpdate()
 	{
 	case Result::en_standby:
 
+		if (m_load->IsLoadCompletion() == false)
+		{
+			return;
+		}
+
 		if (WaitTime(2.0f))
 		{
 			m_resultState = ResultState::en_infoDrowTop;
@@ -84,7 +89,7 @@ void Result::ResultStateUpdate()
 		if (WaitTime(5.0f))
 		{
 
-			m_load->LoadExecutionFadeOut({Load::en_loadOrdinary,Load::en_loadOrdinary});
+			m_load->LoadExecutionFadeOut({Load::en_loadOrdinary,Load::en_loadOrdinary},3.0f);
 
 			m_isResultEnd = true;
 

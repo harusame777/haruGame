@@ -16,6 +16,7 @@ class PlayerScoreUi;
 class PlayerStaminaUi;
 class PlayerOxygenUi;
 class Load;
+class ManagerLocker;
 class Title;
 class Gameover;
 class Result;
@@ -155,6 +156,10 @@ private:
 	/// </summary>
 	Player* m_player = nullptr;
 	/// <summary>
+	/// 太陽光位置
+	/// </summary>
+	Vector3 m_sunPos = Vector3::Zero;
+	/// <summary>
 	/// クリスタルコマンドスプライト
 	/// </summary>
 	CrystalGetCommandSprite* m_GetCOMSprite = nullptr;
@@ -162,6 +167,10 @@ private:
 	/// クリスタルマネージャー
 	/// </summary>
 	ManagerCrystal* m_managerCrystal;
+	/// <summary>
+	/// ロッカーマネージャー
+	/// </summary>
+	ManagerLocker* m_managerLocker;
 	///// <summary>
 	///// プレイヤーのスキャンUI
 	///// </summary>

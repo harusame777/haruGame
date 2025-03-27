@@ -57,9 +57,6 @@
     <ClCompile Include="DebugEnemyTrackingState.cpp">
       <Filter>debug</Filter>
     </ClCompile>
-    <ClCompile Include="Locker.cpp">
-      <Filter>obj</Filter>
-    </ClCompile>
     <ClCompile Include="Accessories.cpp">
       <Filter>obj</Filter>
     </ClCompile>
@@ -96,9 +93,6 @@
     <ClCompile Include="BackGroundCeiling.cpp">
       <Filter>bg</Filter>
     </ClCompile>
-    <ClCompile Include="BootObjectBase.cpp">
-      <Filter>obj</Filter>
-    </ClCompile>
     <ClCompile Include="Elevator.cpp">
       <Filter>obj</Filter>
     </ClCompile>
@@ -121,8 +115,27 @@
       <Filter>OutGame</Filter>
     </ClCompile>
     <ClCompile Include="GameSound.cpp" />
+    <ClCompile Include="WarriorAIMetaFootSteps.cpp" />
+    <ClCompile Include="GameInformation.cpp" />
     <ClCompile Include="PlayerInteractableUi.cpp" />
     <ClCompile Include="GameEffect.cpp" />
+    <ClCompile Include="WarriorAIMetaIdle.cpp" />
+    <ClCompile Include="WarriorAIMetaChaseBGM.cpp" />
+    <ClCompile Include="Locker.cpp">
+      <Filter>obj\Locker</Filter>
+    </ClCompile>
+    <ClCompile Include="ManagerLocker.cpp">
+      <Filter>obj\Locker</Filter>
+    </ClCompile>
+    <ClCompile Include="BootObjectBase.cpp">
+      <Filter>obj</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerInteractableUi.cpp">
+      <Filter>Player\PlayerUi</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerPointerUi.cpp">
+      <Filter>Player\PlayerUi</Filter>
+    </ClCompile>
     <ClCompile Include="PlayerPointerUi.cpp" />
     <ClCompile Include="EnemyAIMetaWarrior.cpp">
       <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
@@ -212,9 +225,6 @@
     <ClInclude Include="PatrolRuteDataHolder.h">
       <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
     </ClInclude>
-    <ClInclude Include="Locker.h">
-      <Filter>obj</Filter>
-    </ClInclude>
     <ClInclude Include="Accessories.h">
       <Filter>obj</Filter>
     </ClInclude>
@@ -257,9 +267,6 @@
     <ClInclude Include="BackGroundCeiling.h">
       <Filter>bg</Filter>
     </ClInclude>
-    <ClInclude Include="BootObjectBase.h">
-      <Filter>obj</Filter>
-    </ClInclude>
     <ClInclude Include="Elevator.h">
       <Filter>obj</Filter>
     </ClInclude>
@@ -282,30 +289,13 @@
     <ClInclude Include="Gameover.h">
       <Filter>OutGame</Filter>
     </ClInclude>
+    <ClInclude Include="WarriorAIMetaStop.h" />
+    <ClInclude Include="WarriorAIMetaFootSteps.h" />
     <ClInclude Include="PlayerInteractableUi.h" />
+    <ClInclude Include="GameInformation.h" />
     <ClInclude Include="GameEffect.h" />
+    <ClInclude Include="WarriorAIMetaIdle.h" />
     <ClInclude Include="PlayerPointerUi.h" />
-    <ClInclude Include="WarriorAIMetaStop.h">
-      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyAIMetaWarrior.h">
-      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
-    </ClInclude>
-    <ClInclude Include="WarriorAIMetaFootSteps.h">
-      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
-    </ClInclude>
-    <ClInclude Include="WarriorAIMetaIdle.h">
-      <Filter>Enemy\AIMeta\AIMetaWarrior</Filter>
-    </ClInclude>
-    <ClInclude Include="GameMenu.h">
-      <Filter>OutGame</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSetting.h">
-      <Filter>OutGame</Filter>
-    </ClInclude>
-    <ClInclude Include="GameInformation.h">
-      <Filter>OutGame</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="bg">
@@ -349,6 +339,9 @@
     </Filter>
     <Filter Include="OutGame">
       <UniqueIdentifier>{168767dd-ae1a-4e16-b782-1b1e3204f55a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="obj\Locker">
+      <UniqueIdentifier>{0a7a685a-2345-49a9-9a33-c3f4c1f29066}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

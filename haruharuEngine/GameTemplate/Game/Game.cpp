@@ -11,6 +11,7 @@
 #include "Enemy_Warrior.h"
 #include "DebugEnemyTrackingState.h"
 #include "Locker.h"
+#include "ManagerLocker.h"
 #include "Elevator.h"
 #include "Accessories.h"
 #include "ManagerCrystal.h"
@@ -83,7 +84,7 @@ bool Game::Start()
 
 	m_load = NewGO<Load>(1, "load");
 
-	m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadImmediately });
+	m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadImmediately },0.0f);
 
 	return true;
 }
@@ -113,9 +114,6 @@ void Game::Update()
 
 void Game::DoInGame()
 {
-
-	Vector3 camPos = m_player->GetPosition();
-
 	switch (m_gameInState)
 	{
 	case Game::en_gameUpdate:
@@ -136,6 +134,8 @@ void Game::DoInGame()
 
 		}
 
+		m_sunPos = m_player->GetPosition();
+
 		sunDirectionalLight.SetColor(1.0f, 1.0f, 1.0f);
 		sunDirectionalLight.SetDirection(1.0f, -1.0f, -1.0f);
 		sunDirectionalLight.LightDirectionNormalize();
@@ -143,18 +143,20 @@ void Game::DoInGame()
 		sunDirectionalLight.VPCamSetRotation(80.0f);
 		//sunDirectionalLight.VPCamSetPosition({ -10.0, 2000, 0.0 });
 
-		camPos += { -2000.0, 2000, 2000.0 };
+		m_sunPos += { -2000.0, 2000, 2000.0 };
 
-		sunDirectionalLight.VPCamSetPosition(camPos);
+		sunDirectionalLight.VPCamSetPosition(m_sunPos);
 		sunDirectionalLight.VPCamSetTarget(m_player->GetPosition());
 		sunDirectionalLight.VPCamUpdate();
 
 		break;
 	case Game::en_gameClear:
-		m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadOrdinary });
+		m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadOrdinary },3.0f);
 
 		if (m_load->IsLoadBlackout())
 		{
+			m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_BGM, nullptr);
+
 			OutGameObjectDeleteProcces();
 
 			m_result = NewGO<Result>(0, "result");
@@ -177,7 +179,7 @@ void Game::DoInGame()
 
 		if (m_gameover->GetFadeOutFlag() == true)
 		{
-			m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadOrdinary });
+			m_load->LoadExecutionFadeOut({ Load::en_loadImmediately,Load::en_loadOrdinary },3.0f);
 
 			m_gameInState = GameInState::en_gameResultGameOver;
 		}
@@ -194,7 +196,7 @@ void Game::DoInGame()
 
 		if (m_gameover->GetFadeOutFlag() == true)
 		{
-			m_load->LoadExecutionFadeOut({ Load::en_loadCircular,Load::en_loadOrdinary });
+			m_load->LoadExecutionFadeOut({ Load::en_loadCircular,Load::en_loadOrdinary },3.0f);
 
 			m_gameInState = GameInState::en_gameResultGameOver;
 		}
@@ -205,6 +207,8 @@ void Game::DoInGame()
 		if (m_gameover->GetKillEndFlag() == true &&
 			m_load->IsLoadBlackout())
 		{
+			m_warriorMetaAI->ProcessEnd(EnemyAIMetaWarrior::mode_BGM, nullptr);
+
 			OutGameObjectDeleteProcces();
 
 			m_load->LoadExecutionFadeIn();
@@ -213,7 +217,7 @@ void Game::DoInGame()
 		if (m_load->IsLoadCompletion() == true &&
 			m_gameover->GetGameoverEnd() == true)
 		{
-			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary, Load::en_loadOrdinary });
+			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary, Load::en_loadOrdinary },3.0f);
 
 			m_gameOutState = GameOutState::en_gameTitle;
 		}
@@ -223,7 +227,7 @@ void Game::DoInGame()
 
 		if (m_result->IsResultEnd())
 		{
-			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary, Load::en_loadOrdinary });
+			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary, Load::en_loadOrdinary },3.0f);
 
 			m_gameOutState = GameOutState::en_gameTitle;
 		}
@@ -269,6 +273,8 @@ void Game::TimerProcess()
 		return;
 	}
 
+	m_warriorMetaAI->MetaAIExecution(nullptr, EnemyAIMetaWarrior::mode_BGM);
+
 	m_timerIndex -= g_gameTime->GetFrameDeltaTime();
 
 	if (m_timerIndex <= 0)
@@ -312,7 +318,9 @@ void Game::DoOutGame()
 			m_title->IsEndGameTitle() &&
 			m_load->IsLoadCompletion())
 		{
-			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadCircular });
+			m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 1.0f);
+
+			m_load->LoadExecutionFadeOut({ Load::en_loadOrdinary,Load::en_loadCircular },3.0f);
 
 			m_gameOutState = GameOutState::en_gameLoad;
 
@@ -358,10 +366,13 @@ void Game::OutGameLoadProcess()
 	////クリスタルのメタAI
 	m_managerCrystal = NewGO<ManagerCrystal>(0, "CrystalMetaAI");
 
+	//ロッカーのメタAI
+	m_managerLocker = NewGO<ManagerLocker>(0, "LockerMetaAI");
+
 	LevelRender levelRender;
 
 	//レベルレンダーのテスト
-	levelRender.Init("Assets/mapLevel/testLevel7.tkl", [&](LevelObjectData_Render& objData)
+	levelRender.Init("Assets/mapLevel/testLevel8.tkl", [&](LevelObjectData_Render& objData)
 		{
 			if (objData.ForwardMatchName(L"wallOnes") == true)
 			{
@@ -395,12 +406,6 @@ void Game::OutGameLoadProcess()
 				enemy_warrior->SetScale(objData.m_scalse);
 				return true;
 			}
-			//else if (objData.ForwardMatchName(L"locker") == true)
-			//{
-			//	Locker* locker = NewGO<Locker>(0, "object");
-			//	locker->SetPosition(objData.m_position);
-			//	return true;
-			//}
 			else if (objData.ForwardMatchName(L"elevator") == true)
 			{
 				Elevator* elevator = NewGO<Elevator>(0, "elevator");
@@ -476,6 +481,13 @@ void Game::OutGameObjectDeleteProcces()
 		});
 
 	QueryGOs<Elevator>("elevator", [&](Elevator* object) {
+		DeleteGO(object);
+		return true;
+		});
+
+	DeleteGO(m_managerLocker);
+
+	QueryGOs<Locker>("locker", [&](Locker* object) {
 		DeleteGO(object);
 		return true;
 		});

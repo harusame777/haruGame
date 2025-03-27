@@ -261,6 +261,7 @@
     <ClCompile Include="Locker.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ManagerCrystal.cpp" />
+    <ClCompile Include="ManagerLocker.cpp" />
     <ClCompile Include="ObjectBase.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerInteractableUi.cpp" />
@@ -277,6 +278,7 @@
     </ClCompile>
     <ClCompile Include="system\system.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="WarriorAIMetaChaseBGM.cpp" />
     <ClCompile Include="WarriorAIMetaFootSteps.cpp" />
     <ClCompile Include="WarriorAIMetaIdle.cpp" />
     <ClCompile Include="WarriorAIMetapPatrol.cpp" />
@@ -321,7 +323,9 @@
     <ClInclude Include="GameSound.h" />
     <ClInclude Include="Load.h" />
     <ClInclude Include="Locker.h" />
+    <ClInclude Include="LockerDataHolder.h" />
     <ClInclude Include="ManagerCrystal.h" />
+    <ClInclude Include="ManagerLocker.h" />
     <ClInclude Include="ObjectBase.h" />
     <ClInclude Include="PatrolRuteDataHolder.h" />
     <ClInclude Include="Player.h" />
@@ -337,6 +341,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="WarriorAIMetaChaseBGM.h" />
     <ClInclude Include="WarriorAIMetaFootSteps.h" />
     <ClInclude Include="WarriorAIMetaIdle.h" />
     <ClInclude Include="WarriorAIMetapPatrol.h" />

@@ -44,6 +44,8 @@ public:
 		en_fontIn,
 		//シュウィンって音
 		en_syuwin,
+		//追跡BGM
+		en_chaseBGM,
 		//ゲームメニュー選択音
 		en_gameMenuSelectionSound,
 		//タイトルBGM
@@ -84,6 +86,11 @@ public:
 		const bool& loop,
 		const float& volume,
 		const Vector3& soundPos);
+
+	SoundSource& ReturnPointerLocalSoundOrder(
+		const SoundListNum& listNum,
+		const float& volume);
+
 	const SoundSource& PointerSoundOrder(const SoundListNum& listNum);
 	const SoundSource& SoundListInit(
 		const SoundListNum& listNum, 

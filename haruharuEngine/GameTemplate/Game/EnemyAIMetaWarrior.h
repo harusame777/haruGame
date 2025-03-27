@@ -67,6 +67,10 @@ public:
 		/// </summary>
 		mode_idle,
 		/// <summary>
+		/// BGMÄ¶’â~
+		/// </summary>
+		mode_BGM,
+		/// <summary>
 		/// ‰Šú‰»—p
 		/// </summary>
 		mode_init,
