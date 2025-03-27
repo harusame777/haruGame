@@ -65,7 +65,7 @@ bool Game::Start()
 		}
 	);
 
-	m_gameSetting->InitSetting(
+	m_gameSetting->AddInitSetting(
 		L"SoundValume",
 		m_gameSoundValume,
 		1,

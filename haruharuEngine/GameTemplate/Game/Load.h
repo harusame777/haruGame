@@ -27,7 +27,7 @@ public:
 	/// フェードアウトしきったか？
 	/// </summary>
 	/// <returns></returns>
-	const bool& IsLoadBlackout()
+	bool IsLoadBlackout() const
 	{
 		if (m_loadProccesState == LoadProccesState::en_loadBlackoutStandby)
 		{
@@ -39,7 +39,7 @@ public:
 	/// フェードインしきったか？
 	/// </summary>
 	/// <returns></returns>
-	const bool& IsLoadCompletion()
+	bool IsLoadCompletion() const 
 	{
 		return m_loadCompletionFlag;
 	}

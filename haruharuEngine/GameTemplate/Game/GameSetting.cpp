@@ -61,7 +61,7 @@ bool GameSetting::Start()
 	return true;
 }
 
-void GameSetting::InitSetting(
+void GameSetting::AddInitSetting(
 	const wchar_t* settingName,
 	int& address,
 	int maxValue,
@@ -87,7 +87,7 @@ void GameSetting::InitSetting(
 	SettingValueCalc(size);
 }
 
-void GameSetting::InitSetting(
+void GameSetting::AddInitSetting(
 	const wchar_t* settingName,
 	float& address,
 	float maxValue,

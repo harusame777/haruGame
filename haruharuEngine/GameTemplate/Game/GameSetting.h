@@ -65,18 +65,18 @@ public:
 	/// </summary>
 	using SettingFunction = std::function<bool()>;
 	/// <summary>
-	/// İ’èì¬
+	/// İ’è’Ç‰Á
 	/// </summary>
 	/// <param name="settingName"></param>
 	/// <param name="address"></param>
-	void InitSetting(
+	void AddInitSetting(
 		const wchar_t* settingName,
 		int& address,
 		int maxValue,
 		int minValue,
 		const SettingFunction& settingEndFunc
 	);
-	void InitSetting(
+	void AddInitSetting(
 		const wchar_t* settingName,
 		float& address,
 		float maxValue,
