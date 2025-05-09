@@ -10,6 +10,16 @@ class GameSound : public IGameObject
 {
 public:
 	/// <summary>
+	/// ゲームサウンドのステート
+	/// </summary>
+	enum GameSoundState
+	{
+		//アップデート
+		en_soundUpdate,
+		//設定
+		en_soundSetting,
+	};
+	/// <summary>
 	/// サウンドリスト
 	/// </summary>
 	enum SoundListNum
@@ -36,6 +46,8 @@ public:
 		en_syuwin,
 		//追跡BGM
 		en_chaseBGM,
+		//ゲームメニュー選択音
+		en_gameMenuSelectionSound,
 		//タイトルBGM
 		en_TitleBgm,
 		//サウンド数
@@ -62,6 +74,14 @@ public:
 	/// デストラクタ
 	/// </summary>
 	~GameSound(){}
+	/// <summary>
+	/// サウンドのポインタを指定
+	/// </summary>
+	/// <param name="floatPtr"></param>
+	void SetMainValumePtr(float& floatPtr)
+	{
+		m_soundMainValume = &floatPtr;
+	}
 	/// <summary>
 	/// サウンドを指定して鳴らす
 	/// </summary>
@@ -184,6 +204,10 @@ private:
 	/// サウンドリストを初期化する
 	/// </summary>
 	void SoundListReset();
+	/// <summary>
+	/// メインボリューム
+	/// </summary>
+	float* m_soundMainValume = nullptr;
 	/// <summary>
 	/// 音再生リスト
 	/// </summary>

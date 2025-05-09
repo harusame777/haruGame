@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GameWindow.h"
+#include "GameSound.h"
 
 //定数等
 namespace WindowConstants_CPP {
@@ -17,6 +18,52 @@ namespace WindowConstants_CPP {
 	static const float WINDOWBASE_WIPE_MAX = 0.0f;
 	static const float WINDOWBASE_WIPE_MIN = 450.0f;
 
+}
+
+void GameWindow::WindowOpen()
+{
+	if (m_windowState != WindowState::en_state_standby)
+	{
+		return;
+	}
+
+	m_windowTopPos = Vector3::Zero;
+
+	m_windowBottomPos = Vector3::Zero;
+
+	m_windowDatas.SetWipeRatio(0.0);
+
+	m_windowState = WindowState::en_state_windowOpen;
+
+	m_windowFrameEasingMax = WindowConstants_H::WINDOWTOP_OPEN_POSITION.y;
+
+	m_windowFrameEasingMin = WindowConstants_H::WINDOWTOP_CLOSE_POSITION.y;
+
+	m_windowFrameRatio = 0.0f;
+
+	m_isWindowCloseCompletion = false;
+
+	m_isWindowDraw = true;
+
+	m_gameSound->LocalSoundOrder(GameSound::en_syuwin, false, 0.5f);
+}
+
+void GameWindow::WindowClose()
+{
+	if (m_windowState != WindowState::en_state_openWait)
+	{
+		return;
+	}
+
+	m_windowState = WindowState::en_state_windowClose;
+
+	m_windowFrameEasingMax = WindowConstants_H::WINDOWTOP_CLOSE_POSITION.y;
+
+	m_windowFrameEasingMin = WindowConstants_H::WINDOWTOP_OPEN_POSITION.y;
+
+	m_windowFrameRatio = 0.0f;
+
+	m_gameSound->LocalSoundOrder(GameSound::en_syuwin, false, 0.5f);
 }
 
 //スタート関数
@@ -60,6 +107,8 @@ bool GameWindow::Start()
 	m_windowBottomPos = Vector3::Zero;
 
 	m_windowDatas.SetWipeRatio(0.0);
+
+	m_gameSound = FindGO<GameSound>("gameSound");
 
 	return true;
 }

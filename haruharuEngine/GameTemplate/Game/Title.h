@@ -1,5 +1,9 @@
 #pragma once
+#include "GameMenu.h"
+#include "GameSetting.h"
 
+class Game;
+class GameSound;
 class Load;
 
 class Title : public IGameObject
@@ -12,7 +16,10 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	~Title(){}
+	~Title() 
+	{
+		DeleteGO(m_gameMenu);
+	}
 	/// <summary>
 	/// ゲームタイトルが終了したか
 	/// </summary>
@@ -21,12 +28,28 @@ public:
 	{
 		return m_isGameIn;
 	}
+	/// <summary>
+	/// タイトルメニューを開く
+	/// </summary>
+	void TitleMenuOpen()
+	{
+		m_gameMenu->GoMenuOpen();
+	}
 private:
 	/// <summary>
 	/// スタート関数
 	/// </summary>
 	/// <returns></returns>
 	bool Start();
+	/// <summary>
+	/// ゲームスタート
+	/// </summary>
+	bool GameStart()
+	{
+		m_isGameIn = true;
+
+		return true;
+	}
 	/// <summary>
 	/// アップデート関数
 	/// </summary>
@@ -60,6 +83,18 @@ private:
 	/// ロード画面のインスタンス
 	/// </summary>
 	Load* m_load;
+	/// <summary>
+	/// ゲームサウンドのインスタンス
+	/// </summary>
+	GameSound* m_gameSound;
+	/// <summary>
+	/// ゲームメニュー
+	/// </summary>
+	GameMenu* m_gameMenu = nullptr;
+	/// <summary>
+	/// ゲーム
+	/// </summary>
+	Game* m_game = nullptr;
 	/// <summary>
 	/// タイトル終了してゲームインに入る
 	/// </summary>

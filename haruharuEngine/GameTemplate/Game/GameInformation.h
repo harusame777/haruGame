@@ -5,7 +5,7 @@ class GameWindow;
 class GameSound;
 
 //定数等
-namespace {
+namespace GameInfoNS_H{
 
 	static const int MAX_TEXTDATALIST_EXP = 8;
 
@@ -38,7 +38,7 @@ public:
 		}
 
 		for (int listNo = 0;
-			listNo < MAX_TEXTDATALIST_EXP;
+			listNo < GameInfoNS_H::MAX_TEXTDATALIST_EXP;
 			listNo++)
 		{
 
@@ -46,7 +46,7 @@ public:
 			{
 				m_textDataList[listNo].m_isUse = true;
 
-				m_textDataList[listNo].m_textPos = TEXT_FIXED_POS;
+				m_textDataList[listNo].m_textPos = GameInfoNS_H::TEXT_FIXED_POS;
 
 				m_textDataList[listNo].m_textPos.y -= 100 * listNo;
 
@@ -98,11 +98,11 @@ private:
 		/// <summary>
 		/// 外部入力文字配列
 		/// </summary>
-		wchar_t m_externalInputTextList[MAX_TEXT_SIZE] = {};
+		wchar_t m_externalInputTextList[GameInfoNS_H::MAX_TEXT_SIZE] = {};
 		/// <summary>
 		/// メインフォントの配列
 		/// </summary>
-		wchar_t m_displayTextList[MAX_TEXT_SIZE] = {};
+		wchar_t m_displayTextList[GameInfoNS_H::MAX_TEXT_SIZE] = {};
 		/// <summary>
 		/// このコンテナを使用中かどうか
 		/// </summary>
@@ -188,7 +188,7 @@ private:
 	/// <summary>
 	/// テキストデータの配列
 	/// </summary>
-	TextOneParagraphData m_textDataList[MAX_TEXTDATALIST_EXP];
+	TextOneParagraphData m_textDataList[GameInfoNS_H::MAX_TEXTDATALIST_EXP];
 	/// <summary>
 	/// textDataListの設定されていない要素番号
 	/// </summary>

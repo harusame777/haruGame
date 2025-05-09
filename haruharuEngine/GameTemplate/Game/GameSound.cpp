@@ -42,6 +42,9 @@ bool GameSound::Start()
 	g_soundEngine->ResistWaveFileBank(SoundListNum::en_chaseBGM,
 		"Assets/sound/enemyChaseSound.wav");
 
+	g_soundEngine->ResistWaveFileBank(SoundListNum::en_gameMenuSelectionSound,
+		"Assets/sound/gameMenuSelectionSound.wav");
+
 	return true;
 }
 
@@ -110,7 +113,9 @@ void GameSound::LocalSoundOrder(const SoundListNum& listNum,
 
 	orderSound->Init(listNum);
 
-	orderSound->SetVolume(volume);
+	float finalValume = volume * *m_soundMainValume;
+
+	orderSound->SetVolume(finalValume);
 
 	orderSound->Play(loop);
 

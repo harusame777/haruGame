@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Title.h"
 #include "Load.h"
+#include "GameSound.h"
+#include "Game.h"
 
 namespace {
 	static const float BACKSIDE_SPRITE_W_SIZE = 1600.0f;
@@ -21,8 +23,190 @@ bool Title::Start()
 		BACKSIDE_SPRITE_W_SIZE,
 		BACKSIDE_SPRITE_H_SIZE);
 
+	m_game = FindGO<Game>("game");
+
+	m_gameMenu = NewGO<GameMenu>(2, "titleGameMenu");
+
+	m_gameMenu->InitMenuDatas(
+		L"Game Start",
+		[&]() -> bool
+		{
+			GameStart();
+
+			return true;
+		}
+	);
+
+	m_gameMenu->InitMenuDatas(
+		L"Setting",
+		[&]() -> bool 
+		{
+			m_game->GameSettingOpen();
+
+			return true;
+		}
+	);
+
+	//m_gameSetting->InitMenuEndFunc(
+	//	[&]() -> bool
+	//	{
+
+	//		m_gameMenu->GoMenuOpen();
+	//		
+	//		return true;
+	//	}
+	//);
+
+	//m_gameSetting->InitSetting(
+	//	L"Test1",
+	//	test1,
+	//	100,
+	//	0,
+	//	[&]() -> bool
+	//	{
+	//		
+
+	//		return true;
+	//	}
+	//);
+
+	//m_gameSetting->InitSetting(
+	//	L"Test2",
+	//	test2,
+	//	1.0f,
+	//	0.0f,
+	//	[&]() -> bool
+	//	{
+	//		m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+	//		return true;
+	//	}
+	//);
+	//m_gameSetting->InitSetting(
+	//	L"Test2",
+	//	test2,
+	//	1.0f,
+	//	0.0f,
+	//	[&]() -> bool
+	//	{
+	//		m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+	//		return true;
+	//	}
+	//);
+	//m_gameSetting->InitSetting(
+	//	L"Test2",
+	//	test2,
+	//	1.0f,
+	//	0.0f,
+	//	[&]() -> bool
+	//	{
+	//		m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+	//		return true;
+	//	}
+	//);
+	//m_gameSetting->InitSetting(
+	//	L"Test2",
+	//	test2,
+	//	1.0f,
+	//	0.0f,
+	//	[&]() -> bool
+	//	{
+	//		m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+	//		return true;
+	//	}
+	//);
+	//m_gameSetting->InitSetting(
+	//	L"Test2",
+	//	test2,
+	//	1.0f,
+	//	0.0f,
+	//	[&]() -> bool
+	//	{
+	//		m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+	//		return true;
+	//	}
+	//);
+	//m_gameSetting->InitSetting(
+	//	L"Test2",
+	//	test2,
+	//	1.0f,
+	//	0.0f,
+	//	[&]() -> bool
+	//	{
+	//		m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+	//		return true;
+	//	}
+	//);
+	//m_gameSetting->InitSetting(
+	//	L"Test2",
+	//	test2,
+	//	1.0f,
+	//	0.0f,
+	//	[&]() -> bool
+	//	{
+	//		m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+	//		return true;
+	//	}
+	//);
+	//m_gameSetting->InitSetting(
+	//	L"Test2",
+	//	test2,
+	//	1.0f,
+	//	0.0f,
+	//	[&]() -> bool
+	//	{
+	//		m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+	//		return true;
+	//	}
+	//);
+	//m_gameSetting->InitSetting(
+	//	L"Test2",
+	//	test2,
+	//	1.0f,
+	//	0.0f,
+	//	[&]() -> bool
+	//	{
+	//		m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+	//		return true;
+	//	}
+	//);
+	//m_gameSetting->InitSetting(
+	//	L"Test2",
+	//	test2,
+	//	1.0f,
+	//	0.0f,
+	//	[&]() -> bool
+	//	{
+	//		m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+	//		return true;
+	//	}
+	//);
+	//m_gameSetting->InitSetting(
+	//	L"Test2",
+	//	test2,
+	//	1.0f,
+	//	0.0f,
+	//	[&]() -> bool
+	//	{
+	//		m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+	//		return true;
+	//	}
+	//);
+
 	//ロード画面のインスタンスを取得
 	m_load = FindGO<Load>("load");
+
+	m_gameSound = FindGO<GameSound>("gameSound");
 
 	return true;
 }
@@ -32,7 +216,19 @@ void Title::Update()
 {
 	if (g_pad[0]->IsTrigger(enButtonB))
 	{
-		m_isGameIn = true;
+		if (m_isGameIn == true)
+			return;
+
+		if (m_gameMenu->IsMenuOpenNow() == true)
+			return;
+
+		if (m_game->IsGameTitleSettingOpen() == true)
+			return;
+		
+
+		m_gameSound->LocalSoundOrder(GameSound::en_decisionSound, false, 0.5f);
+
+		m_gameMenu->GoMenuOpen();
 	}
 
 	//フォントのアップデート
